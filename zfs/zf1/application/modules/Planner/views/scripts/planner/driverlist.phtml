@@ -1,0 +1,104 @@
+
+<div class="row row-broken">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+              <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-1">
+					<form action="" method="post" name="schedule_form" id="schedule_form">
+					  <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="input-title"><?php echo $this->translate('Driver List')?></div>
+					  <div class="clear-all"></div>
+					  <div class="col-sm-3 col_paddingx10">
+						<label for="input-2" class="input__label input__label--kaede"> 
+						<span class="input input--kaede">
+						<a href="<?=$this->url(array('controller'=>'Driverlocation','action'=>'tracklocation'),'default',true)?>"> <img src="<?=IMAGE_LINK?>/addmore.gif" /> <?php echo $this->translate('Driver Location')?></a>
+						</span></label>
+					  </div>
+					  <div class="col-sm-3 col_paddingx10">
+						<label for="input-2" class="input__label input__label--kaede"> 
+						<span class="input input--kaede">
+						<a href="<?=$this->url(array('controller'=>'Planner','action'=>'drivermassage'),'default',true)?>"> <img src="<?=IMAGE_LINK?>/addmore.gif" /> <?php echo $this->translate('Message for Driver')?></a>
+						</span></label>
+					  </div>
+					  <div class="col-sm-9 col_paddingx10"> <span class="input input--kaede"></span> 
+						</div>
+					</div>
+					<div  id="tablegrid">
+					 <table width="100%" border="0" id="datatableid">
+					    <thead>
+						<tr>
+								<th><?=$this->translate('Driver Name');?></th>
+								<th><?=$this->translate('Depot Name');?> </th>
+								<th><?=$this->translate('Vehicle Type');?></th>
+								<th><?=$this->translate('Phone Number');?></th>
+								<th><?=$this->translate('Last Login');?></th>
+								<th><?=$this->translate('Last Login');?></th>
+								<th><?=$this->translate('Vahicle');?></th>
+								<th><?=$this->translate('GPS Status');?></th>
+								<th><?=$this->translate('Action');?></th>
+						</tr>
+						</thead>
+						<tbody>
+						<?php
+						if(count($this->records)>0){
+						 foreach($this->records as $key=>$data){
+						 $class = ($key%2==0)?'even':'odd';
+						 ?>
+						<tr class="<?php echo $class;?>">
+                        <td width="10%" data-label="Driver"><?php echo $data['driver_name']; ?></td> 
+						<td width="7%" data-label="Customer"><?php echo $data['company_name']; ?></td>
+						<td width="5%" data-label="Vahicle Type"><?php echo $data['type_of_vehicle']; ?></td> 
+						<td width="7%" data-label="Phone"><?php echo $data['phoneno']; ?></td> 
+						<td width="10%" data-label="Login"><?php echo $data['last_login']; ?></td> 
+						<td width="5%" data-label="LogOut"><?php echo $data['last_logout']; ?></td>
+						<td width="10%" data-label="Vehicle">--</td>
+						<td width="5%" data-label="GPS"><?php echo ($data['gprs_status']=='1')?'On':'Off'; ?></td>
+					    <td width="10%" data-label="Action">
+						<i class="fa fa-history fa-2x"></i>&nbsp;|&nbsp;<i class="fa fa-map-marker fa-2x"></i>&nbsp;|&nbsp;Mark Leave</td>
+					</tr>
+						<?php }} else{ ?>
+						<tr>
+						  <td></td><td></td><td></td><td data-label="No Data"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td><td></td><td></td><td></td><td></td>
+						  </tr>
+						<?php }
+						?></tbody>
+
+                     </table>
+                    </div>
+					
+					 </form>
+					</div>
+                </div>
+					<div>
+			  </div>
+			 </div>
+            </div>
+          </div>
+<script>
+$(document).ready(function() {
+	 $('#datatableid').DataTable( {
+		"pageLength": 100,
+		"lengthMenu": [[10, 25, 50, 100, 200, 500, -1], [10, 25, 50, 100, 200, 500, "All"]],
+        initComplete: function () {
+            this.api().columns().every( function () {
+                var column = this;
+                var select = $('<select><option value=""></option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+ 						column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+ 
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+        }
+    } );
+	//$('div.dataTables_filter input').addClass('inputfield');
+} );
+</script>

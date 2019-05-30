@@ -1,0 +1,63 @@
+<div class="row row-broken">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+			<div class="tab-content">
+			 <div class="tab-pane fade in active" id="tab-1">
+
+				<form method="post" action="" id="filter_form" name="filter_form">
+				<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+						<div class="input-title"><?php echo $this->translate('Forwarder Report')?></div>
+						<div class="clear-all"></div>
+					</div>
+					<div  id="tablegrid">
+					<table width="100%" border="0" id="dataTableGridId">
+								<thead>
+								<tr> 
+									<th><?php echo $this->translate("Forwarder Name");?></th>
+									<th><?php echo $this->translate("Start Range");?></th>
+									<th><?php echo $this->translate("End Range");?></th> 
+									<th><?php echo $this->translate("Range Left");?></th>
+									<th><?php echo $this->translate("Tracking");?></th>
+									<th><?php echo $this->translate("EDI Status");?></th>
+									<th><?php echo $this->translate("Return File");?></th>
+								</tr>
+						</thead>
+						<tbody>
+						<?php if(count($this->records)>0){
+							
+								foreach($this->records as $index=>$data){
+									 $class = ($index%2==0)?'even':'odd'; ?>
+									<tr <?=$class?>>
+										<td data-label="Forwarder Name"><?=$data['forwarder_name'];?></td>
+										<td data-label="Start Range"><?= $data['tracking_start']?></td>
+										<td data-label="End Range"><?= $data['tracking_end']?></td>
+										<td data-label="Range Left"><?= ($data['tracking_end']-$data['tracking_start'])?></td>
+										<td data-label="Tracking"><?=0?></td>
+										<td data-label="EDI Status"><?= 0?></td>
+										<td data-label="Return File">0</td>
+										
+									</tr>
+								<?php }}else{?>
+									
+									<tr>
+									  <td><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td><td></td><td></td><td></td><td></td><td></td><td></td>
+									</tr>
+									
+								<?php }?> </tbody>
+
+                     </table>
+                    </div>
+					
+					 </form>
+					</div>
+                </div>
+					<div>
+			  </div>
+			 </div>
+            </div>
+          </div>
+<script>
+$(document).ready(function() {
+	 commonDataTableView()
+} );
+</script>

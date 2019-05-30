@@ -1,0 +1,32 @@
+<link rel="stylesheet" href="<?php echo $this->baseUrl('/public/timepicker/jquery.ui.timepicker.css')?>">
+<script src="<?php echo $this->baseUrl('/public/timepicker/include/ui-1.10.0/jquery.ui.widget.min.js')?>"></script>
+<script src="<?php echo $this->baseUrl('/public/timepicker/jquery.ui.timepicker.js')?>"></script>
+<form action="" method="post" name="setdatetime" class="inputbox" >
+<div class="col-lg-12 col-md-12 col-sm-12 b-email">
+          <div class="b-email-title">
+            <div class="input-title">Set Date Time</div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 col_paddingtop">
+			Set Date:
+			  <input type="text" class="inputfield" id="assigndate" value="<?=(isset($this->ModelObj->getData['date']))?$this->ModelObj->getData['date']:''?>" name="delivery_date" />
+            </div>
+			<div class="col-sm-6 col_paddingtop">
+              Set Time:<input type="text" value="<?=(isset($this->ModelObj->getData['time']))?$this->ModelObj->getData['time']:''?>" class="inputfield" id="assigntime" name="delivery_time" onmouseover="clickTimePicker(this.id)" />
+            </div>
+            <div class="col-sm-2 col_paddingtop"><input type="submit" name="submit" value="submit" class="btn btn-danger btn-round" /></div>
+          </div>
+        </div>
+</form>
+<script>
+function clickTimePicker(id){
+$('#'+id).timepicker();
+}
+ $(function() {
+  $( "#assigndate" ).datepicker({
+    dateFormat: 'yy-mm-dd',
+    showOtherMonths: true,
+    selectOtherMonths: true
+  });
+ });	
+</script>

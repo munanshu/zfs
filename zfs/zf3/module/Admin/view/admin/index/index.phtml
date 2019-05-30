@@ -1,0 +1,38 @@
+ 
+<div class="row">
+		<div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
+			<div class="login-panel panel panel-default">
+				<div class="panel-heading">Log in</div>
+				<div class="panel-body">
+
+					<?php
+						 $form = $this->form;
+						 $form->setAttribute('action', $this->url('admin', array('action' => 'index')));
+						 $form->prepare();
+						 echo $this->form()->openTag($form);   ?>
+						<fieldset>
+							<div class="form-group">
+								<?=$this->formElement($form->get('username')); ?>
+								<?=$this->formElementErrors($form->get('username'));  ?> <br> 
+							</div>
+							<div class="form-group">
+
+								<?=$this->formElement($form->get('password')); ?>
+								<?=$this->formElementErrors($form->get('password'));  ?> <br> 
+							</div>	
+							<div class="form-group">
+							
+								<?=$this->formElement($form->get('submit')); ?>
+								<?=$this->formElementErrors($form->get('submit')); ?>
+							</div>	
+							<?php  echo $this->form()->closeTag();?> 
+						</fieldset>
+					 
+				</div>
+			</div>
+		</div><!-- /.col-->
+	</div><!-- /.row -->	
+
+ 
+  
+ 

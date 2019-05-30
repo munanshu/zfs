@@ -1,0 +1,359 @@
+<div class="row row-broken">
+
+    <div class="col-sm-12">
+
+        <div class="tabs" id="seventh-tabs">
+
+            <div class="tab-content">
+
+                <div class="tab-pane fade in active" id="tab-1">
+
+                    <form method="get" name="ticketlist">
+
+						<div class="filter">
+
+							<div class="row row_nopadding decor-success" style="margin-left:0;margin-right:0">
+
+								<div class="input-title"><?php echo $this->translate('Search Claim Ticket') ?></div>
+
+								<div class="clear-all"></div>
+
+								<div class="col-sm-3 col_paddingx10"> 
+
+									<label for="search"><?php echo $this->translate('Search') ?></label>
+
+									<input type="text" name="claim_id" style="width:60%"; class="inputfield" placeholder="Claim ID/Barcode" value="<?=(isset($this->Request['claim_id']))?$this->Request['claim_id'] : ''; ?>">
+
+								</div>
+
+								<div class="col-sm-3 col_paddingx10"> 
+
+									<label for="country_id"><?php echo $this->translate('Country') ?></label>
+
+									<?=$this->getHelper('HtmlSelect')->getSelect('country_id',$this->countries,'country_id','country_name',(isset($this->Request['country_id']))?$this->Request['country_id']:'',false,array('class'=>'inputfield','style'=>'width:60%')); ?>
+
+								</div>
+
+								<div class="col-sm-3 col_paddingx10"> 
+
+									<label for="status"><?php echo $this->translate('Status') ?></label>
+
+                                    <?=$this->getHelper('HtmlSelect')->getSelect('claim_status',$this->claimstatus,'claim_status_id','claim_status_name',(isset($this->Request['claim_status']))?$this->Request['claim_status']:'',false,array('class'=>'inputfield','style'=>'width:60%')); ?>									
+
+								</div>
+
+								
+
+								<?php if($this->user_config['level_id']<4){ ?>
+
+								<div class="col-sm-3 col_paddingx10"> 
+
+								   <label for="depot"><?php echo $this->translate('Depot') ?></label>
+
+								   <?=$this->getHelper('HtmlSelect')->getSelect('depot_id',$this->depot,'user_id','company_name',(isset($this->Request['depot_id']))?$this->Request['depot_id']:'',false,array('class'=>'inputfield','style'=>'width:60%')); ?>
+
+								</div>
+
+								<?php } ?>
+
+								
+
+							    <div class="clearfix"></div>
+
+								
+
+								<?php if($this->user_config['level_id']<5 || $this->user_config['level_id']==6){ ?>
+
+								<div class="col-sm-3 col_paddingx10"> 
+
+								   <label for="customers"><?php echo $this->translate('Customer') ?></label>
+
+								   <?=$this->getHelper('HtmlSelect')->getSelect('customer_id',$this->customers,'user_id','company_name',(isset($this->Request['customer_id']))?$this->Request['customer_id']:'',false,array('class'=>'inputfield','style'=>'width:60%')); ?>
+
+								</div>
+
+								
+
+								<div class="col-sm-3 col_paddingx10"> 
+
+									<label for="forwarder"><?php echo $this->translate('Forwarder') ?></label>
+
+									<?=$this->getHelper('HtmlSelect')->getSelect('forwarder_id',$this->forwarders,'forwarder_id','forwarder_name',(isset($this->Request['forwarder_id']))?$this->Request['forwarder_id']:'',false,array('class'=>'inputfield','style'=>'width:60%')); ?>
+
+								</div>
+
+								
+
+								<div class="col-sm-3 col_paddingx10">
+
+								   <label for="depot"><?php echo $this->translate('Claim Type') ?></label>
+
+								   <select name="claim_read_status" class="inputfield" style="width:60%">
+
+									<option value="">All claim</option>
+
+									<option value="1" <?php if(isset($this->Request['claim_read_status']) && $this->Request['claim_read_status']==1){ echo 'selected="selected"'; }?> >Read Claim</option>
+
+									<option value="2" <?php if(isset($this->Request['claim_read_status']) && $this->Request['claim_read_status']==2){ echo 'selected="selected"'; }?> >Unread Claim</option>
+
+								   </select>
+
+								</div>
+
+								
+
+								<?php } ?>
+
+								
+
+								<div class="col-sm-3 col_paddingtop">
+
+								  <label><?php echo $this->translate('Reply On') ?></label>
+
+									<input type="text" name="reply_date" id="reply_date" value="<?=(isset($this->Request['reply_date']))?$this->Request['reply_date']:'' ?>" style="width:60%">
+
+								</div>
+
+								
+
+								<div class="clearfix"></div>
+
+								
+
+	                            <div class="col-sm-3 col_paddingtop">
+
+								  <label><?php echo $this->translate('From Date') ?></label>
+
+									<input type="text" name="from_date" id="from_date" value="<?=(isset($this->Request['from_date']))?$this->Request['from_date']:'' ?>" style="width:60%">
+
+								</div>
+
+								<div class="col-sm-3 col_paddingtop">
+
+								  <label><?php echo $this->translate('To Date') ?></label>
+
+									<input type="text" name="to_date" id="to_date" value="<?=(isset($this->Request['to_date']))?$this->Request['to_date']:'' ?>" style="width:60%">
+
+								</div>
+
+								
+
+								<div class="col-sm-3 col_paddingx10">
+
+								   <button class="btn btn-danger btn-round" type="submit">Submit</button>
+
+								</div>
+
+							</div>
+
+						</div>
+
+					</form>
+
+					
+
+					<form method="post" name="">	
+
+						<div id="table">
+
+						    <div class="header-row row"> 
+
+							  <span class="cell primary">Logo</span> 
+
+							  <span class="cell">Claim ID</span> 
+
+							  <span class="cell">Parcel Information</span> 
+
+							  <span class="cell">Status</span>
+
+							  <span class="cell">Action</span> 
+
+						    </div>
+
+							<?php if(count($this->claimdetails)>0){ 
+
+							foreach($this->claimdetails as $key=>$claimdetail){ 
+
+							$class = ($key%2==0) ? 'row even' : 'row odd';
+
+							?>
+
+						    <div class="<?= $class ?>">
+
+								<input type="radio" name="expand" class="res_dio">
+
+								<span class="cell primary" data-label="Logo">
+
+								  <?php if($claimdetail['logo']!='' && file_exists(ROOT_PATH.'/public/headerlogo/'.$claimdetail['logo'])){ ?>
+
+								    <img src="<?=BASE_URL?>/public/headerlogo/<?=$claimdetail['logo']?>" class="logo">
+
+								  <?php } else{ ?>
+
+								    <img src="<?=BASE_URL?>/public/headerlogo/<?=$claimdetail['customer_info']['depot_logo']?>" class="logo">
+
+								  <?php  } ?>
+
+								</span>  
+
+								<span class="cell" data-label="Cliam ID"><?=$claimdetail['claim_id'] ?></span> 
+
+								<span class="cell" data-label="Parcel Information">
+
+								  <p><strong>Customer Name:</strong><?=$claimdetail['company_name'] ?></p>
+
+								  <p><strong>Barcode No:</strong><a href="javascript:void(0);" onclick="javascript:window.open('<?=$this->url(array('controller' => 'Parceltracking','action'=>'tracking'),'default',true).'?tockenno='.Zend_Encript_Encription::encode($claimdetail['barcode_id']);?>','mywindow','status=0,resizable=1,width=1200,height=600,toolbar=0')" title="Track Parcel"><?=$claimdetail['tracenr_barcode'] ?></a></p>
+
+								  <p><strong>Receiver Name:</strong><?=$claimdetail['rec_name'] ?></p>
+
+								  <p><strong>Create Date:</strong><?=$claimdetail['created_date'] ?></p>
+
+								  <p><strong>Checkin Date:</strong><?=$claimdetail['checkin_date'] ?></p>
+
+								  <?=($claimdetail['update_date']!='0000-00-00 00:00:00') ? '<p><strong>Last Reply:</strong>'.$claimdetail['update_date'].'</p>' : '' ?>
+
+								  <p><a href="javascript:void(0);" onclick="javascript:window.open('<?=$this->url(array('controller' => 'Parceltracking','action'=>'tracking'),'default',true).'?tockenno='.Zend_Encript_Encription::encode($claimdetail['barcode_id']);?>','mywindow','status=0,resizable=1,width=1200,height=600,toolbar=0')">Trace Track</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+
+								  <?php if($this->user_config['level_id'] < 5 || $this->user_config['level_id'] == 6){ ?>
+
+								  <a target="_blank" href="<?=$this->url(array('controller'=>'Checkin','action'=>'parceldetail'),'default',true).'?search_barcode='.$claimdetail['tracenr_barcode']?>" data-toggle="">Detail</a></p>
+
+								  <?php } ?>
+
+								  <p style="color:#cccccc"><?=$claimdetail['days_diff'] ?></p>
+
+								</span> 
+
+                                <span class="cell">
+
+								   <?=$this->getHelper('HtmlSelect')->getSelect('status',$this->claimstatus,'claim_status_id','claim_status_name', $claimdetail['claim_status_id'], false,array('class'=>'inputfield','style'=>'width:60%', 'onchange'=>'emailonchangestatus(this.value,"'.$claimdetail['claim_id'].'","'.$claimdetail['user_id'].'")')); ?>
+
+								</span>		
+
+                                <?php if($this->user_config['level_id']==1 || $this->user_config['level_id']==4 || $this->user_config['level_id']==5 || $this->user_config['level_id']==6){?>								
+
+								<span class="cell" data-label="Action">
+
+									<div class="action-btns btn-group pull-right" role="group">
+
+									  <a href="<?=$this->url(array('controller'=>'Claim','action'=>'viewclaims'),'default',true).'?viewclaims&claim_id='.$claimdetail['claim_id'] ?>"><button type="button" class="btn btn-default"><i class="fa fa-eye" title="View Message"></i></button></a>
+
+									<?php if($this->user_config['level_id']==1 || $this->user_config['level_id']==4 || $this->user_config['level_id']==6){ ?>
+
+									  <a href="<?=$this->url(array('controller'=>'Claim','action'=>'replyclaim'),'default',true).'?replyclaim&claim_id='.$claimdetail['claim_id'].'&user_id='.Zend_Encript_Encription::encode($claimdetail['user_id']) ?>"><button type="button" class="btn btn-default"><i class="fa  fa-reply-all" title="Reply Claim"></i></button></a>
+	<?php }  ?>
+									</div>
+
+								</span> 
+
+								<?php } ?>
+
+						    </div>
+
+							
+
+							<?php } } else{?>
+
+							  <span><b>No Record Found!! </b></span>
+
+							<?php } ?>
+
+							
+
+						</div>
+
+						<div class="unit control">
+
+						  <div class="nav-btns pull-right"> <?php echo commonfunction::PageCounter((isset($this->claimdetails[0]['Total']))?$this->claimdetails[0]['Total']:'',$this->Request)?></div>
+
+						</div>
+
+                    </form>
+
+				</div>
+
+			</div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+
+#table .cell{
+
+text-align: left!important;
+
+}
+
+</style>
+
+<script type="text/javascript"> 
+
+ function emailonchangestatus(status_id,claim_id,user_id){
+
+  var result  = confirm('Are you sure to update claim status?');
+
+	  if(result==true){
+
+	    $.ajax({
+
+		  type: "POST",
+
+		  url: baseUrl+'Claim/mailonupdateclaimstatus',
+
+		  data: 'status_id='+status_id+'&claim_id='+claim_id+'&user_id='+user_id,
+
+		  success: function(msg){
+
+		  }
+
+		});
+
+	  }
+
+  
+
+ }
+
+ $(function() {
+
+  $("#from_date").datepicker({
+
+    dateFormat: 'yy-mm-dd',
+
+    showOtherMonths: true,
+
+    selectOtherMonths: true
+
+  });
+
+  
+
+  $("#to_date").datepicker({
+
+   dateFormat: 'yy-mm-dd',
+
+     showOtherMonths: true,
+
+     selectOtherMonths: true
+
+  });
+
+  
+
+  $("#reply_date").datepicker({
+
+   dateFormat: 'yy-mm-dd',
+
+     showOtherMonths: true,
+
+     selectOtherMonths: true
+
+  });
+
+ });
+
+</script>

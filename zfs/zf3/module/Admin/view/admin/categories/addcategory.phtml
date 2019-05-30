@@ -1,0 +1,87 @@
+		
+		<style type="text/css">
+			  .errorsForm > ul > li {
+				    color: red;
+  				}
+
+		</style>
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="page-header"> Cetegories</h1>
+			</div>
+		</div><!--/.row-->
+		
+		<div class="panel panel-container">
+			 
+			<div class="row">
+					<div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
+						<div class="panel panel-default">
+							<div class="panel-heading">Add Cetegories</div>
+							<div class="panel-body">
+
+								<?php
+									 $form = $this->form;
+									 $form->prepare();
+									 $form->setAttribute('enctype','multipart/form-data');
+									 $form->setAttribute('multiple',true);
+									 echo $this->form()->openTag($form);   ?>
+									<fieldset>
+										<div class="form-group">
+											<?=$this->formLabel($form->get('category_name')); ?>
+											<?=$this->formElement($form->get('category_name')); ?>
+											<span class="errorsForm">
+											
+											<?=$this->formElementErrors($form->get('category_name'));  ?>  </span>
+										</div>
+										<div class="form-group">
+											<?=$this->formLabel($form->get('category_desc')); ?>
+											<?=$this->formElement($form->get('category_desc')); ?>
+											<span class="errorsForm">
+
+											<?=$this->formElementErrors($form->get('category_desc'));  ?>  </span>
+										</div>
+
+										<div class="form-group">
+											<?=$this->formLabel($form->get('category_image')); ?>
+											<?=$this->formElement($form->get('category_image')); ?>
+											<span class="errorsForm">
+												
+											 <?=$this->formElementErrors($form->get('category_image'));  ?>  
+											</span>
+										</div>
+
+										<div class="form-group">
+											<?=$this->formLabel($form->get('parent_id')); ?>
+											<?=$this->formElement($form->get('parent_id')); ?>
+											<span class="errorsForm">
+
+											<?=$this->formElementErrors($form->get('parent_id'));  ?>  </span>
+										</div>
+
+										<div class="form-group">
+											<?=$this->formLabel($form->get('is_Active')); ?>
+											<?=$this->formElement($form->get('is_Active')); ?>
+											<span class="errorsForm">
+
+											<?=$this->formElementErrors($form->get('is_Active'));  ?>  </span>
+										</div>
+
+										<div class="form-group">
+										
+											<?=$this->formElement($form->get('submit')); ?>
+											<?=$this->formElementErrors($form->get('submit')); ?>
+										</div>	
+										<?php  echo $this->form()->closeTag();?> 
+									</fieldset>
+								 
+							</div>
+						</div>
+					</div><!-- /.col-->
+				</div><!-- /.row -->	
+
+		 </div>
+  
+ 
+
+		 
+

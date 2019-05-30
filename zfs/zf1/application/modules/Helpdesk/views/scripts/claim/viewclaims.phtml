@@ -1,0 +1,169 @@
+<div class="row row-broken">
+    <div class="col-sm-12">
+        <div class="tabs" id="seventh-tabs">
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-1">
+					<div id="tablegrid">
+                     	<form method="post" name="viewclaims" enctype="multipart/form-data">
+						    <?php $claimData = $this->claimData[0];  ?>
+							
+							<table width="100%" border="0">
+							    <tr>
+							        <th colspan="8">Claim For <?=$claimData['tracenr_barcode'] ?></th>
+							    </tr>
+                                <tr>
+									<td><b><?php echo $this->translate('Claim Number :') ?></b></td>
+									<td><?=$claimData['claim_id'] ?></td>
+									<td><b><?php echo $this->translate('Claim Date :') ?></b></td>
+									<td><?=date('M - d, Y H:i',strtotime($claimData['created_date'])) ?></td>
+									<td><b><?php echo $this->translate('Claim By :') ?></b></td>
+									<td><?=$claimData['claim_id'] ?></td>
+									<td><b><?php echo $this->translate('Claim Status :') ?></b></td>
+									<td><?=$claimData['claim_status_name'] ?></td>
+                                </tr>
+                                <tr>
+									<td><b><?php echo $this->translate('Parcel Number :') ?></b></td>
+									<td><?=$claimData['tracenr_barcode'] ?></td>
+									<td><b><?php echo $this->translate('Weight :') ?></b></td>
+									<td><?=$claimData['weight'] ?></td>
+									<td><b><?php echo $this->translate('Forwarder :') ?></b></td>
+									<td><?=$claimData['forwarder_name'] ?></td>
+									<td><b><?php echo $this->translate('Service :') ?></b></td>
+									<td><?=$claimData['service_name'] ?></td>
+                                </tr>
+                                <tr>
+									<td><b><?php echo $this->translate('Create Date :') ?></b></td>
+									<td><?=date('M - d, Y H:i',strtotime($claimData['create_date'])) ?></td>
+									<td><b><?php echo $this->translate('Check-in Date :') ?></b></td>
+									<td><?=date('M - d, Y H:i',strtotime($claimData['checkin_date'])) ?></td>
+									<td><b><?php echo $this->translate('Merk :') ?></b></td>
+									<td><?=$claimData['goods_id'] ?></td>
+									<td><b><?php echo $this->translate('Type :') ?></b></td>
+									<td><?=$claimData['goods_description'] ?></td>
+                                </tr>
+                                <tr>
+								    <td><b><?php echo $this->translate('Heading') ?></b></td>
+									<td colspan="3"><b><?php echo $this->translate('Receiver Info :') ?></b></td>
+									<td colspan="4"><b>Sender Info :</b></td>
+                                </tr>
+                                <tr>
+								    <td><b><?php echo $this->translate('Name / Contact</br>Street / Address</br>Postcode / City</br>Country</br>Phone</br>Email')?> </b></td>
+									<td colspan="3"><?=$claimData['rec_name'].' '.$claimData['rec_contact'].'</br>'.$claimData['rec_street'].' '.$claimData['rec_streetnr'].' '.$claimData['rec_address'].' '.$claimData['rec_street2'].'</br>'.$claimData['rec_zipcode'].' '.$claimData['rec_city'].'</br>'.$this->recCountry['rec_cncode'].' '.$this->recCountry['rec_country_name'].'</br>'.$claimData['rec_phone'].'</br>'.$claimData['rec_email'] ?></td>
+									<td colspan="4"><?=$this->forwarderData['SenderAddress'][0].'</br>'.$this->forwarderData['SenderAddress'][1].'</br>'.$this->forwarderData['SenderAddress'][2].'</br>'.$this->forwarderData['SenderAddress'][3].' '.$this->forwarderData['SenderAddress'][4].'</br>'.$this->forwarderData['SenderAddress'][5].' '.$this->forwarderData['SenderAddress'][6].'</br>'.$this->forwarderData['SenderAddress'][9].'</br>'.$this->forwarderData['SenderAddress'][10] ?></td>
+                                </tr>
+                                <tr>
+							        <th colspan="8"><?php echo $this->translate('Claim Question') ?></th>
+							    </tr>
+								<?php foreach($this->claimData as $claimData){ ?>
+                                <tr>
+									<td colspan="2"><?=$claimData['question'] ?></td>
+									<?php if($claimData['question_type']=='file'){
+                                    $file = CLAIM_OPEN.''.$claimData['answer'];								
+									$path_info = commonfunction::file_pathinfo($file);
+									?>
+									<td id="filedoc_<?=$claimData['id'] ?>" colspan="6">
+									<?php if(file_exists(CLAIM_SAVE.''.$claimData['answer'])){ ?>
+									<a target="_blank" title="Show Uploaded Document" <?php if($this->Userconfig['level_id']==5 && $claimData['file_status']=='1'){echo 'style="display:none"';} ?> <?php if($this->Userconfig['level_id']!=5 && $claimData['file_status']=='1'){echo 'style="display:none"';} ?> href="<?=$file ?>" ><?= commonfunction::uppercase($path_info['extension'].' Document') ?></a>											
+									<input type="checkbox" name="delete_field[]" id="delete_field_<?=$claimData['id'] ?>" value="<?=$claimData['id'] ?>" onclick="fileAction('1','<?=$claimData['id']?>','<?=$this->Userconfig['level_id']?>')" checked="checked" <?php if($this->Userconfig['level_id']==5 || ($this->Userconfig['level_id']!=5 && $claimData['file_status']=='1')){ echo 'style="display:none"'; }?>>
+									<?php if($this->Userconfig['level_id']!=5 && $claimData['file_status']=='0'){ ?>
+									<b>Delete this document and force customer to upload new document !!</b>
+									<?php } ?> 
+									<input type="file" name="questionfield_<?=$claimData['id']?>" id="questionfield_<?=$claimData['id']?>" <?php if($this->Userconfig['level_id']!=5 || $claimData['file_status']=='0' || ($claimData['claim_status_id']==5 && $this->Userconfig['level_id']==5)){echo 'style="display:none"';} if($this->Userconfig['level_id']!=5 || $claimData['file_status']=='0'){echo 'disabled="disabled"';} if($claimData['file_status']=='1'){echo 'required="true"';}?> >
+									<?php if($claimData['file_status']=='1' && $this->Userconfig['level_id']==5 && $claimData['claim_status_id']!=5){ ?>
+									<b style="color:red">Please Upload Document!!</b>
+									<?php } 
+									if($claimData['file_status']=='1' && $this->Userconfig['level_id']!=5){ ?>
+									<b>File Already Deleted on <?=$claimData['created_date'] ?></b>
+									<?php } } else{
+									if(!file_exists(CLAIM_SAVE.''.$claimData['answer']) && $this->Userconfig['level_id']==5){ ?>
+									<input type="file" name="questionfield_<?=$claimData['id']?>" id="questionfield_<?=$claimData['id']?>">
+									<?php } else{ ?>
+									<b>No any file attached</b>
+									<?php } } ?>
+									</td>
+									
+									<td id="reupload_<?=$claimData['id'] ?>" colspan="6" <?php if($this->Userconfig['level_id']==1 || $this->Userconfig['level_id']==2 && $this->Userconfig['level_id']==3 && $this->Userconfig['level_id']==4 && $this->Userconfig['level_id']==6){echo 'style="display:none"';} ?>>
+									<input type="hidden" name="quest_id[]" value="<?=$claimData['id'] ?>">
+									</td>
+									
+									<td id="canceltd_<?=$claimData['id'] ?>">
+									<input type="button" name="cancelreupload" id="cancelreupload_<?=$claimData['id'] ?>" value="Cancel" style="display:none" onclick="fileAction('2','<?=$claimData['id']?>','<?=$this->Userconfig['level_id']?>')"> 
+									</td>
+									<?php }else{ ?>
+									<td colspan="6"><?=$claimData['answer'] ?></td>
+									<?php } ?>
+								</tr>
+								<?php } ?>
+								
+								<?php
+                                if($this->Userconfig['level_id']!=5){ ?>
+                                <tr>
+									<td colspan="2"><b>Set New Status :</b></td>
+									<td colspan="6">
+										<select name="status" class="inputfield" style="width:30%">
+										<?php foreach($this->ClaimStatus as $status){ ?>
+											<option value="<?=$status['claim_status_id'] ?>" <?php if($status['claim_status_id']==$claimData['claim_status_id']){echo 'selected="selected"';} if($this->Userconfig['level_id']==5){echo 'disabled="disabled"';} ?>><?=$status['claim_status_name'] ?></option>
+									    <?php } ?>
+										</select>
+									</td>
+								</tr>
+								<?php } ?>
+								
+								<?php foreach($this->claimData as $claimData){
+								  if($claimData['file_status']==1){
+								   $file_status = $claimData['file_status'];
+								  }
+								}  ?>
+								
+                                <tr <?php if(($file_status ==0 && $this->Userconfig['level_id']==5) || ($claimData['claim_status_id']==5 && $this->Userconfig['level_id']==5)){ echo 'style="display:none"'; 	} ?>>
+								    <td colspan="2"></td>
+									<td colspan="6"><input type="submit" name="updateclaim" value="Update Claim" class="btn btn-danger btn-round"></td>
+								</tr>							
+							</table>
+					    </form>
+					</div>
+				</div>	
+			</div>
+	    </div>
+    </div>
+</div>
+<script>
+function fileAction1(get_value,id,user_level){
+  var user_level = user_level;
+  if(user_level==1 || user_level==2 || user_level==3 || user_level==4 || user_level==6){
+    if(get_value==1){
+	 $('#filedoc_'+id).hide();
+	 $('#reupload_'+id).hide();
+	 $('#cancelreupload_'+id).show();
+	 $document.getElemenyById('questionfield_'+id).disabled=true;
+	 $document.getElemenyById('cancelreupload_'+id).disabled=false;
+	 $('#canceltd_'+id).show();
+	}
+    if(get_value==2){
+	 $('#filedoc_'+id).show();
+	 $('#delete_field_'+id).show();
+	 $document.getElemenyById('questionfield_'+id).disabled=true;
+	 $document.getElemenyById('cancelreupload_'+id).disabled=true;
+	 $document.getElemenyById('delete_field_'+id).checked=false;
+	 $('#canceltd_'+id).hide();
+	 $('#reupload_'+id).hide();
+	}
+  }
+}
+</script>
+<style>
+th{
+background: #36384e;
+padding: 6px!important;
+text-align: center;
+color: #fff;
+font-size: 15px;
+border-bottom: none !important;
+}
+#tablegrid {
+    overflow: hidden;
+}
+#tablegrid td{
+text-align:left;
+}
+</style>

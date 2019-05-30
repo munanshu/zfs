@@ -1,0 +1,109 @@
+
+	<div class="input-title"><?php echo $this->translate("Shop Setting")?></div>
+	
+		<div class="row row-broken" style="margin-left:0px !important;margin-right:0px !important;">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+              <ul class="nav nav-tabs nav-justified">
+                <li><a href="../Account/customer"><i class="fa fa-arrow-left" title="Customer List"></i><?php echo $this->translate(" Back")?></a> </li>
+                <li class="active"><a href="javascript:void(0)" onclick="openbox('<?=$this->url(array('controller'=>'Shopapi','action'=>'addnewshop'),'default',true).'?token='.$this->token;?>','65%','100%');"><?php echo $this->translate("Add Shop ")?><i class="fa fa-ticket"></i></a></li>
+              </ul>
+
+	<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+		<form method="post" action="" id="shopsetting" name="shopsetting">
+					
+				<div id="tablegrid">
+					 <table width="100%" border="0" id="example">
+					    <thead>
+						<tr>
+							<th><?=$this->translate('Web Shop');?></th>
+							<th><?=$this->translate('Shop Name');?> </th>
+							<th><?=$this->translate('Shop URL');?></th>
+							<th><?=$this->translate('API Key');?></th>
+							<th><?=$this->translate('API Secret');?></th>
+							<th><?=$this->translate('Shop Service');?></th>
+							<th><?=$this->translate('Weight(kg)');?></th>
+							<th><?=$this->translate('Status');?></th>
+							<th><?=$this->translate('Action');?></th>
+						</tr>
+						</thead>
+						
+						<tbody>
+						<?php
+						if(count($this->records)>0){
+							$i=0;
+						 	foreach($this->records as $index=>$data){
+						 	$class = ($i%2==0)?'even':'odd'; ?>
+							<tr class="<?php echo $class;?>">
+								
+								<td width="15%" data-label="webshop"><?php echo $data['webshop']; ?></td> 
+								<td width="12%" data-label="shop"><?php echo $data['shop_name']; ?></td>
+								<td width="10%" data-label="shopurl"><?php echo $data['shop_url']; ?></td> 
+								<td width="10%" data-label="apikey"><?php echo $data['api_key']; ?></td> 
+								<td width="12%" data-label="apisecret"><?php echo $data['api_secret']; ?></td>
+								<td width="12%" data-label="weight"><?php echo $data['service']; ?></td> 
+								<td width="12%" data-label="weight"><?php echo $data['weight']; ?></td> 
+								<td width="5%"><span class="cell" data-label="Status" id="statusSpan_<?=$index?>" ><?php if($data['status'] == "1") {  ?><img src="<?=IMAGE_LINK?>/icon_active.gif" align="absmiddle" alt="Active" border="0" onclick="setStatus('<?=SHOP_SETTINGS?>','status','0','shop_id','<?=$data['shop_id']?>','<?=$index?>');" title="Change Status into In-Active" class="changeStatus" />
+								<?php } else { ?>
+								<img src="<?=IMAGE_LINK?>/icon_inactive.gif" align="absmiddle" alt="Active" border="0" onclick="setStatus('<?=SHOP_SETTINGS?>','status','1','shop_id','<?=$data['shop_id']?>','<?=$index?>');" title="Change Status into Active" class="changeStatus" />
+								<?php } ?>
+								</span></td>
+						
+								<td width="15%" data-label="Action">
+									<div class="action-btns btn-group pull-center breadcrumb" role="group"><li>
+							 		
+									<!--<a href='<?=$this->url(array('controller'=>'Shopapi','action'=>'editshopsetting'),'default',  true).'?shop='.Zend_Encript_Encription:: encode($data['shop_id'])?>','60%','40%';"><i class="fa fa-edit" title="Edit Shop Setting"></i></a>|-->
+									
+									<a href="javascript:void(0)" onclick="openbox('<?=$this->url(array('controller'=>'Shopapi','action'=>'editshopsetting'),'default',true).'?shop='.Zend_Encript_Encription:: encode($data['shop_id'])?>','65%','100%');"><i class="fa fa-edit" title="Edit Shop Setting"></i></a>|
+									
+									<a href='<?=$this->url(array('controller'=>'Shopapi','action'=>'deleteusershop'),'default',  true).'?shop='.Zend_Encript_Encription:: encode($data['shop_id']).'&token='.Zend_Encript_Encription:: encode($data['user_id'])?>','60%','40%';"><i class="fa fa-trash"  onclick="return confirm('Are you sure want to delete this Record !')" title="Delete Shop Setting"></i></a>
+									
+									</li></div>	
+								</td> 
+							</tr>
+						<?php $i++;}} else{ ?>
+						<tr>
+						<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+						  <td data-label="No Data"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td>
+						  <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+						  </tr>
+						<?php }
+						?></tbody>
+                     </table>
+				</div>
+			</form>	
+			</div></div></div>
+			</div>
+		</div>
+	
+<script type="text/javascript">
+$(document).ready(function() {
+  $('#example').DataTable({
+  "pageLength": 50,
+  "lengthMenu": [[10, 25, 50, 100, 200, 500, -1], [10, 25, 50, 100, 200, 500, "All"]],
+        initComplete: function () {
+            this.api().columns().every( function () {
+                var column = this;
+                var select = $('<select><option value=""></option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+       column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+ 
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+        }
+    } );
+
+  });
+</script>	
+	

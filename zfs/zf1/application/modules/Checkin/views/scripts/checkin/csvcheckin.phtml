@@ -1,0 +1,36 @@
+
+	<div class="row row-broken">
+        <div class="col-sm-12">
+				 <div class="filter">
+				<div class="input-title"><?php echo $this->translate('CSV Check-in')?></div>
+			<div class="clear"></div>
+				<div style="background:#ffffff; padding:10px; overflow:auto;text-align:center">
+			<div class="clear-all"></div>
+				<div class="col-sm-2">&nbsp;</div>
+					<div class="col-sm-8">
+				<form id="Importshipmentform" class="inputbox" enctype="multipart/form-data" action="" method="post" onsubmit="return importvalidate()">	
+					<table class="tbl_new">
+					<tbody>
+					<tr id="file_error" style="display:none;color:red;"></tr>
+					<tr><th colspan="2"><?php echo $this->translate('Check-in')?></th></tr>
+					 <tr>
+						<td style="text-align:center"><?php echo $this->translate('Select CSV')?></td>
+						<td style="width:450px"><input style="margin:auto" type="file" name="checkin_file" id="checkin_file"></td>
+					 </tr>
+					<tr>
+						<td colspan="2" style="text-align:center"><input type="submit" name="check_in" id="check_in" value="Upload" class="btn btn-danger" style="width:60%;margin:auto"> 
+						</td>
+					 </tr>
+					</tbody>
+					</table>
+				</form>	
+					</div>
+					<div class="col-sm-2">&nbsp;</div>
+					<div class="clear-all"></div>
+				</div>
+			</div>
+        </div>
+	</div>
+<script>
+
+</script>	

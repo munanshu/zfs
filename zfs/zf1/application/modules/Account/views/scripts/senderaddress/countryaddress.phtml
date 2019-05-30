@@ -1,0 +1,48 @@
+
+<div class="col-md-2"></div>
+	<div class="col-md-8">
+		<div id="table"><div class="header-row row">
+		<span class="cell" style="text-align:center"><?php echo $this->translate("Country Address List");?></span>
+</div></div>
+	
+	
+	<div class="tab-content">
+		<div class="tab-pane fade in active" id="tab-1">
+
+			<form method="post" action="" id="countryaddress" name="countryaddress">
+					
+				<div id="tablegrid">
+				 	<table width="100%" border="0" id="example">
+						<thead>
+							<tr>
+								<td><b><?=$this->translate('Country Name');?></b></td>
+								<td><b><?=$this->translate('Address List');?></b></td>
+							</tr>	
+						</thead>
+						<tbody>
+							<?php
+								if(count($this->CountryaddressArr)>0){
+								
+								foreach($this->CountryaddressArr as $index=>$data){
+									$class = ($index%2==0)?'even':'odd';?>
+										  
+									<tr class="<?php echo $class;?>">
+										<td data-label="country"><?php echo $data['CName']; ?></td>
+										<td data-label="address"><?php echo $data['name']."</br> ".$data['street'].' '.$data['streetnumber'].' '.$data['streetaddress']."</br> ".$data['postalcode'].' '.$data['city']."</br> ".$data['country_name']; ?></td>
+									</tr>
+									
+							<?php }?>
+									<tr><td colspan="2" style="text-align:center"><input type="submit" name="remove" class="btn btn-danger btn-round" value="Remove Default Address"></td>
+									</tr>
+							<?php }else{ ?>
+								<tr>
+								  <td data-label="No Data" colspan="7"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td>
+								</tr>
+							<?php }?>	
+						</tbody>
+					
+				 	</table>
+				</div>
+			</form>	
+		</div>
+	</div>

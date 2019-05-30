@@ -1,0 +1,73 @@
+<div class="row row-broken">
+    <div class="col-sm-12">
+        <div class="tabs" id="seventh-tabs">
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-1">
+                    <form method="get" name="search">
+						<div class="filter">
+							<div class="row row_nopadding decor-success" style="margin-left:0;margin-right:0">
+								<div class="input-title"><?php echo $this->translate('Search') ?></div>
+								<div class="clear-all"></div>
+								<?php if($this->ModelObj->Useconfig['level_id']!=5 && $this->ModelObj->Useconfig['level_id']!=10){ ?>
+								<div class="col-sm-3 col_paddingx10"> 
+									<label for="country_id"><?php echo $this->translate('Customer') ?></label>
+									<?=$this->getHelper('HtmlSelect')->getSelect('usertoken',$this->customerlist,'user_id','company_name',isset($this->Request['usertoken'])?$this->Request['usertoken']:'',true,array('class'=>'inputfield','style'=>'width:70%')); ?>
+								</div>
+								<div class="col-sm-3 col_paddingx10">
+								   <button class="btn btn-danger btn-round" type="submit"><?php echo $this->translate('Submit') ?></button>
+								</div>
+								<?php } ?>
+							</div>
+						</div>
+					</form>
+					
+					<form method="post" name="">	
+						<div id="table">
+						    <div class="header-row row"> 
+							  <span class="cell primary"><?php echo $this->translate('Customer Name') ?></span> 
+							  <span class="cell"><?php echo $this->translate('Total Address') ?></span> 
+							  <span class="cell"><?php echo $this->translate('Message') ?></span> 
+							</div>  
+							<?php if(count($this->address)>0){ 
+								foreach($this->address as $index=>$address){
+								$class = (($index)%2==0) ? 'class="row odd"' :'class="row even"';?>
+							<div <?=$class?>>
+								<input type="radio" name="expand" class="res_dio">
+								<span class="cell primary" data-label="Customer Name">
+								<a href="<?php echo $this->url(array('controller'=>'Addressbook','action'=>'addressdetail'),'default',true).'?tocken='.Zend_Encript_Encription::encode($address['user_id']);?>"><?=$address['company_name']; ?></a>
+								</span> 
+								
+								<span class="cell" data-label="Total Address"><?=$address['totalBook'] ?></span>
+								
+								<span class="cell" data-label="Message">
+								<?php if($address['totalBook']>1000) {?>
+								  <div class="alert alert-danger"><strong>ERROR!!</strong> <?php echo $this->translate('Address book record has crossed maximum limit') ?>.</div>
+								<?php } 
+								elseif($address['totalBook']<=1000 && $address['totalBook']>800) { ?>
+								  <div class="alert alert-error"><strong>WARNING!!</strong> <?php echo $this->translate('Address book record is going to meet maximum limit') ?>.</div>
+								<?php } 
+								elseif($address['totalBook']<=800) { ?>
+								  <div class="alert alert-success"><strong>OK!!</strong> <?php echo $this->translate('Address book record is under limit') ?>.</div>
+								<?php } ?>
+								</span> 
+								
+						    </div>
+							<?php } } else{ ?>
+								<span><b>No Record Found!! </b></span>
+							<?php } ?>
+						</div>
+						<div class="unit control">
+						  <div class="nav-btns pull-right"> <?php //echo commonfunction::PageCounter((isset($this->ticketdetails[0]['Total']))? $this->ticketdetails[0]['Total'] : '' ,$this->Request)?>
+						  </div>
+						</div>
+                    </form>
+				</div>
+			</div>
+        </div>
+    </div>
+</div>
+<style>
+.alert {
+    padding: 10px!important;
+}
+</style>

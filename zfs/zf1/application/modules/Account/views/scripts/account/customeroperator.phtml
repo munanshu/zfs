@@ -1,0 +1,105 @@
+
+	<div class="input-title"><?php echo $this->translate("Customer Operator")?></div>
+	
+		<div class="row row-broken" style="margin-left:0px !important;margin-right:0px !important;">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+              <ul class="nav nav-tabs nav-justified">
+                <li class="active"> <a href=""><?php echo $this->translate("List");?><i class="fa fa-folder"></i></a> </li>
+                <li> <a href="customeroperatorform"><?php echo $this->translate("Add Customer Operator");?><i class="fa fa-ticket"></i></a> </li>
+              </ul>
+
+	<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+			<form method="post" action="" id="customer" name="customer">
+		
+				<div id="tablegrid">
+					 <table width="100%" border="0" id="example">
+					    <thead>
+						<tr>
+							<th><?=$this->translate('Company');?></th>
+							<th><?=$this->translate('Email');?></th>
+							<th><?=$this->translate('Username');?></th>
+							<th><?=$this->translate('Password');?></th>
+							<th><?=$this->translate('Name');?></th>
+							<th><?=$this->translate('Status');?></th>
+							<th><?=$this->translate('Action');?></th>
+						</tr>
+						</thead>
+						
+						<tbody>
+						<?php
+						if(count($this->records)>0){
+							$i=0;
+						 	foreach($this->records as $index=>$data){
+						 	$class = ($i%2==0)?'even':'odd'; ?>
+							<tr class="<?php echo $class;?>">
+								<td width="18%" data-label="Company"><?php echo $data['company_name']; ?></td> 
+								<td width="12%" data-label="Email"><?php echo $data['email']; ?></td>
+								<td width="10%" data-label="Username"><?php echo $data['username']; ?></td> 
+								
+								<td width="10%" data-label="Password"><?php echo $data['password_text']; ?></td>
+								
+								<!--<td width="10%" data-label="Password"><?=$this->translate('test');?></td>--> 
+								<td width="12%" data-label="Name"><?= $data['first_name'].' '.$data['last_name']?></td> 
+								
+								<td width="5%"><span class="cell" data-label="Status" id="statusSpan_<?=$index?>" ><?php if($data['user_status'] == "1") {  ?><img src="<?=IMAGE_LINK?>/icon_active.gif" align="absmiddle" alt="Active" border="0" onclick="setStatus('<?=USERS?>','user_status','0','user_id','<?=$data['user_id']?>','<?=$index?>');" title="Change Status into In-Active" class="changeStatus" />
+								<?php }else{ ?>
+								<img src="<?=IMAGE_LINK?>/icon_inactive.gif" align="absmiddle" alt="Active" border="0" onclick="setStatus('<?=USERS?>','user_status','1','user_id','<?=$data['user_id']?>','<?=$index?>');" title="Change Status into Active" class="changeStatus" />
+								<?php }?>
+								</span></td>
+						
+								<td width="10%" data-label="Action">
+									<div class="action-btns btn-group pull-center breadcrumb" role="group"><li>
+							 		
+									<a href='<?=$this->url(array('controller'=>'Account','action'=>'customeroperatorform'), 'default',  true).'?token='.Zend_Encript_Encription:: encode($data['user_id'])?>','60%','40%';"><i class="fa fa-edit" title="Edit User"></i></a>
+									<a href='<?=$this->url(array('controller'=>'Account','action'=>'changepassword'), 'default',  true).'?token='.Zend_Encript_Encription:: encode($data['user_id'])?>','60%','40%';"><img src="<?php print IMAGE_LINK; ?>/icon_password.gif" alt="" align="absmiddle" alt="Edit Password" title="Edit Password" border="0" class="changeStatus" /></i></a>									  <a href='<?=$this->url(array('controller'=>'Privilege','action'=>'userprivilege'),'default',  true).'?token='.Zend_Encript_Encription:: encode($data['user_id'])?>','60%','40%';"> <i class="fa fa-tasks" title="Operator Privileges"></i></a>
+									<a href='<?=$this->url(array('controller'=>'Account','action'=>'delete'),'default',  true).'?token='.Zend_Encript_Encription:: encode($data['user_id'])?>','60%','40%';"><i class="fa fa-trash"  onclick="return confirm('Are you sure want to delete this Record !')" title="Delete User"></i></a>
+									</li></div>
+								</td> 
+							</tr>
+						<?php $i++;}} else{ ?>
+						<tr>
+						  <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>	
+						  <td data-label="No Data"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td>
+						   <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+						  </tr>
+						<?php }
+						?></tbody>
+                     </table>
+				</div>
+			</form>	
+			</div></div></div>
+			</div>
+		</div>
+	</div>
+</div>
+	
+<script>
+$(document).ready(function() {
+  $('#example').DataTable( {
+  "pageLength": 50,
+  "lengthMenu": [[10, 25, 50, 100, 200, 500, -1], [10, 25, 50, 100, 200, 500, "All"]],
+        initComplete: function () {
+            this.api().columns().every( function () {
+                var column = this;
+                var select = $('<select><option value=""></option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+       column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+ 
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+        }
+    } );
+} );
+</script>	

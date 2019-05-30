@@ -1,0 +1,18 @@
+<?php include 'header.phtml';?>
+
+  <div class="content container-fluid">
+    <div class="row row-broken">
+      <div class="col-md-12">
+        <ol class="breadcrumb">
+          <li><a href="<?php echo $this->url(array('controller'=>'Dashboard'),'default',true); ?>"><i class="fa fa-home"></i></a></li>
+          <?php echo $this->navigation()->breadcrumbs()->setLinkLast(true)->setMinDepth(0)->render();?>
+        </ol>
+      </div>
+	  <div class="col-md-12">
+  			<?php echo $this->getHelper('Messages')->getMessages();?> 
+</div>
+</div>
+    <?php echo $this->layout()->content;?>
+  </div>
+  <?php include 'footer.phtml';?>
+  <?php include 'menu.phtml';?>

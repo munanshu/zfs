@@ -1,0 +1,77 @@
+
+<div class="row row-broken">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+			  
+              <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-6">
+					<form>
+					  <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="input-title"><?php echo $this->translate('Schedule Setting List')?></div>
+					  <div class="clear-all"></div>
+					  <div class="col-sm-2 col_paddingx10">
+						<label for="input-2" class="input__label input__label--kaede"> 
+						<span class="input input--kaede">
+						<a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Scheduleroute','action'=>'addeditroutesetting'),'default',  true).'?mode=add'?>','60%','80%');"><i class="fa fa-plus-square" aria-hidden="true"></i><?php echo $this->translate('Add New Route')?></a>
+						</span></label>
+					  </div>
+					  <div class="col-sm-10 col_paddingx10"> <span class="input input--kaede"></span> 
+						</div>
+	
+					</div>
+					<div  id="tablegrid">
+					 <table width="100%" border="0" id="dataTableGridId">
+					    <thead>
+						<tr>
+								<th><?=$this->translate('Route Name');?></th>
+								<th><?=$this->translate('Description');?> </th>
+								<th><?=$this->translate('Start Time');?></th>
+								<th><?=$this->translate('End Time');?></th>
+								<th><?=$this->translate('Driven Days');?></th>
+								<th><?=$this->translate('Postal Code');?></th>
+								<th><?=$this->translate('Create Date');?></th>
+								<th><?=$this->translate('Action');?></th>
+						</tr>
+						</thead>
+						<tbody>
+						<?php
+						if(count($this->routesettinglist)>0){
+						 foreach($this->routesettinglist as $key=>$data){
+						 $class = ($key%2==0)?'even':'odd'; ?>
+						<tr class="<?php echo $class;?>">
+						<td data-label="Driver Name"><?=$this->translate($data['routename']); ?></td> 
+                        <td data-label="Product Description"><?=$this->translate($data['description']); ?></td> 
+						<td data-label="Total Work Hour"><?=$this->translate($data['start_time']); ?></td>
+						<td data-label="Total Planed Hour"><?=$this->translate($data['end_time']) ?></td>
+						<td data-label="Driven Dates"><?=$this->translate($data['driven_days']); ?></td> 
+						<td data-label="Postal Code"><?php echo nl2br($data['postalcode']); ?></td> 
+						<td data-label="Driven Days"><?=$this->translate($data['created_date']); ?></td>
+						<td data-label="Action">
+							<a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Scheduleroute','action'=>'addeditroutesetting'),'default',  true).'?mode=edit&id='.Zend_Encript_Encription:: encode($data['route_id'])?>','60%','80%');">
+							<i class="fa fa-edit"></i></a>|
+							<a href="javascript:void(0);" onClick="deleterecord('<?=PLANNER_ROUTELIST?>','delete_status','1','route_id','<?=$data['route_id']?>');"><i class="fa fa-trash"></i></a>
+							</td>
+						</tr>
+						<?php }} else{ ?>
+						<tr>
+						  <td data-label="No Data" colspan="7"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td>
+						  </tr>
+						<?php }
+						?></tbody>
+
+                     </table>
+                    </div>
+					
+					 </form>
+					</div>
+                </div>
+					<div>
+			  </div>
+			 </div>
+            </div>
+          </div>
+<script>
+$(document).ready(function() {
+	 commonDataTableView();
+} );
+</script>

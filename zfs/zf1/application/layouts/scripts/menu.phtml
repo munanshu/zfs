@@ -1,0 +1,48 @@
+<div id="wrap-menu" class="wrap-menu"> <span id="menu-btn-close" class="menu-btn-close">
+  <svg>
+    <use xlink:href="#icon-close"></use>
+  </svg>
+  </span>
+  <h1 class="menu-title"><?php echo $this->translate("MENU"); ?></h1>
+  <?php //echo $this->layout()->Menus; ?>
+  <ul id="menu" class="menu">
+    <li id="menu-btn-back" class="back"> <span><?php echo $this->translate("Back"); ?></span> </li>
+    <li> <i class="fa fa-home"></i> <a href="<?php echo $this->url(array('controller'=>'Dashboard'),'default',true); ?>"><?php echo $this->translate("Home"); ?></a></li>
+	<?php foreach($this->layout()->Menus as $menus){?>
+    <li><?php echo $menus['module_submenu'];?><?php echo $menus['module_icon'];?><span><?php echo $this->translate($menus['module_name']);?></span>
+	<?php if(!empty($menus['level2'])){ ?>
+	   <ul class="menu" id="submenu2">
+	     <?php foreach($menus['level2'] as $childmenu){?>
+        <li><a href="<?php echo $this->url(array('controller'=>$childmenu['module_controller'],'action'=>$childmenu['module_action']),'default',true); ?>"><?php echo $this->translate($childmenu['module_name'])?></a></li>
+		<?php }?>
+      </ul>
+	 <?php } ?>
+  </li>
+  <?php } ?>
+  </ul>
+</div>
+<div id="overlay" class="overlay"></div>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 28 28" style="display: none;" xml:space="preserve">
+  <g id="icon-close">
+    <line x1="2" y1="2" x2="26" y2="26" />
+    <line x1="2" y1="26" x2="26" y2="2" />
+  </g>
+</svg>
+
+
+
+<script src="<?php echo $this->baseUrl('public/js/bootstrap.min.js');?>"></script>
+<script src="<?php echo $this->baseUrl('public/js/jquery.nicescroll.min.js');?>"></script>
+<script src="<?php echo $this->baseUrl('public/js/classie.js');?>"></script>
+<script src="<?php echo $this->baseUrl('public/js/ui.js');?>"></script>
+<script src="<?php echo $this->baseUrl('public/js/search.js');?>"></script>
+<script src="<?php echo $this->baseUrl('public/js/sweetalert.min.js');?>"></script>
+<script src="<?php echo $this->baseUrl('public/js/jquery.mixitup.min.js');?>"></script>
+<script src="<?php echo $this->baseUrl('public/js/filter.js');?>"></script>
+<script src="<?php echo $this->baseUrl('public/fancybox/jquery.fancybox.pack.js');?>"></script>
+<script src="<?php echo $this->baseUrl('public/Datatables/jquery.dataTables.min.js');?>"></script>
+<script src="<?php echo $this->baseUrl('public/datepicker/jquery-ui.js');?>"></script>
+
+
+</body>
+</html>

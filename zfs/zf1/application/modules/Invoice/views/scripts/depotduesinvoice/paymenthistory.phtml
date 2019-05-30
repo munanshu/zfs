@@ -1,0 +1,55 @@
+<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+		<form method="post" action="" id="dues_invoice" name="dues_invoice">
+		
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+						
+				<div id="table">
+					<div class="header-row row">
+					<span class="cell"><?php echo $this->translate("Invoice Number");?></span> 
+					<span class="cell"><?php echo $this->translate("Invoice Date");?></span> 
+					<span class="cell"><?php echo $this->translate("Due Date");?></span> 
+					<span class="cell"><?php echo $this->translate("Invoice Amount");?></span> 
+					<span class="cell"><?php echo $this->translate("Paid Amount");?></span> 
+					<span class="cell"><?php echo $this->translate("Payment Mode");?></span>
+					<span class="cell"><?php echo $this->translate("Payment Date");?></span> 		
+					</div>
+					<?php 
+					if(count($this->records)>0){
+						foreach($this->records as $index=>$data){
+							$class = (($index)%2==0) ? 'class="row odd"' :'class="row even"';?>
+						<div <?=$class?>>
+							<span class="cell" data-label="Invoice"><?=$data['invoice_number'];?></span>
+							<span class="cell" data-label="Invoice Amount"><?= "&euro; ".commonfunction::numberformat($data['total_amount'])?></span>
+							<span class="cell" data-label="Invoice Date"><?= $data['invoice_date']?></span>
+							<span class="cell" data-label="Paid">
+							<?php echo ($data['payment_status']==0)?'Not Paid':"&euro; ".commonfunction::numberformat($data['paid_amount']);?> &nbsp;</span>
+							<span class="cell" data-label="Balance"><?=commonfunction::numberformat($data['total_amount']-$data['paid_amount'])?></span>
+							<span class="cell" data-label="Payment Mode"><?php echo ($data['payment_status']=='0')?'Not Paid':$data['payment_mode'];?></span>
+							<span class="cell" data-label="Payment Date"><?=($data['payment_status']==0)?'Not Paid':date('F- d Y',strtotime($data['payment_date']))?></span>
+							
+						</div>
+					<?php } } else{?>
+						
+						<div class="row odd">
+							<span class="cell" colspan="6"><b><?=$this->translate("Recod not found !");?></b></span> 
+						</div>
+					<?php }?>
+				</div>	
+			</form>	
+			</div></div></div>
+<script>
+$(function() {
+		$( "#from_date" ).datepicker({
+		  dateFormat: 'yy-mm-dd',
+		  showOtherMonths: true,
+		  selectOtherMonths: true
+		});
+		$( "#to_date" ).datepicker({
+		  dateFormat: 'yy-mm-dd',
+		  showOtherMonths: true,
+		  selectOtherMonths: true
+		});
+	
+	});
+</script>			

@@ -1,0 +1,237 @@
+	<div class="row row-broken">
+        <div class="col-sm-12">
+			<div class="tabs" id="seventh-tabs">
+			  <ul class="nav nav-tabs nav-justified">
+				<?=$this->ModelObj->tabNavigation(); ?>
+              </ul>
+			  
+				<div class="tab-content">
+					 <div class="tab-pane fade in active" id="tab-1">
+					<form>
+					  <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="input-title"><?php echo $this->translate('Old Invoice History')?></div>
+					  <div class="clear-all"></div>
+					  <div class="col-sm-12 col_paddingx10">
+						 <?php if($this->ModelObj->Useconfig['level_id']!=5){?>
+
+				<div class="col-sm-4 col_paddingtop">
+
+				<?php if($this->ModelObj->Useconfig['level_id']==1 || $this->ModelObj->Useconfig['level_id']==11){?>
+
+				<label><?php echo $this->translate("Depot");?></label>
+
+				<?php }elseif($this->ModelObj->Useconfig['level_id']==4 || $this->ModelObj->Useconfig['level_id']==6){?>
+
+				  <label><?php echo $this->translate("Customer");?></label>
+
+				<?php } ?>
+
+				<select name="user_id" id="user_id" class="inputfield" style="width:60%">
+
+			    <option value="">--<?php echo $this->translate("Select"); ?>--</option>
+
+				<?php foreach($this->depotlist as $depotlist){
+
+				  $selected = '';
+
+				  if(isset($this->Request['user_id']) && Zend_Encript_Encription::encode($depotlist['user_id'])==$this->Request['user_id']){
+
+				    $selected = 'selected="selected"';
+
+				  }?>
+
+				  <option value="<?php echo Zend_Encript_Encription::encode($depotlist['user_id'])?>" <?php echo $selected;?>><?php echo commonfunction::utf8Decode($depotlist['company_name'])?></option>
+
+				<?php } ?>
+
+              </select>
+
+				</div>
+
+				<?php } ?>
+
+				<div class="col-sm-4 col_paddingtop">
+
+				<label><?php echo $this->translate("Payment status");?></label>
+
+				<?php echo $this->getHelper('HtmlSelect')->getSelect('payment_status',array(array('status'=>'1','Name'=>'Paid'),array('status'=>'0','Name'=>'Un-Paid')),'status','Name',(isset($this->Request['payment_status']) && $this->Request['payment_status']!=''?$this->Request['payment_status']:''),false,array('class'=>'inputfield','style'=>"width:60%"));?> 
+
+				</div>
+
+				<div class="col-sm-4 col_paddingtop">
+
+				<label><?php echo $this->translate("Search Invoice");?></label>
+
+				<input type="text" name="search_word" id="search_word" value="<?php echo (isset($this->Request['search_word'])?$this->Request['search_word']:'')?>" class="inputfield" style="width:60%">
+
+				</div>
+
+				<div class="col-sm-3 col_paddingtop">
+
+              <label><?php echo $this->translate("From Date");?></label>
+
+                <input type="text" name="from_date" id="from_date" value="<?php echo (isset($this->Request['from_date'])?$this->Request['from_date']:'')?>"  class="inputfield" style="width:60%">
+
+              </div>
+
+            <div class="col-sm-3 col_paddingtop">
+
+              <label><?php echo $this->translate("To Date");?></label>
+
+              <input type="text" name="to_date" id="to_date" value="<?php echo (isset($this->Request['to_date'])?$this->Request['to_date']:'')?>"  class="inputfield" style="width:60%">
+
+            </div>
+
+				<div class="col-sm-5 col_paddingtop">
+
+				  <button class="btn btn-danger btn-round" name="search" type="submit" value="Search"><?php echo $this->translate("Search");?></button>
+
+				   <button class="btn btn-danger btn-round" name="export_financial" type="submit" value="Export Financial Invoice" onclick="this.form.submit()"><?php echo $this->translate("Export Financial Invoice");?></button>
+
+				</div>
+					  </div>
+					  <div class="col-sm-9 col_paddingx10"> <span class="input input--kaede"></span> 
+						</div>
+	
+					</div>
+					 <div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+
+				<div id="table">
+
+					<div class="header-row row"> 
+
+					<span class="cell"><input type="checkbox" id="check_uncheck_all" onchange="check_uncheckALL(this)"></span>
+
+					<span class="cell"><?php echo $this->translate("Invoice Number");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Company");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Invoice Amount");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Invoice Date");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Paid Amount");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Balance");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Payment Mode");?></span>
+
+					<span class="cell"><?php echo $this->translate("Payment Date");?></span>
+					<span class="cell"><?php echo $this->translate("Created Date");?></span>
+
+					<span class="cell"><?php echo $this->translate("Action");?></span>				
+
+					</div>
+
+					<?php if($this->yearlyInvoiceDetails['Total']>0){
+
+						foreach($this->yearlyInvoiceDetails['Record'] as $index=>$data){
+
+							$class = (($index)%2==0) ? 'class="row odd"' :'class="row even"';?>
+
+						<div <?=$class?>>
+
+						<span class="cell" data-label="Invoice"><input type="checkbox" name="invoice_number[]" value="<?=$data['invoice_number'];?>" class="check_uncheck_class"></span>
+
+						<span class="cell" data-label="Invoice"><?=$data['invoice_number'];?></span>
+
+							<span class="cell" data-label="Company"><?=$data['company_name'];?></span>
+
+							<span class="cell" data-label="Invoice Amount"><?= "&euro; ".commonfunction::numberformat($data['total_amount'])?></span>
+
+							<span class="cell" data-label="Invoice Date"><?= $data['invoice_date']?></span>
+
+							<span class="cell" data-label="Paid">
+
+							<?php echo ($data['payment_status']==0)?'Not Paid':"&euro; ".commonfunction::numberformat($data['paid_amount']);?> &nbsp;</span>
+
+							<span class="cell" data-label="Balance"><?=commonfunction::numberformat($data['total_amount']-$data['paid_amount'])?></span>
+
+							<span class="cell" data-label="Payment Mode"><?php echo ($data['payment_status']=='0')?'Not Paid':$data['payment_mode'];?></span>
+
+							<span class="cell" data-label="Payment Date"><?=($data['payment_status']==0)?'Not Paid':date('F- d Y',strtotime($data['payment_date']))?></span>
+
+							<span class="cell" data-label="Created Date"><?=date('M- d Y', strtotime($data['create_date']))?></span>
+
+							<span class="cell" data-label="Action">
+
+							 
+								<a href="javascript:void(0);"  onclick="openbox('<?php echo INVOICE_OPEN.date('Y',strtotime($data['invoice_date'])).'/'.date('M',strtotime($data['invoice_date'])).'/'.$data['file_name'];?>','90%','80%')"><img src="<?=IMAGE_LINK.'/print.png'?>" title="Print Invoice"></a>&nbsp;|&nbsp;
+
+								 <?php if($this->ModelObj->Useconfig['level_id']==1 || $this->ModelObj->Useconfig['level_id']==11 || $this->ModelObj->Useconfig['level_id']==4 || $this->ModelObj->Useconfig['level_id']==6){?>
+
+									<a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Invoicehistory','action'=>'editinvoice'),'default',  true).'/'.$this->Request['year'].'?invoice_number='.Zend_Encript_Encription:: encode($data['invoice_number']);?>','60%','90%');">
+						<i class="fa fa-edit fa-2x"></i></a> 
+							 
+								<?php } ?>
+							</span> 
+
+						</div>
+
+					<?php }}else{?>
+
+						
+
+						<div class="row odd">
+
+							<span class="cell" colspan="6"><b><?=$this->translate("Recod not found !");?></b></span> 
+
+						</div>
+
+					<?php }?>	
+
+
+
+				</div>
+
+				<div class="unit control">
+
+				  <div class="nav-btns pull-right"> <?php echo commonfunction::PageCounter($this->yearlyInvoiceDetails['Total'],$this->Request)?>
+
+				  </div>
+
+				</div>	 	
+
+
+			</div>
+					
+					 </form>
+					</div>
+				</div>
+			</div>
+        </div>
+     </div>
+<script>
+$(document).ready(function() {
+	 commonDataTableView()
+} );
+
+$(function() {
+
+		$( "#from_date" ).datepicker({
+
+		  dateFormat: 'yy-mm-dd',
+
+		  showOtherMonths: true,
+
+		  selectOtherMonths: true
+
+		});
+
+		$( "#to_date" ).datepicker({
+
+		  dateFormat: 'yy-mm-dd',
+
+		  showOtherMonths: true,
+
+		  selectOtherMonths: true
+
+		});
+
+	
+
+	});
+</script>
+
+
+

@@ -1,0 +1,183 @@
+<?php 
+$statustype = array('0'=>array('id'=>'all','value'=>'All Errors'),'1'=>array('id'=>'1','value'=>'Active Errors'),'2'=>array('id'=>'0','value'=>'Inactive Errors'),'3'=>array('id'=>'2','value'=>'Deleted Status'));
+$errortype = array('0'=>array('id'=>'all','value'=>'All Status'),'1'=>array('id'=>'0','value'=>'ERROR'),'2'=>array('id'=>'1','value'=>'DELIVERED'),'3'=>array('id'=>'2','value'=>'INFORMATION'));
+$forwarders = $this->forwarders;
+$masterstatuses = $this->masterstatuses;
+// print_r($forwarders); echo "dsxfgsdfs"; die;
+
+ ?>
+<div class="row row-broken">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+			  
+              <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-6">
+					<form>
+					  <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="input-title"><?php echo $this->translate('Forwarder Status code Lists')?></div>
+					  <div class="clear-all"></div>
+					  <div class="col-sm-1 col_paddingx10">Code Status:</div>
+						<div class="col-sm-2 col_paddingx10">
+							<?=$this->getHelper('HtmlSelect')->getSelect('error_code',$statustype,'id','value',(isset($this->ModelObj->getData['error_code'])? $this->ModelObj->getData['error_code']:'all'),false,array('class'=>'selectbox','onchange'=>'this.form.submit()'));?>
+						</div>
+					 	<div class="col-sm-1 col_paddingx10">Status Type:</div>
+						<div class="col-sm-2 col_paddingx10">
+							<?=$this->getHelper('HtmlSelect')->getSelect('error_type',$errortype,'id','value',(isset($this->ModelObj->getData['error_type'])? $this->ModelObj->getData['error_type']:'all'),false,array('class'=>'selectbox','onchange'=>'this.form.submit()'));?>
+						</div>
+						<div class="col-sm-1 col_paddingx10">Forwarder Name :</div>
+						<div class="col-sm-2 col_paddingx10">
+							<?=$this->getHelper('HtmlSelect')->getSelect('forwarder_id',$forwarders,'forwarder_id','forwarder_name',(isset($this->ModelObj->getData['forwarder_id'])? $this->ModelObj->getData['forwarder_id']:false),false,array('class'=>'selectbox','onchange'=>'this.form.submit()'));?>
+						</div>
+
+						<div class="col-sm-1 col_paddingx10">Master Statuses :</div>
+						<div class="col-sm-2 col_paddingx10">
+							<?=$this->getHelper('HtmlSelect')->getSelect('master_id',$masterstatuses,'master_id','status_name',(isset($this->ModelObj->getData['master_id'])? $this->ModelObj->getData['master_id']:false),false,array('class'=>'selectbox','onchange'=>'this.form.submit()'));?>
+						</div>
+
+					  <div class="col-sm-3 col_paddingx10">
+						<label for="input-2" class="input__label input__label--kaede"> 
+						<span class="input input--kaede"><a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Statuscode','action'=>'addeditforwarderstatus'),'default',  true).'?mode=add'?>','60%','90%');"><i class="fa fa-plus-square" aria-hidden="true"></i>
+ <?php echo $this->translate('Add Forwarder Status Code')?></a>
+						</span></label>
+					  </div>
+					  <div class="col-sm-3 col_paddingx10">
+						<label for="input-2" class="input__label input__label--kaede"> 
+						<span class="input input--kaede"><a href="<?=$this->url(array('controller'=>'Statuscode','action'=>'codelist'),'default',  true)?>"><i class="fa fa-plus-square" aria-hidden="true"></i>
+ <?php echo $this->translate('Master Status code Lists')?></a></span></label>
+					  </div>
+					  <div class="col-sm-9 col_paddingx10"> <span class="input input--kaede"></span> 
+						</div>
+	
+					</div>
+					 <div id="table">
+
+					 <div class="header-row row"> 
+
+					<span class="cell"><?php echo $this->translate("Forwarder");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Numeric Code (For CSV)");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Alpha Code");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Fowarder Status");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Master Status");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Status Type");?></span>
+
+					<span class="cell"><?php echo $this->translate("Status");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Action");?></span>				
+
+					</div>
+
+					<?php 
+					$errorTypes = array('0'=>'ERROR','1'=>'DELIVERED','2'=>'INFORMATION'); $errorColors = array('0'=>'#FF0000','1'=>'#006600','2'=>'#FF9900');
+
+					if($this->forwarderstatusList['Total']>0){
+
+					
+
+						foreach($this->forwarderstatusList['data'] as $key=>$data){
+
+							$class = (($key)%2==0) ? 'class="row odd"' :'class="row even"';?>
+
+						<div <?=$class?>>
+
+							<span class="cell" data-label="Country"><?=$data['forwarder_name'];?></span>
+
+							<span class="cell" data-label="Min Weight"><?= $data['error_numeric']?></span>
+
+							<span class="cell" data-label="Max weight"><?= $data['error_alpha']?></span>
+							<span class="cell" data-label="Max weight"><?= $data['error_desc']?></span>
+							<span class="cell" data-label="Max weight"><?= $data['masterStatus']?></span>
+							<span id="typeTD_<?=$key?>" class="cell" data-label="Max weight"><a href="javascript:void(0);" onclick="$showType('<?=$data['error_id']?>','<?=$data['error_type']?>','<?=$key?>');" title="Change Type" /><font color="<?=$errorColors[$data['error_type']]?>"><?=$errorTypes[$data['error_type']]?></font></a></span>
+
+							
+
+							<span class="cell" data-label="Max weight"><span class="cell" data-label="Status" id="statusSpan_<?=$key?>" ><?php if($data['error_status'] == "1") {  ?><img src="<?=IMAGE_LINK?>/icon_active.gif" align="absmiddle" alt="Active" border="0" onclick="setStatus('<?=STATUS_LIST?>','error_status','0','error_id','<?=$data['error_id']?>','<?=$key?>');" title="Change Status into In-Active" class="changeStatus" />
+						<?php } else { ?>
+						<img src="<?=IMAGE_LINK?>/icon_inactive.gif" align="absmiddle" alt="Active" border="0" onclick="setStatus('<?=STATUS_LIST?>','error_status','1','error_id','<?=$data['error_id']?>','<?=$key?>');" title="Change Status into Active" class="changeStatus" />
+						<?php } ?>
+						</span></span>
+
+							 
+						<span class="cell" data-label="Max weight">
+								<a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Statuscode','action'=>'addeditforwarderstatus'),'default',  true).'?mode=edit&token='.Zend_Encript_Encription:: encode($data['error_id'])?>','60%','90%');">
+						<i class="fa fa-edit fa-2x"></i></a> |<a href="javascript:void(0);" onClick="deleterecord('<?=STATUS_LIST?>','delete_status','1','error_id','<?=$data['error_id']?>');"><i class="fa fa-trash fa-2x"></i></a>
+							</span>
+							 
+
+							 
+
+						</div>
+
+					<?php }}else{?>
+
+						
+
+						<div class="row odd">
+
+							<span class="cell" colspan="6"><b><?=$this->translate("Recod not found !");?></b></span> 
+
+						</div>
+
+					<?php }?>	
+
+
+
+				</div>
+					<div class="unit control">
+
+					<div class="nav-btns pull-right"> <?php echo commonfunction::PageCounter($this->forwarderstatusList['Total'],$this->Request)?>
+
+				  </div>
+
+				</div> 
+					 </form>
+					</div>
+                </div>
+					<div>
+			  </div>
+			 </div>
+            </div>
+          </div>
+<script>
+$(document).ready(function() {
+	 commonDataTableView();
+} );
+
+
+	$showType = function(errorID,selectedType,tdID){
+			var typeArray	= '<?=implode('^',$errorTypes);?>';
+			var typeString	= typeArray.split('^');
+			var selection  = '<select name="type_'+tdID+'" id="type_'+tdID+'" onchange="$setType('+errorID+',this.value,'+tdID+');">';
+			for(var i=0;i<typeString.length;i++) {
+				var selected = (selectedType==i) ? 'selected="selected"' : '';
+				selection += '<option value="'+i+'"'+selected+'>'+typeString[i]+'</option>';
+			}			
+			selection	   += '</select>';			
+			$("#typeTD_"+tdID).html(selection);
+	}
+	
+	$setType = function(errorID,errorType,tdID) {
+			$.ajax({
+				type : "POST",
+				url  : "<?=BASE_URL?>/Statuscode/changrerrorid?errorID="+errorID+"&error_type="+errorType+"&table=list",
+				beforeSend: function(){
+					$("#typeTD_"+tdID).html('<img src="<?=IMAGE_LINK?>/loader.gif" align="absmiddle" alt="Loader" border="0" title="Please Wait" class="changeStatus" />');
+				},
+				success: function(response) { 
+					if(response) {
+						var typeArray	= '<?=implode('^',$errorTypes);?>';
+						var typeString	= typeArray.split('^');
+						var colorArray	= '<?=implode('^',$errorColors);?>';
+						var colorString	= colorArray.split('^');
+						var newType = '<a href="javascript:void(0);" onclick="$.showType('+errorID+','+errorType+','+tdID+');" title="Change Type"><font color="'+colorString[errorType]+'">'+typeString[errorType]+'</font></a>';
+						//typeString[setType];//'<a href="javascript:void();" onclick="$.showType('+errorID+','+setType+','+tdID+');" title="Change Type" /><font color="'+typeString[setType]+'">'+typeString[setType]+'</font></a>';
+						$("#typeTD_"+tdID).html(newType);
+					}
+				}
+			});
+	}
+</script>

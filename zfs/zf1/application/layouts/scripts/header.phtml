@@ -1,0 +1,88 @@
+<?php echo $this->doctype(); ?>
+
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<?php echo $this->headTitle($this->translate('Logicparcel'))->setSeparator(' - ')->setAutoEscape(false) ?>
+<script type="text/javascript">
+    var baseUrl = '<?php echo BASE_URL;?>/';
+</script>
+<?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/x-icon', 'href' => $this->baseUrl() . '/public/images/favicon.ico'),
+array('rel' => 'icon', 'type' => 'image/x-icon', 'href' => $this->baseUrl() . '/public/images/favicon.ico'))
+                        ->appendStylesheet($this->baseUrl('public/css/bootstrap.css'))
+                        ->appendStylesheet($this->baseUrl('public/css/font-awesome.min.css'))
+                        ->appendStylesheet($this->baseUrl('public/css/animate.min.css'))
+						->appendStylesheet($this->baseUrl('public/css/loading.css'))
+						->appendStylesheet($this->baseUrl('public/css/dark.css'))
+						->appendStylesheet($this->baseUrl('public/css/main.css'))
+						->appendStylesheet($this->baseUrl('public/css/filter.css'))
+						->appendStylesheet($this->baseUrl('public/css/sweetalert.css'))
+						->appendStylesheet($this->baseUrl('public/css/input.css'))
+						->appendStylesheet($this->baseUrl('public/css/checkboxes.css'))
+						->appendStylesheet($this->baseUrl('public/fancybox/jquery.fancybox.css'))
+						->appendStylesheet($this->baseUrl('public/Datatables/jquery.dataTables.min.css'))
+						->appendStylesheet($this->baseUrl('public/datepicker/jquery-ui.css'));?>
+
+<?php echo $this->headScript()
+      ->prependFile($this->baseUrl('public/js/ajaxcalls.js'))
+			->prependFile($this->baseUrl('public/js/jquery-3.1.0.min.js'))
+            ->prependFile($this->baseUrl('public/js/modernizr.js'))
+			->prependFile($this->baseUrl('public/js/html5shiv.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
+			->prependFile($this->baseUrl('public/js/respond.src.js'), 'text/javascript', array('conditional' => 'lt IE 9',)); ?>	
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>					
+<script src="<?php echo $this->baseUrl('public/js/shortcut.js');?>"></script>	
+<script src="<?php echo $this->baseUrl('public/js/common.js');?>"></script>
+<script src="<?php echo $this->baseUrl('public/js/jquery.js');?>"></script> 
+ 
+</head>
+<body>
+<div id="wrap-content" class="wrap-content">
+  <div class="preloader">
+    <div class="preloader-anim la-animate"></div>
+    <div class="loading-anim">Loading</div>
+  </div>
+  <div class="aside"> 
+ 
+	   <a href="<?php echo $this->url(array('controller'=>'Dashboard'),'default',true); ?>" class="btn-logo"></a> 
+	   <span class="menu-btn-open" id="menu-btn-open"><?php echo $this->translate('Menu')?></span> 
+	    <?php if($this->layout()->User['level_id']==5 || $this->layout()->User['level_id']==10){?>
+	   <a href="<?php echo $this->url(array('controller'=>'Shipment','action'=>'addshipment'),'default',true)?>" class="sort_tag_menu" title="<?php echo $this->translate('Add Shipment')?>"><i class="fa fa-truck"></i></a> 
+	   <a href="<?php echo $this->url(array('controller'=>'Shipment','action'=>'shipmenthistory'),'default',true)?>" class="sort_tag_menu" title="<?php echo $this->translate('Shipment History')?>"><i class="fa fa-history"></i></a> 
+	<?php }elseif($this->layout()->User['level_id']==4 || $this->layout()->User['level_id']==6){ ?>
+	
+	<?php }elseif($this->layout()->User['level_id']==1 || $this->layout()->User['level_id']==11){ ?>
+	
+	<?php } ?>
+  <span class="toggle-fixed fa fa-thumb-tack" data-toggle="tooltip" data-placement="top" title="Fixed top"></span>
+  </div>
+  <div class="header">
+    <div class="unit title">
+      <h5 class="primary font-weight-700"><?php echo $this->layout()->Headname;?></h5>
+      
+    </div>
+    <div class="unit morphsearch" id="morphsearch">
+      <form class="morphsearch-form" action="<?php echo $this->url(array('controller'=>'Checkin','action'=>'parceldetail'),'default',true);?>" method="post">
+        <input class="morphsearch-input" type="search" name="search_barcode" id="search_barcode" placeholder="Search..." />
+        <button class="morphsearch-submit" type="submit">Search</button>
+      </form>
+      
+      <span class="morphsearch-close">
+      <svg>
+        <use xlink:href="#icon-close"></use>
+      </svg>
+      </span> </div>
+    <div class="unit backet user"> <span class="user-btn" id="user-btn"><img src="<?php echo $this->baseUrl() . '/public/headerlogo/'.$this->layout()->User['logo']?>" alt="image" class="b-profile-avatar" title="<?php echo $this->UserConfig['logo'];?>" /></span>
+      <div class="user-content" id="user-content"> <img src="<?php echo $this->baseUrl() . '/public/headerlogo/'.$this->layout()->User['logo']?>" alt="image" class="b-profile-avatar" />
+        <div class="b-profile-name"><?php //print_r($this->layout()->User);die;//echo $this->UserConfig['company_name'];?></div>
+       <div class="b-profile-profession"> Company Name : <?php echo $this->layout()->User['company_name'];?> </div>
+        <ul class="b-profile-folders">
+          <li><a ><?php echo $this->translate("Contact Person"); ?> <span class="pull-right"><?php echo trim($this->layout()->User['first_name'].' '.$this->layout()->User['middle_name'].' '.$this->layout()->User['last_name']);?></span></a></li>
+          <li><a ><?php echo $this->translate("Email Id"); ?> <span class="pull-right"><?php echo $this->layout()->User['email'];?></span></a></li>
+          <li><a ><?php echo $this->translate("Phone No"); ?>. <span class="pull-right"><?php echo $this->layout()->User['phoneno'];?></span></a></li>
+          <li>&nbsp; <span class="badge badge-danger badge-round pull-right" style="margin:5px 0px"><a href="<?php echo $this->url(array('controller'=>'Adminlogin','action'=>'logout'),'default',true); ?>"><?php echo $this->translate("Signout"); ?></a></span></li>
+        </ul>
+        <a href="<?php echo $this->url(array('controller'=>'Account','action'=>'myprofile'),'default',true); ?>" class="view-profile btn btn-danger"><strong><?php echo $this->translate("View Full Profile"); ?></strong></a> </div>
+    </div>
+  </div>

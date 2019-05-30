@@ -1,0 +1,38 @@
+
+	<div class="row row-broken">
+        <div class="col-sm-12">
+				 <div class="filter">
+				<div class="input-title"><?php echo $this->translate('Invoice Check-in')?></div>
+			<div class="clear"></div>
+				<div style="background:#ffffff; padding:10px; overflow:auto;text-align:center">
+				<div class="clear-all"></div>
+			<div class="clear-all"></div>
+				<div class="col-sm-2">&nbsp;</div>
+					<div class="col-sm-8">
+				<form id="forwarderinvoicecheckinform" class="inputbox" enctype="multipart/form-data" action="" method="post">	
+					<table class="tbl_new">
+					<tbody>
+					<tr id="file_error" style="display:none;color:red;"></tr>
+					<tr><th colspan="2"><?php echo $this->translate('Check-in')?></th></tr>
+					 <tr>
+						<td style="text-align:center"><?php echo $this->translate('Forwarder')?></td>
+						<td style="width:450px"><?php echo $this->getHelper('HtmlSelect')->getSelect('forwarder_id',$this->forwarderlist,'forwarder_id','forwarder_name','',false,array('class'=>'inputfield'));?> 
+						</td>
+					 </tr>
+					 <tr>
+						<td colspan="2"><input style="margin:auto" type="file" name="import_file" id="import_file"></td>
+					</tr>
+					<tr>
+						<td style="text-align:center" colspan="2"><input type="submit" name="import" id="import" value="Check Invoice" class="btn btn-danger" style="width:40%;margin:auto"></td>
+						</td>
+					 </tr>
+					</tbody>
+					</table>
+				</form>	
+					</div>
+					<div class="col-sm-2">&nbsp;</div>
+					<div class="clear-all"></div>
+				</div>
+			</div>
+        </div>
+	</div>

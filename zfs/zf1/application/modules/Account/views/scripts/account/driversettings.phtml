@@ -1,0 +1,208 @@
+
+
+	<div id="table"><div class="header-row row">
+
+		<span class="cell" style="text-align:center"><h6><?php echo $this->translate("Driver Setting");?></h6></span> 
+
+	</div></div>
+
+	
+
+		<div class="row row-broken" style="margin-left:0px !important;margin-right:0px !important;">
+
+          <div class="col-sm-12">
+
+            <div class="tabs" id="seventh-tabs">
+
+              <ul class="nav nav-tabs nav-justified">
+
+                <li class="active"> <a href=""><?php echo $this->translate("List");?><i class="fa fa-folder"></i></a> </li>
+
+                <li> <a href="driverform"><?php echo $this->translate("Add Driver");?><i class="fa fa-ticket"></i></a> </li>
+
+              </ul>
+
+
+
+	<div class="tab-content">
+
+		<div class="tab-pane fade in active" id="tab-1">
+
+
+
+		<form method="post" action="" id="driverform" name="driverform">
+
+		
+
+				<div id="tablegrid">
+
+					<table width="100%" border="0" id="example">
+
+					    <thead>
+
+						<tr>
+
+						<th><?=$this->translate('Driver Name');?></th>
+
+							<th><?=$this->translate('Company');?></th>
+
+							<th><?=$this->translate('Vehicle');?> </th>
+
+							<th><?=$this->translate('License Number');?> </th>
+
+							<th><?=$this->translate('Username');?></th>
+
+							<th><?=$this->translate('Password');?></th>
+
+							<th><?=$this->translate('Status');?></th>
+
+							<th><?=$this->translate('Action');?></th>
+
+						</tr>
+
+						</thead>
+
+						
+
+						<tbody>
+
+						<?php
+
+						if(count($this->records)>0){
+
+							$i=0;
+
+						 	foreach($this->records as $index=>$data){
+
+						 	$class = ($i%2==0)?'even':'odd'; ?>
+
+							<tr class="<?php echo $class;?>">
+
+								<td width="15%" data-label="Name"><?= $data['driver_name']?></td> 
+
+								<td width="15%" data-label="Company"><?php echo $data['company_name']; ?></td> 
+
+								<td width="10%" data-label="Vehicle"><?php echo $data['type_of_vehicle']; ?></td>
+
+								<td width="15%" data-label="License"><?php echo $data['license_number']; ?></td>
+
+								<td width="10%" data-label="Username"><?php echo $data['username']; ?></td> 
+
+								<td width="10%" data-label="Password"><?= $data['password_text'] ?></td>
+
+
+								<td width="10%"><span class="cell" data-label="Status" id="statusSpan_<?=$index?>" ><?php if($data['account_status'] == "1") {  ?><img src="<?=IMAGE_LINK?>/icon_active.gif" align="absmiddle" alt="Active" border="0" onclick="setStatus('<?=DRIVER_DETAIL_TABLE?>','account_status','0','driver_id','<?=$data['driver_id']?>','<?=$index?>');" title="Change Status into In-Active" class="changeStatus" />
+
+								<?php } else { ?>
+
+								<img src="<?=IMAGE_LINK?>/icon_inactive.gif" align="absmiddle" alt="Active" border="0" onclick="setStatus('<?=DRIVER_DETAIL_TABLE?>','account_status','1','driver_id','<?=$data['driver_id']?>','<?=$index?>');" title="Change Status into Active" class="changeStatus" />
+
+								<?php } ?>
+
+								</span></td>
+
+						
+
+								<td data-label="Action">
+
+									<div class="action-btns btn-group pull-center breadcrumb" role="group"><li>
+
+									
+
+									<a href='<?=$this->url(array('controller'=>'Account','action'=>'driverform'), 'default',  true).'?token='.Zend_Encript_Encription:: encode($data['driver_id'])?>','60%','40%';"> <i class="fa fa-edit" title="Edit User"></i></a>
+
+									<a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Account','action'=>'driverconfig'),'default',true).'?token='.Zend_Encript_Encription :: encode($data['driver_id'])?>','60%','71%');"> <i class="fa fa-cog" title="setting"></i></a>
+
+									
+
+									<a href='<?=$this->url(array('controller'=>'Account','action'=>'delete'),'default',  true).'?token='.Zend_Encript_Encription :: encode($data['driver_id']).'&level='.$data['level_id']?>','60%','40%';"><i class="fa fa-trash"  onclick="return confirm('Are you sure want to delete this Record !')" title="Delete User"></i></a>
+
+									</li></div>
+
+								</td> 
+
+							</tr>
+
+						<?php $i++;}} else{ ?>
+
+						<tr>
+
+						  <td></td><td><?=$this->translate('No Record Found!...')?></td><td></td><td></td><td></td><td></td><td></td><td></td>
+
+						  </tr>
+
+						<?php }
+
+						?></tbody>
+
+                     </table>	
+
+				</div>
+
+			</form>	
+
+			</div></div></div>
+
+			</div>
+
+		</div>
+
+	
+
+<script>
+
+$(document).ready(function() {
+
+  $('#example').DataTable( {
+
+  "pageLength": 100,
+
+  "lengthMenu": [[10, 25, 50, 100, 200, 500, -1], [10, 25, 50, 100, 200, 500, "All"]],
+
+        initComplete: function () {
+
+            this.api().columns().every( function () {
+
+                var column = this;
+
+                var select = $('<select><option value=""></option></select>')
+
+                    .appendTo( $(column.footer()).empty() )
+
+                    .on( 'change', function () {
+
+                        var val = $.fn.dataTable.util.escapeRegex(
+
+                            $(this).val()
+
+                        );
+
+       column
+
+                            .search( val ? '^'+val+'$' : '', true, false )
+
+                            .draw();
+
+                    } );
+
+ 
+
+                column.data().unique().sort().each( function ( d, j ) {
+
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+
+                } );
+
+            } );
+
+        }
+
+    } );
+
+} );
+
+</script>
+
+	
+
+	

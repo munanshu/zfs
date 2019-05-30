@@ -1,0 +1,48 @@
+<div class="row row-broken">
+      <div class="col-md-12">
+        <ol class="breadcrumb">
+          <li><a href="index.html"><i class="fa fa-home"></i></a></li>
+          <li class="active"><?php echo $this->translate('Settings') ?></li>
+		  <li class="active"><?php echo $this->translate('General Settings') ?></li>
+        </ol>
+      </div>
+</div>
+	<div class="row row-broken">
+        <div class="col-sm-12">
+			<div class="tabs" id="seventh-tabs">
+			  <ul class="nav nav-tabs nav-justified">
+			    <li class="active"> <a href="#tab-1" data-toggle="tab"><?php echo $this->translate('Email Notification') ?></a> </li>
+				<li> <a href="<?=BASE_URL?>Settings/packetshop" data-toggle=""><?php echo $this->translate('Packetshop') ?></a> </li>
+				<li> <a href="<?=BASE_URL?>Settings/vehiclesetting" data-toggle=""><?php echo $this->translate('Vehicle Setting') ?></a> </li>
+              </ul>
+			  
+				<div class="tab-content">
+					<div class="tab-pane fade in active" id="tab-1">
+						<div class="col-inside-lg decor-default">
+             	  
+							<div class="row tab-filter row_nopadding decor-success tab-position">
+							  <div class="col-lg-12 col-md-12 col-sm-12 b-email" style="background:#ffffff;">
+								  <div class="b-email-title">
+									<h6>Administrative Section</h6>
+								  </div>
+								  <div class="row">
+														<?php //echo $this->PostCodeSetting; ?>
+									</div>
+								</div>
+								<div class="col-lg-12 col-md-12 col-sm-12 b-email" style="background:#ffffff; padding-top:0px;">
+								  <div class="b-email-title">
+									<h6>Delivery Address Details</h6>
+								  </div>
+								  <div class="row">
+														<?php echo $this->PostCodeSetting; ?>
+									</div>
+								</div>				  
+							</div>
+							
+							</div>
+						</div>
+					</div>
+				</div>
+            </div>
+        </div>
+	</div>

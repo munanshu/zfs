@@ -1,0 +1,108 @@
+
+	<div id="table"><div class="header-row row">
+		<span class="cell" style="text-align:center"><h6><?php echo $this->translate("Privilege Management");?></h6></span> 
+	</div></div>
+	
+
+	<div class="tab-content">
+		<div class="tab-pane fade in active" id="tab-1">
+
+		<form method="post" action="" id="viewprivilegeform" name="viewprivilegeform">
+		
+				<div id="tablegrid">
+					<table width="100%" border="0" id="example">
+					    
+						<tbody>
+						<tr>
+								<td width="15%" style="text-align:left">
+									<label for="userlevel"><b><?php echo $this->translate("Level of System User ");?></b></label>
+								</td>
+								<td style="text-align:left">
+									<label for="userlevel" style="text-align:center"><?php echo $this->LevelName;?></label>
+								</td>
+						</tr>
+						
+						<tr>
+							<td width="15%" style="text-align:left">
+								<label for="systemmodule"><b><?php echo $this->translate("System Modules ");?></b></label>
+							</td>
+							<td style="text-align:left">
+								<label for="modules" style="text-align:center"></label>
+							</td>
+						</tr>
+						
+						
+						<tr>
+							<td width="15%" style="text-align:left">
+								<label for="Setprivilege"><b><?php echo $this->translate("Set Privilege");?></b></label>
+							</td>
+								
+							<td width="80%" style="text-align:left">
+								<div>
+								<?php $i=0; foreach($this->Allprivileges as $module){ 
+									$maincheck = (in_array($module['module_id'],$this->DefaultPrivilege)) ? 'checked="checked"' : ''; 
+								?>
+									<ul><input type="checkbox" name="ModuleArr[<?=$i;?>]" id="mainmodule_<?= $module['module_id']; ?>" value="<?= $module['module_id'];?>" onclick="moduleChild(this.value); " <?= $maincheck ?> /><?= $module['module_name']; ?>
+									<?php if(count($module['submodule'])>0){ 
+										foreach($module['submodule'] as $submodule){ $i++;
+										$check = (in_array($submodule['module_id'],$this->DefaultPrivilege)) ? 'checked="checked"' : '';	
+										$style = ($maincheck=='') ? 'style="display:none;"' : '';
+									?>
+											<ul <?= $style ?> class="submodule_<?= $module['module_id']; ?>" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="ModuleArr[<?=$i;?>]" id="submodule" value="<?= $submodule['module_id'];?>" <?= $check ?> /><?= $submodule['module_name']; ?></ul>
+										<?php } $i++;}?>	
+									</ul>
+								<?php } ?></div>
+							</td>
+						</tr>
+						
+						</tbody>
+						<tr>
+						 	<td>&nbsp;</td>	
+						  	<td style="text-align:left">
+						  		<input type="submit" name="allprivilege" id="allprivilege" value="Add Privilege" class="btn btn-danger btn-round">
+						  	</td>
+						</tr>
+                     </table>	
+				</div>
+			</form>	
+			</div></div></div>
+			</div>
+		</div>
+	</div>
+<script> 
+	
+	function moduleChild(id){
+		if($('#mainmodule_'+id).is(':checked')) {
+			$('.submodule_'+id).show();
+		}
+		else{
+			$('.submodule_'+id).hide();
+			$('.submodule_'+id).find('input[type=checkbox]:checked').removeAttr('checked');
+		}
+	}
+	  
+	function showhideRow(id){
+		if(id==0){
+			$('#defaultId').show();
+			$('#customId').hide();
+		}
+		else{
+			$('#defaultId').hide();
+			$('#customId').show();
+		}
+		//alert(id);return false;
+	}
+	
+	function depotmoduleChild(id){
+		if($('#depotmainmodule_'+id).is(':checked')) {
+			$('.depotsubmodule_'+id).show();
+		}
+		else{
+			$('.depotsubmodule_'+id).hide();
+			$('.depotsubmodule_'+id).find('input[type=checkbox]:checked').removeAttr('checked');
+		}
+	}  
+	
+</script>
+	
+	

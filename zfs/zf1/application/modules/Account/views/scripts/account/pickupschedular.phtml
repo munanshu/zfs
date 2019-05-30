@@ -1,0 +1,25 @@
+	
+	<div id="table"><div class="header-row row">
+		<span class="cell" style="text-align:center"><?php echo $this->translate("Add Pickup Schedular");?></span> 
+	</div></div>
+	
+	<div class="col-md-2"></div>
+		<div class="col-md-8">
+			
+			<div class="tab-content">
+				<div class="tab-pane fade in active" id="tab-1" style="background-color:white;">
+					<?php echo $this->pickupschedular; ?>
+				</div>
+			</div>
+		</div>
+	<div class="col-md-2"></div>
+	
+	<script src="<?php echo $this->baseUrl('/public/timepicker/include/ui-1.10.0/jquery.ui.widget.min.js')?>"></script>
+	<script src="<?php echo $this->baseUrl('/public/timepicker/jquery.ui.timepicker.js')?>"></script>
+	
+<script type="text/javascript">	
+	function clickTimePicker(id){ //alert(id);
+		$('#'+id).timepicker();
+	}
+</script>		
+	

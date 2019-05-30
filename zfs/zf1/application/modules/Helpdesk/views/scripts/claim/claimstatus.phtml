@@ -1,0 +1,80 @@
+<div class="row row-broken">
+    <div class="col-sm-12">
+        <div class="tabs" id="seventh-tabs">
+			<ul class="nav nav-tabs nav-justified">
+                <li><a href="<?=BASE_URL ?>/Claim/claimsetting" data-toggle=""><?php echo $this->translate('Question') ?></a></li>
+				<li class="active"><a href="#tab-2" data-toggle="tab"><?php echo $this->translate('Status') ?></a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-2">
+				    <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="input-title"><?php echo $this->translate('Claim Status')?></div>
+					  <div class="clear-all"></div>
+					  <div class="col-sm-3 col_paddingx10">
+						<label for="input-2" class="input__label input__label--kaede"> 
+						<span class="input input--kaede"><a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Claim','action'=>'addclaimstatus'),'default',  true)?>','400','200');" class=""><i class="fa fa-plus-square"></i><?php echo $this->translate("Add New Status");?></a>
+						</span></label>
+					  </div>
+					  <div class="col-sm-9 col_paddingx10"><span class="input input--kaede"></span></div>
+					</div>
+					<div id="tablegrid">
+						<table width="100%" border="0" id="claimstatus">
+						   <thead>
+						   <tr>
+							<th><?=$this->translate('S. No.');?></th>
+							<th><?=$this->translate('Claim Status Name');?></th>
+							<th><?=$this->translate('Notification Type');?></th>
+							<th><?=$this->translate('Status');?></th>
+							<th><?=$this->translate('Action');?></th>
+						   </tr>
+						   </thead>
+						   <?php if($this->claimstatus>0) 
+						   {
+							foreach($this->claimstatus as $key=>$claimstatus){
+							$class= ($key%2=='0') ? 'odd': 'even';
+							?>
+						   <tr class="<?= $class; ?>">
+							<td><?= $key+1; ?></td>
+							<td><?= $claimstatus['claim_status_name']; ?></td>
+							<?php if($claimstatus['notification_name']!=''){ ?>
+							<td><a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Claim','action'=>'emailtemplate'),'default',  true).'?mode=emailtemplate&notification_id='.Zend_Encript_Encription:: encode($claimstatus['notification_id']).'&notification_name='.$claimstatus['notification_name']?>','50%','60%');" class=""><?= $claimstatus['notification_name']; ?></a></td>
+							<?php } else{?>
+							<td>--</td>
+							<?php } ?>
+							<td width="10%"><span class="cell" data-label="Status" id="statusSpan_<?=$key?>" >
+							<?php if($claimstatus['status'] == "1") { ?>
+							 <img src="<?=IMAGE_LINK?>/icon_active.gif" align="absmiddle" alt="Active" border="0" onclick="setStatus('<?=CLAIM_STATUS?>','status','0','claim_status_id','<?=$claimstatus['claim_status_id']?>','<?=$key?>');" title="Change Status into In-Active" class="changeStatus" />
+							<?php } else { ?>
+							  <img src="<?=IMAGE_LINK?>/icon_inactive.gif" align="absmiddle" alt="Active" border="0" onclick="setStatus('<?=CLAIM_STATUS?>','status','1','claim_status_id','<?=$claimstatus['claim_status_id']?>','<?=$key?>');" title="Change Status into Active" class="changeStatus" />
+							  <?php }?>
+							  </span>
+							</td>
+							<td>
+							 <a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Claim','action'=>'editclaimstatus'),'default',  true).'?mode=editclaimstatus&status_id='.$claimstatus['claim_status_id']?>','60%','50%');" class=""><i class="fa fa-edit" title="Update Status"></i></a>|
+							 <a href="javascript:void(0)" onclick="deleterecord('<?=CLAIM_STATUS?>','delete_status','1','claim_status_id','<?=$claimstatus['claim_status_id']?>');"><i class="fa fa-trash" title="Delete Status"></i></a>
+							 <?php if($claimstatus['notification_id']>0){ ?>
+							 <a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Claim','action'=>'emailtemplate'),'default',  true).'?mode=emailtemplate&notification_id='.Zend_Encript_Encription:: encode($claimstatus['notification_id']).'&notification_name='.$claimstatus['notification_name']?>','50%','60%');" class=""><i class="fa fa-eye" title="View Template"></i></a>
+							<?php }?>
+							</td>
+						   </tr>
+						   <?php $key++; } }else{ ?>
+						<tr>
+						  <td data-label="No Data" colspan="7"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td>
+						  </tr>
+						<?php } ?>
+						</table>
+					</div>	
+				</div>
+				
+            </div>
+	    </div>
+    </div>
+</div>
+<script>
+$(document).ready(function() {
+	 $('#claimstatus').DataTable( {
+		"pageLength": 100,
+		"lengthMenu": [[10, 25, 50, 100, 200, 500, -1], [10, 25, 50, 100, 200, 500, "All"]],
+    } );    
+} );
+</script>

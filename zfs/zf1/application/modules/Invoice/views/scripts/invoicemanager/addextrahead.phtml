@@ -1,0 +1,158 @@
+<form action="" method="post" name="addcountry" class="inputbox" >
+<input type="hidden" id="record_count" value="<?php echo count($this->totalrecord);?>">
+<div class="col-lg-12 col-md-12 col-sm-12 b-email" style="background:#ffffff;">
+          <div class="b-email-title">
+            <h6><?php echo $this->translate("Add Extra Head");?></h6>
+          </div>
+          <div class="row">
+		  
+	<div>
+		 <div class="col-sm-2 col_paddingtop">
+			<label><?php echo $this->translate("No. Of Item"); ?></label>
+			</div>
+		<div class="col-sm-3 col_paddingtop">
+			<label><?php echo $this->translate("Description"); ?></label>
+			</div>
+		<div class="col-sm-2 col_paddingtop">
+			<label><?php echo $this->translate("Price"); ?></label>
+			</div>
+		<div class="col-sm-2 col_paddingtop">
+			<label><?php echo $this->translate("Total Price"); ?></label>
+			</div>
+		<div class="col-sm-2 col_paddingtop">
+			<label><?php echo $this->translate("BTW"); ?></label>
+			</div>
+			<div class="col-sm-1 col_paddingtop"> </div>			
+	   <div class="clearfix"></div>
+  </div>	  
+	<?php foreach($this->totalrecord as $key=>$records){?>
+		<div id="extra_records<?php echo $key;?>">
+		 <div class="col-sm-2 col_paddingtop">
+				<input type="text" onblur="priceCalculate('<?php echo $key;?>')" name="added_quantity<?php echo $key;?>" id="added_quantity<?php echo $key;?>" class="inputfield" value="<?php echo $records['quantity'];?>">	
+			</div>
+		<div class="col-sm-3 col_paddingtop">
+				<input type="text" name="added_description<?php echo $key;?>" id="added_description<?php echo $key;?>" value="<?php echo $records['description'];?>" class="inputfield">
+			</div>
+		<div class="col-sm-2 col_paddingtop">
+				<input type="text" name="added_unit_price<?php echo $key;?>" id="added_unit_price<?php echo $key;?>" value="<?php echo $records['price']/$records['quantity'];?>" onblur="priceCalculate('<?php echo $key;?>')" class="inputfield">
+			</div>
+		<div class="col-sm-2 col_paddingtop">
+				<input type="text" name="added_price<?php echo $key;?>" id="added_price<?php echo $key;?>" value="<?php echo $records['price'];?>" readonly="readonly" class="inputfield">
+			</div>
+		<div class="col-sm-2 col_paddingtop">
+				<select name="added_btw_class<?php echo $key;?>" id="added_btw_class<?php echo $key;?>" class="inputfield">
+				<?php foreach($this->btwclass as $btwclass){
+				 $selected = ($records['btw_class']==$btwclass['class_id'])?'selected="selected"':'';
+				 
+				 ?>
+				<option value="<?php echo $btwclass['class_id']?>" <?php echo $selected;?>><?php echo $btwclass['description']?></option>
+				<?php }?>
+				</select>
+			</div>
+			<div class="col-sm-1 col_paddingtop">
+			<i class="fa fa-refresh" style="padding-top:2px;" title="Update" onclick="updateExtra('<?php echo $key;?>','Update','<?php echo $records['invoiceextra_id'];?>')"></i>
+			&nbsp;<i class="fa fa-times" style="padding-top:2px;" title="Delete"  onclick="updateExtra('<?php echo $key;?>','Delete','<?php echo $records['invoiceextra_id'];?>')"></i>
+			</div>			
+	   <div class="clearfix"></div>
+  </div>
+   <?php }$i = count($this->totalrecord);?>
+   <div id="extra_records<?php echo $i;?>">
+		 <div class="col-sm-2 col_paddingtop">
+				<input type="text" onblur="priceCalculate1('<?php echo $i;?>')" name="quantity[]" id="quantity<?php echo $i;?>" class="inputfield">	
+			</div>
+		<div class="col-sm-3 col_paddingtop">
+				<input type="text" name="description[]" id="description<?php echo $i;?>" class="inputfield">
+			</div>
+		<div class="col-sm-2 col_paddingtop">
+				<input type="text" onblur="priceCalculate1('<?php echo $i;?>')" name="unit_price[]" id="unit_price<?php echo $i;?>" class="inputfield">
+			</div>
+		<div class="col-sm-2 col_paddingtop">
+				<input type="text" readonly="readonly" name="price[]" id="price<?php echo $i;?>" class="inputfield">
+			</div>
+		<div class="col-sm-2 col_paddingtop">
+				<select name="btw_class[]" id="btw_class<?php echo $i;?>" class="inputfield">
+				<?php foreach($this->btwclass as $btwclass){?>
+				<option value="<?php echo $btwclass['class_id']?>"><?php echo $btwclass['description']?></option>
+				<?php }?>
+				</select>
+			</div>
+			<div class="col-sm-1 col_paddingtop">
+			<i class="fa fa-plus-square" style="padding-top:15px;" title="Add New"  onclick="addnewrow()"></i>
+			</div>			
+	   <div class="clearfix"></div>
+  </div>
+    
+   <div class="col-sm-12 col_paddingtop">
+            </div>
+            <div class="col-sm-2 col_paddingtop"> <input type="submit" name="submit" value="Add Class" class="btn btn-danger btn-round"></div>
+          </div>
+        </div>
+</form>
+<script>
+function addnewrow(){
+    var count = parseInt($("#record_count").val()) + 1; 
+	
+
+	var row_content = '<div id="extra_records'+count+'">';
+	
+	row_content += '<div id="extra_records'+count+'">';
+	row_content += '<div class="col-sm-2 col_paddingtop">';
+	row_content += '<input type="text" name="quantity[]" onblur="priceCalculate1('+count+')" id="quantity'+count+'" class="inputfield">';	
+	row_content += '</div>';
+	row_content += '<div class="col-sm-3 col_paddingtop">';
+	row_content += '<input type="text" name="description[]" id="description'+count+'" class="inputfield">';
+	row_content += '</div>';
+	row_content += '<div class="col-sm-2 col_paddingtop">';
+	row_content += '<input type="text" name="unit_price[]" onblur="priceCalculate1('+count+')" id="unit_price'+count+'" class="inputfield">';
+	row_content += '</div>';
+	row_content += '<div class="col-sm-2 col_paddingtop">';
+	row_content += '<input type="text" name="price[]" readonly="readonly" id="price'+count+'" class="inputfield">';
+	row_content += '</div>';
+	row_content += '<div class="col-sm-2 col_paddingtop">';
+	row_content += '<select name="btw_class[]" id="btw_class'+count+'" class="inputfield">';
+	row_content += '<?php foreach($this->btwclass as $btwclass){?>';
+	row_content += '<option value="<?php echo $btwclass['class_id']?>"><?php echo $btwclass['description']?></option>';
+	row_content += '<?php }?>';
+	row_content += '</select>';
+	row_content += '</div>';
+	row_content += '<div class="col-sm-1 col_paddingtop">';
+	row_content += '<i class="fa fa-minus-square-o" style="padding-top:10px;" onclick="removerow('+count+')"></i>';
+	row_content += '</div>';			
+	row_content += '<div class="clearfix"></div>';
+    row_content += '</div>';//alert(row_content);
+	$("#extra_records"+parseInt($("#record_count").val())).after(row_content);
+	$("#record_count").val(parseInt(count));
+}
+function removerow(count){
+    $("#extra_records"+count).remove();
+	$("#record_count").val(parseInt($("#record_count").val()) - 1);
+}
+function priceCalculate(count_id){
+	var quantity = $('#added_quantity'+count_id).val();
+	var unit_price = $('#added_unit_price'+count_id).val();
+	$('#added_price'+count_id).val(quantity*unit_price);
+}
+function priceCalculate1(count_id){
+	var quantity = $('#quantity'+count_id).val();
+	var unit_price = $('#unit_price'+count_id).val();
+	$('#price'+count_id).val(quantity*unit_price);
+}
+function updateExtra(count_id,action,invoiceextra_id){
+   var added_quantity = $('#added_quantity'+count_id).val();
+   var added_description = $('#added_description'+count_id).val();
+   var added_price = $('#added_price'+count_id).val();
+   var added_btw_class = $('#added_btw_class'+count_id).val();
+   $.ajax({
+	   type: 'post',
+	   url: '<?php echo $this->url(array('controller'=>'Ajax','action'=>'modifyextrahead'),'default',true);?>',
+	   data: 'added_quantity='+added_quantity+'&added_description='+added_description+'&added_price='+added_price+'&added_btw_class='+added_btw_class+'&invoiceextra_id='+invoiceextra_id+'&mode='+action,
+	  success: function(msg){ 
+	     if($.trim(action)=='Delete'){
+		   $('#extra_records'+count_id).remove();
+		 }
+		 alert(msg);
+		 
+	   }	
+	});
+}
+</script>

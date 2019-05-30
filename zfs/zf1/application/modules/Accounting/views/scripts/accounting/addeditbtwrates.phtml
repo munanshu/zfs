@@ -1,0 +1,45 @@
+<link rel="stylesheet" href="<?php echo $this->baseUrl('/public/timepicker/jquery.ui.timepicker.css')?>">
+<script src="<?php echo $this->baseUrl('/public/timepicker/include/ui-1.10.0/jquery.ui.widget.min.js')?>"></script>
+<script src="<?php echo $this->baseUrl('/public/timepicker/jquery.ui.timepicker.js')?>"></script>
+
+
+<?php $form = $this->BtwRatesForm; ?>
+<form action="" method="post" name="addaccounthead" class="inputbox" >
+<div class="col-lg-12 col-md-12 col-sm-12 b-email" style="background:#ffffff;">
+          <div class="b-email-title">
+            <h6><?=$this->translate($this->title);?></h6>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 col_paddingtop">
+			  <?php  echo $form->effective_date; echo $form->btwrate_id; ?>
+            </div>
+			<div class="col-sm-6 col_paddingtop">
+              <?php echo $form->btw_rate; ?>% (In Percentage) 
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-sm-6 col_paddingtop">
+			  <?php echo $form->btwrate_type; ?>
+            </div>
+             
+			<div class="clearfix"></div>
+             
+			 
+            <div class="col-sm-2 col_paddingtop"> <?php echo $form->submit; ?> </div>
+          </div>
+        </div>
+</form>
+
+
+<script>
+function clickTimePicker(id){
+$('#'+id).timepicker();
+}
+ $(function() {
+  $( "#assigndate" ).datepicker({
+    dateFormat: 'yy-mm-dd',
+    showOtherMonths: true,
+    selectOtherMonths: true
+  });
+ });  
+</script>
+           

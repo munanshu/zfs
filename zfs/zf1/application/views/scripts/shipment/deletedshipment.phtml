@@ -1,0 +1,162 @@
+ 
+<?php 
+$countries = $this->countries; 
+$forwarders = $this->forwarders; 
+$customers = $this->customers; 
+?>
+<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+		<form method="get" action="" id="filter_form" name="filter_form">
+			<!-- filter start -->
+			<div class="filter">
+				<div class="input-title"><?php echo $this->translate("Deleted Shipments");?></div>
+				<div class="row row_nopadding decor-success" style="margin-left:0px !important;margin-right:0px !important;">
+								
+				 
+				<div class="col-sm-12 col_paddingtop">
+				 	 <div class="row">
+				 	<div class="col-sm-1 col_paddingx10"><?php echo $this->translate("Country List :");?></div>
+				<div class="col-sm-3 col_paddingx10">
+							<?=$this->getHelper('HtmlSelect')->getSelect('country_id',$countries,'country_id','country_name',(isset($this->ModelObj->getData['country_id'])? $this->ModelObj->getData['country_id']:false),false,array('class'=>'selectbox','onchange'=>''));?>
+						</div>
+
+				<div class="col-sm-1 col_paddingx10"><?php echo $this->translate("Forwarder List :");?></div>
+				<div class="col-sm-3 col_paddingx10">
+							<?=$this->getHelper('HtmlSelect')->getSelect('forwarder_id',$forwarders,'forwarder_id','forwarder_name',(isset($this->ModelObj->getData['forwarder_id'])? $this->ModelObj->getData['forwarder_id']:false),false,array('class'=>'selectbox','onchange'=>''));?>
+						</div>
+
+				<div class="col-sm-1 col_paddingx10"><?php echo $this->translate("Customer List :");?></div>
+				<div class="col-sm-3 col_paddingx10">
+							<?=$this->getHelper('HtmlSelect')->getSelect('user_id',$customers,'user_id','company_name',(isset($this->ModelObj->getData['user_id'])? $this->ModelObj->getData['user_id']:false),false,array('class'=>'selectbox','onchange'=>''));?>
+						</div>	
+
+				 	
+						 	</div>
+				
+				 <div class="row">
+					<div class="col-sm-3 col_paddingtop">
+					  <label><?php echo $this->translate("From Date");?></label>
+					<input type="text" name="from_date" id="from_date" value="<?php echo (isset($this->Request['from_date'])?$this->Request['from_date']:'')?>"  class="inputfield" style="width:60%">	 
+					</div>		
+					<div class="col-sm-3 col_paddingtop">
+					  <label><?php echo $this->translate("To Date");?></label>
+					  <input type="text" name="to_date" id="to_date" value="<?php echo (isset($this->Request['to_date'])?$this->Request['to_date']:'')?>"  class="inputfield" style="width:60%">
+					</div>
+
+					<div class="col-sm-4 col_paddingtop">
+					  <label><?php echo $this->translate("Search Word:");?></label>
+					  <input type="text" name="search_word" id="search_word" value="<?php echo (isset($this->Request['search_word'])?$this->Request['search_word']:'')?>"  class="inputfield" style="width:60%">
+					</div>
+					<div class="col-sm-1 col_paddingtop">
+					  <button class="btn btn-danger btn-round" name="search" type="submit" value="Search" onclick="this.form.submit()"><?php echo $this->translate("Search");?></button>
+					   
+					</div>
+					<div class="col-sm-1 col_paddingtop">
+					   
+					  <button class="btn btn-danger btn-round" name="export" type="submit" value="Export" onclick="this.form.submit()"><?php echo $this->translate("Export");?></button>
+					</div>
+				</div>
+				</div>
+
+					<div class="clear-all"></div>
+				</div>
+
+				
+
+
+
+           </div>	
+			<!-- end filter -->
+	 </form>		
+	
+	<form method="post" action="" id="print_label" name="print_label">		
+	 	 
+				
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+		<div class="col-sm-3 col_paddingtop" style="margin-bottom: 7px;">
+				<select name="revertall" class="inputfield" id="batchcheckin" onChange="javascript:if(this.value == 'RevertAll') this.form.submit(); else return false; " >
+					<option value="" selected="selected"><?php echo $this->translate('With Selected');?></option>
+					<option value="RevertAll"><?php echo $this->translate('Revert All');?></option>
+				</select>						
+			</div>
+				<div id="table">
+					<div class="header-row row">
+					<span class="cell"><input type="checkbox" id="check_uncheck_all" onchange="check_uncheckALL(this)"></span>
+					<span class="cell"><?php echo $this->translate("Shipper");?></span> 
+					<span class="cell"><?php echo $this->translate("Receiver");?></span> 
+					<span class="cell"><?php echo $this->translate("Reference");?></span> 
+					<span class="cell"><?php echo $this->translate("Country");?></span> 
+					<!-- <span class="cell"><?php echo $this->translate("Postalcode");?></span>  -->
+					<span class="cell"><?php echo $this->translate("Forwarder");?></span> 
+					<span class="cell"><?php echo $this->translate("Weight");?>(KG)</span>
+					<span class="cell"><?php echo $this->translate("Quantity");?></span> 
+					<!-- <span class="cell"><?php echo $this->translate("Service");?></span>  -->
+					 
+					<span class="cell"><?php echo $this->translate("Create Date");?></span>
+					<span class="cell"><?php echo $this->translate("Deleted Date");?></span>
+					<span class="cell"><?php echo $this->translate("Barcode");?></span>
+					 
+					<span class="cell"><?php echo $this->translate("Action");?></span>					
+					</div>
+					<?php if($this->records['Total']>0){
+					
+						foreach($this->records['Records'] as $index=>$data){
+							$class = (($index)%2==0) ? 'class="row odd"' :'class="row even"';?>
+						<div <?=$class?>>
+							<span class="cell" <?php echo ($data['label_date']!='0000-00-00 00:00:00')?'style="background-color:red"':''?>><input type="checkbox" name="shipment_id[]" id="shipment_id_<?=$data['shipment_id']?>" value="<?=Zend_Encript_Encription::encode($data['shipment_id'])?>" class="check_uncheck_class"> <input type="hidden" name="bar[]" value="<?=Zend_Encript_Encription::encode($data['barcode_id'])?>"> </span>
+							<span class="cell" data-label="Receiver"><?= $data['company_name']?></span> 
+							<span class="cell" data-label="Receiver"><?= $data[RECEIVER]?></span> 
+							<span class="cell" data-label="Reference"><?= $data[REFERENCE]?></span>
+							<span class="cell" data-label="Country"><?= $data['country_name']?></span>
+							<!-- <span class="cell" data-label="Postalcode"><?= $data[ZIPCODE]?></span> -->
+							<span class="cell" data-label="Forwarder"><?= $data['forwarder_name']?></span>
+							<span class="cell" data-label="Weight"><?= $data[WEIGHT]?></span>
+							<span class="cell" data-label="Quantity"><?= $data[QUANTITY]?></span>
+							<!-- <span class="cell" data-label="Service"><?= $data['service_name']?></span> -->
+							 
+							<span class="cell" data-label="Create Date"><?= date('F- d Y',strtotime($data['create_date']));?></span>
+							<span class="cell" data-label="Deleted Date"><?= date('F- d Y',strtotime($data['deleted_date']));?></span>
+							<span class="cell" data-label="Barcode">
+							<a href="javascript:void(0);" onclick="javascript:window.open('<?=$this->url(array('controller' => 'Parceltracking','action'=>'tracking'),'default',true).'?tockenno='.Zend_Encript_Encription::encode($data['barcode_id']);?>','mywindow','status=0,resizable=1,width=1200,height=600,toolbar=0')" title="Track Parcel"><?= $data['barcode']?></a>
+							</span>
+							 
+							<span class="cell" data-label="Action">
+							  <i class="fa fa-refresh fa-x" title="<?php echo $this->translate("Restore Shipment");?>" onclick="javascript:location.href='<?=BASE_URL?>/Shipment/deletedshipment/?reverthis=<?=Zend_Encript_Encription::encode($data['shipment_id'])?>&bar=<?=Zend_Encript_Encription::encode($data['barcode_id'])?>'" ></i>
+
+							  <i class="fa fa-tags fa-x" title="<?php echo $this->translate("Restore Shipment with Checkin");?>" onclick="javascript:location.href='<?=BASE_URL?>/Shipment/revertwithcheckin/?reverthis=<?=Zend_Encript_Encription::encode($data['shipment_id'])?>&bar=<?=Zend_Encript_Encription::encode($data['barcode_id'])?>'" ></i>
+
+							   
+
+							</span> 
+						</div>
+					<?php }}else{?>
+						
+						<div class="row odd">
+							<b><?=$this->translate("Recod not found !");?></b> 
+						</div>
+					<?php }?>	
+				</div>
+				<div class="unit control">
+                      <div class="nav-btns pull-right"> <?php echo commonfunction::PageCounter($this->records['Total'],$this->Request)?>
+                      </div>
+                    </div>
+			</div>
+		</form>	
+			</div></div>
+		
+		<script>
+$(function() {
+		$( "#from_date" ).datepicker({
+		  dateFormat: 'yy-mm-dd',
+		  showOtherMonths: true,
+		  selectOtherMonths: true
+		});
+		$( "#to_date" ).datepicker({
+		  dateFormat: 'yy-mm-dd',
+		  showOtherMonths: true,
+		  selectOtherMonths: true
+		});
+	
+	});
+</script>	

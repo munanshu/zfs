@@ -1,0 +1,53 @@
+
+<div class="col-md-2"></div>
+	<div class="col-md-8">
+		<div id="table"><div class="header-row row">
+		<span class="cell" style="text-align:center"><?php echo $this->translate("Set Sender Address Default Country");?></span>
+</div></div>
+	
+	
+	<div class="tab-content">
+		<div class="tab-pane fade in active" id="tab-1">
+
+			<form method="post" action="" id="defaultcountry" name="defaultcountry">
+					
+				<div id="tablegrid">
+				 	<table width="100%" border="0" id="example">
+						<thead>
+							<tr>
+								<td width="10%""><b>#</b></td>
+								<td><b><?=$this->translate('Country List');?></b></td>
+								<td><b><?=$this->translate('Code For API/CSV');?></b></td>
+							</tr>	
+						</thead>
+						<tbody>
+							<?php
+								if(count($this->AddressCountries)>0){
+								
+								foreach($this->AddressCountries as $index=>$data){
+									$class = ($index%2==0)?'even':'odd'; 
+									$checked = '';
+									$checked = ($data['set_default']=='1')?'checked="checked"':'';
+									?>
+										  
+									<tr class="<?php echo $class;?>">
+										<td><input type="checkbox" name="set_default[]" id="default[]" value="<?php echo $data['CID']; ?>" <?php echo $checked;?>/></td>
+										<td data-label="country"><?php echo $data['CName']; ?></td>
+										<td data-label="code"><?php  echo $data['api_code'];?></td>
+									</tr>
+									
+							<?php }?>
+									<tr><td colspan="3" style="text-align:center"><input type="submit" name="right" class="btn btn-danger btn-round" value="Save"></td>
+									</tr>
+							<?php }else{ ?>
+								<tr>
+								  <td data-label="No Data" colspan="7"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td>
+								</tr>
+							<?php }?>	
+						</tbody>
+					
+				 	</table>
+				</div>
+			</form>	
+		</div>
+	</div>

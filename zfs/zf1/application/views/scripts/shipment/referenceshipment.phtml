@@ -1,0 +1,62 @@
+<div class="row row-broken">
+        <div class="col-sm-12">
+				 <div class="filter">
+				<div class="input-title"><?php echo $this->translate('Reference Shipment')?></div>
+			<div class="clear"></div>
+				<div style="background:#ffffff; padding:10px; overflow:auto;text-align:center">
+				<div class="clear-all"></div>
+			<div class="col-sm-2">&nbsp;</div>	
+			<div class="col-sm-8">
+			  &nbsp;&nbsp;<a href="<?php echo $this->url(array('controller'=>'Shipment','action'=>'refshipmentlist'),'default',true);?>"><i class="fa fa-file-text-o"></i>&nbsp;&nbsp;<?php echo $this->translate("Reference Shipment List");?></a>
+			</div>
+			<div class="col-sm-2">&nbsp;</div>	
+			<div class="clear-all"></div>
+				<div class="col-sm-2">&nbsp;</div>
+					<div class="col-sm-8">
+				<form id="referenceshipmentform" class="inputbox" enctype="multipart/form-data" action="" method="post" onsubmit="return importvalidate()">	
+					<table class="tbl_new">
+					<tbody>
+					<tr id="file_error" style="display:none;color:red;"></tr>
+					<tr><th colspan="2"><?php echo $this->translate('Add Reference Shipment')?></th></tr>
+					 <tr>
+						<td style="text-align:center"><?php echo $this->translate('Select Customer')?></td>
+						<td style="width:450px"><?php echo $this->getHelper('HtmlSelect')->getSelect('user_id',$this->customerlist,'user_id','company_name','',true,array('class'=>'inputfield'));?> 
+						</td>
+					 </tr>
+					  <tr>
+						<td style="text-align:center"><?php echo $this->translate('Eneter Barcode')?></td>
+						<td style="width:450px"><input type="text" name="rec_reference" id="rec_reference" class="inputfield">
+						</td>
+					 </tr>
+					</tbody>
+					</table>
+				</form>	
+					</div>
+					<div class="col-sm-2">&nbsp;</div>
+					<div class="clear-all"></div>
+				</div>
+			</div>
+        </div>
+	</div>
+<script>
+function importvalidate(){
+   var user_id = $('#user_id').val();
+   var files = $('#import_file').val();
+   var ext = files.split('.').pop().toLowerCase();
+  if(ext!='csv'){
+	  $('#file_error').html('<td colspan="2">Only CSV file allowed</td>');
+	  $('#file_error').show();
+	  setTimeout("$('#file_error').hide();",5000);
+	  return false;
+  }else if(user_id==''){
+      $('#file_error').html('<td colspan="2">Please Customer</td>');
+	  $('#file_error').show();
+	  setTimeout("$('#file_error').hide();",5000);
+	  return false;
+   }else{
+	 $('#file_error').html('');
+	  $('#file_error').hide();
+	  return true;
+   }   
+}
+</script>	

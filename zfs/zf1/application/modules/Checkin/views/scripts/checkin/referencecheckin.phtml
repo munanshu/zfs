@@ -1,0 +1,29 @@
+<script src="<?php echo $this->baseUrl('/public/js/checkin.js')?>"></script> 
+
+	<div class="row row-broken">
+        <div class="col-sm-12">
+		
+			
+					
+				 <div class="filter">
+				<div class="input-title"><?php echo $this->translate('Reference Check-In')?></div>
+				
+				<div class="row row_nopadding" id="scan_main" style="backGround-color:#ffffff;margin-left:0px !important;margin-right:0px !important;margin-bottom:5px !important;padding-bottom: 10px;">	
+				<div class="single_input">
+				<label><?php echo $this->translate('Reference')?></label><input name="barcode" id="barcode" onkeypress="referencecheckin(event);" class="inputfield" type="text"/>
+
+								</div>
+								
+				</div>
+				
+			<div class="clear"></div>
+				<div style="background:#ffffff; padding:10px; overflow:auto;text-align:center;  text-transform:uppercase" id="scan_output"></div>
+				
+				
+			</div>
+        </div>
+	</div>
+
+<script type="text/javascript">
+    $('#barcode').focus();
+</script>		

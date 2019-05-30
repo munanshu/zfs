@@ -1,0 +1,40 @@
+<div class="content container-fluid">
+    <div class="input-title">Update Claim Question</div>
+</div>
+<form id="updatequestion" name="updatequestion" class="inputbox" method="post">
+    <div class="col-lg-12 col-md-12 col-sm-12 b-email">
+        <div class="row">
+		    <?php if($this->updatedetails['0']['sub_question']=='0'){ ?>
+		    <div class="col-sm-6 col_paddingtop">
+			  <span class="required" style="color:red">*</span><label for="claimstatusname" class="required"><?php echo $this->translate('Operators :') ?></label>
+			  <select name="operators[]" multiple="mulltiple" class="inputfield">
+			    <?php foreach($this->operatortype as $operators){ 
+				   $selected='';
+				   $explode_operator = commonfunction::explode_string($this->updatedetails['0']['operators']);
+				   foreach($explode_operator as $single_operator){
+				    $selected .= ($operators['user_id']==$single_operator) ? 'selected="selected"' : '';
+				   }
+				?>
+			    <option value="<?=$operators['user_id'];?>" <?=$selected ?>><?=$operators['company_name']; ?></option>
+				<?php } ?>
+			  </select>
+			</div>
+			<?php } ?>
+			<div class="col-sm-6 col_paddingtop">
+		       <span class="required" style="color:red">*</span><label for="claimstatusname" class="required"><?php echo $this->translate('Question :') ?></label>
+			   <input type="text" name="claimquename" value="<?=(isset($this->updatedetails['0']['question']))?$this->updatedetails['0']['question']: ''; ?>" class="inputfield">
+			</div>
+            <div class="col-sm-6 col_paddingtop">
+			   <span class="required" style="color:red">*</span><label for="claimstatus" class="required"><?php echo $this->translate('Make Question Active/Inactive :') ?></label>
+               <div class="control-group">
+               <label class="control control--radio"><input type="radio" name="claim_status" value="Y" <?php if(isset($this->updatedetails['0']['status']) && $this->updatedetails['0']['status']=='Y'){echo 'checked="checked"';} ?> class="printlabel">ON<div class="control__indicator"></div></label>
+			   <label class="control control--radio"><input type="radio" name="claim_status" value="N" <?php if(isset($this->updatedetails['0']['status']) && $this->updatedetails['0']['status']=='N'){echo 'checked="checked"';} ?>class="printlabel">OFF<div class="control__indicator"></div></label>
+			   </div>
+			</div>
+			<div class="clearfix"></div>
+            <div class="col-sm-6 col_paddingtop">
+               <input type="submit" name="updateque" value="Update Question" class="btn btn-danger btn-round">
+			</div>
+		</div>
+	</div>
+</form>

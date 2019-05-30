@@ -1,0 +1,131 @@
+
+<div class="row row-broken">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+			  
+              <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-6">
+					<form>
+					  <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="input-title"><?php echo $this->translate('Driver Schedule Route')?></div>
+					  <div class="clear-all"></div>
+					  <div class="col-sm-2 col_paddingx10">
+						<label for="input-2" class="input__label input__label--kaede"> 
+						<span class="input input--kaede"><a href="<?=$this->url(array('controller'=>'Scheduleroute','action'=>'assignroute'),'default',  true)?>"><i class="fa fa-plus-square" aria-hidden="true"></i>
+<?php echo $this->translate('Assign Route')?></a>
+						</span></label>
+					  </div>
+					  <div class="col-sm-2 col_paddingx10">
+						<label for="input-2" class="input__label input__label--kaede"> 
+						<span class="input input--kaede"><a href="<?=$this->url(array('controller'=>'Scheduleroute','action'=>'routesettinglist'),'default',  true)?>">
+<?php echo $this->translate('Route Setting List')?></a>
+						</span></label>
+					  </div>
+					  <div class="col-sm-1 col_paddingx10">
+									Driver:
+								  </div>
+							<div class="col-sm-2 col_paddingx10">
+								<label for="input-2" class="input__label input__label--kaede">
+								<span class="input input--kaede">
+								<?php 
+								    echo  $this->getHelper('HtmlSelect')->getSelect('driver_id',$this->driver_list,'driver_id','driver_name',(isset($this->ModelObj->getData['driver_id'])? Zend_Encript_Encription:: decode($this->ModelObj->getData['driver_id']):''),true,array('onchange'=>'this.form.submit()')); 
+								 ?>
+								
+								</span></label>
+							</div>
+													<!--<div class="col-sm-2 col_paddingx10">
+								<label for="input-2" class="input__label input__label--kaede">
+								<span class="input input--kaede">
+									<input type="text" name="from_date" id="from_date" />
+								</span></label>
+							</div>
+								<div class="col-sm-2 col_paddingx10">
+								<label for="input-2" class="input__label input__label--kaede">
+								<span class="input input--kaede">
+								<input type="text" name="to_date" id="to_date" />
+								
+								</span></label>
+							</div>-->
+					  <div class="col-sm-7 col_paddingx10"> <span class="input input--kaede"></span> 
+						</div>
+	
+					</div>
+					<div  id="tablegrid">
+					 <table width="100%" border="0" id="dataTableGridId">
+						<?php
+						if(count($this->scheduleroute)>0){
+						 $weeek = 0;
+						 foreach($this->scheduleroute as $key=>$data){
+						 $class = ($key%2==0)?'even':'odd';
+						if($weeek != $data['week']){
+						  $weeek = $data['week'];
+						?>
+					      <tr class="<?=$class?>"><td data-label="Week Date Range"><b><?=$data['start_date']." To ".$data['to_date']; ?></b></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td> </tr>
+						  
+                      <thead>
+						<tr>
+								<th><?=$this->translate('Driver Name');?></th>
+								<th><?=$this->translate('Worker Type');?> </th>
+								<th><?=$this->translate('Contract Hour');?></th>
+								<th><?=$this->translate('Total Planed Hour');?></th>
+								<th><?=$this->translate('Hour Not Planed');?></th>
+								<th><?=$this->translate('Driven Dates');?></th>
+								<th><?=$this->translate('Driven Days');?></th>
+								<th><?=$this->translate('Action');?></th>
+						</tr>
+						</thead>
+					<?php } ?>
+						<tbody>
+						<tr class="<?php echo $class;?>">
+						<td data-label="Driver Name"><?=$this->translate($data['driver_name']); ?></td> 
+                        <td data-label="Product Description"><?=$this->translate(($data['driver_work_type']==1)?'Weekly working hours':'Flexible worker'); ?></td> 
+						<td data-label="Total Work Hour"><?=$this->translate($data['total_workhour']); ?></td>
+						<td data-label="Total Planed Hour"><?=number_format($data['duration'],2) ?></td>
+						<?php $notplaned = ($data['total_workhour']>0)?number_format($data['total_workhour']-$data['duration'],2):0;?>
+						<td data-label="Hour Not Planed" <?php echo ($notplaned>0)?'style="background-color:yellow"':($notplaned<0?'style="background-color:red"':'')?>><?php echo abs($notplaned); ?></td>
+						<td data-label="Driven Dates"><?=$this->translate($data['driven_dates']); ?></td> 
+						<td data-label="Driven Days"><?=$this->translate($data['driven_days']); ?></td>
+						<td data-label="Action">
+						<a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Scheduleroute','action'=>'viewschedule'),'default',  true).'?driver_id='.Zend_Encript_Encription:: encode($data['driver_id']).'&start='.$data['start_date'].'&end='.$data['to_date']?>','60%','60%');"> 
+							<i class="fa fa-list-alt fa-2x" aria-hidden="true" title="Schedule Detail"></i></a>|
+							<a href="<?=$this->url(array('controller'=>'Scheduleroute','action'=>'assignroute'),'default',  true)?>">
+							<i class="fa fa-edit fa-2x" title="Edit Schedule"></i></a>
+							</td>
+						</tr>
+						<?php }} else{ ?>
+						<tr>
+						  <td data-label="No Data"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td>
+						  <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+						  </tr>
+						<?php }
+						?></tbody>
+
+                     </table>
+                    </div>
+					
+					 </form>
+					</div>
+                </div>
+					<div>
+			  </div>
+			 </div>
+            </div>
+          </div>
+<script type="text/javascript"> 
+$(document).ready(function() {
+	 commonDataTableView();
+} );
+ $(function() {
+  $( "#from_date" ).datepicker({
+    dateFormat: 'yy-mm-dd',
+    showOtherMonths: true,
+    selectOtherMonths: true
+  });
+  
+  $( "#to_date" ).datepicker({
+   dateFormat: 'yy-mm-dd',
+     showOtherMonths: true,
+     selectOtherMonths: true
+  });
+ });
+</script>

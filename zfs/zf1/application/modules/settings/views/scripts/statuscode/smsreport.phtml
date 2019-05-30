@@ -1,0 +1,71 @@
+<div class="row row-broken">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+			  
+              <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-6">
+					<form>
+					  <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="input-title"><?php echo $this->translate('SMS Report')?></div>
+					  <div class="clear-all"></div>
+					  <div class="col-sm-9 col_paddingx10"> <span class="input input--kaede"></span> 
+						</div>
+	
+					</div>
+					<div  id="tablegrid">
+					 <table width="100%" border="0" id="dataTableGridId">
+					    <thead>
+						<tr>	
+						 		<th><?=$this->translate('S No.');?></th>
+								<th><?=$this->translate('Shipper');?></th>
+								<th><?=$this->translate('Parcel Number');?> </th>
+								<th><?=$this->translate('Forwarder');?> </th>
+								<th><?=$this->translate('Phone');?></th>
+								<th><?=$this->translate('SMS Text');?> </th>
+								<th><?=$this->translate('Country');?> </th>
+								<th><?=$this->translate('Status');?> </th>
+								<th><?=$this->translate('Send Date');?></th>
+						</tr>
+						</thead>
+						<tbody>
+						<?php
+						if(count($this->smsreport)>0){
+						 foreach($this->smsreport as $key=>$data){
+						 $class = ($key%2==0)?'even':'odd';
+						$status = ($data['is_send']=='1') ? 'Send' : 'Not Send ['.$data['response_code'].']';
+						$error_details = ($data['is_send']=='0') ? $data['description'] : '';						 ?>
+						<tr class="<?php echo $class;?>">  
+						<td><?=$key+1 ?></td>
+						<td><?= $data['company_name'] ?></td>
+						<td>
+						<a href="javascript:void(0);" onclick="javascript:window.open('<?=$this->url(array('controller' => 'Parceltracking','action'=>'tracking'),'default',true).'?tockenno='.Zend_Encript_Encription::encode($data[BARCODE_ID]);?>','mywindow','status=0,resizable=1,width=1200,height=600,toolbar=0')" title="Track Parcel"><?= $data[TRACENR_BARCODE]?></a></td>
+						<td><?= $data['forwarder_name'] ?></td>
+						<td><?= $data['phone_no'] ?></td>
+						<td><?= $data['sms_text'] ?></td>
+						<td><?= $data['country_name'] ?></td>
+						<td><span title="<?=$error_details?>"><?=$status?></span></td>
+						<td><?= $data['sms_date'] ?></td>
+					  </tr>
+						<?php }} else{ ?>
+						<tr>
+						  <td data-label="No Data" colspan="6"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td>
+						  </tr>
+						<?php }
+						?></tbody>
+
+                     </table>
+                    </div>
+					
+					 </form>
+					</div>
+                </div>
+					<div>
+			  </div>
+			 </div>
+            </div>
+          </div>
+<script>
+$(document).ready(function() {
+	 commonDataTableView();
+} );
+</script>

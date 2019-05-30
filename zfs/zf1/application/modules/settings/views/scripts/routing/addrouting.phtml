@@ -1,0 +1,135 @@
+<style type="text/css">
+.outer-container {
+    position: relative;
+    overflow: hidden; font-family:Arial, Helvetica, sans-serif; font-size:12px;
+
+}
+.inner-container { margin:20px;
+    height:550px;
+    position: relative;
+    overflow-x: scroll;
+    overflow-y:hidden;
+}
+.table-header {
+    float:left;
+    width: 100%;
+}
+.table-body {
+    float:left;
+    height: 500px;
+    overflow-y: auto; 
+}
+.header-cell {
+    background-color: #36384e ; color:#ffffff; 
+    text-align: left; font-size:12px; padding:6px; border:1px solid #000000;
+	
+}
+.body-cell {
+    padding:6px;font-size:12px; border:1px solid #000000;
+    text-align: left;
+}
+.wd1, .wd3, .wd4, .wd5, .wd2 {
+    min-width:200px;
+    
+}
+
+</style>	
+
+<div class="tab-content">
+<div class="tab-pane fade in active" id="tab-1">
+<form action="" method="post" name="addrouting" class="inputbox" >
+<input type="hidden" id="user_id" value="<?php echo $this->Request['user_id'];?>">
+<input type="hidden" id="country" value="<?php echo $this->Request['country'];?>">
+<input type="hidden" id="service" value="<?php echo $this->Request['service'];?>">
+<div class="col-lg-12 col-md-12 col-sm-12 b-email" style="background:#ffffff;">
+          <div class="b-email-title">
+            <h6><?php echo $this->translate("Add Routing");?></h6>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 col_paddingtop">
+			 <label><?php echo $this->translate("Country"); ?></label>
+				 <select name="country_id" id="country_id" class="inputfield" onChange="ListserviceweightClass()" style="margin-left: 0px;">
+				 <option value="">--<?php echo $this->translate("Select Country"); ?>--</option>
+				<?php foreach($this->countrylist as $countrylist){
+				  $selected = '';
+				  if(isset($this->Request['country']) && $countrylist['country_id']==$this->Request['country']){
+				    $selected = 'selected="selected"';
+				  }?>
+				  <option value="<?php echo $countrylist['country_id']?>" <?php echo $selected;?>><?php echo $countrylist['cncode'].'-'.$countrylist['country_name']?></option>
+				<?php } ?>
+              </select>
+            </div>
+			<div class="clearfix"></div>
+		<input type="hidden" id="record_count" value="1">
+		<div class="col-sm-2 col_paddingtop">
+			 <label><?php echo $this->translate("Begin Postcode"); ?></label>
+            </div>
+		<div class="col-sm-2 col_paddingtop">
+			 <label><?php echo $this->translate("End Postcode"); ?></label>
+            </div>
+	    <div class="col-sm-2 col_paddingtop"></div>
+		<div class="clearfix"></div>
+	   <div id="postcode_range1">		
+		<div class="col-sm-2 col_paddingtop">
+				 <input type="text" name="beginPostCode[]" id="beginPostCode1" class="inputfield">
+            </div>
+		<div class="col-sm-2 col_paddingtop">
+				 <input type="text" name="endPostCode[]" id="endPostCode1" class="inputfield">
+            </div>
+	    <div class="col-sm-1 col_paddingtop" id="button1"><i class="fa fa-plus-square" onclick="addnewrow()"></i></div>
+   </div>
+   <div class="clearfix"></div>
+   <div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+     
+
+<div class="outer-container" style="overflow:visible"> <!-- absolute positioned container -->
+<div class="inner-container">
+
+	
+	</div>
+</div>
+   </div>
+   
+   <div class="clearfix"></div>
+    <div class="col-sm-2 col_paddingtop"> <input type="submit" name="submit" value="Add Routing" class="btn btn-danger btn-round"></div>
+   
+   
+</div>
+</div>
+</form>
+</div>
+</div>
+
+<script>
+function ListserviceweightClass(){
+   $.ajax({
+	   type: 'post',
+	   url: '<?php echo $this->url(array('controller'=>'Ajax','action'=>'weightclassservice'),'default',true);?>',
+	   data: 'user_id='+$('#user_id').val()+'&country_id='+$('#country_id').val()+'&country='+$('#country').val()+'&service='+$('#service').val(),
+	   //dataType : 'json',
+	   success: function(msg){
+	       $('.inner-container').html(msg); 
+			//alert(msg);
+	   }
+	 });  
+}
+function addnewrow(){
+	var count = parseInt($("#record_count").val()) + 1; 
+	var row_content = '<div id="postcode_range'+count+'">	';	
+	row_content += '<div class="col-sm-2 col_paddingtop">';
+	row_content += '<input type="text" name="beginPostCode[]" id="beginPostCode" class="inputfield">';
+	row_content += '</div>';
+	row_content += '<div class="col-sm-2 col_paddingtop">';
+	row_content += '<input type="text" name="endPostCode[]" id="endPostCode" class="inputfield">';
+	row_content += '</div>';
+	row_content += '<div class="col-sm-2 col_paddingtop"><i class="fa fa-minus-square-o" style="padding-top:15px;" onclick="removerow('+count+')"></i></div>';
+	row_content += '<div class="clearfix"></div></div>';
+	$("#postcode_range"+parseInt($("#record_count").val())).before(row_content);
+	$("#record_count").val(parseInt(count));
+}
+function removerow(count){
+    $("#postcode_range"+count).remove();
+	$("#record_count").val(parseInt($("#record_count").val()) - 1);
+}
+ListserviceweightClass();
+</script>

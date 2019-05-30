@@ -1,0 +1,33 @@
+<div class="input-title"><?=$this->title?></div>
+<?php echo $this->addeditstatuscode; ?>
+<script>
+	$(document).ready(function(){
+   			$( ".control--radio" ).append('<div class="control__indicator"></div>');
+			var emailstatus = $('input:radio[name=emailstatus]:checked').val();
+				$("#exist_notification").hide();
+				$("#new_notification").hide();
+				$("#notification_status").hide();
+				
+			if(emailstatus =='1'){
+		        $("#exist_notification").show();
+				$("#new_notification").hide();
+				$("#notification_status").hide();
+			}
+			if(emailstatus =='0'){
+				$("#exist_notification").hide();
+				$("#new_notification").show();
+				$("#notification_status").show();
+			}
+		$("[name='emailstatus']").click(function(){
+			if(this.value == '1'){
+				$("#exist_notification").show();
+				$("#new_notification").hide();
+				$("#notification_status").hide();
+			}else{
+				$("#exist_notification").hide();
+				$("#new_notification").show();
+				$("#notification_status").show();
+			}	
+		});
+	});
+	</script>

@@ -1,0 +1,42 @@
+<?php $form = $this->SupplierForm; ?>
+<form action="" method="post" name="addcountry" class="inputbox" >
+<div class="col-lg-12 col-md-12 col-sm-12 b-email" style="background:#ffffff;">
+          <div class="b-email-title">
+            <h6><?=$this->title;?></h6>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 col_paddingtop">
+			  <?php echo $form->company_name,$form->supplier_id; ?>
+            </div>
+			<div class="col-sm-6 col_paddingtop">
+              <?php echo $form->contact_name; ?>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-sm-6 col_paddingtop">
+			  <?php echo $form->street,$form->street_no,$form->address,$form->phoneno; ?>
+            </div>
+            <div class="col-sm-6 col_paddingtop">
+			  <?php echo $form->postalcode,$form->city,$form->country_id,$form->email; ?>
+            </div>
+			<div class="clearfix"></div>
+            <div class="col-sm-6 col_paddingtop">
+			  <?php echo $form->bank_account,$form->account_holder; ?>
+            </div>
+            <div class="col-sm-6 col_paddingtop">
+			  <?php echo $form->btw_no,$form->kvk_no; ?>
+            </div>
+			<div class="clearfix"></div>
+			<div class="col-sm-6 col_paddingtop">
+			  <?php echo $form->creditcard_no; ?>
+            </div>
+          
+			<div class="col-sm-6 col_paddingtop">
+			<?php echo $form->credit_period; ?>
+					</div>
+		    
+            <div class="col-sm-2 col_paddingtop"> <?php echo $form->submit; ?> </div>
+          </div>
+* fields are Mandatory
+        </div>
+
+</form>

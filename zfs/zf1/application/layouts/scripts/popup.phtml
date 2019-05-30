@@ -1,0 +1,41 @@
+<?php echo $this->doctype(); ?>
+
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<?php echo $this->headTitle($this->translate('Logicparcel'))->setSeparator(' - ')->setAutoEscape(false) ?>
+<script type="text/javascript">
+    var baseUrl = '<?php echo BASE_URL;?>/';
+</script>
+<?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/x-icon', 'href' => $this->baseUrl() . '/public/images/favicon.ico'),
+array('rel' => 'icon', 'type' => 'image/x-icon', 'href' => $this->baseUrl() . '/public/images/favicon.ico'))
+                        ->appendStylesheet($this->baseUrl('public/css/bootstrap.css'))
+                        ->appendStylesheet($this->baseUrl('public/css/font-awesome.min.css'))
+                        ->appendStylesheet($this->baseUrl('public/css/animate.min.css'))
+						->appendStylesheet($this->baseUrl('public/css/loading.css'))
+						->appendStylesheet($this->baseUrl('public/css/dark.css'))
+						->appendStylesheet($this->baseUrl('public/css/main.css'))
+						->appendStylesheet($this->baseUrl('public/css/filter.css'))
+						->appendStylesheet($this->baseUrl('public/css/sweetalert.css'))
+						->appendStylesheet($this->baseUrl('public/css/input.css'))
+						->appendStylesheet($this->baseUrl('public/css/checkboxes.css'))
+						->appendStylesheet($this->baseUrl('public/fancybox/jquery.fancybox.css'))
+						->appendStylesheet($this->baseUrl('public/Datatables/jquery.dataTables.min.css'))
+						->appendStylesheet($this->baseUrl('public/datepicker/jquery-ui.css'));?>
+
+<?php echo $this->headScript()
+			->prependFile($this->baseUrl('public/js/jquery-3.1.0.min.js'))
+            ->prependFile($this->baseUrl('public/js/modernizr.js'))
+			->prependFile($this->baseUrl('public/js/html5shiv.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
+			->prependFile($this->baseUrl('public/js/respond.src.js'), 'text/javascript', array('conditional' => 'lt IE 9',)); ?>						
+
+	<script src="<?php echo $this->baseUrl('public/js/common.js');?>"></script>	
+<script src="<?php echo $this->baseUrl('public/Datatables/jquery.dataTables.min.js');?>"></script>
+<script src="<?php echo $this->baseUrl('public/datepicker/jquery-ui.js');?>"></script>
+</head>
+<body>
+<div class="content container-fluid">
+    <?php echo $this->layout()->content;?>
+  </div>

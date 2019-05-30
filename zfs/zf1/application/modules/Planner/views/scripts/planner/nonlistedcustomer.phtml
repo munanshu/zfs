@@ -1,0 +1,78 @@
+<link rel="stylesheet" href="<?php echo $this->baseUrl('/public/timepicker/jquery.ui.timepicker.css')?>">
+<script src="<?php echo $this->baseUrl('/public/timepicker/include/ui-1.10.0/jquery.ui.widget.min.js')?>"></script>
+<script src="<?php echo $this->baseUrl('/public/timepicker/jquery.ui.timepicker.js')?>"></script>
+<form action="" method="post" name="nonlisted_customer" class="inputbox" >
+<div class="col-lg-12 col-md-12 col-sm-12 b-email" style="background:#ffffff;">
+          <div class="b-email-title">
+            <h6><?php echo $this->translate("Non-Listed Customer");?></h6>
+          </div>
+          <div class="row">
+		  <?php if($this->ModelObj->Useconfig['level_id']<7){ ?>
+		  <div class="col-sm-5 col_paddingtop">
+			 <label><?php echo $this->translate("Depot"); ?></label>
+				<?php  echo $this->getHelper('HtmlSelect')->getSelect('user_id',$this->depotlist,'user_id','company_name','',true,array('class'=>'inputfield')); ?>
+            </div>
+			<?php } else{?>
+			<input type="hidden" name="user_id" id="user_id" value="<?php echo Zend_Encript_Encription::encode($this->ModelObj->Useconfig['user_id']);?>">
+			<?php } ?>
+		  <div class="col-sm-4 col_paddingtop">
+			 <label><?php echo $this->translate("Pickup Date"); ?></label>
+				 <input type="text" name="pickup_date" id="pickup_date" class="inputfield">
+            </div>
+   <div class="col-sm-3 col_paddingtop">
+			 <label><?php echo $this->translate("Pickup Time"); ?></label>
+				 <input type="text" name="pickup_time" id="pickup_time" class="inputfield">
+            </div>
+			<?php $Address = commonfunction::explode_string($this->pickup_date[2],'^');?>
+   <div class="clearfix"></div>
+            <div class="col-sm-5 col_paddingtop">
+			 <label><?php echo $this->translate("Name"); ?></label>
+				 <input type="text" name="name" id="name" class="inputfield">
+            </div>
+   <div class="col-sm-4 col_paddingtop">
+			 <label><?php echo $this->translate("Street1"); ?></label>
+				 <input type="text" name="street1" id="street1" class="inputfield" >
+            </div>
+	 <div class="col-sm-3 col_paddingtop">
+	 <label><?php echo $this->translate("Street2"); ?></label>
+		 <input type="text" name="street2" id="street2" class="inputfield">
+	</div>
+   <div class="clearfix"></div>
+   <div class="col-sm-3 col_paddingtop">
+			 <label><?php echo $this->translate("Zipcode"); ?></label>
+				 <input type="text" name="zipcode" id="zipcode" class="inputfield">
+            </div>
+   <div class="col-sm-5 col_paddingtop">
+			 <label><?php   echo $this->translate("City"); ?></label>
+				<input type="text" name="city" id="city" class="inputfield">
+            </div>
+  
+   <div class="col-sm-4 col_paddingtop">
+			 <label><?php echo $this->translate("Country"); ?></label>
+				 <input type="text" name="country" id="country" class="inputfield">
+            </div>
+	 <div class="col-sm-4 col_paddingtop">
+			 <label><?php echo $this->translate("Weight"); ?></label>
+				 <input type="text" name="weight" id="weight" class="inputfield" value="1.00">
+            </div>
+	 <div class="col-sm-4 col_paddingtop">
+			 <label><?php echo $this->translate("Quantity"); ?></label>
+				 <input type="text" name="quantity" id="quantity" class="inputfield" value="1">
+            </div>
+   <div class="clearfix"></div>
+   <div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+	  <div class="col-sm-2 col_paddingtop"> <input type="submit" name="nonlisted" value="Add" class="btn btn-danger btn-round"></div>
+   </div>
+</div>
+</div>
+</form>
+<script type="text/javascript">	
+	$(function() {
+		$( "#pickup_date" ).datepicker({
+		  dateFormat: 'yy-mm-dd',
+		  showOtherMonths: true,
+		  selectOtherMonths: true
+		});
+	});
+	$('#pickup_time').timepicker();
+</script>	

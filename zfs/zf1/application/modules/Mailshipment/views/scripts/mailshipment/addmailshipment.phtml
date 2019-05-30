@@ -1,0 +1,84 @@
+<script src="<?php echo $this->baseUrl('/public/js/mailpost.js')?>"></script> 
+
+	<div class="row row-broken">
+        <div class="col-sm-12">
+				 <div class="filter">
+				<div class="input-title"><?php echo $this->translate('Add Mail/Post')?></div>
+			<div class="clear"></div>
+				<div style="background:#ffffff; padding:10px; overflow:auto;text-align:center">
+				
+			<div class="clear-all"></div>
+				<div class="col-sm-2">&nbsp;</div>
+					<div class="col-sm-8">
+				<form id="Importshipmentform" class="inputbox" enctype="multipart/form-data" action="" method="post" onsubmit="return importvalidate()">
+				<input type="hidden" id="addcount" value="1">	
+					<table class="tbl_new">
+					<tbody>
+					<tr id="file_error" style="display:none;color:red;"></tr>
+					<tr><th colspan="6"><?php echo $this->translate('Add Mail/Post')?></th></tr>
+					<?php if($this->ModelObj->Useconfig['level_id']==1 || $this->ModelObj->Useconfig['level_id']==4 || $this->ModelObj->Useconfig['level_id']==6){?>
+					 <tr>
+						<td style="text-align:center"><?php echo $this->translate('Customer')?>:</td>
+						<td colspan="2"><?php echo $this->getHelper('HtmlSelect')->getSelect('user_id',$this->customerlist,'user_id','company_name','',true,array('class'=>'inputfield'));?> 
+						</td>
+						
+						<td colspan="3">&nbsp;</td>
+					 </tr>
+					 <?php } else{ 
+					 $user_id = ($this->ModelObj->Useconfig['level_id']==10)?$this->ModelObj->Useconfig['parent_id']:$this->ModelObj->Useconfig['user_id'];
+					 ?>
+					 <input type="hidden" name="user_id" id="user_id" value="<?php echo Zend_Encript_Encription::encode($user_id)?>">
+					 <?php } ?>
+					 <tr>
+						 <th><?php echo $this->translate('Country')?></th>
+						 <th><?php echo $this->translate('Weight Class')?></th>
+						 <th><?php echo $this->translate('Quantity')?></th>
+						 <th><?php echo $this->translate('Price')?></th>
+						 <th><?php echo $this->translate('Remark')?></th>
+						 <th>#</th>
+					 </tr>
+						<tr id="row1">
+						 <td><?php echo $this->getHelper('HtmlSelect')->getSelect('country_id[]',$this->countrylist,'id','country_name','',false,array('class'=>'inputfield','onchange'=>'getMailPrice(1)','id'=>'country_id1'));?> </td>
+						 <td><?php echo $this->getHelper('HtmlSelect')->getSelect('weight_class[]',$this->weightclass,'class_id','Classes','',false,array('class'=>'inputfield','onchange'=>'getMailPrice(1)','id'=>'weight_class1'));?> </td>
+						 <td><input type="text" name="quantity[]" id="quantity1" class="inputfield" onblur="getMailPrice(1);"><input type="hidden" name="depot_price[]" id="depot_price1"><input type="hidden" name="customer_price[]" id="customer_price1"></td>
+						 <td id="price1"></td>
+						 <td id="remark1"></td>
+						 <td><i class="fa fa-plus-square" onclick="add_more()"></i></td>
+					 </tr>					 
+					<tr>
+						<td style="text-align:center" colspan="6">
+						<input type="submit" name="add_mail_post" id="add_mail_post" value="Add Mail/Post" class="btn btn-danger"></td>
+						</td>
+						
+					 </tr>
+					</tbody>
+					</table>
+				</form>	
+					</div>
+					<div class="col-sm-2">&nbsp;</div>
+					<div class="clear-all"></div>
+				</div>
+			</div>
+        </div>
+	</div>
+<script>
+
+function add_more(){
+    var count = parseInt($("#addcount").val()) + 1;
+	var html = '';
+	html += '<tr id="row'+count+'">';  
+	html += '<td><?php echo $this->getHelper('HtmlSelect')->getSelect('country_id[]',$this->countrylist,'id','country_name','',false,array('class'=>'inputfield','onchange'=>"getMailPrice('+count+');",'id'=>"country_id'+count+'"));?> </td>';
+	html += '<td><?php echo $this->getHelper('HtmlSelect')->getSelect('weight_class[]',$this->weightclass,'class_id','Classes','',false,array('class'=>'inputfield','onchange'=>"getMailPrice('+count+');",'id'=>"weight_class'+count+'"));?> </td>';
+	html += '<td><input type="text" name="quantity[]" id="quantity'+count+'" onblur="getMailPrice('+count+');" class="inputfield"><input type="hidden" name="depot_price[]" id="depot_price'+count+'"><input type="hidden" name="customer_price[]" id="customer_price'+count+'"></td>';
+	html += '<td id="price'+count+'"></td>';
+	html += '<td id="remark'+count+'"></td>';
+	html += '<td><i class="fa fa-minus-square-o" style="padding-top:15px;" onclick="removerow('+count+')"></i></td></tr>';
+	$("#row"+parseInt($("#addcount").val())).after(html);
+	$("#addcount").val(parseInt(count));
+}
+function removerow(count){
+    $("#row"+count).remove();
+	$("#addcount").val(parseInt($("#addcount").val()) - 1);
+}
+
+</script>	

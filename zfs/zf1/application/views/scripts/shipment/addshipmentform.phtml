@@ -1,0 +1,234 @@
+<link rel="stylesheet" href="<?php echo $this->baseUrl('/public/Autocomplete/jquery-ui.css')?>">
+<script src="<?php echo $this->baseUrl('/public/Autocomplete/jquery-1.10.2.js')?>"></script>
+<script src="<?php echo $this->baseUrl('/public/Autocomplete/jquery-ui.js')?>"></script> 
+  <div class="row row-broken">
+      <div class="col-md-12">
+        <ol class="breadcrumb">
+          <li><a href="index.html"><i class="fa fa-home"></i></a></li>
+          <li><?php echo $this->translate("Shipment"); ?></li>
+          <li class="active"><?php echo $this->translate($this->Request['action']); ?></li>
+        </ol>
+      </div>
+	  
+	  <div class="col-md-12">
+  <?php echo $this->getHelper('Messages')->getMessages();?> </div>
+    </div>
+    <div class="row decor-default p-email">
+	
+      <form method="post" action="" class="inputbox" name="addshipment" id="addshipment">
+	    <input type="hidden" name="forwarder_id" id="forwarder_id">
+		<input type="hidden" name="original_forwarder" id="original_forwarder">
+		<input type="hidden" name="selected_service" id="selected_service">
+		<input type="hidden" name="selected_addservice" id="selected_addservice">
+		<input type="hidden" name="shipment_id" id="shipment_id">
+		<input type="hidden" name="shipment_mode" id="shipment_mode">
+		<input type="hidden" name="continent_id" id="continent_id">
+        <div class="col-lg-9 col-md-8 col-sm-12 b-email">
+          <div class="b-email-title">
+            <h6><?php echo $this->translate("Shipment Details"); ?></h6>
+          </div>
+          <div class="row" style="padding-bottom:0px">
+            <div class="col-sm-8 col_paddingtop">
+              <label><?php echo $this->translate("Customer"); ?></label>
+              <select id="user_id" name="user_id" class="inputfield">
+			    <?php foreach($this->customerlist as $customerlist){?>
+				  <option value="<?php echo $customerlist['user_id']?>"><?php echo $customerlist['company_name'].', '.$customerlist['postalcode'].', '.$customerlist['city'];?></option>
+				<?php } ?>
+              </select>
+            </div>
+            <div class="col-sm-4 col_paddingtop">
+			  <div class="ui-widget">
+			 <label for="addressbook"><a href="javascript::void(0)" onclick="addressBook()"><?php echo $this->translate("Show Address Book"); ?></a></label>
+              <input type="text" id="addressbook"  name="addressbook" class="inputfield form-control txt-auto">
+			  </div>
+
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-sm-4 col_paddingtop">
+              <label><?php echo $this->translate("Country"); ?></label>
+              <select name="country_id" id="country_id" class="inputfield" onChange="Countrychange()">
+			    <?php foreach($this->countrylist as $countrylist){?>
+				  <option value="<?php echo $countrylist['country_id']?>" <?php echo ($countrylist['country_id']==9)?'selected="selected"':'';?>><?php echo $countrylist['cncode'].'-'.$countrylist['country_name']?></option>
+				<?php } ?>
+              </select>
+            </div>
+            <div class="col-sm-2 col_paddingtop">
+              <label><?php echo $this->translate("Postal Code"); ?> </label>
+              <input type="text" name="rec_zipcode" id="rec_zipcode" class="inputfield  mandatory" placeholder="<?php echo $this->translate("postalcode"); ?>" onblur="PostalcodeChange('','')" style="width:100px">
+            </div>
+            <div class="col-sm-2 col_paddingtop">
+              <label><?php echo $this->translate("Weight"); ?> (kg) </label>
+              <input type="text" id="weight" name="weight" class="inputfield  mandatory" placeholder="<?php echo $this->translate("Weight"); ?>" onblur="onweightchange()">
+            </div>
+			
+            <div class="col-sm-1 col_paddingtop">
+              <label><?php echo $this->translate("Qauntity"); ?></label>
+              <select name="quantity" id="quantity" class="inputfield" style="width:65px">
+			   <?php for($i=1;$i<=10;$i++){?>
+                <option value="<?php echo $i;?>"><?php echo $i;?></option>
+              <?php } ?>
+			  </select>
+            </div>
+			<div class="col-sm-3 col_paddingtop" id="sender_div">
+              <label><?php echo $this->translate("Sender Address"); ?></label>
+             
+              <select class="inputfield" id="senderaddress_id" name="senderaddress_id">
+                <option value="C">Default Address</option>
+              </select>
+            </div>
+			<div class="clearfix"></div>
+          </div>
+		  
+		  <!--receiver Information-->
+		  <div class="b-email-title">
+            <h6><?php echo $this->translate("Receiver Information"); ?></h6>
+          </div>
+		  <div class="row" id="receiver_block">
+            <div class="col-sm-6 col_paddingtop">
+              <label><?php echo $this->translate("Receiver Name"); ?></label>
+              <input type="text" name="rec_name" id="rec_name" class="inputfield mandatory" placeholder="Receiver Name" value="<?php isset($this->Request[RECEIVER])?$this->Request[RECEIVER]:''?>">
+            </div>
+            <div class="col-sm-6 col_paddingtop">
+              <label><?php echo $this->translate("Contact"); ?></label>
+              <input type="text" name="rec_contact" id="rec_contact" class="inputfield" placeholder="Contact" value="<?php isset($this->Request[RECEIVER])?$this->Request[RECEIVER]:''?>">
+            </div>	
+		   <!--Street and Address-->
+		   <div class="clearfix"></div>
+			<div class="col-sm-4 col_paddingtop">
+              <label><?php echo $this->translate("Street"); ?></label>
+              <span id="street_div"><input type="text" name="rec_street" id="rec_street" class="inputfield mandatory" placeholder="Street" value="<?php isset($this->Request[RECEIVER])?$this->Request[RECEIVER]:''?>"></span>
+            </div>
+            <div class="col-sm-2 col_paddingtop">
+              <label><?php echo $this->translate("House No."); ?></label>
+              <input type="text" name="rec_streetnr" id="rec_streetnr" class="inputfield"  placeholder="<?php echo $this->translate("H.No."); ?>"  style="width:80px" value="<?php isset($this->Request[RECEIVER])?$this->Request[RECEIVER]:''?>">
+            </div>
+			<div class="col-sm-3 col_paddingtop">
+              <label><?php echo $this->translate("Address"); ?></label>
+              <input type="text" name="rec_address" id="rec_address" class="inputfield"  placeholder="Address" value="<?php isset($this->Request[RECEIVER])?$this->Request[RECEIVER]:''?>">
+            </div>
+			<div class="col-sm-3 col_paddingtop">
+              <label><?php echo $this->translate("Street2"); ?></label>
+              <input type="text" name="rec_street2" id="rec_street2" class="inputfield"  placeholder="Street2" value="<?php isset($this->Request[RECEIVER])?$this->Request[RECEIVER]:''?>">
+            </div>
+		 <div class="clearfix"></div>
+			<div class="col-sm-6 col_paddingtop">
+              <label><?php echo $this->translate("City"); ?></label>
+              <span id="city_div"><input type="text" name="rec_city" id="rec_city" class="inputfield mandatory" placeholder="City" value="<?php isset($this->Request[RECEIVER])?$this->Request[RECEIVER]:''?>"></span>
+            </div>
+			<div class="col-sm-4 col_paddingtop">
+              <label><?php echo $this->translate("Reference"); ?></label>
+              <input type="text" name="rec_reference" id="rec_reference" class="inputfield"  placeholder="Reference" value="<?php isset($this->Request[RECEIVER])?$this->Request[RECEIVER]:''?>">
+            </div>
+		<div class="clearfix"></div>
+			<div class="col-sm-5 col_paddingtop">
+              <label><?php echo $this->translate("Email"); ?></label>
+              <input type="text" name="rec_email" id="rec_email" onblur="validateEmail();" class="inputfield" placeholder="Email" value="<?php isset($this->Request[RECEIVER])?$this->Request[RECEIVER]:''?>">
+            </div>
+			 <div class="col-sm-4 col_paddingtop">
+              <label><?php echo $this->translate("Phone Number"); ?></label>
+              <input type="text" name="rec_phone" id="rec_phone" class="inputfield"  placeholder="Phone Number" style="width:150px" value="<?php isset($this->Request[RECEIVER])?$this->Request[RECEIVER]:''?>">
+            </div>
+			<div class="col-sm-3 col_paddingtop">
+              <label><?php echo $this->translate("Email Notification"); ?></label><br>
+              <input type="radio" name="email_notification" id="emailnotify_1" value="1">Yes
+			  <input type="radio" name="email_notification" id="emailnotify_2" value="0">No
+            </div>
+		<div class="clearfix"></div>
+            <div class="col-sm-3 col_paddingtop" style="display:none">
+              <label>Label Format</label>
+              <select class="inputfield">
+                <option>Label Format</option>
+              </select>
+            </div>		          	
+					
+		  <!--Submit Buttons-->
+			<div class="clearfix"></div>
+			<div class="clearfix"></div>
+			<div class="col-sm-3 col_paddingtop" id="print_button">
+              <input type="button" name="print" id="print" value="Print" class="btn btn-danger btn-block" onClick="Addshipment('Print');">
+            </div>
+			<div class="col-sm-3 col_paddingtop" id="printlater_button">
+              <input type="button" name="print_later" id="print_later" value="Print Later" class="btn btn-danger btn-block" onClick="Addshipment('Later');">
+            </div>
+			<div class="col-sm-3 col_paddingtop" id="pickup_button" style="display:none">
+              <input type="button" name="pickup" id="pickup" value="Pickup" class="btn btn-danger btn-block" onClick="Addshipment('Later');">
+            </div>
+			
+          </div>
+        </div>
+		<!--Service Information-->
+        <div class="col-lg-3 col-md-4 col-sm-12 decor-primary b-profile">
+          <div id="reciverinfo">
+			<div class="b-profile-name"> <?php echo $this->translate("Service Details"); ?> </div>
+			
+			
+			<div class="rgt_scroll">
+			<div id="service_div">
+			  <div class="blank_arrow" id="arrow_div">
+				<p>Fill Details left to list service</p><p class="lft_arrow"><i class="fa fa-arrow-left"></i></p>
+				</div>
+			</div>
+			                 
+			
+			</div>	
+
+			
+            </div>
+        </div>
+      </form>
+    </div>
+<script>
+onloadAddshipment();
+Countrychange();
+</script>
+<script>
+$('#addressbook').autocomplete({
+		      	source: function( request, response ) {
+		      		$.ajax({
+		      			url : '<?php echo $this->url(array('controller'=>'Ajax','action'=>'searchaddress'),'default',true)?>',
+		      			dataType: "json",
+						data: {
+						   name_startsWith: request.term,
+						   user_id:$("#user_id").val()
+						},
+						 success: function( data ) {
+							 response( $.map( data, function( item,name ) {
+								return {
+									label: item.Name,
+									value: item.Name,
+									address: item.FullAdd
+								}
+							}));
+						}
+		      		});
+		      	},
+				select: function( event , ui ) {
+					filladdress(ui.item.address);
+              },
+		      	autoFocus: true,
+		      	minLength: 0      	
+});
+$('#rec_street').autocomplete({
+		source: function( request, response ) {
+			$.ajax({
+				url : '<?php echo $this->url(array('controller'=>'Ajax','action'=>'getstreet'),'default',true)?>',
+				dataType: "json",
+				data: {
+				   name_startsWith: request.term,
+				   country_id:$("#country_id").val(),
+				   rec_zipcode:$("#rec_zipcode").val()
+				},
+				 success: function( data ) {
+					 response( $.map( data, function( item ) {
+						return {
+							label: item,
+							value: item
+						}
+					}));
+				}
+			});
+		},
+		autoFocus: true,
+		minLength: 0      	
+	  });
+</script>

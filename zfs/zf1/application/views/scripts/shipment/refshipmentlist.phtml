@@ -1,0 +1,182 @@
+<div style="position: absolute; top:400px; right:0px; z-index:999999">
+  <a href="javascript:void(0)" id="btn-filter1" title="Advance Search"><i class="fa fa-search fa-2x"></i></a>
+</div>	
+
+<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+		<form method="get" action="" id="filter_form" name="filter_form">
+			<!-- filter start -->
+			<div class="filter">
+				<div class="input-title"><?php echo $this->translate("Search");?></div>
+				<div class="row row_nopadding decor-success" style="margin-left:0px !important;margin-right:0px !important;">
+				<div class="clear-all"></div>				
+				<div class="col-sm-3 col_paddingtop">
+				<input type="text" name="search_word" id="search_word" placeholder="Search Word" class="inputfield">
+				</div>
+				<div class="col-sm-3 col_paddingtop">
+					<input type="submit" class="btn btn-danger btn-round" name="search" id="search" value="Search">
+				</div>
+				<div class="clear-all"></div>
+				<div class="col-sm-12 col_paddingtop"></div>
+				 <!-- Advance Searchg --->			
+	  <div class="cd-filter view-1" id="filter1">
+          <h2><?php echo $this->translate("Advance Serach");?></h2>
+          <a href="javascript:void(0)" class="cd-close">
+          <svg>
+            <use xlink:href="#icon-close"></use>
+          </svg>
+          </a>
+           <div class="cd-filter-block">
+              <h4><?php echo $this->translate("Country");?></h4>
+              <div class="cd-filter-content">
+                <div class="cd-select cd-filters">
+				    <?php echo $this->getHelper('HtmlSelect')->getSelect('country_id',$this->countrylist,'country_id','country_code_name',(isset($this->Request['country_id'])?$this->Request['country_id']:''),false,array('class'=>'filter'));?> 
+                </div>
+                <!-- cd-select -->
+              </div>
+              <!-- cd-filter-content -->
+            </div>
+			<?php if(in_array($this->ModelObj->Useconfig['level_id'],array(1,4,6))){?>
+            <div class="cd-filter-block">
+              <h4><?php echo $this->translate("Forwarder");?></h4>
+              <div class="cd-filter-content">
+                <div class="cd-select cd-filters">
+                  <?php echo $this->getHelper('HtmlSelect')->getSelect('forwarder_id',$this->forwarderlist,'forwarder_id','forwarder_name',(isset($this->Request['forwarder_id'])?$this->Request['forwarder_id']:''),false,array('class'=>'filter'));?> 
+                </div>
+              </div>
+            </div>
+			<?php } ?>
+            <div class="cd-filter-block">
+              <h4><?php echo $this->translate("From Date");?></h4>
+              <div class="cd-filter-content" style="position:relative">
+                <input type="text" name="from_date" id="from_date" value="<?php echo (isset($this->Request['from_date'])?$this->Request['from_date']:'')?>"">
+              </div>
+              <!-- cd-filter-content -->
+            </div>
+            <div class="cd-filter-block">
+              <h4><?php echo $this->translate("To Date");?></h4>
+              <div class="cd-filter-content" style="position:relative">
+              <input type="text" name="to_date" id="to_date" value="<?php echo (isset($this->Request['to_date'])?$this->Request['to_date']:'')?>">
+				<!-- cd-filter-content -->
+				</div>
+            </div>
+			<?php if($this->ModelObj->Useconfig['level_id']==1){?>
+            <div class="cd-filter-block">
+              <h4><?php echo $this->translate("Depot");?></h4>
+              <div class="cd-filter-content">
+                <div class="cd-select cd-filters">
+                <?php echo $this->getHelper('HtmlSelect')->getSelect('parent_id',$this->depotlist,'user_id','company_name',(isset($this->Request['parent_id'])?$this->Request['parent_id']:''),true,array('class'=>'filter'));?> 
+				</div>
+                <!-- cd-select -->
+              </div>
+              <!-- cd-filter-content -->
+            </div>
+			<?php } ?>
+			<?php if(in_array($this->ModelObj->Useconfig['level_id'],array(1,4,6))){?>
+            <div class="cd-filter-block">
+              <h4><?php echo $this->translate("Customer");?></h4>
+              <div class="cd-filter-content">
+                <div class="cd-select cd-filters">
+             <?php echo $this->getHelper('HtmlSelect')->getSelect('user_id',$this->customerlist,'user_id','company_name',(isset($this->Request['user_id'])?$this->Request['user_id']:''),true,array('class'=>'filter'));?> 
+			  </div>
+              </div>
+            </div>
+            <div class="cd-filter-block">
+              <h4><?php echo $this->translate("Service");?></h4>
+              <div class="cd-filter-content">
+                <div class="cd-select cd-filters">
+                 <?php echo $this->getHelper('HtmlSelect')->getSelect('service_id',$this->servicelist,'service_id','service_name',(isset($this->Request['service_id'])?$this->Request['service_id']:''),false,array('class'=>'filter'));?> 
+					</div>
+              </div>
+            </div>
+			<?php } ?>
+            <div class="clear-all"></div>
+            <div style="padding:20px 0px; text-align:center">
+			  <input type="submit" name="advance_search" id="advance_search" value="<?php echo $this->translate("Advance Search");?>" class="btn btn-warning btn-round"> 
+            </div>
+        </div>
+		<!--End Advance Filter--->
+				</div>
+           </div>	
+			<!-- end filter -->
+	 </form>		
+	
+	<form method="post" action="" id="print_label" name="print_label">		
+	<div class="col-sm-3 col_paddingtop">
+		<select name="shipment_mode" id="shipment_mode"  class="inputfield" onchange="javascript:if(this.value == 'Delete' &amp;&amp; confirm('Selected shipment will be deleted\nAre you sure?') || this.value == 'PrintShippingList' || this.value == 'PerformaInvoice' || (this.value == 'PrintAll')) $('#print_label').submit(); else if(this.value == 'PrintAll' &amp;&amp; label_option == 'a4') jQuery('#dialog').dialog('open'); else return false;">
+				  <option value=""><?php echo $this->translate("With Selected");?></option>
+				  <option value="Delete"><?php echo $this->translate("Delete");?></option>
+				  <option value="PrintAll"><?php echo $this->translate("Print All Label");?></option>
+				  <option value="PrintShippingList"><?php echo $this->translate("Print Shipping List");?></option>
+				  <option value="PerformaInvoice"><?php echo $this->translate("Performa Invoice");?></option>
+				</select> </div>
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+				<div id="table">
+					<div class="header-row row">
+					<span class="cell"><input type="checkbox" id="check_uncheck_all" onchange="check_uncheckALL(this)"></span>
+					<span class="cell"><?php echo $this->translate("Receiver");?></span> 
+					<span class="cell"><?php echo $this->translate("Reference");?></span> 
+					<span class="cell"><?php echo $this->translate("Country");?></span> 
+					<span class="cell"><?php echo $this->translate("Postalcode");?></span> 
+					<span class="cell"><?php echo $this->translate("Forwarder");?></span> 
+					<span class="cell"><?php echo $this->translate("Weight");?>(KG)</span>
+					<span class="cell"><?php echo $this->translate("Quantity");?></span> 
+					<span class="cell"><?php echo $this->translate("Service");?></span> 
+					<span class="cell"><?php echo $this->translate("Create Date");?></span>
+					<span class="cell"><?php echo $this->translate("Action");?></span>					
+					</div>
+					<?php if($this->records['Total']>0){
+					
+						foreach($this->records['Records'] as $index=>$data){
+							$class = (($index)%2==0) ? 'class="row odd"' :'class="row even"';?>
+						<div <?=$class?>>
+							<span class="cell" <?php echo ($data['label_date']!='0000-00-00 00:00:00')?'style="background-color:green"':''?>><input type="checkbox" name="shipment_id[]" id="shipment_id_<?= $data[SHIPMENT_ID]?>" value="<?= $data[SHIPMENT_ID]?>" class="check_uncheck_class"></span>
+							<span class="cell" data-label="Receiver"><?= $data[RECEIVER]?></span> 
+							<span class="cell" data-label="Reference"><?= $data[REFERENCE]?></span>
+							<span class="cell" data-label="Country"><?= $data['country_name']?></span>
+							<span class="cell" data-label="Postalcode"><?= $data[ZIPCODE]?></span>
+							<span class="cell" data-label="Forwarder"><?= $data['forwarder_name']?></span>
+							<span class="cell" data-label="Weight"><?= $data[WEIGHT]?></span>
+							<span class="cell" data-label="Quantity"><?= $data[QUANTITY]?></span>
+							<span class="cell" data-label="Service"><?= $data['service_name']?></span>
+							<span class="cell" data-label="Create Date"><?= date('F- d Y',strtotime($data['create_date']));?></span>
+							<span class="cell" data-label="Action">
+							 <img src="<?=IMAGE_LINK.'/print.png'?>" title="<?php echo $this->translate("Print");?>" onclick="printDelete('PrintAll','<?= $data[SHIPMENT_ID]?>')" />&nbsp;|&nbsp;
+							 <img src="<?=IMAGE_LINK.'/delete.png'?>" title="<?php echo $this->translate("Delete Shipment");?>"  onclick="if(confirm('Selected shipment will be deleted\nAre you sure?')){printDelete('Delete','<?= $data[SHIPMENT_ID]?>')}"/>
+							<?php if($data['continent_id']!=2){?>
+							&nbsp;|&nbsp;<i class="fa fa-files-o fa-2x" title="<?php echo $this->translate("Performa Invoice");?>"  onclick="printDelete('PerformaInvoice','<?= $data[SHIPMENT_ID]?>')"></i>
+							<?php } ?>
+							</span> 
+						</div>
+					<?php }}else{?>
+						
+						<div class="row odd">
+							<b><?=$this->translate("Recod not found !");?></b> 
+						</div>
+					<?php }?>	
+				</div>
+				<div class="unit control">
+                      <div class="nav-btns pull-right"> <?php echo commonfunction::PageCounter($this->records['Total'],$this->Request)?>
+                      </div>
+                    </div>
+			</div>
+		</form>	
+			</div></div>
+		
+<script>
+
+	$(function() {
+		$( "#from_date" ).datepicker({
+		  dateFormat: 'yy-mm-dd',
+		  showOtherMonths: true,
+		  selectOtherMonths: true
+		});
+		$( "#to_date" ).datepicker({
+		  dateFormat: 'yy-mm-dd',
+		  showOtherMonths: true,
+		  selectOtherMonths: true
+		});
+	
+	});
+</script>				

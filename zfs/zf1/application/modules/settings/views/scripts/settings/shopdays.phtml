@@ -1,0 +1,48 @@
+<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+		<form method="post" action="" id="customer" name="customer">
+		
+		<!-- filter start -->
+		<div class="filter">
+			<div class="input-title"><?php echo $this->translate("Working Days");?></div>
+			
+			<div class="row row_nopadding decor-success" style="margin-left:0px !important;margin-right:0px !important;">
+
+				<div class="clear-all"></div>
+			</div>
+		<!-- filter ends -->
+		
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+						
+				<div id="table">
+					<div class="header-row row"> 
+					<span class="cell"><?php echo $this->translate("Days");?></span> 
+					<span class="cell"><?php echo $this->translate("Start Time");?></span> 
+					<span class="cell"><?php echo $this->translate("End Time");?></span> 
+										
+					</div>
+				<?php 
+				$days =array('0'=>'Sunday','1'=>'Monday','2'=>'Tuesday','3'=>'Wednesday','4'=>'Thursday','5'=>'Friday','6'=>'Saturday');
+						 $WorkingDetails =json_decode($this->shopdays);
+				if(count($this->shopdays)>0){
+				
+					for($i=0;$i<count($days);$i++){
+						$class = (($days)%2==0) ? 'class="row odd"' :'class="row even"';?>
+					<div <?=$class?>>
+						<span class="cell" data-label="Days"><?php  echo $days[$i]; ?> </span> 
+						<span class="cell" data-label="Open Time"><?php  echo isset($WorkingDetails->$days[$i]->open)?$WorkingDetails->$days[$i]->open:''; ?></span>
+						<span class="cell" data-label="Close Time"><?php  echo isset($WorkingDetails->$days[$i]->close)?$WorkingDetails->$days[$i]->close:''; ?></span>
+					</div>
+				<?php }}else{?>
+					
+					<div class="row odd">
+						<span class="cell" colspan="6"><b><?=$this->translate("Record not found !");?></b></span> 
+					</div>
+				<?php }?>	
+
+			</div>
+					 	
+			</form>	
+			</div>
+		</div>

@@ -1,0 +1,29 @@
+<form action="" method="post" name="addrouting" class="inputbox" >
+<div class="col-lg-12 col-md-12 col-sm-12 b-email" style="background:#ffffff;">
+          <div class="b-email-title">
+            <h6><?php echo $this->translate("Weight Scale");?></h6>
+		  </div>
+          <div class="row">
+		    <div class="col-sm-2 col_paddingtop">
+			 <label><?php echo $this->translate("Scale"); ?></label></div>
+            <div class="col-sm-6 col_paddingtop">
+				<select name="weight_scale" id="weight_scale"  class="inputfield">
+				<option value=""><?php echo $this->translate("Select Scale"); ?></option>
+				<option value=""><?php echo $this->translate('Disconnect');?></option>
+				<?php global $objSession;
+				 foreach($this->scalelist as $scale){
+				 $selected = (isset($objSession->weight_scale)  && $objSession->weight_scale==$scale['serial_id']) ? 'selected="selected"':'';
+				 ?>
+				<option value="<?php echo $scale['serial_id']?>" <?php echo $selected;?>><?php echo $scale['machine_name'].' '.$scale['serial_no']?></option>
+				<?php }?>
+				</select>
+            </div>
+			 <div class="clearfix"></div>
+   <div class="clearfix"></div>
+   <div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+      <div id="table"></div>
+	  <div class="col-sm-6 col_paddingtop"> <input type="submit" name="connect" value="Connect" class="btn btn-danger btn-round"></div>
+   </div>
+</div>
+</div>
+</form>

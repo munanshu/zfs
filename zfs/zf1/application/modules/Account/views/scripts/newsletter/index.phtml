@@ -1,0 +1,89 @@
+
+
+	<div class="input-title"><?php echo $this->translate("News Letter")?></div>
+	
+		<div class="row row-broken" style="margin-left:0px !important;margin-right:0px !important;">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+              <ul class="nav nav-tabs nav-justified">
+                <li class="active"> <a href=""><?php echo $this->translate("List ")?><i class="fa fa-folder"></i></a> </li>
+                <li> <a href="<?=$this->url(array('controller'=>'Newsletter','action'=>'newsletter'),'default',  true)?>"><?php echo $this->translate("Create Newsletter Template ")?><i class="fa fa-ticket"></i></a> </li>
+				
+              </ul>
+
+	<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+		<form method="post" action="" id="depotmanager" name="depotmanager">
+					
+				<div id="tablegrid">
+					 <table width="100%" border="0" id="example">
+					    <thead>
+						<tr>
+							<th><?=$this->translate('Name');?></th>
+							<th><?=$this->translate('Subject');?> </th>
+							<th><?=$this->translate('Action');?></th>
+						</tr>
+						</thead>
+						
+						<tbody>
+						<?php
+						if(count($this->templates)>0){
+							$i=0;
+						 	foreach($this->templates as $index=>$data){
+						 	$class = ($i%2==0)?'even':'odd'; ?>
+							<tr class="<?php echo $class;?>">
+								
+								<td width="40%" data-label="name"><?php echo $data['template_name']; ?></td> 
+								<td width="40%" data-label="Email"><?php echo $data['template_subject']; ?></td>
+								
+								<td data-label="Action">
+									<div class="action-btns btn-group breadcrumb" role="group"><li>
+									<?php if($data['send_status']==0){ ?>
+										<a href='<?=$this->url(array('controller'=>'Newsletter','action'=>'newsletter'),'default',  true).'?token='.Zend_Encript_Encription:: encode($data['template_id'])?>','60%','40%';"><i class="fa fa-edit" title="Edit Template"></i></a>
+									<?php } else{	echo "Send"; } ?>
+									</li></div>
+								</td> 
+							</tr>
+						<?php $i++;}} else{ ?>
+						<tr>
+						  <td></td>	<td></td>	
+						  <td data-label="No Data"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td>
+						  </tr>
+						<?php }
+						?></tbody>
+                     </table>
+				</div>
+			</form>	
+			</div></div></div>
+			</div>
+		</div>
+	
+<script>
+$(document).ready(function() {
+  $('#example').DataTable({
+  "pageLength": 100,
+  "lengthMenu": [[10, 25, 50, 100, 200, 500, -1], [10, 25, 50, 100, 200, 500, "All"]],
+        initComplete: function () {
+            this.api().columns().every( function () {
+                var column = this;
+                var select = $('<select><option value=""></option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+       column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+ 
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+        }
+    } );
+  });
+</script>	
+	

@@ -1,0 +1,63 @@
+	<div class="row row-broken">
+        <div class="col-sm-12">
+			<div class="tabs" id="seventh-tabs">
+			  <ul class="nav nav-tabs nav-justified">
+				<?=$this->ModelObj->tabNavigation(); ?>
+              </ul>
+			  
+				<div class="tab-content">
+					<div class="tab-pane fade in active" id="tab-1">
+						<div class="col-inside-lg decor-default">
+             	  
+							<div class="row tab-filter row_nopadding decor-success tab-position">
+							 <div class="input-title"><?php echo $this->translate('Email Notification')?></div>
+							  <div class="col-lg-12 col-md-12 col-sm-12 b-email" style="background:#ffffff;">
+								  <div class="col-sm-2 col_paddingtop">
+            					  </div>
+								  <div class="col-sm-8 col_paddingtop">
+								  <form id="" name="emailform" class="inputbox" method="post">
+									  <div class="row">
+												<?php echo $this->Notification; ?>
+									   
+										   <div class="col-sm-12 col_paddingtop">
+										   <label for="subject" class="required">Mail Text :</label>
+										   <?php 
+										   require ROOT_PATH.'/public/fckeditor/FCKeditor.php';
+										   $var = new FCKeditor('FCKeditor1');
+										   $var->BasePath = BASE_URL.'/public/fckeditor/';
+										   $var->Height = '400px';
+										   $var->Weight = '200px';
+										   $var->Value = stripslashes($this->Template['email_text']);
+										   $var->Create();	
+										   ?>									   
+										   </div>
+										   <div class="col-sm-3 col_paddingtop">
+                                              <input type="submit" name="emailtemplae" id="emailtemplae" value="Save" class="btn btn-danger btn-round">
+											  <input type="button" name="cancel" id="cancel" class="btn btn-danger btn-round" value="Cancel">
+										   </div>
+									 </div>
+								  </form>
+								   </div>
+								   <div class="col-sm-2 col_paddingtop">
+            					  </div>
+								</div>
+												  
+							</div>
+							
+							</div>
+						</div>
+					</div>
+				</div>
+            </div>
+        </div>
+<script src="<?php echo $this->baseUrl('public/js/settings.js');?>"></script>
+<script>
+function AssignTofck(){
+ var oEditor = FCKeditorAPI.GetInstance('FCKeditor1');
+
+ var fieldvalue = $('#dynamic_field').val();
+
+ oEditor.InsertHtml(fieldvalue);
+
+}
+</script>

@@ -1,0 +1,112 @@
+<div class="row row-broken">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+			  
+              <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-6">
+					<form>
+					  <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="input-title"><?php echo $this->translate('Webshop Orders')?></div>
+					  <div class="clear-all"></div>
+					  <?php  
+						if($this->ModelObj->Useconfig['level_id']==5){
+						 }else{ ?>
+						<div class="col-sm-1 col_paddingx10">Customer:</div>
+						<div class="col-sm-3 col_paddingx10"><?php 
+						echo  $this->getHelper('HtmlSelect')->getSelect('filter_customer',$this->customerList,'user_id','company_name',(isset($this->ModelObj->getData['filter_customer'])? $this->ModelObj->getData['filter_customer']:''),true,array('class'=>'selectbox','id'=>'customer_id')); 
+						?></div>
+						<?php  } ?>
+						<div class="col-sm-1 col_paddingx10">From Date:</div>
+						<div class="col-sm-2 col_paddingx10">
+						<input type="text" class="selectbox" name="fromdate" id="fromdate" placeholder="From Date" value="<?=(isset($this->ModelObj->getData['fromdate']))?$this->ModelObj->getData['fromdate']:'';?>" />
+						</div>
+						<div class="col-sm-1 col_paddingx10">To Date:</div>
+						<div class="col-sm-2 col_paddingx10">
+						<input type="text" class="selectbox" name="todate" id="todate" placeholder="To Date" value="<?=(isset($this->ModelObj->getData['todate']))?$this->ModelObj->getData['todate']:'';?>" />
+						</div>
+						<div class="col-sm-2 col_paddingx10">
+							<input class="btn btn-danger" name="sunmiy" type="submit" value="search"/>
+						</div>
+	
+					</div>
+					<div  id="tablegrid">
+					 <table width="100%" border="0" id="dataTableGridId">
+					    <thead>
+						<tr>
+								<th><?=$this->translate('Customer ');?></th>
+								<th><?=$this->translate('Order Number');?> </th>
+								<th><?=$this->translate('Product/Quantity');?></th>
+								<th><?=$this->translate('Price ');?></th>
+								<th><?=$this->translate('Added Date');?></th>
+								<th><?=$this->translate('Parcel Number ');?></th>
+								<th><?=$this->translate('Invoice Number');?></th>
+								<th><?=$this->translate('Action');?></th>
+						</tr>
+						</thead>
+						<tbody>
+						<?php
+						if(count($this->orderlist)>0){
+						 foreach($this->orderlist as $key=>$data){
+						 $class = ($key%2==0)?'even':'odd'; ?>
+						<tr class="<?php echo $class;?>">
+						<td data-label="Customer Name"><?=$data['company_name']; ?></td> 
+                        <td data-label="Order Number"><?=$data['order_number']; ?></td> 
+						<td data-label="Product/Quantity"><?=$data['totalproduct'].'/'.$data['totalquantity']; ?></td> 
+						<td data-label="Price"><?=$data['totalprice']; ?></td>
+						<td data-label="Added Date"><?=$data['added_date']; ?></td>
+
+						<td data-label="Parcel Number">			 
+						<?php if($data['barcode']!=''){?>
+						<a href="javascript:void(0);" onclick="javascript:window.open('<?=$this->url(array('controller' => 'Parceltracking','action'=>'tracking'),'default',true).'?tockenno='.Zend_Encript_Encription::encode($data[BARCODE_ID]);?>','mywindow','status=0,resizable=1,width=1200,height=600,toolbar=0')" title="Track Parcel"><?= $data[TRACENR_BARCODE]?></a>
+						<?php } ?>
+						</td>
+						<td align="center">
+						 <?php if($data['invoice_no']>0){
+						 $foldername=date_format(date_create($data['invoice_date']),"Y/M");
+						 ?>
+						 <a href="javascript:void(0);" onclick="openbox('<?=INVOICE_OPEN.$foldername.'/'.$data['invFile']?>')" title="Print Invoice"><?=$data['invoice_no'];?></a>
+						<?php } ?>
+						</td>						
+						<td data-label="Action">
+						<?php if($data['checkin_status']!='1' && $data['invoice_no']=='' && $data['barcode']==''){?>	
+							<a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Supplies','action'=>'editorder'),'default',  true).'?order_id='.Zend_Encript_Encription:: encode($data['order_id'])?>','65%','100%');">
+							<i class="fa fa-edit"></i></a>|<a href="javascript:void(0);" onClick="deleterecord('<?=WEBSHOP_ORDER?>','isDelete','1','order_id','<?=$data['order_id']?>');">
+							<i class="fa fa-trash" title="Delete Product"></i></i></a>
+						<?php } ?>
+						</td>
+						</tr>
+						<?php }} else{ ?>
+						<tr>
+						  <td data-label="No Data" colspan="7"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td>
+						  </tr>
+						<?php }
+						?></tbody>
+
+                     </table>
+                    </div>
+					
+					 </form>
+					</div>
+                </div>
+					<div>
+			  </div>
+			 </div>
+            </div>
+          </div>
+<script>
+$(document).ready(function() {
+	 commonDataTableView();
+} );
+ $(function() {
+  $( "#fromdate" ).datepicker({
+    dateFormat: 'yy-mm-dd',
+    showOtherMonths: true,
+    selectOtherMonths: true
+  });
+    $( "#todate" ).datepicker({
+    dateFormat: 'yy-mm-dd',
+    showOtherMonths: true,
+    selectOtherMonths: true
+  });
+ });
+</script>

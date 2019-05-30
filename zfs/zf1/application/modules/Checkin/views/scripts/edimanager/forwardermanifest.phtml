@@ -1,0 +1,152 @@
+
+<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+		<form method="post" action="" id="manifest" name="manifest" onsubmit="return check_item_swisspost()">
+		<!-- filter start -->
+			<!-- filter start -->
+			<div class="filter">
+				<div class="input-title"><?php echo $this->translate("Search");?></div>
+				<div class="row row_nopadding decor-success" style="margin-left:0px !important;margin-right:0px !important;">
+				<div class="clear-all"></div>
+				<div class="col-sm-3 col_paddingtop">
+				<label><?php echo $this->translate("Forwarder");?></label>
+					<select name="forwarder_id" id="forwarder_id" class="inputfield" style="width:60%" onchange="$('#manifest').submit();">
+				    <option value="">--<?php echo $this->translate("Forwarder"); ?>--</option>
+					<?php foreach($this->forwarder as $forwarder){
+					  $selected = '';
+					  if(isset($this->Request['forwarder_id']) && $forwarder['forwarder_id']==$this->Request['forwarder_id']){
+					    $selected = 'selected="selected"';
+					  }?>
+					  <option value="<?php echo $forwarder['forwarder_id']?>" <?php echo $selected;?>><?php echo $forwarder['forwarder_name']?></option>
+					<?php } ?>
+	              </select>
+				</div>
+				<div class="col-sm-3 col_paddingtop">
+				<?php if(isset($this->Request['forwarder_id']) && $this->Request['forwarder_id']>0){?>
+				  <input type="submit" name="forwarder_manifest" id="forwarder_manifest"  class="btn btn-danger" value="Generate Edi and Manifest">
+				<?php } ?>
+				</div>
+				<?php if($this->ModelObj->Useconfig['level_id']==1 || $this->ModelObj->Useconfig['level_id']==11){?>
+				<div class="col-sm-3 col_paddingtop">
+				<label><?php echo $this->translate("Depot");?></label>
+				<select name="user_id" id="user_id" class="inputfield" style="width:60%" onchange="$('#manifest').submit();">
+			    <option value="">--<?php echo $this->translate("Select"); ?>--</option>
+				<?php foreach($this->depotlist as $depotlist){
+				  $selected = '';
+				  if(isset($this->Request['user_id']) && Zend_Encript_Encription::encode($depotlist['user_id'])==$this->Request['user_id']){
+				    $selected = 'selected="selected"';
+				  }?>
+				  <option value="<?php echo Zend_Encript_Encription::encode($depotlist['user_id']);?>" <?php echo $selected;?>><?php echo $depotlist['company_name']?></option>
+				<?php } ?>
+              </select>
+				</div>
+				<?php } ?>
+				<?php if(  ( (isset($this->Request['user_id']) && $this->Request['user_id']!='') ||  $this->ModelObj->Useconfig['level_id']==4 || $this->ModelObj->Useconfig['level_id']==6 ) ){?>
+				<div class="col-sm-3 col_paddingtop">
+				<label><?php echo $this->translate("Hub List");?></label>
+				<select name="hub_user_id" id="hub_user_id" class="inputfield" style="width:70%">
+				<?php foreach($this->hubList as $hubList){?>
+				  <option value="<?php echo Zend_Encript_Encription::encode($hubList['user_id']);?>"><?php echo $hubList['country_name'].'-'.$hubList['city']?></option>
+				<?php } ?>
+              </select>
+				</div>
+				
+				<div class="col-sm-2 col_paddingtop">
+						<input type="submit" onclick="return sendToHub();" name="hub_manifest" id="hub_manifest"  class="btn btn-danger" value="<?php echo $this->translate("Sent to Hub");?>">
+				</div>
+				<?php } ?>
+				<div class="clear-all"></div>
+				<?php if(isset($this->Request['forwarder_id']) && ($this->Request['forwarder_id']==49 || $this->Request['forwarder_id']==51)){?>
+				<div class="col-sm-2 col_paddingtop">
+						<input type="text" name="total_item" id="total_item"  class="inputfield" placeholder="Total Item" style="background-color: cyan;" value="<?php echo isset($this->Request['total_item'])?$this->Request['total_item']:''?>">
+				</div>
+				<div class="col-sm-2 col_paddingtop">
+						<input type="text" name="total_weight" id="total_weight"  class="inputfield" placeholder="Total Weight" style="background-color: cyan;" value="<?php echo isset($this->Request['total_item'])?$this->Request['total_item']:''?>">
+				</div>
+				<?php } ?>
+				<div class="col-sm-12 col_paddingtop"></div>
+				</div>
+		</div>
+		<!-- end filter -->
+		<!-- end filter -->
+		<?php if($this->ModelObj->Useconfig['level_id']==1 || $this->ModelObj->Useconfig['level_id']==11){?>
+		<div class="col-sm-7 col_paddingtop"></div>
+		<div class="col-sm-5 col_paddingtop">
+				<label><?php echo $this->translate("Separate EDI");?></label>
+				<select name="special_manifest" onchange="redirectTO(this.value)" class="inputfield" style="width:50%">
+						<option value="">Select</option>
+						<option value="/Edimanager/urgentletter?forwarder_id=45">Correos Urgentletter</option>
+						<option value="/Edimanager/specialbpost?forwarder_id=7">Maparexx Bpost</option>
+						<option value="/Edimanager/specialdhl?forwarder_id=24">Dobell DHL</option>
+						<option value="/Edimanager/specialdhl?forwarder_id=25">Dobell DHL Global</option>
+					</select>
+				</div>
+	    <?php } ?>			
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+						
+				<div id="table">
+					<div class="header-row row"> 
+						<span class="cell">#</span>
+						<span class="cell"><?php echo $this->translate("Forwarder Name");?></span> 
+						<span class="cell"><?php echo $this->translate("Quantity");?></span> 
+						<span class="cell"><?php echo $this->translate("Weight");?>(kg)</span> 
+						<span class="cell"><?php echo $this->translate("Action");?></span> 				
+					</div>
+					<?php 
+					if(count($this->records)>0){
+						foreach($this->records as $index=>$data){
+							$class = (($index)%2==0) ? 'class="row odd"' :'class="row even"';?>
+						<div <?=$class?>>
+						<span class="cell" data-label="Record"><input type="checkbox" name="forwarder_id[]" value="<?=$data[FORWARDER_ID];?>"></span>
+							<span class="cell" data-label="Forwarder Name"><a href="javascript:void(0)" onclick="openbox('<?=$this->url(array('controller'=>'Edimanager','action'=>'forwardermanifestview'),'default',true).'?forwarder_id='.$data['forwarder_id'];?>','80%','100%')"><?=$data['forwarder_name'];?></a></span>
+							<span class="cell" data-label="Quantiry"><?=$data['total_quantity'];?></span>
+							<span class="cell" data-label="Weight"><?=$data['total_weight'];?></span>
+							<span class="cell" data-label="Action">
+							<a href="javascript:void(0)" onclick="openbox('<?=$this->url(array('controller'=>'Edimanager','action'=>'forwardermanifestview'),'default',true).'?forwarder_id='.$data['forwarder_id'];?>','80%','100%')"><button type="button" class="btn btn-default"><i class="fa fa-eye" title="View"></i></button></a>
+							<a href="<?=$this->url(array('controller'=>'Edimanager','action'=>'mediatorforwarder'),'default',true).'?forwarder_id='.$data['forwarder_id'];?>" ><button type="button" class="btn btn-default"><i class="fa fa-code" title="Mediator Forwarder"></i></button></a>
+							</span>
+						</div>
+					<?php } }else{ ?>
+					<span class="cell" data-label="No Record"><?php echo $this->translate("No Record found!");?></span>
+					<?php  }  ?>
+				</div>
+					 	
+			</form>	
+			</div></div></div>
+<script>
+function check_item_swisspost(){
+    var forwarder_id = $('#forwarder_id').val();
+	var item_weight = $('#total_weight').val();
+	var item_quantity = $('#total_item').val();
+	if((forwarder_id==49 || forwarder_id==51) && (item_weight<=0 || item_quantity<=0)){
+	   alert('<?php echo $this->translate("Please fill Total Item and Total Weight");?>');
+	   return false;
+	}else{
+	  return true;
+	}
+
+}
+function redirectTO(url){
+   window.location.href = url;
+}
+
+
+function sendToHub() {
+
+	var checked_forwarders = [];
+
+	$.each($('input[name="forwarder_id[]"]:checked'),function(){
+
+		checked_forwarders.push($(this).val());	
+	});		
+	if(checked_forwarders.length >0)
+		return true;
+	else {
+		alert("Please check any forwarder parcel to be sent");
+		return false;
+	}
+
+}
+
+</script>			

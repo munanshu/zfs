@@ -1,0 +1,77 @@
+<div class="row row-broken">
+    <div class="col-sm-12">
+        <div class="tabs" id="seventh-tabs">
+			<ul class="nav nav-tabs nav-justified">
+                <li class="active"><a href="" data-toggle=""><?php echo $this->translate('Question') ?></a></li>
+				<li><a href="<?=BASE_URL ?>/Helpdesk/helpdeskstatus" data-toggle=""><?php echo $this->translate('Status') ?></a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-1">
+					<div class="row tab-filter row_nopadding decor-success tab-position">
+						<div class="input-title"><?php echo $this->translate('Helpdesk Setting')?></div>
+						<div class="clear-all"></div>
+						<div class="col-sm-3 col_paddingx10">
+						  <label for="input-2" class="input__label input__label--kaede"> 
+						  <span class="input input--kaede"><a href="<?=BASE_URL ?>/Helpdesk/addnewquestion" class=""><i class="fa fa-plus-square"></i><?php echo $this->translate("Add New Questions");?></a>
+						  </span></label>
+						  <div class="col-sm-9 col_paddingx10"><span class="input input--kaede"></span></div>
+						</div>
+					</div>
+					<div id="tablegrid">
+						<table width="100%" border="0" id="claimsetting">
+							<thead>
+						     <tr>
+								<th><?=$this->translate('S. No.');?></th>
+								<th><?=$this->translate('All Questions');?></th>
+								<th><?=$this->translate('Operators');?></th>
+								<th><?=$this->translate('Steps');?></th>
+								<th><?=$this->translate('Action');?></th>
+							  </tr>
+							</thead> 
+							<?php if(count($this->allquestion)>0){ 
+							foreach($this->allquestion as $key=>$questions){
+							$class = ($key%2=='0') ?'odd': 'even';
+							?>
+							<tr>
+							  <td width="10%"><?=$key+1; ?></td>
+							  <td width="30%"><?= $questions['question_type']; ?></td>
+							  <td width="20%">
+							   <?php 
+								foreach($questions['company_name'] as $key=>$company_name){
+								 echo ($key+1).'. '.$company_name['company_name'].'</br>';
+								}
+							   ?>
+							  </td>
+							  <td width="30%">
+								<?php
+								 foreach($questions['steps'] as $steps){
+								  echo '<b>'.$steps['steps'].'</b>-'.$steps['step_name'].'</br>';
+								} ?> 
+							  </td>
+							  <td width="10%">
+							    <a href="<?=$this->url(array('controller'=>'Helpdesk','action'=>'setstep'),'default',true).'?question_id='.$questions['question_id']?>"><i class="fa fa-plus-square" title="Set Step"></i></a>|
+							    <a href="<?= $this->url(array('controller'=>'Helpdesk', 'action'=>'updatequestion'),'default',true).'?question_id='.$questions['question_id'] ?>"><i class="fa fa-edit" title="Update Question"></i></a>|
+							    <a href="javascript:void(0)" onclick="deleterecord('<?= HELPDESK_QUESTION?>','delete_status','1','question_id','<?=$questions['question_id']?>');"><i class="fa fa-trash" title="Delete Question"></i></a>
+							  </td>
+							</tr>
+							<?php $key++; } } else{?>
+							<tr>
+								<td data-label="No Data" colspan="7"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td>
+							</tr>
+							<?php } ?>
+						</table>
+					</div>	
+				</div>
+                
+	        </div>
+        </div>
+    </div>
+</div>
+<script>
+$(document).ready(function() {
+	$('#claimsetting').DataTable( {
+		"pageLength": 100,
+		"lengthMenu": [[10, 25, 50, 100, 200, 500, -1], [10, 25, 50, 100, 200, 500, "All"]],
+    } );
+} );
+</script>

@@ -1,0 +1,45 @@
+<?php echo $this->doctype(); ?>
+
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<?php echo $this->headTitle('Logicparcel')->setSeparator(' - ')->setAutoEscape(false) ?>
+<link rel="stylesheet" href="<?php echo $this->baseUrl('public/css/bootstrap.css');?>">
+<link rel="stylesheet" href="<?php echo $this->baseUrl('public/css/font-awesome.min.css');?>">
+<link rel="stylesheet" href="<?php echo $this->baseUrl('public/css/animate.min.css');?>">
+<link rel="stylesheet" href="<?php echo $this->baseUrl('public/css/loading.css');?>">
+<link rel="stylesheet" href="<?php echo $this->baseUrl('public/css/dark.css');?>">
+<link rel="stylesheet" href="<?php echo $this->baseUrl('public/css/main.css');?>">
+<link rel="stylesheet" href="<?php echo $this->baseUrl('public/css/filter.css');?>">
+<link rel="stylesheet" href="<?php echo $this->baseUrl('public/css/sweetalert.css');?>">
+<link rel="stylesheet" href="<?php echo $this->baseUrl('public/css/input.css');?>">
+<link rel="stylesheet" href="<?php echo $this->baseUrl('public/css/checkboxes.css');?>">
+<link rel="stylesheet" href="<?php echo $this->baseUrl('public/fancybox/jquery.fancybox.css');?>">
+<script src="<?php echo $this->baseUrl('public/js/modernizr.js');?>"></script>
+<link rel="icon" href="<?php echo $this->baseUrl('public/images/favicon.ico');?>" type="image/x-icon" />
+<link rel="shortcut icon" href="<?php echo $this->baseUrl('public/images/favicon.ico');?>" type="image/x-icon" />
+  <?php echo $this->headScript()
+			->prependFile($this->baseUrl('public/js/jquery-3.1.0.min.js'))
+            ->prependFile($this->baseUrl('public/js/modernizr.js'))
+			->prependFile($this->baseUrl('public/js/html5shiv.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
+			->prependFile($this->baseUrl('public/js/respond.src.js'), 'text/javascript', array('conditional' => 'lt IE 9',)); ?>						
+<script src="<?php echo $this->baseUrl('public/js/shortcut.js');?>"></script>	
+<script src="<?php echo $this->baseUrl('public/js/common.js');?>"></script>
+<script src="<?php echo $this->baseUrl('public/js/jquery.js');?>"></script>	
+</head>
+<body class="loginpage">
+<div class="gohome"><img src="<?php echo $this->baseUrl('public/images/headerlogo.png');?>"/></div>
+<?php  echo $this->layout()->content;?>
+<script src="<?php echo $this->baseUrl('public/js/bootstrap.min.js');?>"></script>
+<script src="<?php echo $this->baseUrl('public/js/jquery.nicescroll.min.js');?>"></script>
+<script src="<?php echo $this->baseUrl('public/js/classie.js');?>"></script>
+<script src="<?php echo $this->baseUrl('public/js/sweetalert.min.js');?>"></script>
+<script src="<?php echo $this->baseUrl('public/js/jquery.mixitup.min.js');?>"></script>
+<script src="<?php echo $this->baseUrl('public/js/filter.js');?>"></script>
+<script src="<?php echo $this->baseUrl('public/fancybox/jquery.fancybox.pack.js');?>"></script>
+<script src="<?php echo $this->baseUrl('public/Datatables/jquery.dataTables.min.js');?>"></script>
+<script src="<?php echo $this->baseUrl('public/datepicker/jquery-ui.js');?>"></script>
+</body>
+</html>

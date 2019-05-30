@@ -1,0 +1,281 @@
+
+
+	<div class="input-title"><?php echo $this->translate("Customer")?></div>
+
+	
+
+		<div class="row row-broken" style="margin-left:0px !important;margin-right:0px !important;">
+
+          <div class="col-sm-12">
+
+            <div class="tabs" id="seventh-tabs">
+
+              <ul class="nav nav-tabs nav-justified">
+
+                <li class="active"> <a href=""><?php echo $this->translate("List");?><i class="fa fa-folder"></i></a> </li>
+
+                <li> <a href="customerform"><?php echo $this->translate("Add customer");?><i class="fa fa-ticket"></i></a> </li>
+
+              </ul>
+
+
+
+	<div class="tab-content">
+
+		 <div class="tab-pane fade in active" id="tab-1">
+
+
+
+		<form method="post" action="" id="customer" name="customer">
+
+		<!-- filter start -->
+
+			<div class="filter">
+
+				<div class="input-title"><?php echo $this->translate("Search Option")?></div>
+
+				
+
+				<div class="row row_nopadding decor-success" style="margin-left: 0px;margin-right: 0px;margin-bottom: 20px;padding-bottom: 20px !important;">
+
+
+
+				<div class="clear-all"></div>
+
+				<div class="col-sm-4 col_paddingtop"> <span class="input input--kaede">
+
+				<input type="text" name="username" id="username" value="<?=$this->filteruser?>" class="input__field input__field--kaede" placeholder="User Name">
+
+				<label for="username" class="input__label input__label--kaede"> 
+
+				<span class="input__label-content input__label-content--kaede"><?php echo $this->translate("Search User");?></span> </label>
+
+				</span> </div>
+
+				
+
+				<div class="col-sm-4 col_paddingtop"> <span class="input input--kaede">
+
+				<input type="text" name="company" id="company" value="<?=$this->filtercompany?>" class="input__field input__field--kaede" placeholder="Company Name">
+
+				<label for="company" class="input__label input__label--kaede"> 
+
+				<span class="input__label-content input__label-content--kaede"><?php echo $this->translate("company");?></span> </label>
+
+				</span> </div>
+
+				
+
+				<div class="col-sm-4 col_paddingtop"> <span class="input input--kaede">
+
+				<input type="text" name="postcode" id="postcode" value="<?=$this->filterpostcode?>" class="input__field input__field--kaede" placeholder="PostCode">
+
+				<label for="postcode" class="input__label input__label--kaede"> 
+
+				<span class="input__label-content input__label-content--kaede"><?php echo $this->translate("PostCode");?></span> </label>
+
+				</span> </div>
+
+				
+
+				<div class="col-sm-4 col_paddingtop"><span class="input input--kaede">
+
+					<select id="depot_id" name="filterdepot" class="inputfield">
+
+						<option value=''><?=$this->translate("Select Depot");?></option>
+
+						<?php foreach($this->depots as $depot){
+
+							$selected =($depot['user_id']==$this->filterdepot) ? 'selected' : '';	?>
+
+						
+
+						 <option value="<?php echo $depot['user_id']?>"<?=$selected;?>><?php echo $depot['company_name'];?></option>
+
+						<?php } ?>
+
+				    </select>
+
+				
+
+				</span></div>
+
+				<div class="clear-all"></div>
+
+				<div class="col-sm-3 col_paddingtop"><span class="input input--kaede">
+
+					<?php echo $this->getHelper('HtmlSelect')->getSelect('user_id',$this->customerList,'user_id','company_name',(isset($this->Request['user_id'])?$this->Request['user_id']:''),true,array('class'=>'inputfield'));?>
+
+				
+
+				</span></div>
+
+				
+
+				<div class="col-sm-2 col_paddingtop">
+
+					<button class="btn btn-danger btn-round" name="search" type="submit" value="search"><?php echo $this->translate("Submit");?></button>
+
+			  	</div>
+
+				</div>
+
+			</div>
+
+			
+
+		<!-- end filter -->
+
+		
+
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+
+						
+
+				<div id="table">
+
+					<div class="header-row row"> 
+
+					<span class="cell primary"><?php echo $this->translate("Company");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Email");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Phone");?></span>
+
+					<span class="cell"><?php echo $this->translate("Username");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Password");?></span>
+
+					<span class="cell"><?php echo $this->translate("Paid Days");?></span>
+
+					<span class="cell"><?php echo $this->translate("Depot");?></span> 
+
+					<span class="cell"><div style="max-width:55px"><?php echo $this->translate("Customer Routing");?></div></span>
+
+					<span class="cell"><?php echo $this->translate("Status");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Action");?></span> 
+
+					</div>
+
+					<?php if(count($this->records['Records'])>0){
+
+					
+
+						foreach($this->records['Records'] as $index=>$data){ //echo"<pre>";print_r($data);die;
+
+							
+
+							$class = (($index)%2==0) ? 'class="row odd"' :'class="row even"';?>
+
+						<div <?=$class?>>
+
+							<input type="radio" name="expand" class="res_dio">
+
+							<span class="cell" data-label="Company"><div style="max-width:150px"><?= $data['company_name']?></div></span> 
+
+							<span class="cell" data-label="Email"><?= $data['email']?></span>
+
+							<span class="cell" data-label="Phone"><?= $data['phoneno']?></span>
+
+							<span class="cell" data-label="Username"><?= $data['username']?></span>
+
+							<span class="cell" data-label="Password"><div style="max-width:50px"><?= $data['password_text']?></div></span>
+
+							<!--<span class="cell" data-label="Password"><div style="max-width:100px">test</div></span>  -->
+
+							<span class="cell" data-label="Paid Days"><?= $data['payment_days']?></span>
+
+							<span class="cell" data-label="Depot"><div style="max-width:100px"><?= $data['user_depot']?></div></span>
+
+							<span class="cell" data-label="Routing"><div style="max-width:30px"><?=$this->ModelObj->isRountingAvailable($data['user_id'])?></div></span>
+
+							
+
+							<span class="cell" data-label="Status" id="statusSpan_<?=$index?>" ><?php if($data['user_status'] == "1") {  ?><img src="<?=IMAGE_LINK?>/icon_active.gif" align="absmiddle" alt="Active" border="0" onclick="setStatus('<?=USERS?>','user_status','0','user_id','<?=$data['user_id']?>','<?=$index?>');" title="Change Status into In-Active" class="changeStatus" />
+
+						<?php } else{ ?>
+
+						<img src="<?=IMAGE_LINK?>/icon_inactive.gif" align="absmiddle" alt="Active" border="0" onclick="setStatus('<?=USERS?>','user_status','1','user_id','<?=$data['user_id']?>','<?=$index?>');" title="Change Status into Active" class="changeStatus" />
+
+						<?php }?>
+
+						</span>
+
+							<span class="cell" data-label="Action">
+
+							<div class="action-btns btn-group pull-right breadcrumb" role="group">
+
+							<li><a href='<?=$this->url(array('controller'=>'Account','action'=>'customerform'),'default',  true).'?token='.Zend_Encript_Encription:: encode($data['user_id'])?>','60%','40%';"> <i class="fa fa-edit"></i></a>|
+
+							  
+
+							  <a href='<?=$this->url(array('controller'=>'Account','action'=>'settings'),'default',  true).'?token='.Zend_Encript_Encription:: encode($data['user_id'])?>','60%','40%';"> <i class="fa fa-cog" title="All Settings"></i></a>|
+
+							  
+
+							  <a href='<?=$this->url(array('controller'=>'Account','action'=>'changepassword'),'default',  true).'?token='.Zend_Encript_Encription:: encode($data['user_id'])?>','60%','40%';"><img src="<?php print IMAGE_LINK; ?>/icon_password.gif" alt="" align="absmiddle" alt="Edit Password" title="Edit Password" border="0" class="changeStatus" /></i></a>|
+
+							 <a href='<?=$this->url(array('controller'=>'Account','action'=>'delete'),'default',  true).'?token='.Zend_Encript_Encription:: encode($data['user_id'])?>','60%','40%';"><i class="fa fa-trash"  onclick="return confirm('Are you sure want to delete this Record !')" title="Delete User"></i></a><br>
+
+							 
+
+							 <a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Account','action'=>'pickupschedular'),'default',true).'?token='.Zend_Encript_Encription :: encode($data['user_id'])?>','65%','100%');"> <i class="fa fa-clock-o" title="Pickup Schedular"></i></a>|
+
+							  
+
+							  <a href='<?=$this->url(array('controller'=>'Senderaddress','action'=>'senderaddress'),'default',  true).'?token='.Zend_Encript_Encription:: encode($data['user_id'])?>','60%','40%';"> <i class="fa fa-book" title="Sender Address"></i></a> |
+
+							  
+
+							   <a href='<?=$this->url(array('controller'=>'Privilege','action'=>'userprivilege'),'default',  true).'?token='.Zend_Encript_Encription:: encode($data['user_id'])?>','60%','40%';"> <i class="fa fa-tasks" title="Customer Privileges"></i></a>|
+
+							   <a href='<?=$this->url(array('controller'=>'Customerrouting','action'=>'customerrouting'), 'default',  true).'?token='.Zend_Encript_Encription:: encode($data['user_id'])?>','60%','40%';"> <i class="fa fa-globe" title="Customer Routing"></i></a>|
+
+							  
+
+							  <a href='<?=$this->url(array('controller'=>'Shopapi','action'=>'shopsetting'), 'default',  true).'?token='.Zend_Encript_Encription:: encode($data['user_id'])?>','60%','40%';"> <i class="fa fa-shopping-cart" title="Shop Setting"></i></a>
+
+							   <!--<a href="javascript:void(0)" onclick="openbox('<?=$this->url(array('controller'=>'Shopapi','action'=>'addnewshop'),'default',true).'?token='.Zend_Encript_Encription :: encode($data['user_id'])?>','65%','100%');"> <i class="fa fa-shopping-cart" title="Shop Setting"></i></a>-->
+
+							   
+
+							  
+
+							</li>		
+
+							</div>
+
+							</span> 
+
+						</div><?php echo $this->paginator; ?>
+
+					<?php }}else{?>
+
+						<div class="row odd">
+
+							<b><?=$this->translate("Recod not found !");?></b> 
+
+						</div>
+
+					<?php }?>	
+
+				</div>
+
+			</form>	
+
+			</div></div></div>
+
+							<div class="unit control">
+
+				  <div class="nav-btns pull-right"><?php echo commonfunction::PageCounter($this->records['Total'],$this->Request)?>
+
+				  </div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>	

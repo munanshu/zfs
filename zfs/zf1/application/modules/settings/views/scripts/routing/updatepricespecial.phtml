@@ -1,0 +1,191 @@
+
+
+<div class="tab-content">
+
+<div class="tab-pane fade in active" id="tab-1">
+
+<form action="" method="post" name="addrouting" class="inputbox" >
+
+<input type="hidden" id="user_id" value="<?php echo $this->Request['user_id'];?>">
+
+<div class="col-lg-12 col-md-12 col-sm-12 b-email" style="background:#ffffff;">
+
+          <div class="b-email-title">
+
+            <h6><?php echo $this->translate("Update Customer Price");?></h6>
+
+          </div>
+
+          <div class="row">
+
+            <div class="col-sm-3 col_paddingtop">
+
+			 <label><?php echo $this->translate("Country"); ?></label>
+
+				 <select name="country_id" id="country_id" class="inputfield" onChange="ListserviceweightClass()" style="margin-left: 0px;">
+
+				 <option value="">--<?php echo $this->translate("Select Country"); ?>--</option>
+
+				<?php foreach($this->countrylist as $countrylist){
+
+				  $selected = '';
+
+				  if(isset($this->Request['country_id']) && $countrylist['country_id']==$this->Request['country_id']){
+
+				    $selected = 'selected="selected"';
+
+				  }?>
+
+				  <option value="<?php echo $countrylist['country_id']?>" <?php echo $selected;?>><?php echo $countrylist['cncode'].'-'.$countrylist['country_name']?></option>
+
+				<?php } ?>
+
+              </select>
+
+            </div>
+
+			<div class="col-sm-3 col_paddingtop">
+
+			 <label><?php echo $this->translate("Service"); ?></label>
+
+				 <select name="service_id" id="service_id" class="inputfield" style="margin-left: 0px;">
+
+				 <option value="">--<?php echo $this->translate("Select Service"); ?>--</option>
+
+				<?php foreach($this->servicelist as $servicelist){
+
+				  $selected = '';
+
+				  if(isset($this->Request['service_id']) && $servicelist['service_id']==$this->Request['service_id']){
+
+				    $selected = 'selected="selected"';
+
+				  }?>
+
+				  <option value="<?php echo $servicelist['service_id']?>" <?php echo $selected;?>><?php echo $servicelist['service_name'].'-'.$servicelist['parent_name']?></option>
+
+				<?php } ?>
+
+              </select>
+
+            </div>
+
+			<div class="col-sm-3 col_paddingtop">
+
+			 <label><?php echo $this->translate("Customer"); ?></label>
+
+				 <select name="user_id" id="user_id" class="inputfield" style="margin-left: 0px;">
+
+				 <option value="">--<?php echo $this->translate("Select Customer"); ?>--</option>
+
+				<?php foreach($this->specialpricecustomer as $specialpricecustomer){
+
+				  $selected = '';
+
+				  if(isset($this->Request['user_id']) && $specialpricecustomer['user_id']==$this->Request['user_id']){
+
+				    $selected = 'selected="selected"';
+
+				  }?>
+
+				  <option value="<?php echo $specialpricecustomer['user_id']?>" <?php echo $selected;?>><?php echo $specialpricecustomer['company_name']?></option>
+
+				<?php } ?>
+
+              </select>
+
+            </div>
+
+			<div class="col-sm-2 col_paddingtop" style="margin-top:20px"> <input type="submit" name="submit" value="Submit" class="btn btn-danger btn-round"></div>
+
+			<div class="clearfix"></div>
+
+			<div class="col-sm-12 col_paddingtop">
+
+			<div id="table">
+
+			<?php if(isset($this->Request['country_id']) && isset($this->Request['service_id'])){ ?>
+
+			    <div class="header-row row">
+
+			        <span class="cell"><?php echo $this->translate("Weight Class"); ?></span>
+
+					<span class="cell"><?php echo $this->translate("Forwarder Name"); ?></span>
+
+					<span class="cell"><?php echo $this->translate("Customer Price"); ?></span>
+
+					<span class="cell"><?php echo $this->translate("Special Price"); ?></span>
+
+					<span class="cell"><?php echo $this->translate("Postcode"); ?></span>
+
+				</div>	
+
+					<div class="clearfix"></div>
+
+				<?php	foreach($this->serviceweightClass as $serviceweightClass){ ?>
+
+				 <div class="row">
+
+					<input type="radio" name="expand" class="res_dio">
+
+					<span class="cell" data-label="Weight Class"><?php echo $serviceweightClass['min_weight'].' - '.$serviceweightClass['max_weight']; ?></span>
+
+					<span class="cell" data-label="Forwarder Name"><?php echo $serviceweightClass['forwarder_name']; ?></span>
+
+					<span class="cell" data-label="Customer Price"><?php echo $serviceweightClass['customer_price']; ?></span>
+
+					<input type="hidden" name="routingdata[<?php echo $serviceweightClass['routing_id'];?>][<?php echo $serviceweightClass['service_id'];?>][routing_id]" value="<?php echo $serviceweightClass['routing_id']?>">
+
+					<input type="hidden" name="routingdata[<?php echo $serviceweightClass['routing_id'];?>][<?php echo $serviceweightClass['service_id'];?>][service_id]" value="<?php echo $serviceweightClass['service_id']?>">
+
+					<span class="cell" data-label="Special Price"><input type="text" name="routingdata[<?php echo $serviceweightClass['routing_id'];?>][<?php echo $serviceweightClass['service_id'];?>][price]" class="inputfield" value="<?php echo $serviceweightClass['special_price']?>" style="width:50%"></span>
+
+					<span class="cell" data-label="Postcode">
+					<?php $biginpostcode = explode(',',$serviceweightClass['beginPostCode']);
+
+					 $endpostcode = explode(',',$serviceweightClass['endPostCode']);
+
+					 ?>
+
+					
+
+					<span class="cell" data-label="Postcode">
+
+					<?php  foreach($biginpostcode as $key=>$postcode){
+
+					    echo $postcode.'--'.$endpostcode[$key].', ';
+
+					    if($key>0 && $key%8==0){
+
+						   echo '<br>';
+
+						}
+
+					 }
+
+					 ?>
+					
+					</span>
+
+					<div class="clearfix"></div>
+
+				</div>		
+
+			<?php } ?>
+
+			<div class="row"><span class="cell"><input type="submit" name="update" value="Update Price" class="btn btn-danger btn-round"></span></div>
+
+		<?php	}?>
+
+		</div></div>	
+
+</div>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+

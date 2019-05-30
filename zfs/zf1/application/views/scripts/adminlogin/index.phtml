@@ -1,0 +1,121 @@
+<?php global $objSession; ?>     
+      <h1 class="text-center form-title">Welcome to Administration Control Panel</h1>
+      <h2 class="text-center form-title2">Use a valid username and password to gain access to the administration console.</h2>
+      <div class="account-wall">
+  
+	    <div class="col-sm-5 col-xs-12">
+          <form class="form-login fs-form" action="" method="post" enctype="multipart/form-data">
+            <label><i class="fa fa-user"></i></label>
+			
+			<input type="text" name="admin_userid" id="admin_userid" autofocus onblur="checkTermCondition()" required placeholder="Username" autocomplete="off" value="<?=isset($_COOKIE['admin_userid']) ? $_COOKIE['admin_userid'] :''?>" tooltipText="Type in your username in this box" />
+            <label><i class="fa fa-lock"></i></label>
+             <input type="password"  name="admin_password" required id="admin_password" placeholder="Password" autocomplete="off" value="<?=isset($_COOKIE['admin_password']) ? $_COOKIE['admin_password'] : ''?>" tooltipText="Type in your password in this box" />
+			 <?php if(isset($objSession->errorMsg)){?>
+			<div class="checkrem" style="color: red;font-size: 12px;">
+			   <div class="col-sm-12 col-xs-12 Remember">
+						  <?php
+				 echo $objSession->errorMsg; 
+				 unset($objSession->errorMsg);
+				 ?></div></div>
+		   <?php } ?>		 
+			  <div id="termcondition" style="display:none;"> <input type="checkbox" name="terms_flag" id="terms_flag" value=''/>
+				<a id="ur_id" href="javascript:void(0);" style="color:yellow;" onclick="termconditionbox('<?=$this->url(array('controller'=>'Adminlogin','action'=>'getdeportmassage'),'default',true)?>','50%','50%');">Terms & Condition</a>
+				<div id="errormessage" style="position:absolute; left:190px; bottom:86px;">
+				</div></div>
+		   
+            <div class="checkrem">
+			<div class="col-sm-6 col-xs-12 Remember">
+              <input type="checkbox" name="remember_me" value="1" <?=(isset($_COOKIE['remember_me']) && $_COOKIE['remember_me'] == 1)?'checked="checked"':''?>> Remember me</div>
+			  <div class="col-sm-6 col-xs-12 forgot">
+              <i class="fa fa-envelope"></i><a id="ur_id" href="javascript:void(0);" style="color:yellow;" onclick="openbox('<?=$this->url(array('controller'=>'Adminlogin','action'=>'forgetpassword'),'default',true)?>','50%','60%');">Forgot password?</a>
+			  </div></div>
+			
+          
+              <button type="submit" class="loginbtn" name="submit" onclick="return check_checkbox();">Login</button>
+           </form>
+        
+        </div>
+		
+		
+		 <form class="form-login fs-form" action="/Adminlogin/fronttracking" method="post" name="trackingparcel" enctype="multipart/form-data">
+		<div class="col-sm-2 col-xs-12 col_nomargin"><div class="ybor">&nbsp;</div></div>
+        <div class="col-sm-5 col-xs-12 col_nomargin">
+		<div class="tracebox">
+		<label><i class="fa fa-map-marker"></i></label>
+          <input type="text" placeholder="Enter Parcel Number" required  name ="barcode"  value=""/>
+		  			 <div style="color: red;font-size: 12px;background-color: white;margin-bottom: 10px;">
+			<div class="Remember">
+              <?php
+			  echo $objSession->infoMsg; 
+			  unset($objSession->infoMsg);
+			  ?></div></div>
+           <button name="submit" value="Track Parcel" type="submit" class="loginbtn">Track Parcel</button>
+		   <div class="clearfix"></div>
+        </div>
+		
+      </div>
+	 </form>
+	  </div>
+	  <div class="clear-all"></div>
+	  <div class="footer">&copy; 2016 ParcelPakket Website. All rights reserved. </div>
+	  
+<script>
+function checkTermCondition(){ 
+		var user_id = $.trim($("#admin_userid").val());            
+		if(user_id!='') {
+				$.ajax({   // send data to controller
+					type: "post",
+					url: "Adminlogin/checkuserid",
+				    data: "user_name="+user_id,
+					success: function(msg){ //alert(msg);
+						if(msg != "")
+						{	$("#terms_flag").show()
+							$("#terms_flag").val(msg);
+							$("#termcondition").show();
+						}else{
+							$("#terms_flag").val('');
+							$("#terms_flag").hide();
+							$("#termcondition").hide();
+						 }          
+						}
+					});
+			} else{
+				$("#terms_flag").val('');
+				$("#terms_flag").hide();
+				$("#termcondition").hide();
+			}
+	}
+	
+	
+ function termconditionbox(url,w,h){
+ 		var user_id = $.trim($("#admin_userid").val()); 
+		url = url+"/?user_name="+user_id;
+   var width = (w!='')?w:'60%';
+   var height = (h!='')?h:'70%';
+   $.fancybox.open([
+    {
+     width    : width,
+     height   : height,
+     autoSize : false,
+     scrollonig : false,
+     transitionIn: "fade",
+     transitionOut: "fade",
+     type: "iframe",
+     href: url
+    }
+   ]);
+ }
+ 
+    function check_checkbox(){
+		var checkValue = $("#terms_flag").val();
+		var check_depot = $("#terms_flag").is(':checked');
+        if(checkValue != '' && !check_depot){
+			//alert('Please Check Terms & Condition.');
+			$("#errormessage").html("<div class='bgh'><div class='arrow_lft'></div><p>I Agree With Terms & Condition.</p></div>");
+			return false;
+			$("#terms_flag").focus();
+		}else{
+			return true;
+		}
+	 }
+</script>	  

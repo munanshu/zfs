@@ -1,0 +1,109 @@
+
+	<div class="input-title"><?php echo $this->translate("Sender Address of ").$this->CustomerName;?></div>
+	
+		<div class="row row-broken" style="margin-left:0px !important;margin-right:0px !important;">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+              <ul class="nav nav-tabs nav-justified">
+                <li class="active"><a href=""><?php echo $this->translate("List ")?><i class="fa fa-folder"></i></a></li>
+                
+				<li><a href='<?=$this->url(array('controller'=>'Senderaddress','action'=>'senderaddressform'),'default',true).'?token='.$this->token?>','65%','70%'><?php echo $this->translate("Add Sender Address ")?><i class="fa fa-ticket"></i></a></li>
+				
+              </ul>
+
+	<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+		<form method="post" action="" id="senderaddress" name="senderaddress">
+					
+				<div id="tablegrid">
+					 <table width="100%" border="0" id="example">
+					    <thead>
+						<tr>
+							<th><?=$this->translate('Address Lists');?></th>
+							<th><?=$this->translate('Logo');?> </th>
+							<th><?=$this->translate('API/CSV Code');?></th>
+							<th><?=$this->translate('Assigned Country');?></th>
+							<th><?=$this->translate('Action');?></th>
+						</tr>
+						</thead>
+						
+						<tbody>
+						<?php
+						if(count($this->records)>0){
+							$i=0;
+						 	foreach($this->records['Addresses'] as $index=>$data){
+								$data['logo'] = (!empty($data['logo'])) ? $data['logo'] : 'no_image.jpg';
+						 		$class = ($i%2==0)?'even':'odd'; ?>
+							<tr class="<?php echo $class;?>">
+								<td width="15%" data-label="Address">
+								
+								<a href='<?=$this->url(array('controller'=>'Senderaddress','action'=>'senderaddressform'),'default',true).'?token='.$this->token.'&address='.Zend_Encript_Encription:: encode($data['address_id'])?>','65%','70%'><?php echo $data['name']."</br> ".$data['street'].' '.$data['streetnumber'].' '.$data['streetaddress']."</br> ".$data['postalcode'].' '.$data['city']."</br> ".$data['country_name']; ?>
+								</td> 
+								
+								<td width="10%" data-label="logo"><img src="<?php echo LOGO_LINK.'/'.$data['logo'];?>" width="85px" height="50px" align="center" /></td>
+								
+								<td width="8%" data-label="Api/csv code"><?php echo $data['api_code']; ?></td> 
+								<td width="25%" data-label="Country">
+								
+								<?php if(count($this->records['AddressCountry'][$data['address_id']])>0){
+										foreach($this->records['AddressCountry'][$data['address_id']] as $countryData){?>
+											
+											<a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Senderaddress','action'=>'countryaddress'),'default',true).'?token='.$this->token.'&country='.$countryData['CID']?>','65%','70%');"><?php echo $countryData['CName'].',';?></a>
+								<?php }}?>
+										
+								</td> 
+								
+								<td width="8%" data-label="Action">
+									
+									<div class="action-btns btn-group pull-center breadcrumb" role="group">
+									<li><a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Senderaddress','action'=>'senderaddresscountry'),'default',true).'?token='.$this->token.'&address='.Zend_Encript_Encription :: encode($data['address_id'])?>','65%','70%');" title="address country"><i class="fa fa-edit" title="Add/Edit Country"></i></a> |
+									<a href='<?=$this->url(array('controller'=>'Senderaddress','action'=>'deleteaddress'), 'default',  true).'?token='.$this->token.'&address='.Zend_Encript_Encription:: encode($data['address_id'])?>','60%','40%';"><i class="fa fa-trash"  onclick="return confirm('Are you sure want to delete this Record !')" title="Delete Address"></i></a>
+									</li></div>
+									
+								</td> 
+							</tr>
+						<?php $i++;}} else{ ?>
+						<tr>
+						  <td>&nbsp;</td><td>&nbsp;</td>	 	
+						  <td data-label="No Data"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td>
+						  <td>&nbsp;</td><td>&nbsp;</td>	
+						  </tr>
+						<?php }
+						?></tbody>
+                     </table>
+				</div>
+			</form>	
+			</div></div></div>
+			</div>
+		</div>
+	
+<script>
+$(document).ready(function() {
+  $('#example').DataTable({
+  "pageLength": 100,
+  "lengthMenu": [[10, 25, 50, 100, 200, 500, -1], [10, 25, 50, 100, 200, 500, "All"]],
+        initComplete: function () {
+            this.api().columns().every( function () {
+                var column = this;
+                var select = $('<select><option value=""></option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+       column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+ 
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+        }
+    } );
+
+} );
+</script>	
+	

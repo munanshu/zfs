@@ -1,0 +1,44 @@
+<div class="row row-broken">
+    <div class="col-sm-12">
+        <div class="tabs" id="seventh-tabs">
+			<ul class="nav nav-tabs nav-justified">
+                <li class="active"><a href="<?=BASE_URL?>/Helpdesk/helpdesksetting" data-toggle=""><?php echo $this->translate('Question') ?></a> </li>
+				<li><a href="#" data-toggle="tab"><?php echo $this->translate('Status') ?></a></li>
+            </ul>
+			<div class="col-sm-3 col_paddingtop"></div>
+			<div class="col-sm-6 col_paddingtop">
+				<div class="tab-content">
+					<div class="tab-pane fade in active" id="tab-1">
+						<div class="row tab-filter row_nopadding decor-success tab-position">
+							<div class="input-title"><?php echo $this->translate('Add New Question')?></div>
+							<div class="clear-all"></div>
+						</div>
+						<form method="post" name="updatequestion" enctype="multipart/form-data">
+							<?php foreach($this->languages as $lang){ 
+							?>
+							<div class="form-group">
+								<span class="required" style="color:red">*</span><label for="email"><?php echo $this->translate('Question in '.ucfirst($lang['language_name'])); ?>:</label>
+								<textarea rows="3" cols="20" id="question<?= commonfunction::lowercase($lang['language_name']); ?>" name="question[<?=$lang['language_id'] ?>]" class="form-control"></textarea>
+							</div>
+							<?php } ?>
+							
+							<div class="form-group">
+								<span class="required" style="color:red">*</span><label for="email"><?php echo $this->translate('Operators:') ?></label>
+								<select name="operators[]"  multiple="multiple" class="form-control" id="">
+								<?php 
+								 $operator=$this->operatortype;
+								 foreach($operator as $operators){
+								 ?>
+								  <option value="<?=$operators['user_id'] ?>"><?=$operators['company_name'];?></option>
+								<?php } ?>
+								</select>
+							</div>
+							<input type="submit" class="btn btn-default" value="Submit">
+						</form>
+					</div>
+				</div>
+				<div class="col-sm-3 col_paddingtop"></div>
+            </div>
+	    </div>
+    </div>
+</div>

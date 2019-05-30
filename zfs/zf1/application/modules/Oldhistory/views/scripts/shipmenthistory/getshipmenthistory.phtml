@@ -1,0 +1,197 @@
+  <style>
+/*Tooltip CSS */
+  .demo a{
+    display:inline-block;
+    position:relative;
+  }
+  .em1{
+    color:#009933;
+  } 
+  .tooltip-container {
+    position:relative;  /* Forces tooltip to be relative to the element, not the page */
+    cursor:help;    /* Makes you cursor have the help symbol */
+  } 
+  .tooltip {
+    display:block;
+    position:absolute;
+    width:150px;
+    padding:5px 15px;
+    left:50%;
+    bottom:25px;
+    margin-left:-95px;
+    /* Tooltip Style */
+    color:#fff;
+    border:2px solid rgba(34,34,34,0.9);
+    background:rgba(51,51,51,0.9);
+    text-align:center;
+    border-radius:3px;
+    /* Tooltip Style */
+    opacity:0;
+    box-shadow:0px 0px 3px rgba(0, 0, 0, 0.3);
+    -webkit-transition:all 0.2s ease-in-out;
+    -moz-transition:all 0.2s ease-in-out;
+    -0-transition:all 0.2s ease-in-out;
+    -ms-transition:all 0.2s ease-in-out;
+    transition:all 0.2s ease-in-out;
+    -webkit-transform:scale(0);
+    -moz-transform:scale(0);
+    -o-transform:scale(0);
+    -ms-transform:scale(0);
+    transform:scale(0);
+    /* reset tooltip, to not use container styling */
+    font-size:14px;
+    font-weight:normal;
+    font-style:normal;
+  }
+  
+  .tooltip:before, .tooltip:after{
+    content:'';
+    position:absolute;
+    bottom:-13px;
+    left:50%;
+    margin-left:-9px;
+    width:0;
+    height:0;
+    border-left:10px solid transparent;
+    border-right:10px solid transparent;
+    border-top:10px solid rgba(0,0,0,0.1);
+  }
+  .tooltip:after{
+    bottom:-12px;
+    margin-left:-10px;
+    border-top:10px solid rgba(34,34,34,0.9);
+  }
+  
+  .tooltip-container:hover .tooltip, a:hover .tooltip {
+    /* Makes the Tooltip slightly transparent, Lets the barely see though it */
+    opacity:0.9;
+    /* Changes the scale from 0 to 1 - This is what animtes our tooltip! */
+    -webkit-transform:scale(1);
+    -moz-transform:scale(1);
+    -o-transform:scale(1);
+    -ms-transform:scale(1);
+    transform:scale(1);
+    font-family: Verdana;
+    font-size:11px;
+  }
+  
+  /* Pure CSS3 Animated Tooltip - Custom Classes
+  ---------------------------------------------------- */
+  .tooltip-style1 {
+    color:#000;
+    border:2px solid #fff;
+    background:rgba(246,246,246,0.9);
+    font-style:italic;
+  }
+  .tooltip-style1:after{
+    border-top:10px solid #fff;
+  }
+  </style>
+  <div class="row row-broken">
+        <div class="col-sm-12">
+      <div class="tabs" id="seventh-tabs">
+        <ul class="nav nav-tabs nav-justified">
+        <?=$this->ModelObj->tabNavigation(); ?>
+              </ul>
+        
+        <div class="tab-content">
+           <div class="tab-pane fade in active" id="tab-1">
+          <form>
+            <div class="row tab-filter row_nopadding decor-success tab-position">
+            <div class="input-title"><?php echo $this->translate('Old Shipment History')?></div>
+            <div class="row row_nopadding decor-success" style="margin-left:0px !important;margin-right:0px !important;">
+                  <div class="clear-all"></div>
+                  <div class="col-sm-3 col_paddingtop">
+                  <input type="text" name="search_word" id="search_word" placeholder="Search Word" class="inputfield" value="<?php echo (isset($this->Request['search_word'])?$this->Request['search_word']:'')?>">
+                  </div>
+                  <div class="col-sm-3 col_paddingtop">
+                    <input type="submit" class="btn btn-danger btn-round" name="search" id="search" value="Search">
+                     
+                  </div>
+                  <div class="clear-all"></div>
+                  <div class="col-sm-12 col_paddingtop"></div>
+        
+        </div>
+  
+          </div>
+          </form>
+          <div  class="b-email-list ac-custom ac-checkbox ac-checkmark" >
+                        <div id="table">
+          <div class="header-row row"> 
+            <span class="cell">#</span>  
+          <span class="cell"><?php echo $this->translate("Rceiver Name");?></span> 
+          <span class="cell"><?php echo $this->translate("Parcel No.");?></span> 
+          <span class="cell"><?php echo $this->translate("Reference");?></span> 
+          <span class="cell"><?php echo $this->translate("Country");?></span> 
+          <span class="cell"><?php echo $this->translate("Forwarder");?></span> 
+          <span class="cell"><?php echo $this->translate("Weight");?>(KG)</span>
+          <span class="cell"><?php echo $this->translate("Services");?></span> 
+          <span class="cell"><?php echo $this->translate("Sub Services");?></span> 
+          <span class="cell"><?php echo $this->translate("Create Date");?></span>
+          <span class="cell"><?php echo $this->translate("CheckIn Date");?></span> 
+          <span class="cell"><?php echo $this->translate("Trace Track");?></span>           
+          </div>
+          <?php if($this->yearlyInvoiceDetails['Total']>0){
+          
+            foreach($this->yearlyInvoiceDetails['Records'] as $index=>$data){
+              $class = (($index)%2==0) ? 'class="row odd"' :'class="row even"';
+              if( isset($data['delivery_status']) && !empty($data['delivery_status']) )
+               $status = $this->ModelObj->ParcelCurrentStatus($data);
+             else { $status['Color'] = ''; $status['Icon']='';} 
+              ?>
+            <div <?=$class?>>
+              <input type="radio" name="expand" class="res_dio">
+               <span class="cell" data-label="Status" style="color:<?php echo $status['Color']?>">
+              <p class="tooltip-container" style="color:<?php echo $status['Color']?>">
+               <?php echo $status['Icon']; ?>
+               <span class="tooltip"><?php echo $status['Message']?></span>
+              </p></span>
+              <span class="cell" data-label="Receiver"><?=$data['received_by'];?></span> 
+              <span class="cell" data-label="No. of Parcel">
+               
+              <?php 
+                if ($data[QUANTITY]<=1) {
+                  $parcel_no = 1;
+                } else {
+                  $parcel_no = commonfunction::sub_string($data['bdrefer'],-1) + 1;
+                }?>
+              <?=$parcel_no.'/'.$data[QUANTITY]?></span>
+              <span class="cell" data-label="Reference"><?= $data['rec_name']?></span>
+              <span class="cell" data-label="Country"><?= $data['country_name']?></span>
+              <span class="cell" data-label="Forwarder"><?= $data['forwarder_name']?></span>
+              <span class="cell" data-label="Weight"><?= $data['weight']?></span>
+              <span class="cell" data-label="Service"><?= $data['service_name']?></span>
+              <span class="cell" data-label="Sub-Service"><?=$data['subservice']?></span>
+              <span class="cell" data-label="Create Date"><?=date('F- d Y',strtotime($data['create_date']));?></span>
+              <span class="cell" data-label="Check-in Date"><?= date('F- d Y',strtotime($data['checkin_date']))?></span>
+              <span class="cell" data-label="Barcode">
+              <a href="javascript:void(0);" onclick="javascript:window.open('<?=$this->url(array('controller' => 'Parceltracking','action'=>'tracking'),'default',true).'?tockenno='.Zend_Encript_Encription::encode($data["barcode_id"]);?>','mywindow','status=0,resizable=1,width=1200,height=600,toolbar=0')" title="Track Parcel"><?= $data["barcode"]?></a>
+              </span>
+              
+            
+            </div>
+          <?php }}else{?>
+            
+            <div class="row odd">
+              <span class="cell" colspan="6"><b><?=$this->translate("Record not found !");?></b></span> 
+            </div>
+          <?php }?> 
+
+        </div>
+        <div class="unit control">
+          <div class="nav-btns pull-right"> <?php echo commonfunction::PageCounter($this->yearlyInvoiceDetails['Total'],$this->Request)?>
+          </div>
+        </div>
+                    </div>
+          
+           
+          </div>
+        </div>
+      </div>
+        </div>
+     </div>
+<script>
+$(document).ready(function() {
+   commonDataTableView()
+} );
+</script>

@@ -1,0 +1,51 @@
+<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+		<form method="post" action="" id="customer" name="customer">
+		
+		<!-- filter start -->
+		<div class="filter">
+			<div class="input-title"><?php echo $this->translate("View Driver Scheduled");?></div>
+			
+			<div class="row row_nopadding decor-success" style="margin-left:0px !important;margin-right:0px !important;">
+
+				<div class="clear-all"></div>
+			</div>
+		<!-- filter ends -->
+		
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+						
+				<div id="table">
+					<div class="header-row row"> 
+					<span class="cell"><?php echo $this->translate("Schedule Date");?></span> 
+					<span class="cell"><?php echo $this->translate("Days");?></span> 
+					<span class="cell"><?php echo $this->translate("Route");?></span> 
+					<span class="cell"><?php echo $this->translate("Driven Days");?></span> 
+					<span class="cell"><?php echo $this->translate("Route Time");?></span> 
+					<span class="cell"><?php echo $this->translate("Working hour");?></span> 
+										
+					</div>
+				<?php 
+				if(count($this->routesettinglist)>0){
+				
+					foreach($this->routesettinglist as $key => $data){
+						$class = (($key)%2==0) ? 'class="row odd"' :'class="row even"';?>
+					<div <?=$class?>>
+						<span class="cell" data-label="Schedule Date"><?=$data['schedule_date'];?></span> 
+						<span class="cell" data-label="Days"><?=$data['schedule_day']?></span>
+						<span class="cell" data-label="Route"><?=$data['routename']?></span>
+						<span class="cell" data-label="Driven Days"><?=$data['driven_days'];?></span> 
+						<span class="cell" data-label="Route Time"><?=$data['start_time'].' To '.$data['end_time']?></span>
+						<span class="cell" data-label="Working hour"><?=number_format($data['total_hour'],2);?></span>
+					</div>
+				<?php }}else{?>
+					
+					<div class="row odd">
+						<span class="cell" colspan="6"><b><?=$this->translate("Record not found !");?></b></span> 
+					</div>
+				<?php }?>	
+
+			</div>
+					 	
+			</form>	
+			</div></div></div>

@@ -1,0 +1,325 @@
+<style>
+<!--Tooltip CSS-->
+	.demo a{
+		display:inline-block;
+		position:relative;
+	}
+	.em1{
+		color:#009933;
+	}	
+	.tooltip-container {
+		position:relative;	/* Forces tooltip to be relative to the element, not the page */
+		cursor:help;		/* Makes you cursor have the help symbol */
+	}	
+	.tooltip {
+		display:block;
+		position:absolute;
+		width:150px;
+		padding:5px 15px;
+		left:50%;
+		bottom:25px;
+		margin-left:-95px;
+		/* Tooltip Style */
+		color:#fff;
+		border:2px solid rgba(34,34,34,0.9);
+		background:rgba(51,51,51,0.9);
+		text-align:center;
+		border-radius:3px;
+		/* Tooltip Style */
+		opacity:0;
+		box-shadow:0px 0px 3px rgba(0, 0, 0, 0.3);
+		-webkit-transition:all 0.2s ease-in-out;
+		-moz-transition:all 0.2s ease-in-out;
+		-0-transition:all 0.2s ease-in-out;
+		-ms-transition:all 0.2s ease-in-out;
+		transition:all 0.2s ease-in-out;
+		-webkit-transform:scale(0);
+		-moz-transform:scale(0);
+		-o-transform:scale(0);
+		-ms-transform:scale(0);
+		transform:scale(0);
+		/* reset tooltip, to not use container styling */
+		font-size:14px;
+		font-weight:normal;
+		font-style:normal;
+	}
+	
+	.tooltip:before, .tooltip:after{
+		content:'';
+		position:absolute;
+		bottom:-13px;
+		left:50%;
+		margin-left:-9px;
+		width:0;
+		height:0;
+		border-left:10px solid transparent;
+		border-right:10px solid transparent;
+		border-top:10px solid rgba(0,0,0,0.1);
+	}
+	.tooltip:after{
+		bottom:-12px;
+		margin-left:-10px;
+		border-top:10px solid rgba(34,34,34,0.9);
+	}
+	
+	.tooltip-container:hover .tooltip, a:hover .tooltip {
+		/* Makes the Tooltip slightly transparent, Lets the barely see though it */
+		opacity:0.9;
+		/* Changes the scale from 0 to 1 - This is what animtes our tooltip! */
+		-webkit-transform:scale(1);
+		-moz-transform:scale(1);
+		-o-transform:scale(1);
+		-ms-transform:scale(1);
+		transform:scale(1);
+		font-family: Verdana;
+		font-size:11px;
+	}
+	
+	/* Pure CSS3 Animated Tooltip - Custom Classes
+	---------------------------------------------------- */
+	.tooltip-style1 {
+		color:#000;
+		border:2px solid #fff;
+		background:rgba(246,246,246,0.9);
+		font-style:italic;
+	}
+	.tooltip-style1:after{
+		border-top:10px solid #fff;
+	}
+	</style>
+	
+<div class="searchadvance">
+  <a href="javascript:void(0)" id="btn-filter1" title="Advance Search"><i class="fa fa-search fa-2x"></i></a>
+</div>	 
+
+<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+		<form method="get" action="" id="customer" name="customer">
+		<!-- filter start -->
+			<div class="filter">
+				<div class="input-title"><?php echo $this->translate("Search");?></div>
+				<div class="row row_nopadding decor-success" style="margin-left:0px !important;margin-right:0px !important;">
+				<div class="clear-all"></div>
+				<div class="col-sm-3 col_paddingtop">
+				<input type="text" name="search_word" id="search_word" placeholder="Search Word" class="inputfield" value="<?php echo (isset($this->Request['search_word'])?$this->Request['search_word']:'')?>">
+				</div>
+				<div class="col-sm-3 col_paddingtop">
+					<input type="submit" class="btn btn-danger btn-round" name="search" id="search" value="Search">
+					<input type="submit" class="btn btn-danger btn-round" name="export" id="export" value="Export">
+				</div>
+				<div class="clear-all"></div>
+				<div class="col-sm-12 col_paddingtop"></div>
+				
+				</div>
+	<!-- Advance Searchg -->			
+	  <div class="cd-filter view-1" id="filter1">
+          <h2><?php echo $this->translate("Advance Serach");?></h2>
+          <a href="javascript:void(0)" class="cd-close">
+          <svg>
+            <use xlink:href="#icon-close"></use>
+          </svg>
+          </a>
+           <div class="cd-filter-block">
+              <h4><?php echo $this->translate("Country");?></h4>
+              <div class="cd-filter-content">
+                <div class="cd-select cd-filters">
+				    <?php echo $this->getHelper('HtmlSelect')->getSelect('country_id',$this->countrylist,'country_id','country_code_name',(isset($this->Request['country_id'])?$this->Request['country_id']:''),false,array('class'=>'filter'));?> 
+                </div>
+                <!-- cd-select -->
+              </div>
+            </div>
+			<?php if(in_array($this->ModelObj->Useconfig['level_id'],array(1,4,6))){?>
+            <div class="cd-filter-block">
+              <h4><?php echo $this->translate("Forwarder");?></h4>
+              <div class="cd-filter-content">
+                <div class="cd-select cd-filters">
+                  <?php echo $this->getHelper('HtmlSelect')->getSelect('forwarder_id',$this->forwarderlist,'forwarder_id','forwarder_name',(isset($this->Request['forwarder_id'])?$this->Request['forwarder_id']:''),false,array('class'=>'filter'));?> 
+                </div>
+              </div>
+            </div>
+			<?php } ?>
+			<div class="cd-filter-block">
+              <h4><?php echo $this->translate("Date");?></h4>
+              <div class="cd-filter-content">
+                <div class="cd-select cd-filters">
+				       <select name="create_checkin" id="create_checkin">
+						<option value="checkin_date" <?php echo (isset($this->Request['create_checkin']) && $this->Request['create_checkin']=='checkin_date')?'selected="selectd"':''?>><?php echo $this->translate("CheckIn date"); ?></option>
+						<option value="create_date" <?php echo (isset($this->Request['create_checkin']) && $this->Request['create_checkin']=='create_date')?'selected="selectd"':''?>><?php echo $this->translate("Create date");?></option>
+					</select>
+					</div>
+              </div>
+            </div>
+            <div class="cd-filter-block">
+              <h4><?php echo $this->translate("From Date");?></h4>
+              <div class="cd-filter-content" style="position:relative">
+                <input type="text" name="from_date" id="from_date" value="<?php echo (isset($this->Request['from_date'])?$this->Request['from_date']:'')?>"">
+              </div>
+              <!-- cd-filter-content -->
+            </div>
+            <div class="cd-filter-block">
+              <h4><?php echo $this->translate("To Date");?></h4>
+              <div class="cd-filter-content" style="position:relative">
+              <input type="text" name="to_date" id="to_date" value="<?php echo (isset($this->Request['to_date'])?$this->Request['to_date']:'')?>">
+				<!-- cd-filter-content -->
+				</div>
+            </div>
+			<?php if($this->ModelObj->Useconfig['level_id']==1){?>
+            <div class="cd-filter-block">
+              <h4><?php echo $this->translate("Depot");?></h4>
+              <div class="cd-filter-content">
+                <div class="cd-select cd-filters">
+                <?php echo $this->getHelper('HtmlSelect')->getSelect('parent_id',$this->depotlist,'user_id','company_name',(isset($this->Request['parent_id'])?$this->Request['parent_id']:''),true,array('class'=>'filter'));?> 
+				</div>
+              </div>
+            </div>
+			<?php } ?>
+			<?php if(in_array($this->ModelObj->Useconfig['level_id'],array(1,4,6))){?>
+            <div class="cd-filter-block">
+              <h4><?php echo $this->translate("Customer");?></h4>
+              <div class="cd-filter-content">
+                <div class="cd-select cd-filters">
+             <?php echo $this->getHelper('HtmlSelect')->getSelect('user_id',$this->customerlist,'user_id','company_name',(isset($this->Request['user_id'])?$this->Request['user_id']:''),true,array('class'=>'filter'));?> 
+			  </div>
+              </div>
+            </div>
+		
+            <div class="cd-filter-block">
+              <h4><?php echo $this->translate("Service");?></h4>
+              <div class="cd-filter-content">
+                <div class="cd-select cd-filters">
+                 <?php echo $this->getHelper('HtmlSelect')->getSelect('service_id',$this->servicelist,'service_id','service_name',(isset($this->Request['service_id'])?$this->Request['service_id']:''),false,array('class'=>'filter'));?> 
+					</div>
+              </div>
+            </div>
+			<?php } ?>
+			 <div class="cd-filter-block">
+              <h4><?php echo $this->translate("Added Type");?></h4>
+              <div class="cd-filter-content">
+                <div class="cd-select cd-filters">
+				<?php echo $this->getHelper('HtmlSelect')->getSelect('shipment_type',$this->addedtype,'status_id','shipment_mode',(isset($this->Request['shipment_type'])?$this->Request['shipment_type']:''),false,array('class'=>'inputfield'));?> 
+				</div>
+              </div>
+            </div>
+			<div class="cd-filter-block">
+              <h4><?php echo $this->translate("Status");?></h4>
+              <div class="cd-filter-content">
+                <div class="cd-select cd-filters">
+                 <?php echo $this->getHelper('HtmlSelect')->getSelect('status_id',array(array('status_id'=>1,'status_name'=>'Delivered'),array('status_id'=>2,'status_name'=>'Un-Delivered'),array('status_id'=>3,'status_name'=>'Error Parcel')),'status_id','status_name',(isset($this->Request['status_id'])?$this->Request['status_id']:''),false,array('class'=>'filter'));?> 
+					</div>
+              </div>
+            </div>
+            <div class="clear-all"></div>
+            <div style="padding:20px 0px; text-align:center">
+			  <input type="submit" name="advance_search" id="advance_search" value="<?php echo $this->translate("Advance Search");?>" class="btn btn-warning btn-round"> 
+            </div>
+        </div>
+		<!--End Advance Filter-->		
+           </div>	
+		  </form> 
+			<!-- end filter -->
+		<?php //print_r($this->records);die;?>
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+						
+				<div id="table">
+					<div class="header-row row"> 
+					<span class="cell">#</span> 
+					<span class="cell"><?php echo $this->translate("Rceiver Name");?></span> 
+					<span class="cell"><?php echo $this->translate("Parcel No.");?></span> 
+					<span class="cell"><?php echo $this->translate("Reference");?></span> 
+					<span class="cell"><?php echo $this->translate("Country");?></span> 
+					<span class="cell"><?php echo $this->translate("Forwarder");?></span> 
+					<span class="cell"><?php echo $this->translate("Weight");?>(KG)</span>
+					<span class="cell"><?php echo $this->translate("Services");?></span> 
+					<span class="cell"><?php echo $this->translate("Additional Services");?></span> 
+					<span class="cell"><?php echo $this->translate("Create Date");?></span>
+					<span class="cell"><?php echo $this->translate("CheckIn Date");?></span> 
+					<span class="cell"><?php echo $this->translate("Trace Track");?></span> 					
+					</div>
+					<?php if($this->records['Total']>0){
+					
+						foreach($this->records['Records'] as $index=>$data){
+							$class = (($index)%2==0) ? 'class="row odd"' :'class="row even"';
+							$status = $this->ModelObj->ParcelCurrentStatus($data);
+							?>
+						<div <?=$class?>>
+							<input type="radio" name="expand" class="res_dio">
+							<span class="cell" data-label="Status" style="color:<?php echo $status['Color']?>">
+							<p class="tooltip-container" style="color:<?php echo $status['Color']?>">
+							 <?php echo $status['Icon']; ?>
+							 <span class="tooltip"><?php echo $status['Message']?></span>
+							</p></span>
+							<span class="cell" data-label="Receiver"><?=$data[RECEIVER];?></span> 
+							<span class="cell" data-label="No. of Parcel">
+							<?php 
+								if ($data[QUANTITY]<=1) {
+									$parcel_no = 1;
+								} else {
+									$parcel_no = commonfunction::sub_String($data[REFERENCE],-1) + 1;
+								}?>
+							<?=$parcel_no.'/'.$data[QUANTITY]?></span>
+							<span class="cell" data-label="Reference"><?= $data[REFERENCE]?></span>
+							<span class="cell" data-label="Country"><?= $data['country_name']?></span>
+							<span class="cell" data-label="Forwarder"><?= $data['forwarder_name']?></span>
+							<span class="cell" data-label="Weight"><?= $data[WEIGHT]?></span>
+							<span class="cell" data-label="Service"><?= $data['service_name']?></span>
+							<span class="cell" data-label="Sub-Service"><?=($data['addservice_id']>0)?$this->ModelObj->ServiceName($data['addservice_id']):'';?></span>
+							<span class="cell" data-label="Create Date"><?=date('F- d Y',strtotime($data['create_date']));?></span>
+							<span class="cell" data-label="Check-in Date"><?= date('F- d Y',strtotime($data['checkin_date']))?></span>
+							<span class="cell" data-label="Barcode"><a href="javascript:void(0);" onclick="javascript:window.open('<?=$this->url(array('controller' => 'Parceltracking','action'=>'tracking'),'default',true).'?tockenno='.Zend_Encript_Encription::encode($data[BARCODE_ID]);?>','mywindow','status=0,scrollbars=yes,resizable=1,width=1200,height=600,toolbar=0')" title="Track Parcel"><?= $data[TRACENR_BARCODE]?></a>
+							<br><select name="help_desk" id="help_desk" class="inputfield" style="width:60%" onchange="addaction(this.value,'<?php echo $data[BARCODE_ID];?>');">
+								<option value=""><?=$this->translate("Select");?></option>
+								<option value="1"><?=$this->translate("Add Ticket");?></option>
+								<option value="2"><?=$this->translate("Claim");?></option>
+								
+								<?php if($this->ModelObj->Useconfig['level_id']==5 || $this->ModelObj->Useconfig['level_id']==10){?>
+								   <option value="3"><?=$this->translate("Chat");?></option>
+								<?php } ?>
+							</select>
+							
+							</span>
+							
+						
+						</div>
+					<?php }}else{?>
+						
+						<div class="row odd">
+							<span class="cell" colspan="6"><b><?=$this->translate("Record not found !");?></b></span> 
+						</div>
+					<?php }?>	
+
+				</div>
+				<div class="unit control">
+				  <div class="nav-btns pull-right"> <?php echo commonfunction::PageCounter($this->records['Total'],$this->Request)?>
+				  </div>
+				</div>
+			</div>
+			</div></div>
+
+<script type="text/javascript">	
+	$(function() {
+		$( "#from_date" ).datepicker({
+		  dateFormat: 'yy-mm-dd',
+		  showOtherMonths: true,
+		  selectOtherMonths: true
+		});
+		$( "#to_date" ).datepicker({
+		  dateFormat: 'yy-mm-dd',
+		  showOtherMonths: true,
+		  selectOtherMonths: true
+		});
+	
+	});
+function addaction(action,barcode_id){
+  if(action==1){
+    openbox('<?php echo $this->url(array('controller'=>'Helpdesk','action'=>'addticket'),'default',true);?>?barcode_id='+barcode_id,'','');
+  }
+  if(action==2){
+	  openbox('<?php echo $this->url(array('controller'=>'Claim','action'=>'addclaim'),'default',true);?>?barcode_id='+barcode_id,'','');
+  }
+  if(action==3){
+     //openbox('<?php echo $this->url(array('controller'=>'Chatsystem','action'=>'chat'),'default',true);?>','','');
+	 window.open('https://test.dpost.be/Mychat/?chat_type=1&tocken='+barcode_id+'&uid=<?php echo base64_encode($this->ModelObj->Useconfig['user_id'])?>','mywindow','status=0,resizable=1,width=1200,height=600,toolbar=0')
+  }
+}	
+</script>					

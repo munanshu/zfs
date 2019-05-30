@@ -1,0 +1,323 @@
+
+
+<div class="tab-content">
+
+		 <div class="tab-pane fade in active" id="tab-1">
+
+
+
+		<form method="get" action="" id="filter_form" name="filter_form">
+
+		<!-- filter start -->
+
+			<div class="filter">
+
+				<div class="input-title"><?php echo $this->translate("Search");?></div>
+
+				<div class="row row_nopadding decor-success" style="margin-left:0px !important;margin-right:0px !important;">
+
+				<div class="clear-all"></div>
+
+				<div class="col-sm-4 col_paddingtop">
+
+				<label><?php echo $this->translate("Country");?></label>
+
+				<select name="country_id" id="country_id" class="inputfield" style="width:60%">
+
+			    <option value="">--<?php echo $this->translate("Country"); ?>--</option>
+
+				<?php foreach($this->countrylist as $countrylist){
+
+				  $selected = '';
+
+				  if(isset($this->Request['country_id']) && $countrylist['country_id']==$this->Request['country_id']){
+
+				    $selected = 'selected="selected"';
+
+				  }?>
+
+				  <option value="<?php echo $countrylist['country_id']?>" <?php echo $selected;?>><?php echo $countrylist['cncode'].'-'.$countrylist['country_name']?></option>
+
+				<?php } ?>
+
+              </select>
+
+				</div>
+
+				<?php if($this->ModelObj->Useconfig['level_id']==1 || $this->ModelObj->Useconfig['level_id']==11){?>
+
+				<div class="col-sm-4 col_paddingtop">
+
+				<label><?php echo $this->translate("Depot");?></label>
+
+				<select name="user_id" id="user_id" class="inputfield" style="width:60%">
+
+			    <option value="">--<?php echo $this->translate("Select"); ?>--</option>
+
+				<?php foreach($this->depotlist as $depotlist){
+
+				  $selected = '';
+
+				  if(isset($this->Request['user_id']) && Zend_Encript_Encription::encode($depotlist['user_id'])==$this->Request['user_id']){
+
+				    $selected = 'selected="selected"';
+
+				  }?>
+
+				  <option value="<?php echo Zend_Encript_Encription::encode($depotlist['user_id'])?>" <?php echo $selected;?>><?php echo $depotlist['company_name']?></option>
+
+				<?php } ?>
+
+              </select>
+
+				</div>
+
+				<?php } ?>
+
+				<div class="col-sm-4 col_paddingtop">
+
+				<label><?php echo $this->translate("Service");?></label>
+
+			      <select name="service_id" id="service_id" class="inputfield" style="margin-left: 0px; width:50%">
+
+				 <option value="">--<?php echo $this->translate("Select Service"); ?>--</option>
+
+				<?php foreach($this->servicelist as $servicelist){
+
+				  $selected = '';
+
+				  if(isset($this->Request['service_id']) && $servicelist['service_id']==$this->Request['service_id']){
+
+				    $selected = 'selected="selected"';
+
+				  }?>
+
+				  <option value="<?php echo $servicelist['service_id']?>" <?php echo $selected;?>><?php echo $servicelist['service_name']?></option>
+
+				<?php } ?>
+
+              </select>
+
+				</div>
+
+				<div class="col-sm-4 col_paddingtop">
+
+				<label><?php echo $this->translate("Forwarder");?></label>
+
+				<?php echo $this->getHelper('HtmlSelect')->getSelect('forwarder_id',$this->forwarders,'forwarder_id','forwarder_name',(isset($this->Request['forwarder_id'])?$this->Request['forwarder_id']:''),false,array('class'=>'inputfield','style'=>'width:50%'));?>
+
+				</div>
+
+				<div class="col-sm-2 col_paddingtop">
+
+				<label><?php echo $this->translate("Min Weight");?></label>
+
+					<input type="text" class="inputfield" name="min_weight" id="min_weight" style="width:30%" value="<?php echo (isset($this->Request['min_weight'])?$this->Request['min_weight']:'')?>">
+
+				</div>
+
+				<div class="col-sm-2 col_paddingtop">
+
+				<label><?php echo $this->translate("Max Weight");?></label>
+
+					<input type="text" class="inputfield" name="max_weight" id="max_weight" style="width:30%" value="<?php echo (isset($this->Request['max_weight'])?$this->Request['max_weight']:'')?>">
+
+				</div>
+
+				<div class="col-sm-2 col_paddingtop">
+
+					<input type="submit" class="btn btn-danger btn-round" name="search" id="search" value="Search">
+
+				</div>
+
+
+
+				<div class="col-sm-12 col_paddingtop"></div>
+
+				</div>
+
+				
+
+		 <?php if($this->ModelObj->Useconfig['level_id']==1 || $this->ModelObj->Useconfig['level_id']==11){?>		
+
+			
+
+			<div class="col-sm-2 col_paddingtop">
+
+			 <a href="javascript:void(0);" onclick="Addrouting()" ><i class="fa fa-plus-square"></i><?php echo $this->translate("Add Routing");?></a>
+
+			</div>
+
+			<div class="col-sm-2 col_paddingtop">
+
+			 <a href="<?php echo $this->url(array('controller'=>'Routing','action'=>'weightclasses'),'default',true);?>" ><i class="fa fa-plus-square"></i><?php echo $this->translate("Weight Classes");?></a>
+
+			</div>
+
+		<?php }elseif($this->ModelObj->Useconfig['level_id']==4 || $this->ModelObj->Useconfig['level_id']==6){ ?>
+
+			 <div class="col-sm-3 col_paddingtop">
+
+				<a href="<?php echo $this->url(array('controller'=>'Routing','action'=>'updateprice'),'default',true);?>" ><i class="fa fa-plus-square"></i><?php echo $this->translate("Update Customer Price");?></a>
+
+			</div>
+
+			<div class="col-sm-3 col_paddingtop">
+
+				<a href="<?php echo $this->url(array('controller'=>'Routing','action'=>'updatepricespecial'),'default',true);?>" ><i class="fa fa-plus-square"></i><?php echo $this->translate("Update Special Price");?></a>
+
+			</div>
+
+		 <?php }?>
+
+		 <div class="col-sm-4 col_paddingtop">
+
+			 <a href="<?php echo $this->url(array('controller'=>'Routing','action'=>'import'),'default',true);?>" ><i class="fa fa-file"></i><?php echo $this->translate("Export/Import");?></a>
+
+			</div>
+
+		</div>
+
+		<!-- end filter -->
+
+		
+
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+
+				<div id="table">
+
+					<div class="header-row row"> 
+
+					<span class="cell"><?php echo $this->translate("Dest. Country");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Min Weight");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Max Weight");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Services");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Begin Postcode");?></span> 
+
+					<span class="cell"><?php echo $this->translate("End Postcode");?></span>
+
+					<span class="cell"><?php echo $this->translate("Company");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Action");?></span>				
+
+					</div>
+
+					<?php if($this->records['Total']>0){
+
+					
+
+						foreach($this->records['Records'] as $index=>$data){
+
+							$class = (($index)%2==0) ? 'class="row odd"' :'class="row even"';?>
+
+						<div <?=$class?>>
+
+							<span class="cell" data-label="Country"><?=$data['country_name'];?></span>
+
+							<span class="cell" data-label="Min Weight"><?= $data['min_weight']?></span>
+
+							<span class="cell" data-label="Max weight"><?= $data['max_weight']?></span>
+
+							<span class="cell" data-label="Services">
+
+							<?php $services = $this->ModelObj->getRoutingServices($data['routing_id']);
+
+							    foreach($services as $service){
+
+								      $parent_service = ($service['parent_service']!='')?' ('.$service['parent_service'].') ':'';
+
+								  echo '<b>'.$service['service_name'].'</b>'.$parent_service.'-<b>'.$service['forwarder_name'].'</b> ('.(($this->ModelObj->Useconfig['level_id']==1 || $this->ModelObj->Useconfig['level_id']==11)?$service['depot_price']:$service['customer_price']).')<br>';
+
+								}
+
+							?>
+
+							</span>
+
+							<span class="cell" data-label="Begin Postcode"><?=commonfunction::stringReplace(',','<br>',$data['beginPostCode'])?></span>
+
+							<span class="cell" data-label="End Postcode"><?=commonfunction::stringReplace(',','<br>',$data['endPostCode'])?></span>
+
+							<span class="cell" data-label="End Postcode"><?=$data['company_name']?></span>
+
+							 <?php if($this->ModelObj->Useconfig['level_id']==1 || $this->ModelObj->Useconfig['level_id']==11){?>
+
+							<span class="cell" data-label="Action"><a href="javascript:void(0);"  onclick="Editrouting('<?php echo $this->url(array('controller'=>'Routing','action'=>'editrouting'),'default',true).'?routing_id='.$data['routing_id'];?>')"><img src="<?=IMAGE_LINK.'/edit-icon.png'?>" title="Edit Routing"></a></span>
+
+							 <?php }elseif($this->ModelObj->Useconfig['level_id']==4 || $this->ModelObj->Useconfig['level_id']==6){?>
+
+							<span class="cell" data-label="Action">
+
+							<a href="javascript:void(0);"  onclick="openbox('<?php echo $this->url(array('controller'=>'Routing','action'=>'customerprice'),'default',true).'?routing_id='.$data['routing_id'];?>','70%','90%')"><img src="<?=IMAGE_LINK.'/edit-icon.png'?>" title="Customer Price"></a>&nbsp;|&nbsp;
+
+							<a href="javascript:void(0);"  onclick="openbox('<?php echo $this->url(array('controller'=>'Routing','action'=>'specialprice'),'default',true).'?routing_id='.$data['routing_id'];?>','70%','90%')"><img src="<?=IMAGE_LINK.'/Euro-icon.png'?>" title="Special Price"></a></span>
+
+							<?php } ?>
+
+							</span> 
+
+						</div>
+
+					<?php }}else{?>
+
+						
+
+						<div class="row odd">
+
+							<span class="cell" colspan="6"><b><?=$this->translate("Recod not found !");?></b></span> 
+
+						</div>
+
+					<?php }?>	
+
+
+
+				</div>
+
+					<div class="unit control">
+
+					<div class="nav-btns pull-right"> <?php echo commonfunction::PageCounter($this->records['Total'],$this->Request)?>
+
+				  </div>
+
+				</div> 	
+
+			</form>	
+
+			</div></div></div>
+
+<script>
+
+function Addrouting(){
+
+   var user_id = $('#user_id').val();
+
+   var country_id = $('#country_id').val();
+
+   var service_id = $('#service_id').val();
+
+   if(user_id!=''){
+
+       window.location.href = '<?php echo $this->url(array('controller'=>'Routing','action'=>'addrouting'),'default',true);?>?user_id='+user_id+'&country='+country_id+'&service='+service_id;
+
+	   //openbox('<?php echo $this->url(array('controller'=>'Routing','action'=>'addrouting'),'default',true);?>?user_id='+user_id,'70%','90%');
+
+   }else{
+
+     alert('Please select Depot first');return false;
+
+   }
+
+}
+
+function Editrouting(url){
+
+    openbox(url,'70%','90%');
+
+}
+
+</script>			

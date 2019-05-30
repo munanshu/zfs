@@ -1,0 +1,74 @@
+<?php //echo "<pre>"; print_r($this->pickupDatail); die; ?>
+<link rel="stylesheet" href="<?php echo $this->baseUrl('/public/timepicker/jquery.ui.timepicker.css')?>">
+<script src="<?php echo $this->baseUrl('/public/timepicker/include/ui-1.10.0/jquery.ui.widget.min.js')?>"></script>
+<script src="<?php echo $this->baseUrl('/public/timepicker/jquery.ui.timepicker.js')?>"></script>
+<form action="" method="post" name="manual_pickup" class="inputbox" >
+<div class="col-lg-12 col-md-12 col-sm-12 b-email" style="background:#ffffff;">
+          <div class="b-email-title">
+            <h6><?php echo $this->translate("Manual Pickup");?></h6>
+          </div>
+		  <input type="hidden" name="parent_id" value="<?=$this->pickupDatail['parent_id']?>"/>
+	      <input type="hidden" name="user_id" value="<?=$this->ModelObj->getData['user_id']?>"/>
+          <div class="row">
+		  <div class="col-sm-5 col_paddingtop">
+			 <label><?php echo $this->translate("Pickup Date"); ?></label>
+				 <input type="text" name="pickup_date" id="pickup_date" class="inputfield" value="<?=date('Y-m-d')?>">
+            </div>
+   <div class="col-sm-3 col_paddingtop">
+			 <label><?php echo $this->translate("Pickup Time"); ?></label>
+				 <input type="text" name="pickup_time" id="pickup_time" class="inputfield" placeholder="Set Time" value="">
+            </div>
+   <div class="clearfix"></div>
+            <div class="col-sm-5 col_paddingtop">
+			 <label><?php echo $this->translate("Name"); ?></label>
+				 <input type="text" name="name" id="name" class="inputfield" value="<?=(isset($this->pickupDatail['company_name']))?$this->pickupDatail['company_name']:''?>">
+            </div>
+   <div class="col-sm-4 col_paddingtop">
+			 <label><?php echo $this->translate("Street1"); ?></label>
+				 <input type="text" name="street1" id="street1" class="inputfield" value="<?=(isset($this->pickupDatail['address1']))?$this->pickupDatail['address1']:''?>">
+            </div>
+	 <div class="col-sm-3 col_paddingtop">
+	 <label><?php echo $this->translate("Street2"); ?></label>
+		 <input type="text" name="street2" id="street2" class="inputfield" value="<?=(isset($this->pickupDatail['address2']))?$this->pickupDatail['address2']:''?>">
+	</div>
+   <div class="clearfix"></div>
+   <div class="col-sm-3 col_paddingtop">
+			 <label><?php echo $this->translate("Zipcode"); ?></label>
+				 <input type="text" name="zipcode" id="zipcode" class="inputfield" value="<?=(isset($this->pickupDatail['postalcode']))?$this->pickupDatail['postalcode']:''?>">
+            </div>
+   <div class="col-sm-5 col_paddingtop">
+			 <label><?php   echo $this->translate("City"); ?></label>
+				<input type="text" name="city" id="city" class="inputfield" value="<?=(isset($this->pickupDatail['city']))?$this->pickupDatail['city']:''?>">
+            </div>
+  
+   <div class="col-sm-4 col_paddingtop">
+			 <label><?php echo $this->translate("Country"); ?></label>
+				 <input type="text" name="country" id="country" class="inputfield" value="<?=(isset($this->pickupDatail['country_name']))?$this->pickupDatail['country_name']:''?>">
+            </div>
+   <div class="clearfix"></div>
+      <div class="col-sm-5 col_paddingtop">
+			 <label><?php   echo $this->translate("Weight"); ?></label>
+				<input type="text" name="manual_weight" id="manual_weight" class="inputfield" value="1">
+            </div>
+  
+   <div class="col-sm-4 col_paddingtop">
+			 <label><?php echo $this->translate("Quantity"); ?></label>
+				 <input type="text" name="manual_quantity" id="manual_quantity" class="inputfield" value="1">
+            </div>
+   <div class="clearfix"></div>
+   <div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+	  <div class="col-sm-2 col_paddingtop"> <input type="submit" name="submit" value="Manual Pickup" class="btn btn-danger btn-round"></div>
+   </div>
+</div>
+</div>
+</form>
+<script type="text/javascript">	
+	$(function() {
+		$( "#pickup_date" ).datepicker({
+		  dateFormat: 'yy-mm-dd',
+		  showOtherMonths: true,
+		  selectOtherMonths: true
+		});
+	});
+	$('#pickup_time').timepicker();
+</script>	

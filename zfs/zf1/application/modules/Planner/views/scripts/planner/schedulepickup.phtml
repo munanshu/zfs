@@ -1,0 +1,125 @@
+
+<div class="row row-broken">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+              <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-1">
+					<form action="" method="post" name="schedule_form" id="schedule_form">
+					  <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="input-title"><?php echo $this->translate('Schedule Pickup')?></div>
+					  <div class="clear-all"></div>
+					  <div class="col-sm-3 col_paddingx10">
+						<label for="input-2" class="input__label input__label--kaede"> 
+						<span class="input input--kaede">
+						<a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Planner','action'=>'nonlistedcustomer'),'default',true)?>','60%','71%');"> <img src="<?=IMAGE_LINK?>/addmore.gif" /> <?php echo $this->translate('Add Non-Listed Customer')?></a>
+						</span></label>
+					  </div>
+					  <div class="col-sm-9 col_paddingx10"> <span class="input input--kaede"></span> 
+						</div>
+	
+					</div>
+					<div  id="tablegrid">
+					 <div class="col-sm-3 col_paddingtop">
+					 <label><strong><?php echo $this->translate("Driver"); ?></strong></label>
+					    <?php echo $this->getHelper('HtmlSelect')->getSelect('driver_id',$this->driverList,'driver_id','driver_name','',false,array('class'=>'inputfield','onchange'=>'if(this.value!=""){this.form.submit()}')); ?>
+						
+					</div>
+					 <table width="100%" border="0" id="datatableid">
+					    <thead>
+						<tr>
+								<th><input type="checkbox" name="check_uncheck_all" id="check_uncheck_all" onchange="check_uncheckALL(this)"></th>
+								<th><?=$this->translate('Customer Name');?></th>
+								<th><?=$this->translate('Total Weight');?> </th>
+								<th><?=$this->translate('Total Quantity');?></th>
+								<th><?=$this->translate('Create Date');?></th>
+								<th><?=$this->translate('Pickup Address');?></th>
+								<th><?=$this->translate('Pickup Time');?></th>
+								<th><?=$this->translate('Pickup Date');?></th>
+								<th><?=$this->translate('Action');?></th>
+						</tr>
+						</thead>
+						<tbody>
+						<?php
+						if(count($this->schedulepickup)>0){
+						 foreach($this->schedulepickup as $key=>$data){
+						 $class = ($key%2==0)?'even':'odd';
+						 $background = '';
+						 if($data['manual_pickup_id']>0){
+						     $background = 'style="background-color:tomato"';
+						 }else{
+						    switch($data['parcel_type']){
+						      case 2:
+							      $background = 'style="background-color:cadetblue"';
+							  break;
+							  case 3:
+							     $background = 'style="background-color:bisque"';
+							  break;
+							  case 5:
+							     $background = 'style="background-color:#8bc34a"';
+							  break;
+						   }
+						 }
+						 $pickupurl = '?pickup_detail='.urlencode(commonfunction::Compress($data['parcel_type'].'$'.$data['barcode_id'].'$'.$data['pickup_address'].'$'.$data['pickup_date'].'$'.$data['pickup_time'].'$'.$data['user_id']));
+						 $pickupdata = $data['parcel_type'].'$'.$data['barcode_id'].'$'.$data['pickup_address'].'$'.$data['pickup_date'].'$'.$data['pickup_time'].'$'.$data['user_id'];
+						 ?>
+						<tr class="<?php echo $class;?>" <?php echo $background;?>>
+						<td width="4%"><input type="checkbox" name="barcode_id[]" id="barcode_id_<?php echo $key;?>" value="<?php echo $pickupdata;?>" class="check_uncheck_class"></td>
+                        <td width="10%" data-label="Customer"><?php echo $data['company_name']; ?></td> 
+						<td width="7%" data-label="Weight"><?php echo $data['total_weight']; ?></td>
+						<td width="5%" data-label="Quantity"><?php echo $data['total_quantity']; ?></td> 
+						<td width="7%" data-label="Create Date"><?php echo $data['create_date']; ?></td> 
+						<td width="10%" data-label="Pickup Address"><?php echo commonfunction::stringReplace('^','<br>',$data['pickup_address']); ?></td> 
+						<td width="5%" data-label="Pickup Time"><a href="javascript:void(0)" onclick="openbox('<?php echo $this->url(array('controller'=>'Planner','action'=>'manualpickup'),'default',true).$pickupurl?>','60%','70%')"><?php echo $data['pickup_time']; ?></a></td>
+						<td width="10%" data-label="Pickup Date"><a href="javascript:void(0)" onclick="openbox('<?php echo $this->url(array('controller'=>'Planner','action'=>'manualpickup'),'default',true).$pickupurl?>','60%','70%')"><?php echo $data['pickup_date']; ?></a></td>
+						<td width="5%" data-label="Action">
+						<?php if($data['parcel_type']==1 || $data['parcel_type']==2){?>
+						<a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Planner','action'=>'singleassigned'),'default',true).$pickupurl?>','70%','75%');"> <i class="fa fa-edit fa-2x"></i></a>
+						<?php }?>
+					   </td> 
+					</tr>
+						<?php }} else{ ?>
+						<tr>
+						  <td></td><td></td><td></td><td></td><td data-label="No Data"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td><td></td><td></td><td></td><td></td>
+						  </tr>
+						<?php }
+						?></tbody>
+
+                     </table>
+                    </div>
+					
+					 </form>
+					</div>
+                </div>
+					<div>
+			  </div>
+			 </div>
+            </div>
+          </div>
+<script>
+$(document).ready(function() {
+	 $('#datatableid').DataTable( {
+		"pageLength": 100,
+		"lengthMenu": [[10, 25, 50, 100, 200, 500, -1], [10, 25, 50, 100, 200, 500, "All"]],
+        initComplete: function () {
+            this.api().columns().every( function () {
+                var column = this;
+                var select = $('<select><option value=""></option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+ 						column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+ 
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+        }
+    } );
+	//$('div.dataTables_filter input').addClass('inputfield');
+} );
+</script>

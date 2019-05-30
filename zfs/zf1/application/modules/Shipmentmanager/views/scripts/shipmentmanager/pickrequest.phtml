@@ -1,0 +1,121 @@
+<div class="row row-broken">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+              <ul class="nav nav-tabs nav-justified">
+              </ul>
+
+	<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+			<form method="post" action="" id="customer" name="customer">
+			<!-- filter start -->
+			<div class="filter">
+				<div class="input-title"><?php echo $this->translate("Pickup Request ")?></div>
+				
+				<div class="row row_nopadding decor-success" style="margin-left:0px !important;margin-right:0px !important;">
+
+				<div class="clear-all"></div>
+				<?php  
+				if($this->ModelObj->Useconfig['level_id']==5){
+				 }else{ ?>
+				<div class="col-sm-1 col_paddingx10">Customer:</div>
+				<div class="col-sm-3 col_paddingx10"><?php 
+				echo  $this->getHelper('HtmlSelect')->getSelect('filter_customer',$this->customerList,'user_id','company_name',(isset($this->ModelObj->getData['filter_customer'])? $this->ModelObj->getData['filter_customer']:''),true,array('class'=>'selectbox','id'=>'customer_id')); 
+				?></div>
+				<?php  } ?>
+				<div class="col-sm-1 col_paddingx10">From Date:</div>
+				<div class="col-sm-2 col_paddingx10">
+				<input type="text" class="selectbox" name="fromdate" id="fromdate" placeholder="From Date" value="<?=(isset($this->ModelObj->getData['fromdate']))?$this->ModelObj->getData['fromdate']:'';?>" />
+				</div>
+				<div class="col-sm-1 col_paddingx10">To Date:</div>
+				<div class="col-sm-2 col_paddingx10">
+				<input type="text" class="selectbox" name="todate" id="todate" placeholder="To Date" value="<?=(isset($this->ModelObj->getData['todate']))?$this->ModelObj->getData['todate']:'';?>" />
+				</div>
+				<div class="col-sm-2 col_paddingx10">
+					<input class="btn btn-danger" name="sunmiy" type="submit" value="search"/>
+			  	</div>
+				</div>
+			</div>
+			
+		<!-- end filter -->
+		
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+						
+				<div id="table">
+					<div class="header-row row">
+						<span class="cell"><?php echo $this->translate("Customer Name");?></span>
+						<span class="cell"><?php echo $this->translate("Total Packet");?></span>
+						<span class="cell"><?php echo $this->translate("Total Weight (Kg)");?></span> 
+						<span class="cell"><?php echo $this->translate("Create Date");?></span>
+						<span class="cell"><?php echo $this->translate("Pickup Date");?></span> 
+						<span class="cell"><?php echo $this->translate("Pickup Time");?></span>
+						<span class="cell"><?php echo $this->translate("Pickup Address");?></span>
+						<span class="cell"><?php echo $this->translate("Customer Address");?></span>
+						<span class="cell"><?php echo $this->translate("Pickup Request");?></span>
+					</div>
+					
+					<?php
+					 if(count($this->PickRequestList)>0){
+					
+						foreach($this->PickRequestList as $index=>$data){
+							
+							$class = (($index)%2==0) ? 'class="row odd"' :'class="row even"';
+							$bgcolor = ($data['parcel_type']==4)?'red':''?>
+						<div <?=$class?> style="background-color:<?=$bgcolor?>">
+							<input type="radio" name="expand" class="res_dio">
+							<span class="cell" data-label="Customer Name"><?= $data['company_name']?></span>
+							<span class="cell" data-label="Total Packet"><?= $data['total_quantity']?></span>
+							<span class="cell" data-label="Total Weight (Kg)"><?= $data['total_weight']?></span>
+							<span class="cell" data-label="Create Date"><?= $data['create_date']?></span>
+							<span class="cell" data-label="Pickup Time"><?= $data['pickup_date']?></span>
+							<span class="cell" data-label="Pickup Date"><?= date('H:i', strtotime($data['pickup_time']))?></span>
+							<span class="cell" data-label="Pickup Address"><?= nl2br(str_replace('^',"\n",str_replace('^^','^',$data['pickup_address'])))?></span>
+							<span class="cell" data-label="Customer Address"><?= nl2br(str_replace('^',"\n",str_replace('^^','^',$data['customer_address'])))?></span>
+							<?php 
+						$pickupurl = '?pickup_detail='.urlencode(commonfunction::Compress($data['parcel_type'].'$'.$data['barcode_id'].'$'.$data['pickup_address'].'$'.$data['pickup_date'].'$'.$data['pickup_time'].'$'.$data['user_id']));
+						 ?>
+							<span class="cell" data-label="Pickup Request"><a href="javascript:void(0);" onclick="openbox('<?php echo $this->url(array('controller'=>'Planner','action'=>'manualpickup'),'default',true).$pickupurl?>','60%','70%');"><i class="fa fa-truck fa-2x" aria-hidden="true"></i></a>
+							</span>
+
+						</div><?php echo $this->paginator; ?>
+					<?php }}else{?>
+						<div class="row odd">
+							<span class="cell"><b><?=$this->translate("Recod not found !");?></b> </span>
+							<?php  
+							   if($this->ModelObj->Useconfig['level_id']==5){
+								  $user = Zend_Encript_Encription:: encode($this->ModelObj->Useconfig['user_id']);
+							   }else{
+							   		$user = '';
+							   }
+							 ?>
+							<span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span>
+							<span class="cell" data-label="Pickup Request"><a title="Pickup Request" href="javascript:void(0);" onclick="defaultManualPickup('<?=$user;?>');"><i title="Pickup Request" class="fa fa-truck fa-2x" aria-hidden="true"></i></a>
+							</span>
+						</div>
+					<?php }?>	
+				</div>
+				<div class="unit control">
+				  <div class="nav-btns pull-right"><?php echo $this->getHelper('Paginator')->Pages($this->page);?>  </div>
+				</div>
+				</form>	
+				</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+ $(function() {
+  $( "#fromdate" ).datepicker({
+    dateFormat: 'yy-mm-dd',
+    showOtherMonths: true,
+    selectOtherMonths: true
+  });
+    $( "#todate" ).datepicker({
+    dateFormat: 'yy-mm-dd',
+    showOtherMonths: true,
+    selectOtherMonths: true
+  });
+ });	
+</script>
+<script src="<?php echo $this->baseUrl('public/js/shipmentmanager.js');?>"></script>

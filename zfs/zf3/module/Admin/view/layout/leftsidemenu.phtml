@@ -1,0 +1,37 @@
+<?php
+ $session = $this->layout()->AdminSession;
+ $username = $session->data['username'];
+ 
+ $username = $this->MessagesHelper()->DeCryptIdentity($username,'userIdentityUsername');
+ ?>
+
+<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+		<div class="profile-sidebar">
+			<div class="profile-userpic">
+				<img src="http://placehold.it/50/30a5ff/fff" class="img-responsive" alt="">
+			</div>
+			<div class="profile-usertitle">
+				<div class="profile-usertitle-name"><?=$username;?></div>
+				<div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="divider"></div>
+		<form role="search">
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="Search">
+			</div>
+		</form>
+		<?php
+
+			 // $community = $this->navigation()->findOneByLabel('Manage Customers');
+
+			 $options = array(
+	   			 'indent'  => 16,
+	    		 'ulClass' => 'nav menu',
+				); 
+ 			echo $this->navigation('Customacl')->menu()->setPartial('layout/partials/navigation');
+			// echo $this->navigation('Customacl')->menu()->render();
+
+		?> 
+	</div><!--/.sidebar-->

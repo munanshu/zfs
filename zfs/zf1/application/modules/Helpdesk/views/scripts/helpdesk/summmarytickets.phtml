@@ -1,0 +1,122 @@
+<div class="row row-broken">
+    <div class="col-sm-12">
+        <div class="tabs" id="seventh-tabs">
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-1">
+                    <form method="get" name="ticketlist">
+						<div class="filter">
+							<div class="row row_nopadding decor-success" style="margin-left:0;margin-right:0">
+								<div class="input-title"><?php echo $this->translate('Search Ticket') ?></div>
+								<div class="clear-all"></div>
+								<div class="col-sm-3 col_paddingx10"> 
+									<label for="search"><?php echo $this->translate('Search') ?></label>
+									<input type="text" name="ticket_barcode" style="width:60%"; class="inputfield" placeholder="Ticket Number" value="<?=(isset($this->Request['ticket_barcode']))? $this->Request['ticket_barcode']:''; ?>">
+								</div>
+								<div class="col-sm-3 col_paddingx10">
+								   <button class="btn btn-danger btn-round" type="submit">Submit</button>
+								</div>
+							</div>
+						</div>
+						<ul class="nav nav-tabs nav-justified" style="width:310px">
+					      <li class="active"><a href="<?=$this->url(array('controller'=>'Helpdesk','action'=>'ticketlist'),'default',true)?>" data-toggle="">All Ticket</a></li	>
+						  <li><a href="<?=$this->url(array('controller'=>'Helpdesk','action'=>'summmarytickets'),'default',true)?>" data-toggle="">Summary Ticket</a></li>
+                        </ul>
+					</form>
+					
+					<form method="post" name="">	
+						<div id="table">
+						    <div class="header-row row"> 
+							  <span class="cell primary"><?php echo $this->translate('Logo') ?></span> 
+							  <span class="cell"><?php echo $this->translate('Ticket Number') ?> </span> 
+							  <span class="cell"><?php echo $this->translate('Description') ?></span>
+                              <?php if($this->session_data['level_id']==1 || $this->session_data['level_id']==4 || $this->session_data['level_id']==6){ ?>							  
+							  <span class="cell"><?php echo $this->translate('Forward Detail') ?></span>
+                              <?php } ?>							  
+							  <span class="cell"><?php echo $this->translate('Status') ?></span> 
+							  <span class="cell"><?php echo $this->translate('Action') ?></span> 
+						    </div>
+							<?php if(count($this->ticketdetails)>0){
+							    foreach($this->ticketdetails as $key=>$ticketdetails){
+								$class = ($key%1==0) ? 'row even' : 'row odd';
+							?>
+						    <div class="<?= $class ?>">
+								<input type="radio" name="expand" class="res_dio">
+								<span class="cell primary" data-label="Logo">
+								  <?php if($ticketdetails['logo']!='' && file_exists(ROOT_PATH.'/public/headerlogo/'.$ticketdetails['logo'])){ ?>
+								    <img src="<?=BASE_URL?>/public/headerlogo/<?=$ticketdetails['logo']?>" class="logo">
+								  <?php } else{ ?>
+								    <img src="<?=BASE_URL?>/public/headerlogo/<?=$ticketdetails['customer']['depot_logo']?>" class="logo">
+								  <?php  } ?>
+								</span> 
+								<span class="cell" data-label="Ticket Number"><?=$ticketdetails['ticket_no'] ?></span> 
+								<span class="cell" data-label="Description">
+									<div style="width:250px; text-align:justify">
+									  <p><strong><?php echo $this->translate('Question') ?>:</strong><?= $ticketdetails['question_type'] ?></p>
+									  <p><strong><?php echo $this->translate('Description') ?>:</strong><?= $ticketdetails['messages'] ?></p>
+									</div>
+								</span>							
+								<?php if($this->session_data['level_id']==1 || $this->session_data['level_id']==4 || $this->session_data['level_id']==6){ ?>
+								<span class="cell" data-label="Forward Detail"><?= $this->ModelObj->getForwardDetail($ticketdetails); ?></span>
+                                <?php } ?>								
+								<span class="cell" data-label="Status">
+								 <?php if($this->session_data['level_id']==5  ||  commonfunction::inArray($this->session_data['user_id'],commonfunction::explode_string($ticketdetails['forward_to']))){ 
+								    if($ticketdetails['is_status']!=8){ ?>
+									    <select name="status" class="inputfield" onchange="changeTicketstatus(this.value,'<?= Zend_Encript_Encription:: encode($ticketdetails['helpdesk_token'])?>')">
+									    <?php foreach($this->helpdeskstatus as $helpdeskstatus) { ?>
+											<?php if($helpdeskstatus['helpdesk_status_id']==$ticketdetails['is_status']) {?>
+											 <option value="<?=$helpdeskstatus['helpdesk_status_id']?>" <?php if($helpdeskstatus['helpdesk_status_id']==$ticketdetails['is_status']){ echo 'selected="selected"'; } ?>><?=$helpdeskstatus['helpdesk_status_name']?></option>
+											 <?php  } } ?>
+									    </select>
+								    <?php } else{ echo "Close"; } } else{ ?>
+								        <?=$this->getHelper('HtmlSelect')->getSelect('status',$this->helpdeskstatus,'helpdesk_status_id','helpdesk_status_name', $ticketdetails['is_status'], false,array('class'=>'inputfield', 'onchange'=>'changeTicketstatus(this.value,"'.Zend_Encript_Encription:: encode($ticketdetails['helpdesk_token']).'")')); ?>
+								  <?php } ?>
+								</span>
+								<span class="cell" data-label="Action">
+									<div class="action-btns btn-group pull-right" role="group">
+									<?php if($this->session_data['level_id']==1 || $this->session_data['level_id']==4 || $this->session_data['level_id']==6){ 
+									  ?>
+									  <button type="button" class="btn btn-default"><a href="<?=$this->url(array('controller'=>'Helpdesk', 'action'=>'replyform'),'default',true).'?mode=replyform&helpdesk_token='.Zend_Encript_Encription:: encode($ticketdetails['helpdesk_token']).'&ticket_no='.Zend_Encript_Encription:: encode($ticketdetails['ticket_no']) ?>"><i class="fa  fa-reply-all" title="Reply"></i></a></button>
+									<?php if($this->session_data['user_id']!=$ticketdetails['forward_to']){ ?>
+									  <button type="button" class="btn btn-default"><a href="javascript:void(0)" onclick="openbox('<?=$this->url(array('controller'=>'Helpdesk','action'=>'forwardmessage'),'default',  true).'?mode=forwardmessage&helpdesk_token='.Zend_Encript_Encription:: encode($ticketdetails['helpdesk_token']).'&ticket_no='.Zend_Encript_Encription:: encode($ticketdetails['ticket_no']).'&forward_to='.Zend_Encript_Encription:: encode($ticketdetails['forward_to'])?>','60%','65%');"><i class="fa fa-mail-forward" title="Forward"></i></a></button>
+									<?php } ?>
+									  <button type="button" class="btn btn-default"><a href="javascript:void(0)" onclick="deleterecord('<?=HELPDESK_TICKET?>','delete_status','1','helpdesk_token','<?=$ticketdetails['helpdesk_token']?>');"><i class="fa fa-trash" title="Delete Ticket"></i></a></button>
+									  <button type="button" class="btn btn-default"><a href="<?=$this->url(array('controller'=>'Helpdesk', 'action'=>'viewmessage'),'default',true).'?mode=viewmessage&helpdesk_token='.Zend_Encript_Encription:: encode($ticketdetails['helpdesk_token']).'&ticket_no='.Zend_Encript_Encription:: encode($ticketdetails['ticket_no']) ?>"><i class="fa fa-eye" title="View Message"></i></a></button>
+									<?php } 
+									if($this->session_data['level_id']==5){ 
+									    if($ticketdetails['is_status']!=4 && $ticketdetails['is_status']!=8){ ?>  
+									      <button type="button" class="btn btn-default"><a href="<?=$this->url(array('controller'=>'Helpdesk', 'action'=>'replyform'),'default',true).'?mode=replyform&helpdesk_token='.Zend_Encript_Encription:: encode($ticketdetails['helpdesk_token']).'&ticket_no='.Zend_Encript_Encription:: encode($ticketdetails['ticket_no']) ?>"><i class="fa  fa-reply-all" title="Reply"></i></a></button>
+								    <?php } ?>
+									  <button type="button" class="btn btn-default"><a href="<?=$this->url(array('controller'=>'Helpdesk', 'action'=>'viewmessage'),'default',true).'?mode=viewmessage&helpdesk_token='.Zend_Encript_Encription:: encode($ticketdetails['helpdesk_token']).'&ticket_no='.Zend_Encript_Encription:: encode($ticketdetails['ticket_no']) ?>"><i class="fa fa-eye" title="View Message"></i></a></button>
+									<?php } ?>
+									</div>
+								</span> 
+						    </div>
+							<?php } } else{ ?>
+							<span><b>No Record Found!! </b></span>
+							<?php } ?>
+						</div>
+						<div class="unit control">
+						  <div class="nav-btns pull-right"> <?php echo commonfunction::PageCounter((isset($this->ticketdetails[0]['Total']))? $this->ticketdetails[0]['Total'] : '',$this->Request)?>
+						  </div>
+						</div>
+                    </form>
+				</div>
+			</div>
+        </div>
+    </div>
+</div>
+<script>
+function changeTicketstatus(status_id, helpdesk_token){
+ var result = confirm('Are you sure to update helpdesk status?');
+ if(result==true){
+  $.ajax({
+	type: "POST",
+	url: baseUrl+'Helpdesk/changeticketstatus',
+	data: 'status_id='+status_id+'&helpdesk_token='+helpdesk_token,
+	success: function(msg){
+	 window.location.reload();
+	}
+	});
+ }
+}
+</script>

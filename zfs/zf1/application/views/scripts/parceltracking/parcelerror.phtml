@@ -1,0 +1,60 @@
+  	<?php echo $this->getHelper('Messages')->getMessages();?> 
+<form name="error_modification" method="post" action="">
+<input type="hidden" name="shipment_id" id="shipment_id" class="inputfield"  value="<?php echo $this->parcelinfo['shipment_id']?>">
+<div class="row decor-default p-email">
+ <div class="col-lg-9 col-md-8 col-sm-12 b-email">
+          <div class="b-email-title">
+            <h6><?php echo $this->translate("Receiver Information");?></h6>
+          </div>
+            <div class="col-sm-6 col_paddingtop">
+              <label><?php echo $this->translate("Receiver Name");?></label>
+              <input type="text" name="rec_name" id="rec_name" class="inputfield" placeholder="Receiver Name" value="<?php echo $this->parcelinfo['rec_name']?>">
+            </div>
+            <div class="col-sm-6 col_paddingtop">
+              <label><?php echo $this->translate("Contact");?></label>
+              <input type="text" name="rec_contact" id="rec_contact" class="inputfield" placeholder="Contact" value="<?php echo $this->parcelinfo['rec_contact']?>">
+            </div>	
+		   <!--Street and Address-->
+		   <div class="clearfix"></div>
+			<div class="col-sm-4 col_paddingtop">
+              <label><?php echo $this->translate("Street");?></label>
+              <span id="street_div"><input type="text" name="rec_street" id="rec_street" class="inputfield" placeholder="Street" value="<?php echo $this->parcelinfo['rec_street']?>" autocomplete="off"></span>
+            </div>
+            <div class="col-sm-2 col_paddingtop">
+              <label><?php echo $this->translate("House No");?>.</label>
+              <input type="text" maxlength="6" name="rec_streetnr" id="rec_streetnr" class="inputfield" placeholder="" value="<?php echo $this->parcelinfo['rec_streetnr']?>">
+            </div>
+			<div class="col-sm-2 col_paddingtop">
+              <label><?php echo $this->translate("Address");?></label>
+              <input type="text" maxlength="6" name="rec_address" id="rec_address" class="inputfield" placeholder="Address" value="<?php echo $this->parcelinfo['rec_address']?>">
+            </div>
+			<div class="col-sm-4 col_paddingtop">
+              <label><?php echo $this->translate("Street2");?></label>
+              <input type="text" name="rec_street2" id="rec_street2" class="inputfield" placeholder="Street2" value="<?php echo $this->parcelinfo['rec_street2']?>">
+            </div>
+		 <div class="clearfix"></div>
+		  <div class="col-sm-2 col_paddingtop">
+              <label><?php echo $this->translate("Zipcode");?></label>
+              <span id="city_div"><input type="text" name="rec_zipcode" id="rec_zipcode" class="inputfield" placeholder="Zipcode"  value="<?php echo $this->parcelinfo['rec_zipcode']?>"></span>
+            </div>
+			<div class="col-sm-4 col_paddingtop">
+              <label><?php echo $this->translate("City");?></label>
+              <span id="city_div"><input type="text" name="rec_city" id="rec_city" class="inputfield" placeholder="City"  value="<?php echo $this->parcelinfo['rec_city']?>"></span>
+            </div>
+			<div class="col-sm-4 col_paddingtop">
+              <label><?php echo $this->translate("Phone Number");?></label>
+               <input type="text" name="rec_phone" id="rec_phone" class="inputfield" placeholder="Phone Number" style="width:150px" value="<?php echo $this->parcelinfo['rec_phone']?>">
+            </div>
+		<div class="clearfix"></div>
+			<div class="col-sm-12 col_paddingtop">
+              <label><?php echo $this->translate("Additinal Info");?></label>
+              <input type="text" name="additional_info" id="additional_info" class="inputfield" placeholder="Additinal Info" value="">
+            </div>
+		  <!--Submit Buttons-->
+			<div class="clearfix"></div>
+			<div class="clearfix"></div>
+						<div class="col-sm-3 col_paddingtop" id="print_button">
+              <input type="submit" name="update" id="update" value="Submit" class="btn btn-danger btn-block">
+            </div> 
+ </div>
+ </form>			  		

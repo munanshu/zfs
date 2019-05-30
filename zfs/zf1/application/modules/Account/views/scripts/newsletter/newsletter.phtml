@@ -1,0 +1,203 @@
+<script src="<?php echo $this->baseUrl('public/js/account.js');?>"></script>
+
+
+	<div id="table"><div class="header-row row">
+		<span class="cell" style="text-align:center"><h6><?php echo $this->translate("News Letter Template");?></h6></span> 
+	</div></div>
+	
+	<div class="row row-broken" style="margin-left:0px !important;margin-right:0px !important;">
+        <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+              <ul class="nav nav-tabs nav-justified">
+                <li> <a href="./"><?php echo $this->translate("List ")?><i class="fa fa-folder"></i></a> </li>
+                <?php if($this->Mode=='edit'){ ?>
+					<li  class="active"> <a href="newsletter?token=<?php echo $this->token ?>"><?php echo $this->translate("Update Newsletter Template ")?><i class="fa fa-ticket"></i></a> </li>
+				<?php }else{ ?>	
+					<li  class="active"> <a href="newsletter"><?php echo $this->translate("Create Newsletter Template ")?><i class="fa fa-ticket"></i></a></li>
+				<?php }?>
+              </ul>
+			</div>
+		</div>	
+	</div>	 	
+	
+	
+	<div class="col-md-2"></div>
+		<div class="col-md-8">
+			
+			<div id="table">
+			<div class="header-row row">
+				<span class="cell" style="text-align:center"><?php echo $this->translate("News Letter Template");?></span>
+			</div></div>
+			
+			<div class="tab-content">
+				<div class="tab-pane fade in active" id="tab-1">
+					
+					<form name="newslettertemplate" id="newslettertemplate" method="post">
+						<div id="tablegrid">
+						<table width="100%" border="0" id="example">
+						 	<tbody>
+							<tr>
+								<td width="20%" style="text-align:left">
+									<label for="receiver"><b><?php echo $this->translate("Send EMail To ");?></b></label>
+								</td>
+								
+								<td width="80%" style="text-align:left">
+									<select id="usertype" name="usertype" style="width:40%; padding:5px;15px" onchange="javascript:ShowList();">
+										<?php foreach($this->AlluserType as $key=>$type){ ?>
+											
+										 <option value="<?php echo $key ?>" ><?php echo $type;?></option>
+										<?php } ?>
+									</select>
+								</td>
+							</tr>
+							
+							<tr id="depot" style="display:none;">
+								<td width="20%" style="text-align:left">
+									<label for="depot"><b><?php echo $this->translate(" Select Depot ");?></b></label>
+								</td>
+								
+								<td width="80%" style="text-align:left">
+									<select id="depotId" name="depotId[]" multiple="multiple" style="width:60% onchange="javascript:ShowCustomerList(this.value); >
+										<option value="0"><?php echo $this->translate("... Select Depot ...");?></option>
+										<?php foreach($this->AllDepotList as $key=>$depot){ ?>
+											
+										 <option value="<?php echo $key ?>" ><?php echo $depot;?></option>
+										<?php } ?>
+									</select>
+								</td>
+							</tr>
+							
+							<tr id="customer" style="display:none;">
+								<td width="20%" style="text-align:left">
+									<label for="customer"><b><?php echo $this->translate("Select Customer ");?></b></label>
+								</td>
+								
+								<td width="80%" style="text-align:left">
+									<select id="customerId" name="customerId[]" multiple="multiple" style="width:40% >
+										  
+										<option value="0"><?php echo $this->translate("... Select Customer ...");?></option>
+										
+										<?php foreach($this->AllCustomerList as $key=>$customer){ ?>
+										 	<option value="<?php echo $key ?>" ><?php echo $customer;?></option>
+										<?php } ?>
+									</select>
+								</td>
+							</tr>
+							
+							<tr id="depotlist" style="display:none;">
+								<td width="20%" style="text-align:left">
+									<label for="depotlist"><b><?php echo $this->translate("Select Depot ");?></b></label>
+								</td>
+								
+								<td width="80%" style="text-align:left">
+									<select id="depot_id" name="depot" style="width:60%>
+										<option value="0"><?php echo $this->translate("... Select Depot ...");?></option>
+										<?php foreach($this->AllDepotList as $key=>$depot){ ?>
+											
+										 <option value="<?php echo $key ?>" ><?php echo $depot;?></option>
+										<?php } ?>
+									</select>
+								</td>
+							</tr>
+							
+						
+							<tr>
+								<td width="20%" style="text-align:left">
+									<label for="receiver"><b><?php echo $this->translate("Name ");?></b></label>
+								</td>
+								
+								<td width="80%" style="text-align:left">
+									<input type="text" name="template_name" id="name" value='<?php echo $this->Name; ?>'  style="width:40%; padding:5px;15px" />
+								</td>
+							</tr>
+							
+							<tr>
+								<td width="20%" style="text-align:left">
+									<label for="receiver"><b><?php echo $this->translate("Subject ");?></b></label>
+								</td>
+								
+								<td width="80%" style="text-align:left">
+									<input type="text" name="template_subject" id="subject" value='<?= $this->Subject; ?>' style="width:40%; padding:5px;15px" />
+								</td>
+							</tr>
+							
+							<tr>
+								<td width="20%"> </td>
+								<td width="80%">	 
+									<?php 
+										require ROOT_PATH.'/public/fckeditor/FCKeditor.php';
+										$var = new FCKeditor('template_message');
+										$var->BasePath = BASE_URL.'/public/fckeditor/';
+										$var->Height = '400px';
+										$var->Weight = '200px';
+										$var->Value = stripslashes($this->Message);
+										$var->Create();
+										
+									?>
+								</td>
+							</tr>
+							
+							<tr>
+						 	<td>&nbsp;</td>	
+							<?php if($this->Mode=='edit'){ ?>
+						  	<td>
+								<input type="submit" name="addtemplate" id="addtemplate" value="Edit Teplate" class="btn btn-danger btn-round"> &nbsp;&nbsp;&nbsp;&nbsp;
+						  		<input type="submit" name="sendtemplate" id="sendtemplate" value="Edit & Send Template" class="btn btn-danger btn-round">
+						  	</td>
+							<?php }else{ ?>
+							<td>
+								<input type="submit" name="addtemplate" id="addtemplate" value="Add Teplate" class="btn btn-danger btn-round"> &nbsp;&nbsp;&nbsp;&nbsp;
+						  		<input type="submit" name="sendtemplate" id="sendtemplate" value="Add & Send Template" class="btn btn-danger btn-round">
+						  	</td>
+							<?php } ?>
+						</tr>
+						</tbody>	
+						</div></table>	
+						</form>
+					</div>
+				</div>		
+			</div>		
+		</div>
+		
+	<script type="text/javascript">
+
+		 function ShowList(){	
+			var id = $('#usertype').val();
+			if(id==4){
+				$('#depot').show();
+				
+				$('#customer').val('');
+				$('#customer').hide();
+				$('#depotlist').val('');
+				$('#depotlist').hide();
+				
+			}
+			else if(id==5){
+				$('#customer').show();
+				
+				$('#depot').val('');
+				$('#depot').hide();
+				$('#depotlist').val('');
+				$('#depotlist').hide();
+				
+			}
+			else if(id==6){
+				
+				$('#depotlist').show();
+				
+				$('#depot').val('');
+				$('#depot').hide();
+				$('#customer').val('');
+				$('#customer').hide();
+			}
+			else{
+				$('#depot').val('');
+				$('#depot').hide();
+				$('#customer').val('');
+				$('#customer').hide();
+				$('#depotlist').val('');
+				$('#depotlist').hide();
+			}
+		 }
+
+	</script>			

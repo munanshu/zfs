@@ -1,0 +1,164 @@
+
+	<div class="input-title"><?php echo $this->translate("Customer Routing Manager")?></div>
+	
+	<div class="row row-broken" style="margin-left:0px !important;margin-right:0px !important;">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+              <ul class="nav nav-tabs nav-justified">
+                <li> <a href="customerrouting?token=<?php echo $this->token;?>"><?php echo $this->translate("List ")?><i class="fa fa-folder"></i></a> </li>
+                <li class="active"> <a href="addcustomerrouting?token=<?php echo $this->token;?>"><?php echo $this->translate("Assign New Forwarder ")?><i class="fa fa-ticket"></i></a></li>
+				
+              </ul>
+	</div>
+	
+	<div class="col-md-1"></div>
+		<div class="col-md-10">
+			<div id="table">
+				<div class="header-row row">
+				<span class="cell" style="text-align:center"><?php echo $this->translate("Add Customer Routing ");?></span>
+			</div></div>
+					  
+	<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+		<form method="post" action="" id="addrouting" name="addrouting">
+					
+				<div id="tablegrid">
+					 <table width="100%" border="0">
+					   
+						<tbody>
+							<tr>
+								<td width="20%">
+									<label for="user"><b><?php echo $this->translate("Customer ");?></b></label>
+								</td>
+								<td style="text-align:left">
+									<label for="user"><?php echo $this->customerName;?></label>
+								</td>
+							</tr>
+							
+							<tr>
+								<td width="20%">
+									<label for="country"><b><?php echo $this->translate("Country ");?></b></label>
+								</td>
+								
+								<td width="80%" style="text-align:left">
+									<select id="country" name="country_id" style="width:40%; padding:5px;15px" onchange="javascript:form.submit();">
+										<option value="" ><?php echo " Select Country "?></option>
+										<?php foreach($this->CountryList as $key=>$country){ 
+											$select = '';
+											if($this->SelectedCountry==$country){
+												$select ="selected='selected'"; 
+											}
+										?>
+										 <option value="<?php echo $key; ?>" <?php echo $select; ?>><?php echo $country;?></option>
+										<?php } ?>
+									</select>
+								</td>
+							</tr>
+						</tbody>
+                     </table>
+					 
+					 <table width="100%" border="0">
+					 	<input type="hidden" name="addPos" id="addPos" value="1" />
+						<tr class="even">
+							<td width="15%"><b><?php echo $this->translate("Country ");?></b></td>
+							<td width="20%"><b><?php echo $this->translate("Forwarder ");?></b></td>
+							<td width="30%"><b><?php echo $this->translate("Service ");?></b></td>
+							<td width="30%"><b><?php echo $this->translate("Selected Service");?></b></td>
+							<td width="5%"><b><?php echo $this->translate("Action ");?></b></td>
+						
+						</tr>
+						
+						<?php if(!empty($this->SelectedCountry)){ ?>
+							<tr id="row_1">
+								
+								<td width="15%"><?php echo $this->SelectedCountry; ?></td>
+								<td width="20%">
+									<select id="forwarder_1" name="forwarder_id[]" style="width:80%; padding:5px;10px">
+										<option value="" ><?php echo "Select"?></option>
+										<?php foreach($this->CountryForwarderList as $index=>$forwarder){ ?>
+											
+										 <option value="<?php echo $index ?>" ><?php echo $forwarder;?></option>
+										
+										<?php } ?>
+									</select>
+								
+								</td>
+								<td width="30%">
+									<select id="service_1" name="service_id[0][]" multiple="multiple" style="height:100px" onchange="$.ShowService(1);">
+										<option value="" ><?php echo "--- Select Service ---"?></option>
+										<?php foreach($this->ServiceList as $key=>$service){ ?>
+											
+										 <option value="<?php echo $key ?>" ><?php echo $service.',';?></option>
+										
+										<?php } ?>
+									</select>
+								</td>
+								<td width="30%" id="add_1"></td>
+								<td width="5%"><img src="<?php print IMAGE_LINK; ?>/addmore.gif" align="absmiddle" alt="addmore" title="Add More" border="0" class="addMore" onclick="$.addnewrow();" id="col_1" />
+								
+								</td>
+							</tr>
+					 	<?php } ?>
+					 </table>
+				</div>
+				<div style="text-align:center">
+					<input type="submit" name="assignforwarder" id="assignforwarder" value="Save" class="btn btn-danger btn-round">
+				</div>
+					 
+			</form>	
+			</div></div></div>
+			</div>
+		</div>
+	
+		
+	<script type="text/javascript">
+		 
+		 $.ShowService = function(id){
+		 	var Services = $('#service_'+id).find(":selected").text();
+			$('#add_'+id).html(Services);
+		 }
+		 
+		 $.addnewrow = function(){
+		 	
+			var posVal = $("#addPos").val();
+			var possVal = parseInt(posVal)+1;
+			$("#addPos").val(possVal);
+			
+			var CountryName	=	'<?php echo $this->SelectedCountry; ?>';
+			
+			var appendTxt = "<tr id='row_"+possVal+"'><td>"+CountryName+"</td><td><select id='forwarder_"+possVal+"' name='forwarder_id[]' style='width:80%; padding:5px;10px'><option value='' ><?php echo 'Select'?></option><?php foreach($this->CountryForwarderList as $index=>$forwarder){ ?><option value='<?php echo $index ?>' ><?php echo $forwarder;?></option><?php }?></select></td><td><select id='service_"+possVal+"' name='service_id["+posVal+"][]' multiple='multiple' style='height:100px' onclick='$.ShowService("+possVal+")'><option value='' ><?php echo '--- Select Service ---'?></option><?php foreach($this->ServiceList as $key=>$service){ ?><option value='<?php echo $key ?>' ><?php echo $service.',';?></option><?php }?></select></td><td id='add_"+possVal+"'>&nbsp;</td><td><img src='<?php echo IMAGE_LINK; ?>/addmore.gif' align='absmiddle' alt='addmore' title='Add More' border='0' class='addMore' onclick ='$.addnewrow();'  id='col_"+possVal+"'/></td></tr>";
+			
+			$("tr:last").after(appendTxt);
+			
+			$('#col_'+posVal).attr('src','<?php echo IMAGE_LINK;?>/remove.png');
+			$('#col_'+posVal).attr('class','del');
+			$('#col_'+posVal).attr('title','Remove');
+			$('#col_'+posVal).attr('alt','removerow');
+			$('#col_'+posVal).attr('onclick','$.removerow('+posVal+')');
+		}
+		
+		 $.removerow = function(id){ //alert(id);return false;
+		 	$('#row_'+id).remove();
+			var nextrow = parseInt(id)+1;	
+			var newrow = id;
+			var totalrow = $("#addPos").val();	
+			if(id<totalrow){
+				for(var i=nextrow; i<=totalrow; i++){
+					var sid = parseInt(newrow)-1;	
+					$('#row_'+i).attr('id','row_'+newrow);
+					if(i!=totalrow){
+						$('#col_'+i).attr('onclick','$.removerow('+newrow+')');
+					}
+					$('#col_'+i).attr('id','col_'+newrow);
+					$('#service_'+i).attr('name','service_id['+sid+'][]');
+					
+					newrow = parseInt(newrow)+1;
+				}
+		 	}
+
+			var possVal = parseInt(totalrow)-1;
+			$("#addPos").val(possVal);
+		 }
+
+	</script>	

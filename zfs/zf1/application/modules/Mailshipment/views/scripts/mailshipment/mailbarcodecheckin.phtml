@@ -1,0 +1,41 @@
+<script src="<?php echo $this->baseUrl('/public/js/mailpost.js')?>"></script> 
+<div class="row row-broken">
+	  <div class="col-md-12" id="success_msg" style="display:none"><div class="alert alert-icon alert-icon-success alert-success" role="alert">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<strong><?php echo $this->translate('Success Alert')?> !</strong> <?php echo $this->translate('Parcel Checked-in Successfully')?></div>
+		</div>
+
+</div>
+	<div class="row row-broken">
+        <div class="col-sm-12">
+		
+			
+					
+				 <div class="filter">
+				<div class="input-title"><?php echo $this->translate('Check-In')?></div>
+				
+				<div class="row row_nopadding" id="scan_main" style="backGround-color:#ffffff;margin-left:0px !important;margin-right:0px !important;margin-bottom:5px !important;padding-bottom: 10px;">	
+				<div class="single_input">
+				<label><?php echo $this->translate('Manifest no.')?></label><input name="manifest_number" id="manifest_number" onkeypress="checkmanifest(event);" class="inputfield" type="text"/>
+
+								</div>
+								
+				</div>
+				
+			<div class="clear"></div>
+				
+				<div style="background:#ffffff; padding:10px; overflow:auto;text-align:center" id="scan_output">							  
+							  
+							   
+							  
+							</div>
+				
+				
+			</div>
+        </div>
+	</div>
+
+<script type="text/javascript">
+    $('#manifest_number').focus();
+
+</script>		

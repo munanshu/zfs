@@ -1,0 +1,302 @@
+<div class="tab-content">
+
+		 <div class="tab-pane fade in active" id="tab-1">
+
+
+
+		<form method="post" action="" id="invoicefilter" name="invoicefilter">
+
+		<!-- filter start -->
+
+			<div class="filter">
+
+				<div class="input-title"><?php echo $this->translate("Create Invoice");?></div>
+
+				
+
+				<div class="row row_nopadding decor-success" style="margin-left:0px !important;margin-right:0px !important;">
+
+
+
+				<div class="clear-all"></div>
+
+						<div class="col-sm-4 col_paddingtop">
+
+						<label><?php echo $this->translate($this->filtertext);?></label>
+
+						<select name="user_id" id="user_id" class="inputfield" style="width:60%">
+
+						<option value="">--<?php echo $this->translate($this->filtertext); ?>--</option>
+
+						<?php foreach($this->userlist as $userlist){
+
+						  $selected = '';
+
+						  if(isset($this->Request['user_id']) && Zend_Encript_Encription::encode($userlist['user_id'])==$this->Request['user_id']){
+
+							$selected = 'selected="selected"';
+
+						  }?>
+
+						  <option value="<?php echo Zend_Encript_Encription::encode($userlist['user_id'])?>" <?php echo $selected;?>><?php echo $userlist['company_name']?></option>
+
+						<?php } ?>
+
+              </select>
+
+				</div>
+
+				<div class="col-sm-2 col_paddingx10">
+
+					<button class="btn btn-danger btn-round" name="search" type="submit" value="search">Submit</button>
+
+			  	</div>
+
+			<?php if(isset($this->Request['user_id']) && $this->Request['user_id']!=''){?>	
+
+				<div class="col-sm-2 col_paddingtop">
+
+				  <button class="btn btn-danger btn-round" name="export" type="submit" value="Export">Export</button>
+
+				</div>
+
+				<div class="col-sm-2 col_paddingtop">
+
+				  <a href="<?php echo $this->baseUrl('/createinvoice?type=4&invoice_id='.$this->Request['user_id']);?>"><button class="btn btn-danger btn-round" name="list_invoice" type="button" value="List Invoice">List Invoice</button></a>
+
+				</div>
+
+				<div class="col-sm-2 col_paddingtop">
+
+				  <button class="btn btn-danger btn-round" name="unlist_invoice" type="submit" value="Unlist Invoice">Unlist Invoice</button>
+
+				</div>
+
+			<?php } ?>	
+
+				</div>
+
+			</div>
+
+			
+
+		<!-- end filter -->
+
+		</form>
+
+		<form method="post" action="<?php echo $this->baseUrl('/createinvoice?type=1');?>" id="invoice" name="invoice">
+
+		<div class="col-sm-3 col_paddingx10">
+
+		 <select name="invoice_mode" id="invoice_mode" class="inputfield" onchange="javascript:if(this.value == 'Generate'){ $('#invoice').submit() } else return false;" style="
+
+    margin-left: 5px;">
+
+				  <option value="">With Selected</option>
+
+				  <option value="Generate">Generate</option>
+
+				</select>
+
+		</div>
+
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+
+						
+
+				<div id="table">
+
+					<div class="header-row row">
+
+					<span class="cell"><input type="checkbox" id="check_uncheck_all" onchange="check_uncheckALL(this)"></span> 
+
+					<span class="cell"><?php echo $this->translate("Customer Name");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Parcel weight");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Parcel Quantity");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Mail Quantity");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Parcel Price");?></span>
+
+					<span class="cell"><?php echo $this->translate("Mail Price");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Supplies Price");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Extra Head Price");?></span>
+
+					<span class="cell"><?php echo $this->translate("Action");?></span> 					
+
+					</div>
+
+					<?php 
+
+					$mailInvoices  = $this->ModelObj->getMailInvoice();
+
+					$extraInvoices  = $this->ModelObj->getExtraInvoice();
+					$record = 0;
+					if(count($this->records)>0){
+
+						foreach($this->records as $index=>$data){
+							$record = 1;
+							$class = (($index)%2==0) ? 'class="row odd"' :'class="row even"';?>
+
+						<div <?=$class?>>
+
+							<span class="cell" data-label="Company"><input type="checkbox" id="user_id_<?php echo $data[ADMIN_ID];?>" name="invoice_ids[]" value="<?php echo Zend_Encript_Encription::encode($data[ADMIN_ID]);?>" class="check_uncheck_class"></span> 
+
+							<span class="cell" data-label="Company"><?=$this->ModelObj->CompanyName($data[ADMIN_ID]);?></span>
+
+							<span class="cell" data-label="Parcel weight"><?= $data[WEIGHT]?></span>
+
+							<span class="cell" data-label="Parcel Quantity"><?= $data[QUANTITY]?></span>
+
+							<span class="cell" data-label="Mail Quantity"><?=isset($mailInvoices[$data[ADMIN_ID]])?$mailInvoices[$data[ADMIN_ID]][QUANTITY]:''?></span>
+
+							<span class="cell" data-label="Parcel Price"><?=commonfunction::numberformat($data['price'],2,', ','. ')?></span>
+
+							<span class="cell" data-label="Mail Price"><?=isset($mailInvoices[$data[ADMIN_ID]])?commonfunction::numberformat($mailInvoices[$data[ADMIN_ID]]['price'],2,', ','. '):''?></span>
+
+							<span class="cell" data-label="Supplies Price"></span>
+
+							<span class="cell" data-label="Extra Head Price"><?=isset($extraInvoices[$data[ADMIN_ID]])?commonfunction::numberformat($extraInvoices[$data[ADMIN_ID]]['price'],2,', ','. '):''?></span>
+
+							<span class="cell" data-label="Action" style="font-size:20px">
+
+							<a href="<?php echo $this->baseUrl('/createinvoice?type=1&invoice_id='.Zend_Encript_Encription::encode($data[ADMIN_ID]));?>"><i class="fa fa-eur fa-5" aria-hidden="true" title="Create invoice"></i></a>&nbsp;|&nbsp;
+
+							<a href="<?php echo $this->baseUrl('/createinvoice?type=3&invoice_id='.Zend_Encript_Encription::encode($data[ADMIN_ID]));?>"><i class="fa fa-barcode fa-5" aria-hidden="true" title="Create Test invoice"></i></a>&nbsp;|&nbsp;
+
+							<a href="javascript:void(0)" onclick="openbox('<?php echo $this->url(array('controller'=>'Invoicemanager','action'=>'viewprice'),'default',true).'?user_id='.$data[ADMIN_ID];?>','80%','100%')"><i class="fa fa-eye fa-5" aria-hidden="true" title="View Price"></i></a>&nbsp;|&nbsp;
+
+							<a href="javascript:void(0)" onclick="openbox('<?php echo $this->url(array('controller'=>'Invoicemanager','action'=>'addextrahead'),'default',true).'?user_id='.$data[ADMIN_ID];?>','70%','90%')"><i class="fa fa-plus fa-5" aria-hidden="true" title="Add Extra Heads"></i></a>				
+
+							</span>
+
+						</div>
+
+					<?php unset($mailInvoices[$data[ADMIN_ID]]);
+
+						  unset($extraInvoices[$data[ADMIN_ID]]);} } ?>
+
+					<?php if(!empty($extraInvoices) && count($this->records)<=0){
+
+					foreach($extraInvoices as $key=>$extraInvoice){
+						$record = 2;
+					    $class = (($key)%2==0) ? 'class="row odd"' :'class="row even"';
+
+						?>
+
+						<div <?=$class?>>
+
+							<span class="cell" data-label="Company"><input type="checkbox" id="user_id_<?php echo $data[ADMIN_ID];?>" name="user_id[]" class="check_uncheck_class"></span>
+
+							<span class="cell" data-label="Company"><?=commonfunction::utf8Decode($this->ModelObj->CompanyName($extraInvoice[ADMIN_ID]));?></span>
+
+							<span class="cell" data-label="Parcel weight"></span>
+
+							<span class="cell" data-label="Parcel Quantity"></span>
+
+							<span class="cell" data-label="Mail Quantity"><?=isset($mailInvoices[$extraInvoice[ADMIN_ID]])?$mailInvoices[$extraInvoice[ADMIN_ID]][QUANTITY]:''?></span>
+
+							<span class="cell" data-label="Parcel Price"></span>
+
+							<span class="cell" data-label="Mail Price"><?=isset($mailInvoices[$extraInvoice[ADMIN_ID]])?commonfunction::numberformat($mailInvoices[$extraInvoice[ADMIN_ID]]['price'],2,', ','. '):''?></span>
+
+							<span class="cell" data-label="Supplies Price"></span>
+
+							<span class="cell" data-label="Extra Head Price"><?=commonfunction::numberformat($extraInvoice['price'],2,', ','. ')?></span>
+
+							<span class="cell" data-label="Action" style="font-size:20px">
+
+							<a href="<?php echo $this->baseUrl('/createinvoice?type=1&invoice_id='.Zend_Encript_Encription::encode($extraInvoice[ADMIN_ID]));?>"><i class="fa fa-eur fa-5" aria-hidden="true" title="Create invoice"></i></a>&nbsp;|&nbsp;
+
+							<a href="<?php echo $this->baseUrl('/createinvoice?type=3&invoice_id='.Zend_Encript_Encription::encode($extraInvoice[ADMIN_ID]));?>"><i class="fa fa-barcode fa-5" aria-hidden="true" title="Create Test invoice"></i></a>&nbsp;|&nbsp;
+
+							<a href="javascript:void(0)" onclick="openbox('<?php echo $this->url(array('controller'=>'Invoicemanager','action'=>'viewprice'),'default',true).'?user_id='.$extraInvoice[ADMIN_ID];?>','80%','100%')"><i class="fa fa-eye fa-5" aria-hidden="true" title="View Price"></i></a>&nbsp;|&nbsp;
+
+							<a href="javascript:void(0)" onclick="openbox('<?php echo $this->url(array('controller'=>'Invoicemanager','action'=>'addextrahead'),'default',true).'?user_id='.$extraInvoice[ADMIN_ID];?>','70%','90%')"><i class="fa fa-plus fa-5" aria-hidden="true" title="Add Extra Heads"></i></a></span>
+
+						</div>
+
+						<?php unset($mailInvoices[$data[ADMIN_ID]]); } } ?>
+
+						
+
+					<?php if(!empty($mailInvoices) &&  count($extraInvoices)<=0 && count($this->records)<=0){
+
+					foreach($mailInvoices as $key=>$mailInvoice){
+						$record = 3;
+					    $class = (($key)%2==0) ? 'class="row odd"' :'class="row even"';
+
+						?>
+
+						<div <?=$class?>>
+
+							<span class="cell" data-label="Company"><input type="checkbox" id="user_id_<?php echo $data[ADMIN_ID];?>" name="user_id[]" class="check_uncheck_class"></span>
+
+							<span class="cell" data-label="Company"><?=commonfunction::utf8Decode($this->ModelObj->CompanyName($mailInvoice[ADMIN_ID]));?></span>
+
+							<span class="cell" data-label="Parcel weight"></span>
+
+							<span class="cell" data-label="Parcel Quantity"></span>
+
+							<span class="cell" data-label="Mail Quantity"><?=$mailInvoice[QUANTITY]?></span>
+
+							<span class="cell" data-label="Parcel Price"></span>
+
+							<span class="cell" data-label="Mail Price"><?=commonfunction::numberformat($mailInvoice['price'],2,', ','. ')?></span>
+
+							<span class="cell" data-label="Supplies Price"></span>
+
+							<span class="cell" data-label="Grand Total"></span>
+
+							<span class="cell" data-label="Action" style="font-size:20px">
+
+							<a href="<?php echo $this->baseUrl('/createinvoice?type=1&invoice_id='.Zend_Encript_Encription::encode($mailInvoice[ADMIN_ID]));?>"><i class="fa fa-eur fa-5" aria-hidden="true" title="Create invoice"></i></a>&nbsp;|&nbsp;
+
+							<a href="<?php echo $this->baseUrl('/createinvoice?type=3&invoice_id='.Zend_Encript_Encription::encode($mailInvoice[ADMIN_ID]));?>"><i class="fa fa-barcode fa-5" aria-hidden="true" title="Create Test invoice"></i></a>&nbsp;|&nbsp;
+
+							<a href="javascript:void(0)" onclick="openbox('<?php echo $this->url(array('controller'=>'Invoicemanager','action'=>'viewprice'),'default',true).'?user_id='.$data[ADMIN_ID];?>','80%','100%')"><i class="fa fa-eye fa-5" aria-hidden="true" title="View Price"></i></a>&nbsp;|&nbsp;
+
+							<a href="javascript:void(0)" onclick="openbox('<?php echo $this->url(array('controller'=>'Invoicemanager','action'=>'addextrahead'),'default',true).'?user_id='.$data[ADMIN_ID];?>','70%','90%')"><i class="fa fa-plus fa-5" aria-hidden="true" title="Add Extra Heads"></i></a></span>
+
+						</div>
+
+						<?php } } ?>
+
+						<?php if($record == 0){?>	
+
+						<div class="row odd">
+
+							<span class="cell"></span> 
+							<span class="cell"></span>
+							<span class="cell"></span>
+							<span class="cell"><b><?=$this->translate("No Amount for Invoice!");?></b></span>
+							<span class="cell"></span>
+							<span class="cell"></span>
+							<span class="cell"></span>
+							<span class="cell"></span>
+							<span class="cell"></span>
+							<span class="cell"><a href="javascript:void(0)" onclick="openbox('<?php echo $this->url(array('controller'=>'Invoicemanager','action'=>'addextrahead'),'default',true).'?user_id='.Zend_Encript_Encription::decode($this->Request[ADMIN_ID]);?>','70%','90%')"><i class="fa fa-plus fa-2x" aria-hidden="true" title="Add Extra Heads"></i></a></span></span>
+
+						</div>
+
+					<?php }?>	
+
+				
+
+				</div>
+
+				<div class="unit control">
+
+				  <div class="nav-btns pull-right"><?php echo $this->getHelper('Paginator')->Pages($this->page);?>  </div>
+
+				</div>
+
+					 	
+
+			</form>	
+
+			</div></div></div>

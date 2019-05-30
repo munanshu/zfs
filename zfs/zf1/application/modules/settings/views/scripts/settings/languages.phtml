@@ -1,0 +1,75 @@
+<div class="row row-broken">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+			  
+              <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-6">
+					<form>
+					  <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="input-title"><?php echo $this->translate('Language List')?></div>
+					  <div class="clear-all"></div>
+					  <div class="col-sm-3 col_paddingx10">
+						<label for="input-2" class="input__label input__label--kaede"> 
+						<span class="input input--kaede"><a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Settings','action'=>'addeditlanguage'),'default',  true).'?mode=add'?>','25%','50%');"> <img src="<?=IMAGE_LINK?>/addmore.gif" /> <?php echo $this->translate('Add New Service')?></a>
+						</span></label>
+					  </div>
+					  <div class="col-sm-9 col_paddingx10"> <span class="input input--kaede"></span> 
+						</div>
+	
+					</div>
+					<div  id="tablegrid">
+					 <table width="100%" border="0" id="dataTableGridId">
+					    <thead>
+						<tr>	
+						 		<th><?=$this->translate('LID');?></th>
+								<th><?=$this->translate('Language Name');?></th>
+								<th><?=$this->translate('Code');?> </th>
+								<th><?=$this->translate('Status');?> </th>
+								<th><?=$this->translate('Action');?></th>
+						</tr>
+						</thead>
+						<tbody>
+						<?php if(count($this->records)>0){
+					
+						foreach($this->records as $index=>$data){
+							$class = (($index)%2==0) ? 'class="odd"' :'class="even"';?>
+						<tr <?=$class?>>
+							<td class="cell" data-label="LID"><?=$data['language_id'];?></td> 
+							<td class="cell" data-label="Language Name"><?=$data['language_name'];?></td>
+							<td class="cell" data-label="Language Code"><?= $data['language_code']?></td>
+							<td class="cell" data-label="Status">
+							<span class="cell" data-label="Status" id="statusSpan_<?=$index?>" ><?php if($data['status'] == "1") {  ?><img src="<?=IMAGE_LINK?>/icon_active.gif" align="absmiddle" alt="Active" border="0" onclick="setStatus('<?=LANGUAGE?>','status','0','language_id','<?=$data['language_id']?>','<?=$index?>');" title="Change Status into In-Active" class="changeStatus" />
+						<?php } else { ?>
+						<img src="<?=IMAGE_LINK?>/icon_inactive.gif" align="absmiddle" alt="Active" border="0" onclick="setStatus('<?=LANGUAGE?>','status','1','language_id','<?=$data['language_id']?>','<?=$index?>');" title="Change Status into Active" class="changeStatus" />
+						<?php } ?>
+						</span></td>
+							<td class="cell" data-label="Action"><a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Settings','action'=>'addeditlanguage'),'default',  true).'?mode=edit&id='.Zend_Encript_Encription:: encode($data['language_id'])?>','25%','50%');"> <i class="fa fa-edit"></i></a></td>
+							</td> 
+						</tr>
+					<?php }} else{ ?>
+						<tr>
+						  <td data-label="No Data"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td>
+						  <td></td>
+						  <td></td>
+						  <td></td>
+						  <td></td>
+						  </tr>
+						<?php }
+						?></tbody>
+
+                     </table>
+                    </div>
+					
+					 </form>
+					</div>
+                </div>
+					<div>
+			  </div>
+			 </div>
+            </div>
+          </div>
+<script>
+$(document).ready(function() {
+	 commonDataTableView()
+} );
+</script>

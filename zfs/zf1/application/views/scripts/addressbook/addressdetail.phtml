@@ -1,0 +1,87 @@
+<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+		<form method="post" action="" id="filter_form" name="filter_form">
+			<!-- filter start -->
+			<div class="filter">
+				<div class="input-title"><?php echo $this->translate("Search");?></div>
+				<div class="row row_nopadding decor-success" style="margin-left:0px !important;margin-right:0px !important;">
+				<div class="clear-all"></div>				
+				<div class="col-sm-3 col_paddingx10"> 
+					<label for="country_id"><?php echo $this->translate('Country') ?></label>
+					<?=$this->getHelper('HtmlSelect')->getSelect('country_id',$this->countrylist,'country_id','country_code_name',isset($this->Request['country_id'])?$this->Request['country_id']:'',false,array('class'=>'inputfield','style'=>'width:70%')); ?>
+				</div>
+				<div class="col-sm-3 col_paddingtop">
+					<input type="submit" class="btn btn-danger btn-round" name="search" id="search" value="Search">
+					<!--<input type="submit" class="btn btn-danger btn-round" name="export" id="export" value="Export"> -->
+				</div>
+				<div class="clear-all"></div>
+				</div>
+           </div>	
+			<!-- end filter -->
+	 </form>		
+	
+	<form method="get" action="" id="print_label" name="print_label">		
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+				<div id="table">
+					<div class="header-row row">
+					<span class="cell"><input type="checkbox" id="check_uncheck_all" onchange="check_uncheckALL(this)"></span>
+					<span class="cell"><?php echo $this->translate("Customer");?></span> 
+					<span class="cell"><?php echo $this->translate("Receiver");?></span> 
+					<span class="cell"><?php echo $this->translate("Country");?></span> 
+					<span class="cell"><?php echo $this->translate("Postalcode");?></span> 
+					<span class="cell"><?php echo $this->translate("City");?></span> 
+					<span class="cell"><?php echo $this->translate("Street");?></span>
+					<span class="cell"><?php echo $this->translate("Phone");?></span> 
+					<span class="cell"><?php echo $this->translate("Action");?></span>					
+					</div>
+					<?php if($this->records['Total']>0){
+					
+						foreach($this->records['Records'] as $index=>$data){
+							$class = (($index)%2==0) ? 'class="row odd"' :'class="row even"';?>
+						<div <?=$class?>>
+							<span class="cell" ><input type="checkbox" name="shipment_id[]" id="shipment_id_<?= $data['addressbooki_id']?>" value="<?= $data[SHIPMENT_ID]?>" class="check_uncheck_class"></span>
+							<span class="cell" data-label="Receiver"><?= $data['company_name']?></span> 
+							<span class="cell" data-label="Reference"><?= $data['name']?></span>
+							<span class="cell" data-label="Country"><?= $data['country_name']?></span>
+							<span class="cell" data-label="Postalcode"><?= $data['postalcode']?></span>
+							<span class="cell" data-label="City"><?= $data['city']?></span>
+							<span class="cell" data-label="Street"><?= $data['street']?></span>
+							<span class="cell" data-label="Phone"><?= $data['phone']?></span>
+						<span class="cell" data-label="Action">
+							<!-- <a href="<?=$this->url(array('controller'=>'Addressbook','action'=>'editaddress'),'default',  true).'?addressbooki_id='.Zend_Encript_Encription::encode($data['addressbooki_id'])?>"><img src="<?=IMAGE_LINK.'/edit-icon.png'?>" title="<?php echo $this->translate("Edit Address");?>" /></a>&nbsp;|&nbsp;
+							 <img src="<?=IMAGE_LINK.'/delete.png'?>" title="<?php echo $this->translate("Delete Shipment");?>"  onclick="if(confirm('Selected shipment will be deleted\nAre you sure?')){printDelete('Delete','<?= $data['addressbooki_id']?>')}"/>
+							-->
+							</span> 
+						</div>
+					<?php }}else{?>
+						
+						<div class="row odd">
+							<b><?=$this->translate("Recod not found !");?></b> 
+						</div>
+					<?php }?>	
+				</div>
+				<div class="unit control">
+                      <div class="nav-btns pull-right"> <?php echo commonfunction::PageCounter($this->records['Total'],$this->Request)?>
+                      </div>
+                    </div>
+			</div>
+		</form>	
+			</div></div>
+		
+<script>
+
+	$(function() {
+		$( "#from_date" ).datepicker({
+		  dateFormat: 'yy-mm-dd',
+		  showOtherMonths: true,
+		  selectOtherMonths: true
+		});
+		$( "#to_date" ).datepicker({
+		  dateFormat: 'yy-mm-dd',
+		  showOtherMonths: true,
+		  selectOtherMonths: true
+		});
+	
+	});
+</script>				

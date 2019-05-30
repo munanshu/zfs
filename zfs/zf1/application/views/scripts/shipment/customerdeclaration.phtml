@@ -1,0 +1,644 @@
+<div class="decor-default p-email">
+
+<style type="text/css">body{ background:#ffffff; height:auto}
+
+.map_pro_details ul{margin:0px; padding:0px;}
+
+.map_pro_details ul li { width:100%; border-bottom:1px solid #cccccc; overflow:auto}
+
+.map_pro_details ul li p{margin:0px; padding:0px; line-height:20px; font-size:9px}
+
+.map_pro_details ul li div.imglft{float:left; width:16%; margin:1%; text-align:center}
+
+.map_pro_details ul li div.txtleft{width:55%; float:left; text-align:left}
+
+.map_pro_details ul li div.imgrgt{float:left; width:25%; margin:1%; text-align:center}
+
+
+
+</style>
+
+<?php $additional_service =  isset($this->Request['addservice_id'])?$this->Request['addservice_id']:'0';?>
+
+      <form method="post" action="" class="inputbox" name="addshipment" id="addshipment">
+
+	  <input type="hidden" id="check_service" value="<?php echo $this->Request['service_id']?>">
+
+	  <input type="hidden" id="check_continent" value="<?php echo $this->Request['continent_id']?>">
+
+	  <input type="hidden" id="check_addservice" value="<?php echo $additional_service;?>">
+
+        <div class="col-lg-9 col-md-8 col-sm-12 b-email">
+
+          <div class="b-email-title">
+
+            <h6>
+
+			<?php if(($additional_service==5 || $additional_service==147) && $this->Request['continent_id']!=2){
+
+					echo $this->translate("Customer Declaration and Dimention"); 
+
+			      }elseif(($additional_service==7 || $additional_service==146) && $this->Request['continent_id']!=2){
+
+				    echo $this->translate("Customer Declaration and COD"); 
+
+				  }elseif($additional_service==126 || $additional_service==149 || $additional_service==3 || $additional_service==142){
+
+				     echo $this->translate("Pickup Location"); 
+
+				  }elseif($this->Request['continent_id']!=2){
+
+				     echo $this->translate("Customer Declaration"); 
+
+				  }
+
+					$latitude = array();
+
+					$langitude = array();
+
+					$addresses = array();
+
+					$icons   = array();
+
+			 ?>
+
+			</h6>
+
+          </div>
+
+          <div class="row" style="padding-bottom:0px">
+
+		<!--Shipment Dimentions-->
+
+        <?php if(in_array($additional_service,array(5,101,102,103,104,105,106,147,151,152,153,154,155,156))){?>		
+
+         <div id="dimentions">   
+
+            <div class="col-sm-4 col_paddingtop">
+
+              <label><?php echo $this->translate("Length"); ?></label>
+
+              <font class="color-danger">*</font>
+
+              <input type="text" id="length" name="length" class="inputfield" placeholder="<?php echo $this->translate("Length"); ?>">
+
+            </div>
+
+            <div class="col-sm-4 col_paddingtop">
+
+              <label><?php echo $this->translate("Width"); ?></label>
+
+              <font class="color-danger">*</font>
+
+              <input type="text" class="inputfield" id="width" name="width" placeholder="<?php echo $this->translate("Width"); ?>">
+
+            </div>
+
+			<div class="col-sm-4 col_paddingtop">
+
+              <label><?php echo $this->translate("Height"); ?></label>
+
+              <font class="color-danger">*</font>
+
+              <input type="text" class="inputfield" id="height" name="height" placeholder="<?php echo $this->translate("Height"); ?>">
+
+            </div>
+
+			<div class="clearfix"></div>
+
+		</div>
+
+		<?php }?>
+
+		<?php if($this->Request['continent_id']!=2){?>	
+
+			<!--Shipment Description-->
+
+		<div id="goods_detail">	
+
+			<div class="col-sm-4 col_paddingtop">
+
+              <label><?php echo $this->translate("Category"); ?></label>
+
+              <select class="inputfield"  id="goods_id" name="goods_id" onchange="goodsvalidation(this.value)">
+
+			   <?php foreach($this->goodslist as $goodslist){
+			    $selected = '';
+			    $selected =  (isset($this->Declaration['goods_id']) && $this->Declaration['goods_id']==$goodslist['goods_id'])?'selected="selected"':'';
+			   ?>
+				  <option value="<?php echo $goodslist['goods_id']?>" "<?php echo $selected;?>"><?php echo $goodslist['goods_id'].'-'.$goodslist['goods_name']?></option>
+
+				<?php } ?>
+
+              </select>
+
+            </div>
+
+			<div class="col-sm-4 col_paddingtop">
+
+              <label><?php echo $this->translate("Description"); ?></label>
+
+              <font class="color-danger">*</font>
+
+              <input type="text" class="inputfield" id="goods_description" name="goods_description" placeholder="<?php echo $this->translate("Description"); ?>" value="<?php echo isset($this->Declaration['goods_description'])?$this->Declaration['goods_description']:'';?>">
+
+            </div>
+
+			<div class="col-sm-4 col_paddingtop">
+
+              <label><?php echo $this->translate("Worth"); ?></label>
+
+              <input type="text" class="inputfield" id="shipment_worth" name="shipment_worth" placeholder="<?php echo $this->translate("Worth"); ?>" value="<?php echo isset($this->Declaration['shipment_worth'])?$this->Declaration['shipment_worth']:'';?>" >
+
+            </div>
+
+		</div>
+
+			<!--Sender Address and COD detail-->
+
+			<div class="clearfix"></div>
+
+			<div class="col-sm-4 col_paddingtop">
+
+              <label><?php echo $this->translate("Origin Country"); ?></label>
+
+              <select name="origin_country" id="origin_country" class="inputfield">
+
+			    <option value="0">--<?php echo $this->translate("Origin Country"); ?>--</option>
+
+			    
+
+				<?php foreach($this->countrylist as $countrylist){
+
+				  //$curencies[$countrylist['currency']] = $countrylist['currency'];   
+
+				?>
+
+				  <option value="<?php echo $countrylist['country_id']?>"><?php echo $countrylist['cncode'].'-'.$countrylist['country_name']?></option>
+
+				<?php } ?>
+
+              </select>
+
+            </div>
+
+			<?php } if($this->Request['continent_id']!=2 || ($additional_service==7 || $additional_service==146)){
+
+			 foreach($this->countrylist as $countrylist){
+
+				  $curencies[$countrylist['currency']] = $countrylist['currency'];   }
+
+				
+
+			?>
+
+			<div class="col-sm-4 col_paddingtop"  id="currency_div">
+
+              <label><?php echo $this->translate("Currency"); ?></label>
+
+              <select class="inputfield" id="currency" name="currency">
+
+               <?php foreach(array_filter($curencies) as $curency){?>
+
+				  <option value="<?php echo $curency;?>"><?php echo $curency;?></option>
+
+				<?php } ?>
+
+              </select>
+
+            </div>
+
+		 
+
+		 <?php } if($additional_service==7 || $additional_service==146){?>	
+
+			<div class="col-sm-4 col_paddingtop" id="cod_div">
+
+              <label><?php echo $this->translate("COD Amount"); ?></label>
+
+              <font class="color-danger">*</font>
+
+              <input type="text" class="inputfield mandatory" id="cod_price" name="cod_price" placeholder="<?php echo $this->translate("COD Amount"); ?>" onkeyup="checkFieldvalue(this.value,'cod_price')" value="<?php echo isset($this->Declaration['cod_price'])?$this->Declaration['cod_price']:'';?>">
+
+            </div>
+
+		<?php }?>	
+
+         <?php if($additional_service==126 || $additional_service==149 || $additional_service==3 || $additional_service==142){?>
+
+		  <div class="col-sm-8 col_paddingtop">
+
+		   <div class="popup_map" id="map_convas" style="height: 300px; position: relative; overflow: hidden;"></div></div>
+
+			 <div class="col-sm-4 col_paddingtop">
+
+			<div class="map_pro_details" style="height:300px; overflow:auto">
+
+			<ul>
+
+			 
+
+			<?php 
+
+			  //echo "<pre>";print_r($this->parcelpointlist);die;
+
+			foreach($this->parcelpointlist as $key=>$parcelpointlist){ //print_r($parcelpointlist);die;
+
+			  $latitude[] = $parcelpointlist['latitude'];
+
+			  $langitude[] = $parcelpointlist['longitude'];
+
+			  $addresses[] = commonfunction::remove_accent($parcelpointlist['company']);
+
+			  $icons[] = $parcelpointlist['icon'];
+
+			  $checked = '';
+
+			  if(isset($this->Request['shop_id'])){
+
+			      $checked = ($this->Request['shop_id']==$parcelpointlist['company'])?'checked':'';
+
+			  }else{
+
+			     $checked = ($key==0)?'checked':'';
+
+			  }
+
+			?>
+
+				<li>
+
+				<div class="imglft"><input type="radio" name="parcel_shop" id="parcel_shop" <?php echo $checked?> value='<?php echo json_encode($parcelpointlist);?>'></div>
+
+				<div class="txtleft"><p><?php echo $parcelpointlist['company']?></p><p><?php echo $parcelpointlist['street']?></p><p><?php echo $parcelpointlist['zipCode']?></p><p><?php echo $parcelpointlist['city']?></p></div>
+
+				<div class="imgrgt"><img src="<?php echo IMAGE_LINK;?>/car.png" width="24px" /><p><?php echo number_format($parcelpointlist['distance'],2)?> KM</div>
+
+				</li>
+
+			<?php }?>
+
+			</ul>
+
+			</div>
+
+		 </div>	
+
+		 <?php } ?>
+
+		 <?php if($this->Request['service_id']==139){?>
+
+		    <!--Sea Freight detail-->
+
+			<div class="col-sm-2 col_paddingtop">
+
+              <label><?php echo $this->translate("Terminal"); ?></label>
+
+              <select name="terminal_id" id="terminal_id" class="inputfield">
+
+				<?php foreach($this->countrylist as $countrylist){
+
+				?>
+
+				  <option value="<?php echo $countrylist['country_id']?>"><?php echo $countrylist['cncode'].'-'.$countrylist['country_name']?></option>
+
+				<?php } ?>
+
+              </select>
+
+            </div>
+
+			<div class="col-sm-2 col_paddingtop">
+
+              <label><?php echo $this->translate("Ship"); ?></label>
+
+              <select class="inputfield" id="ship_mode" name="ship_mode">
+
+               <option value="0"><?php echo $this->translate("Export"); ?></option>
+
+			   <option value="1"><?php echo $this->translate("Import"); ?></option>
+
+              </select>
+
+            </div>
+
+			
+
+			<?php for($i=0;$i<$this->Request['quantity'];$i++){?>
+
+			<div class="clearfix"></div>
+
+		      <div class="col-sm-4 col_paddingtop">
+
+			  <label><?php echo $this->translate("Length"); ?></label>
+
+			  <input type="text" name="length[]" id="length" value="" class="inputfield"></div>
+
+			  <div class="col-sm-4 col_paddingtop">
+
+			  <label><?php echo $this->translate("Width"); ?></label>
+
+			  <input type="text" name="width[]" id="width" value="" class="inputfield"></div>
+
+			  <div class="col-sm-4 col_paddingtop">
+
+			  <label><?php echo $this->translate("Height"); ?></label>
+
+			  <input type="text" name="height[]" id="height" value="" class="inputfield"></div>
+
+			<?php } } ?>
+
+		  
+
+		  </div>
+
+		  <div class="clearfix"></div>
+
+			<div class="clearfix"></div>
+
+			<div class="col-sm-3 col_paddingtop" id="print_button">
+
+              <input type="button" name="print" id="print" value="Print" class="btn btn-danger btn-block" onClick="proceedshipment(0)">
+
+            </div>
+
+			<div class="col-sm-3 col_paddingtop" id="print_button">
+
+              <input type="button" name="print_later" id="print_later" value="Print Later" class="btn btn-danger btn-block" onClick="proceedshipment(1)">
+
+            </div>
+
+			<div class="col-sm-3 col_paddingtop" id="printlater_button">
+
+              <input type="button" name="cancel" id="cancel" value="Cancel" class="btn btn-danger btn-block" onClick="parent.jQuery.fancybox.close()">
+
+            </div>
+
+			<?php $countrydetails = $this->ModelObj->getCountryDetail($this->Request['country_id']);
+
+		    if($countrydetails['local_info_service']!=''){ ?>
+
+			<div class="col-sm-12 col_paddingtop"><strong><?php echo $this->translate('Destination Local Information')?></strong></div>
+
+		  <div class="col-sm-4 col_paddingtop"><?php echo nl2br($countrydetails['local_info_service']);?> </div>
+
+		  <?php }?>
+
+        </div>
+
+      </form>
+
+    </div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiqLmgnnMs-zB-zeZxgOe9NgqGDI4XvY8"></script>	
+
+<script type="text/javascript">
+
+
+
+  function initialize() {
+
+     var myOptions = {
+
+		zoomControl:true,
+
+	    zoomControlOptions: {
+
+			style:google.maps.ZoomControlStyle.DEFAULT
+
+	  	},
+
+		mapTypeId: google.maps.MapTypeId.ROADMAP
+
+	  }
+
+	
+
+	var map = new google.maps.Map(document.getElementById("map_convas"), myOptions);
+
+     // var map = new google.maps.Map(document.getElementById('map_convas'), {
+
+      // zoom: 10,
+
+      // center: new google.maps.LatLng(53.0000, 9.0000),
+
+      // mapTypeId: google.maps.MapTypeId.ROADMAP
+
+    // });
+
+	
+
+	var latitude = '<?php echo implode('#',$latitude)?>';
+
+	var langitude = '<?php echo implode('#',$langitude)?>';
+
+	var addresses = '<?php echo implode('#',$addresses)?>';
+
+	var location_icon = '<?php echo implode('#',$icons)?>';
+
+	latitude = latitude.split('#');
+
+	langitude = langitude.split('#');
+
+	addresses = addresses.split('#');
+
+	location_icon = location_icon.split('#');
+
+    var infowindow = new google.maps.InfoWindow();
+
+
+
+    var marker, i;
+
+	var bounds = new google.maps.LatLngBounds();
+
+    for (i = 0; i < latitude.length; i++) { 
+
+      var newlatlang1 = new google.maps.LatLng(latitude[i],langitude[i]);
+
+	  bounds.extend(newlatlang1);
+
+	  map.fitBounds(bounds);	
+
+	  map.setCenter(bounds.getCenter());
+
+	  //flightPlanCoordinates.push(newlatlang1);
+
+	  marker = new google.maps.Marker({	
+
+					title: addresses[i],
+
+					map: map, 
+
+					position: newlatlang1,
+
+					icon: location_icon[i]
+
+	   });
+
+	  // marker = new google.maps.Marker({
+
+        // position: new google.maps.LatLng(langitude[i], latitude[i]),
+
+        // map: map
+
+      // });
+
+
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+
+        return function() {
+
+          infowindow.setContent(addresses[i]);
+
+          infowindow.open(map, marker);
+
+        }
+
+      })(marker, i));
+
+    }
+
+  }
+
+  
+
+function proceedshipment(mode){ //alert($("#check_addservice").val());
+
+     var error = 0;
+
+	 if($("#check_addservice").val()==7 || $("#check_addservice").val()==146){
+
+	    if($("#cod_price").val()<=0){ 
+
+			$('#print').prop('disabled', true);	
+
+			$('#print_later').prop('disabled', true);	
+
+			error = 1;
+
+		}
+
+	 }
+
+	 if($("#check_continent").val()!=2){
+
+	     if($("#shipment_worth").val()<=0 && $("#goods_id").val()!='D'){
+
+			$('#print').prop('disabled', false);	
+
+			$('#print_later').prop('disabled', false);
+
+			error =1;
+
+		 }
+
+	 }
+
+	 if(error==0){
+
+	    $("#addshipment").submit();
+
+	 }
+
+ }
+
+ function checkFieldvalue(value,id){
+
+    if(value!=''){
+
+      $( "#"+id ).addClass( "validated" );
+
+	  $('#print').prop('disabled', false);	
+
+	  $('#print_later').prop('disabled', false);
+
+   }else{
+
+	 $( "#"+id ).removeClass( "validated" );
+
+     $( "#"+id ).addClass( "mandatory" );
+
+	 $('#print').prop('disabled', true);	
+
+	 $('#print_later').prop('disabled', true);
+
+   }
+
+ }
+
+ function goodsvalidation(goods){
+
+	switch(goods){
+
+	    case 'D':
+
+		  $( '#shipment_worth').removeClass( "mandatory" );
+
+		  $( '#shipment_worth').attr('onkeyup',"");
+
+		  $('#print').prop('disabled', false);	
+
+		  $('#print_later').prop('disabled', false);
+
+		break;
+
+		default:
+
+		 if($("#shipment_worth").val()<=0){
+
+		   $( '#shipment_worth').addClass( "mandatory" );
+
+		   $( '#shipment_worth').attr('onkeyup',"checkFieldvalue(this.value,'shipment_worth')");
+
+		   $('#print').prop('disabled', true);	
+
+		   $('#print_later').prop('disabled', true);
+
+		 }else{
+
+			$( '#shipment_worth').attr('onkeyup',"checkFieldvalue(this.value,'shipment_worth')");
+
+		    $('#print').prop('disabled', false);	
+
+		    $('#print_later').prop('disabled', false);
+
+		 }
+
+	}
+
+	
+
+	// if(goods!='D' && $("#shipment_worth").val()<=0){
+
+			// $( '#shipment_worth').addClass( "mandatory" );
+
+			// $( '#shipment_worth').attr('onkeyup',"checkFieldvalue(this.value,'shipment_worth')");
+
+			// $('#print').prop('disabled', true);	
+
+			// $('#print_later').prop('disabled', true);
+
+	// }else{
+
+	  // $( '#shipment_worth').removeClass( "mandatory" );
+
+	  // $( '#shipment_worth').attr('onkeyup',"");
+
+	  // $('#print').prop('disabled', false);	
+
+	  // $('#print_later').prop('disabled', false);
+
+	// }
+
+ }
+
+</script>
+
+<?php if($additional_service==126 || $additional_service==149 || $additional_service==3 || $additional_service==142){ ?>
+
+	<script type="text/javascript">initialize();</script>
+
+<?php } ?>	
+

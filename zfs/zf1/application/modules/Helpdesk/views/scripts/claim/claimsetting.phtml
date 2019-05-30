@@ -1,0 +1,96 @@
+<div class="row row-broken">
+    <div class="col-sm-12">
+        <div class="tabs" id="seventh-tabs">
+			<ul class="nav nav-tabs nav-justified">
+                <li class="active"> <a href="#tab-1" data-toggle="tab"><?php echo $this->translate('Question') ?></a></li>
+				<li><a href="<?=BASE_URL ?>/Claim/claimstatus" data-toggle=""><?php echo $this->translate('Status') ?></a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-1">
+				    <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="input-title"><?php echo $this->translate('Claim Setting')?></div>
+					  <div class="clear-all"></div>
+					  <div class="col-sm-3 col_paddingx10">
+						<label for="input-2" class="input__label input__label--kaede"> 
+						<span class="input input--kaede"><a href="<?=BASE_URL ?>/Claim/addnewclaimquestion" class=""><i class="fa fa-plus-square"></i><?php echo $this->translate("Add New Questions");?></a>
+						</span></label>
+					  </div>
+					  <div class="col-sm-9 col_paddingx10"><span class="input input--kaede"></span></div>
+					</div>
+					<div  id="tablegrid">
+						<table width="100%" border="0" id="claimsetting">
+						   <thead>
+							   <tr>
+								<th><?=$this->translate('S. No.');?></th>
+								<th><?=$this->translate('Operators');?></th>
+								<th><?=$this->translate('Question');?></th>
+								<th><?=$this->translate('Show Question');?></th>
+								<th><?=$this->translate('Action');?></th>
+							   </tr>
+						   </thead>
+						   <?php if(count($this->allquestions)>0){
+							foreach($this->allquestions as $key=>$questions){
+							 $class = ($key%2==0)?'even':'odd'; ?>
+						   <tr class="<?= $class ?>">
+							<td><?= $key+1; ?></td>
+							<td>
+							<?php foreach($questions['operators'] as $keys=>$operators){
+							 echo ($keys+1).'. '.$operators['company_name'].'</br>';
+							}  ?> 
+							</td>
+							<td><?= $questions['question']; ?></td>	
+							
+							<td width="10%"><span class="cell" data-label="Status" id="statusSpan_<?=$key?>" ><?php if($questions['status']=='Y') {  ?><img src="<?=IMAGE_LINK?>/icon_active.gif" align="absmiddle" alt="Active" border="0" onclick="updateStatus('<?=CLAIM_QUESTIONS?>','status','N','question_id','<?=$questions['question_id']?>','<?=$key?>');" title="Change Status into In-Active" class="changeStatus" />
+							  <?php } else { ?>
+							  <img src="<?=IMAGE_LINK?>/icon_inactive.gif" align="absmiddle" alt="InActive" border="0" onclick="updateStatus('<?=CLAIM_QUESTIONS?>','status','Y','question_id','<?=$questions['question_id']?>','<?=$key?>');" title="Change Status into Active" class="changeStatus" />
+							  <?php } ?>
+							  </span>
+							</td>
+							<td><a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Claim','action'=>'updateclaimquestion'),'default',  true).'?mode=updatequestion&question_id='.$questions['question_id']?>','50%','60%');" class=""><i class="fa fa-edit" title="Update Question"></i></a></td>
+						   </tr>
+						   <?php $key++; } } else{?>
+							<tr>
+							  <td data-label="No Data" colspan="7"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td>
+							</tr>
+							<?php } ?>
+						 
+						</table>
+					</div>	
+				</div>
+				
+            </div>
+	    </div>
+    </div>
+</div>
+<script>
+$(document).ready(function() {
+	 $('#claimsetting').DataTable( {
+		"pageLength": 100,
+		"lengthMenu": [[10, 25, 50, 100, 200, 500, -1], [10, 25, 50, 100, 200, 500, "All"]],
+    } ); 
+} );
+
+function updateStatus(table,column,column_value,condi_column,condi_value,spanID) { 
+  var IMAGE_LINK = baseUrl+"public/admin_images";
+  var s = "'";
+   if(column_value == 'N') {
+	var imgLink = '<img src="'+IMAGE_LINK+'/icon_inactive.gif" align="absmiddle" alt="Active" border="0" onclick="updateStatus('+s+table+s+','+s+column+s+','+s+'Y'+s+','+s+condi_column+s+','+s+condi_value+s+','+s+spanID+s+');" title="Change Status into Active" class="changeStatus" />'; 
+   }
+   else {
+	var imgLink = '<img src="'+IMAGE_LINK+'/icon_active.gif" align="absmiddle" alt="Active" border="0" onclick="updateStatus('+s+table+s+','+s+column+s+','+s+'N'+s+','+s+condi_column+s+','+s+condi_value+s+','+s+spanID+s+');" title="Change Status into In-Active" class="changeStatus" />';
+   }
+	$.ajax({
+		type : "POST",
+		url  : baseUrl+'Claim/changestatus',
+		data : "tablename="+table+"&column="+column+"&column_value="+column_value+"&condi_column="+condi_column+"&condi_value="+condi_value,
+		beforeSend: function(){
+		 $("#statusSpan_"+spanID).html('<img src="'+IMAGE_LINK+'/loader.gif" align="absmiddle" alt="Loader" border="0" title="Please Wait" class="changeStatus" />');
+		},
+		success: function(response) {
+			if(response) {
+			  $("#statusSpan_"+spanID).html(imgLink);
+			}
+		}
+	});
+}	
+</script>

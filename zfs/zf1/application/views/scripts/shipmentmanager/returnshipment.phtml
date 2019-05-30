@@ -1,0 +1,65 @@
+<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+		<form method="post" action="" id="customer" name="customer">
+		
+		<!-- filter start -->
+		<div class="filter">
+			<div class="input-title"><?php echo $this->translate("Return Shipment List");?></div>
+			
+			<div class="row row_nopadding decor-success" style="margin-left:0px !important;margin-right:0px !important;">
+
+				<div class="clear-all"></div>
+			</div>
+		<!-- filter ends -->
+		
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+						
+				<div id="table">
+					<div class="header-row row"> 
+					<span class="cell"><?php echo $this->translate("Receiver Name");?></span> 
+					<span class="cell"><?php echo $this->translate("Reference");?></span> 
+					<span class="cell"><?php echo $this->translate("Total Quantity");?></span> 
+					<span class="cell"><?php echo $this->translate("Checked-In");?></span> 
+					<span class="cell"><?php echo $this->translate("Country");?></span> 
+					<span class="cell"><?php echo $this->translate("Postal Code");?></span> 
+					<span class="cell"><?php echo $this->translate("Forwarder");?></span>
+					<span class="cell"><?php echo $this->translate("Weight");?>(KG)</span> 
+					<span class="cell"><?php echo $this->translate("Services");?></span> 
+					<span class="cell"><?php echo $this->translate("Additional Services");?></span> 
+					<span class="cell"><?php echo $this->translate("Create Date");?></span> 
+					<span class="cell"><?php echo $this->translate("Action");?></span> 
+										
+					</div>
+				<?php 
+				$shipments = $this->shipmentList['Records'];
+				if(count($shipments)>0){
+				
+					foreach($shipments as $index=>$shipment){
+						$class = (($index)%2==0) ? 'class="row odd"' :'class="row even"';?>
+					<div <?=$class?>>
+						<span class="cell" data-label="Company"><?=($shipment[RECEIVER]);?></span> 
+						<span class="cell" data-label=""><?= isset($shipment[REFERENCE])?$shipment[REFERENCE]:'column not defined';?></span>
+						<span class="cell" data-label="Name"><?= $shipment[QUANTITY]?></span>
+						<span class="cell" data-label="Name"><?= $this->ModelObj->getCheckedQuantity($shipment[SHIPMENT_ID])?></span>
+						<span class="cell" data-label="Name"><?= $this->ModelObj->CountryName($shipment[COUNTRY_ID]) ?></span>
+						<span class="cell" data-label="Name"><?= $shipment[ZIPCODE]?></span>
+						<span class="cell" data-label="Name"><?= $this->ModelObj->ForwarderName($shipment[FORWARDER_ID])?></span>
+						<span class="cell" data-label="Name"><?= $shipment[WEIGHT]?></span>
+						<span class="cell" data-label="Name"><?= $this->ModelObj->ServiceName($shipment[SERVICE_ID])?></span>
+						<span class="cell" data-label="Name"><?= $this->ModelObj->ServiceName($shipment[ADDSERVICE_ID])?></span>
+						<span class="cell" data-label="Name"><?= date('F - d Y', strtotime($shipment[SHIPMENT_CREATED]))?></span>
+						<span class="cell" data-label="Name"></span>
+						
+					</div>
+				<?php }}else{?>
+					
+					<div class="row odd">
+						<span class="cell" colspan="6"><b><?=$this->translate("Record not found !");?></b></span> 
+					</div>
+				<?php }?>	
+
+			</div>
+					 	
+			</form>	
+			</div></div></div>

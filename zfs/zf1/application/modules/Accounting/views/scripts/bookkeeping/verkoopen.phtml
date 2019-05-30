@@ -1,0 +1,63 @@
+<link rel="stylesheet" href="<?php echo $this->baseUrl('/public/timepicker/jquery.ui.timepicker.css')?>">
+<script src="<?php echo $this->baseUrl('/public/timepicker/include/ui-1.10.0/jquery.ui.widget.min.js')?>"></script>
+<script src="<?php echo $this->baseUrl('/public/timepicker/jquery.ui.timepicker.js')?>"></script>
+
+
+<?php  $form = $this->BookkeepingForm; ?>
+<form action="<?=BASE_URL.'/Bookkeeping/addeditinvoice'?>" method="post" id="invoice" name="invoice" class="inputbox" onsubmit="return SaveInvoice();" >
+<div class="col-lg-12 col-md-12 col-sm-12 b-email" style="background:#ffffff;">
+          <div class="b-email-title">
+            <h6><?=$this->translate($this->title);?></h6>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 col_paddingtop">
+			  <?php   echo $form->invoice_date;  ?>
+            <span class="errormessage"></span>
+            </div>
+			<div class="col-sm-6 col_paddingtop">
+              <?php echo $form->invoice_number; ?><span class="errormessage"></span>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-sm-6 col_paddingtop">
+			  <?php echo $form->invoice_definition; ?><span class="errormessage"></span>
+            </div>
+            <div class="col-sm-6 col_paddingtop">
+			  <?php echo ($this->Request['FormType'] == 'VERKOOPEN')?   $form->customer_id : $form->supplier_id; ?><span class="errormessage"></span>
+            </div>
+             
+			<div class="clearfix"></div>
+            <div class="col-sm-6 col_paddingtop">
+			  <?php echo ($this->Request['FormType'] == 'VERKOOPEN')?   $form->credit_amount : $form->debit_amount; ?><span class="errormessage"></span>
+            </div> 
+        <input type="hidden" name="FormType" value="<?=$this->Request['FormType']?>">
+			  <input type="hidden" name="mode" value="<?=$this->Request['mode']?>">
+			  <?php echo $form->head_id,$form->invoice_id;
+          if($this->Request['mode'] != 'edit')
+          $form->getElement('ledger_head')->setValue($this->Request['HeadId']); 
+        
+        echo $form->ledger_head; 
+
+        // $this->partial()->setObjectKey('form');
+			  echo $this->partial('bookkeeping/commonbookform.phtml', array('form'=> $form,'Request' => $this->Request) );?>
+			  <div class="col-sm-6 col_paddingtop">
+			   <a href="javascript:void(0);" onclick="addrows()"> Add More </a>
+            </div> 
+            <div class="col-sm-2 col_paddingtop"> <?php echo $form->submit; ?> </div>
+          </div>
+        </div>
+</form>
+
+
+<script>
+function clickTimePicker(id){
+$('#'+id).timepicker();
+}
+ $(function() {
+  $( "#assigndate" ).datepicker({
+    dateFormat: 'yy-mm-dd',
+    showOtherMonths: true,
+    selectOtherMonths: true
+  });
+ });  
+</script>
+           

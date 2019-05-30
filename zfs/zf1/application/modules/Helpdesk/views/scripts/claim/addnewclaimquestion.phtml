@@ -1,0 +1,346 @@
+<div class="row row-broken">
+    <div class="col-sm-12">
+        <div class="tabs" id="seventh-tabs">
+			<ul class="nav nav-tabs nav-justified">
+                <li class="active"><a href="<?=BASE_URL?>/Claim/claimsetting" data-toggle=""><?php echo $this->translate('Question') ?></a> </li>
+				<li><a href="<?=BASE_URL?>/Claim/claimstatus" data-toggle=""><?php echo $this->translate('Status') ?></a></li>
+            </ul>
+			<div class="col-sm-3 col_paddingtop"></div>
+			<div class="col-sm-6 col_paddingtop">
+				<div class="tab-content">
+					<div class="tab-pane fade in active" id="tab-1">
+						<form method="post" name="addnewquestion" id="addnewquestion" enctype="multipart/form-data" onsubmit="javascript:fieldsvalidation()">
+						    <input type="hidden" id="count_record" value="1">
+							<div class="col-sm-12 col_paddingtop" id="operator_div">
+								<span class="required" style="color:red">*</span><label for="operators"><?php echo $this->translate('Operators:') ?></label>
+								<select name="opertaors[]" id="operators"  multiple="multiple" class="inputfield">
+								  <?php foreach($this->operatortype as $operators){?>
+								  <option value="<?=$operators['user_id']?>"><?=$operators['company_name'] ?></option>
+								  <?php } ?>
+								</select>
+							</div>
+							<div class="col-sm-12 col_paddingtop">
+								<label for="subquestion"><?php echo $this->translate('Sub question of:') ?></label>
+								<select name="subquestion" id="subquestion" class="inputfield" onchange="provideoptions(0,this.value)">
+								    <option value="">-----Select-----</option>
+								<?php foreach($this->allclaimquestiondata as $claimquestions){
+								    if($claimquestions['sub_question']==0){
+									  if($claimquestions['question_type']=='select' || $claimquestions['question_type']=='radio'){ ?>
+									<option value="<?=$claimquestions['question_id'] ?>"><?=$claimquestions['question'] ?></option>
+							    <?php }
+									}
+								} ?> 
+								</select>
+							</div>
+							
+							<div class="col-sm-12 col_paddingtop" id="subquestion_option_div">
+								<label for="quetype"><?php echo $this->translate('On selecting option:') ?></label>
+								<select name="subquestion_option" id="subquestion_option" class="inputfield" onchange="provideque(this.value)">
+								  
+								</select>
+							</div>
+							
+							<div class="col-sm-12 col_paddingtop" id="subquestion_a_div">
+								<label for="quetype"><?php echo $this->translate('Sub question of:') ?></label>
+								<select name="subquestion_a" id="subquestion_a" class="inputfield" onchange="provideoptions(1,this.value)">
+								  
+								</select>
+							</div>
+							
+							<div class="col-sm-12 col_paddingtop" id="subquestion_option_a_div">
+								<label for="selecting"><?php echo $this->translate('On selecting option:') ?></label>
+								<select name="subquestion_option_a" id="subquestion_option_a" class="inputfield">
+								  
+								</select>
+							</div>
+				
+							<div class="col-sm-12 col_paddingtop" id="select_question_div">
+								<span class="required" style="color:red">*</span><label for="question"><?php echo $this->translate('Question Type:') ?></label>
+								<select name="question_type" id="question_type" class="inputfield" onchange="decideoptfields(this.value)">
+								    <option value="">--Select Question Type--</option>
+									<option value="select">Select type</option>
+									<option value="text">Text type</option>
+									<option value="radio">Radio type</option>
+									<option value="file">File type</option>
+								</select>
+							</div>
+							
+							<div class="col-sm-12 col_paddingtop" id="questiondiv">
+								<span class="required" style="color:red">*</span><label for="question"><?php echo $this->translate('Question:') ?></label>
+								<input type="text" name="question" id="question" class="inputfield"> 
+							</div>
+							<div class="clearfix"></div>
+
+						    <?php $i=1; ?>
+							<div class="col-sm-12 col_paddingtop" id="option_value_div">
+							    <span class="required" style="color:red">*</span><label for="questionopt"><?php echo $this->translate('Question Option:') ?></label>
+							    <div id="option_value_<?= $i;?>">
+									<div class="col-sm-5 col_paddingtop" style="padding-left:0">
+									  <input type="text" name="questionoption[]" id="questionoption_<?= $i;?>" class="inputfield" placeholder="Option <?= $i;?>">
+									</div>
+									<div class="col-sm-5 col_paddingtop" style="padding-left:0">
+									  <input type="text" name="questionvalue[]" id="questionvalue_<?= $i;?>" class="inputfield" placeholder="Value <?= $i;?>">
+									</div>
+									<div class="col-sm-2 col_paddingtop">
+									  <i class="fa fa-plus-square" onclick="addnewrow()"></i>
+									</div>
+									<div class="clearfix"></div>
+								</div>
+							</div>
+							
+							<div class="col-sm-12 col_paddingtop" id="statusdiv">
+							    <label for="question"><?php echo $this->translate('Make Question Active/Inactive:') ?></label>
+								<div class="control-group">
+							      <label class="control control--radio"><input type="radio" name="claim_status" id="claim_status" value="1" checked="checked" class="printlabel">ON<div class="control__indicator"></div></label>
+							      <label class="control control--radio"><input type="radio" name="claim_status" id="claim_status" value="0" class="printlabel">OFF<div class="control__indicator"></div></label>
+							    </div>
+							</div>
+							
+							<div class="col-sm-12 col_paddingtop">
+							   <input type="submit" name="addclaimque" value="Submit" class="btn btn-danger btn-round">
+						    </div>
+							<div class="clearfix"></div>
+						</form>
+					</div>
+				</div>
+				   
+            </div>
+	    </div>
+    </div>
+</div>
+
+
+<script>
+$(document).ready(function(){
+    $('#questiondiv').hide();
+    $('#option_value_div').hide();
+    $('#statusdiv').hide();
+    $('#subquestion_option_div').hide();
+    $('#subquestion_a_div').hide();
+    $('#subquestion_option_a_div').hide();	
+});
+
+$("#addnewquestion").submit(function() {
+	var question = $("#question").val();
+	var claim_status = $("input[name='claim_status']:checked").val();
+		if(question==''){
+		  $("#questiondiv").append('<b style="color:red">Please enter question!</b>');
+		  return false;
+		}
+            			
+});
+
+function fieldsvalidation(){
+    $("b").remove();
+    var option_number;
+    var value_number = 1;
+    var option_field_ids = [];
+    var value_field_ids = [];
+    var option_pos = 0;
+    var value_pos = 0;
+    var options = $('input[name="questionoption[]"]').map(function(){
+	    if(this.value==''){
+			var optstr = this.id; 
+			option_number = optstr.substr(optstr.indexOf("_") + 1);
+			option_field_ids[option_pos] = 'option_value_'+option_number;
+			option_pos = option_pos +1;
+	    }
+        return this.value;
+    }).get();
+	
+	var values = $('input[name="questionvalue[]"]').map(function(){
+        if(this.value==''){
+            var valstr = this.id;
+            value_number = valstr.substr(valstr.indexOf("_") + 1);
+            value_field_ids[value_pos] = 'option_value_'+value_number;
+            value_pos = value_pos +1;
+        }
+        return this.value;
+    }).get();
+	
+	$.each(option_field_ids, function(val, option_div_id) {
+               $('#'+option_div_id).append('<b style="color:red">Pass Option!</b>');
+            });
+            $.each(value_field_ids, function(val, option_div_id) {
+               $('#'+option_div_id).append('<b style="color:red">Pass Value!</b>');
+            });
+			
+            var q_type = $("#question_type").val(); 
+            if(q_type==''){
+                $("#select_question_div").append('<b style="color:red">Select any question type!</b>');
+            }
+            var opt = $("#operators").val(); 
+            var sub_ques = $("#subquestion").val();
+            if(opt==null){
+               if(sub_ques==''){
+                $("#operator_div").append('<b style="color:red">Select any Operator!</b>');
+               }
+          } 
+}
+
+function decideoptfields(value){
+	if(value=='select'){
+		$('#questiondiv').show();
+		$('#option_value_div').show();
+		$('#statusdiv').show();
+	 }
+	else if(value=='text'){
+		$('#questiondiv').show();
+		$('#option_value_div').hide();
+		$('#statusdiv').show();
+	 }
+	else if(value=='radio'){
+		$('#questiondiv').show();
+		$('#option_value_div').show();
+		$('#statusdiv').show();
+	 }
+	else if(value=='file'){
+		$('#questiondiv').show();
+		$('#option_value_div').hide();
+		$('#statusdiv').show();
+	 }
+	else{
+	   $('#questiondiv').hide();
+	   $('#option_value_div').hide();
+	   $('#statusdiv').hide();
+	}
+
+}
+
+function provideque(val){
+   var question_id = $('#subquestion').val();
+   var sub_question_option = val;
+   $.ajax({
+    type: "POST",
+	url:  '<?= $this->url(array('controller'=>'Claim', 'action'=>'claimquebyoptionid'),'default', true); ?>',
+	data: 'question_id='+question_id+'&sub_question_option='+sub_question_option,
+	success: function(msg){
+	result = jQuery.parseJSON(msg); 
+	var check = jQuery.isEmptyObject(result.claimque);
+	if(check==false){
+	  $('#subquestion_a_div').show();
+	  $('#subquestion_a').empty();
+	  $.each(result.claimque, function(){
+	    $.each(this, function(key, value){
+		  i=1;
+		  if(key=='question_id'){
+		    que_id = value;
+		  }
+		  if(key=='question' && i==1){
+		    if(value!=null){
+			 var option = new Option(value, que_id);
+			 $(option).html(value);
+			 $('#subquestion_a').append(option);
+			}if(value==null || value==''){
+			 $('#subquestion_a').empty();
+			 $('#subquestion_a_div').hide();
+			}
+		    i=i+1; 
+		  }
+		});
+	  });
+	  $('#subquestion_a').prepend("<option value='' selected='selected'>--Select--</option>");
+	}else{
+	  $('#subquestion_option_a').empty();
+	  $('#subquestion_option_a_div').hide();
+	}
+	}
+   
+   });
+   
+}
+
+function provideoptions(type,id){
+    if(id==''){
+		if(type=='0'){
+		  $('#subquestion_option_div').hide();
+		  $('#operator_div').show();
+		}else{
+		  $('#subquestion_option_a_div').hide();
+		}
+	}
+	else{
+	    if(type=='0'){
+		  $('#operator_div').hide();
+		  $('#operators').val(null);
+		}
+		
+		$.ajax({
+		   type: "POST",
+	       url: '<?= $this->url(array('controller'=>'Claim','action'=>'getoptionclaimquestionbyid'),'default',true); ?>',
+		   data: 'question_id='+id,
+		    success: function(msg){
+				result = jQuery.parseJSON(msg);
+				var check = jQuery.isEmptyObject(result.Claimquebyid);
+				if(check==false){
+				   if(type==0){
+					$('#subquestion_option_div').show();
+					$('#subquestion_option').empty();
+				   }
+				   else{
+					$('#subquestion_option_a_div').show();
+					$('#subquestion_option_a').empty();
+				   }
+				   
+					$.each(result.Claimquebyid, function() {
+						$.each(this, function(key, value) {
+							if(key=='question_options'){
+								if(value!=null){
+									var options = value;
+									var question_option = options.split(';');
+									$.each(question_option, function(key1, value1){
+										if(value1!=''){
+											question_option_value = value1.split('|');
+											var final_res = new Option(question_option_value[0], question_option_value[1]);
+											$(final_res).html(question_option_value[0]);
+											if(type==0){
+											 $('#subquestion_option').append(final_res);
+											}else{
+											 $('#subquestion_option_a').append(final_res);
+											}
+										}
+									});
+								}if(value==null || value==''){
+									if(type==0){
+									  $('#subquestion_option').empty();
+									  $('#subquestion_option_div').hide();
+									}else{
+									  $('#subquestion_option_a').empty();
+									  $('#subquestion_option_a_div').hide();
+									}
+								}
+							}
+						});				
+					});
+					
+					if(type==0){
+					  $('#subquestion_option').prepend("<option value='' selected='selected'>--Select--</option>");
+					}    
+				}else{
+				    $('#subquestion_option').empty();
+					$('#subquestion_option_div').hide();
+				}
+		    }
+		});
+	}
+}
+
+
+function addnewrow(){
+    var count = parseInt($("#count_record").val()) + 1;
+	var row_content = '<div id="option_value_'+count+'">';
+	row_content += '<div class="col-sm-5 col_paddingtop" style="padding-left:0">';
+	row_content += '<input type="text" name="questionoption[]" id="questionoption_'+count+'" class="inputfield" placeholder="Option '+count+'"></div>';
+	row_content += '<div class="col-sm-5 col_paddingtop" style="padding-left:0">';
+	row_content += '<input type="text" name="questionvalue[]" id="questionvalue_'+count+'" class="inputfield" placeholder="Value '+count+'"></div>';
+	row_content += '<div class="col-sm-2 col_paddingtop">';
+	row_content += '<i class="fa fa-minus-square-o" style="padding-top:15px;" onclick="removerow('+count+')"></i></div>';
+	row_content += '<div class="clearfix"></div></div>';
+	$("#option_value_"+parseInt($("#count_record").val())).after(row_content);
+	$("#count_record").val(parseInt(count));
+}
+function removerow(count){  
+    $('#option_value_'+count).remove();
+	$('#count_record').val(parseInt($("#count_record").val()) - 1);
+}
+</script>

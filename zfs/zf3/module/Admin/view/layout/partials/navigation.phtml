@@ -1,0 +1,35 @@
+    <ul class="nav menu">
+        <?php  $AdminAcl = $this->layout()->AdminAcl;
+
+            // print_r($AdminAcl->getRoles());die; 
+
+         foreach ($this->container as $page): ?>
+
+         <?php if(!$AdminAcl->isAllowed($this->layout()->AdminSession->data['userRole'] , $page->getLabel() , 'view' )) continue; ?>
+            <li class="<?php echo $page->hasPages() ? 'parent' : ''; echo $page->isActive() ? 'active' : ''; ?>">
+                <?php if($page->get('icon')) : ?>
+                    <em class="<?=$page->get('icon'); ?>">&nbsp;</em>
+                <?php endif; ?>
+
+
+            <a href="<?php echo $page->getHref(); echo $page->hasPages() ? "#sub-item-".strtolower(str_replace(" ", "", $page->getLabel())) : ''; ?>" target="<?php echo $page->getTarget() ?>"
+                <?php echo $page->hasPages() ? ' data-toggle="collapse"' : '' ?>>
+                <?php echo $page->getLabel() ?>
+                <?php if ($page->hasPages()): ?>
+                    <span data-toggle="collapse" href="#sub-item-<?=strtolower(str_replace(" ", "", $page->getLabel())) ?>" class="icon pull-right"></span>
+                <?php endif; ?>
+            </a>
+            <?php if ($page->hasPages()): ?>
+                <ul class="children collapse" id="sub-item-<?=strtolower(str_replace(" ", "", $page->getLabel())) ?>">
+                    <?php foreach ($page->getPages() as $child):  ?>
+                        <li class ='<?php echo $page->hasPages() ? 'parent ' : ''; echo $page->isActive() ? 'active' : ''; ?>' >
+                            <a href="<?php echo $child->getHref() ?>">
+                                <?php echo $child->getLabel() ?>
+                            </a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>

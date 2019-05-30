@@ -1,0 +1,13 @@
+<meta charset="utf-8">
+ <?php echo $this->headMeta()
+            ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+             
+        ?>
+ 
+<?php echo $this->headTitle('ZF2 Admin'); ?>
+<?php 
+echo $this->headLink()
+->prependStylesheet( $this->basePath(). '/css/styles.css' )
+->prependStylesheet( $this->basePath(). '/css/bootstrap.min.css')
+->prependStylesheet( $this->basePath(). '/css/datepicker3.css');
+ ?>

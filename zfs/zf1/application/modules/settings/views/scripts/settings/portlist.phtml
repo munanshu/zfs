@@ -1,0 +1,61 @@
+<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+		<form method="post" action="" id="customer" name="customer">
+		
+		<!-- filter start -->
+		<div class="filter">
+			<div class="input-title"><?php echo $this->translate("Port List");?></div>
+			
+			<div class="row row_nopadding decor-success" style="margin-left:0px !important;margin-right:0px !important;">
+
+				<div class="clear-all"></div>
+				<!--<div class="col-sm-4 col_paddingx10">
+						<label for="input-2" class="input__label input__label--kaede"> 
+						<span class="input input--kaede">
+						<a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Settings','action'=>'addcountry'),'default',true)?>','60%','71%');"> <img src="<?=IMAGE_LINK?>/addmore.gif" /> <?php echo $this->translate('Add New Country')?></a>
+						</span></label>
+					  </div>
+					  <div class="col-sm-4 col_paddingx10"> <span class="input input--kaede"></span> 
+						</div>-->
+			</div>
+		<!-- filter ends -->
+		
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+						
+				<div id="table">
+					<div class="header-row row"> 
+					<span class="cell"><?php echo $this->translate("Country");?></span> 
+					<span class="cell"><?php echo $this->translate("Port Name");?></span> 
+					<span class="cell"><?php echo $this->translate("Port Code");?></span> 
+					<span class="cell"><?php echo $this->translate("Status");?></span> 
+					<span class="cell"><?php echo $this->translate("Action");?></span> 
+										
+					</div>
+				<?php 
+				if(count($this->portdata)>0){
+				
+					foreach($this->portdata as $key => $data){
+						$class = (($key)%2==0) ? 'class="row odd"' :'class="row even"';?>
+					<div <?=$class?>>
+						<span class="cell" data-label="Country"><?=$data['country_name'];?></span> 
+						<span class="cell" data-label="Port Name"><?=$data['port_name']?></span>
+						<span class="cell" data-label="Port Code"><?=$data['port_code']?></span>
+						<span class="cell" data-label="Status" id="statusSpan_<?=$key?>" ><?php if($data['isActive'] == "1") {  ?><img src="<?=IMAGE_LINK?>/icon_active.gif" align="absmiddle" alt="Active" border="0" onclick="setStatus('<?=COUNTRYPORT?>','isActive','0','port_id','<?=$data['port_id']?>','<?=$key?>');" title="Change Status into In-Active" class="changeStatus" />
+						<?php } else { ?>
+						<img src="<?=IMAGE_LINK?>/icon_inactive.gif" align="absmiddle" alt="Active" border="0" onclick="setStatus('<?=COUNTRYPORT?>','isActive','1','port_id','<?=$data['port_id']?>','<?=$key?>');" title="Change Status into Active" class="changeStatus" />
+						<?php } ?>
+						</span>
+						<span class="cell" data-label="Action" style="font-size:large;"><a href="<?=$this->url(array('controller'=>'Settings','action'=>'addeditport'),'default',true).'?id='.$data['country_id'].'&port_id='.$data['port_id'].'&mode=edit'?>"> <i class="fa fa-edit"></i></a></span>
+					</div>
+				<?php }}else{?>
+					
+					<div class="row odd">
+						<span class="cell" colspan="6"><b><?=$this->translate("Record not found !");?></b></span> 
+					</div>
+				<?php }?>	
+
+			</div>
+					 	
+			</form>	
+			</div></div></div>

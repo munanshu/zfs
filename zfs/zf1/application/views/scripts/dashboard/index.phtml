@@ -1,0 +1,285 @@
+<div class="row row-broken">
+	 <div class="col-sm-6 col-md-4 col-lg-2 small-widget left-md md-margin ultra-md m-t-md">
+      <a href="<?php echo $this->url(array('controller'=>'Shipment','action'=>'showallparcel'),'default',true).'?from_date='.date('Y-m-d').'&to_date='.date('Y-m-d'); ?>"> 
+		<div id="ultra5" class="decor-dark inform inform-view-2">
+          <div class="inform-name2"><?php echo $this->translate("Added"); ?></div>
+          <div class="inform-name"><?php echo $this->translate("Today"); ?></div>
+          <div class="inform-canvas"><?php echo $this->addedParcel;?></div>
+        </div>
+		</a>
+      </div>
+	 <?php if($this->ModelObj->Useconfig['level_id']==5){ ?> 
+	 <div class="col-sm-6 col-md-4 col-lg-2 small-widget left-md md-margin ultra-md m-t-md">
+        <div id="ultra5" class="decor-dark inform inform-view-2">
+          <div class="inform-name2"><?php echo $this->translate("Delivered"); ?></div>
+          <div class="inform-name"><?php echo $this->translate("Today"); ?></div>
+          <div class="inform-canvas"><?php echo isset($this->deliveredParcel[0]['CNT'])?$this->deliveredParcel[0]['CNT']:0;?></div>
+        </div>
+      </div>
+	  <div class="col-sm-6 col-md-4 col-lg-2 small-widget left-md md-margin ultra-md m-t-md">
+        <div id="ultra5" class="decor-dark inform inform-view-2">
+          <div class="inform-name2"><?php echo $this->translate("Delivered"); ?></div>
+          <div class="inform-name"><?php echo $this->translate("Yesterday"); ?></div>
+          <div class="inform-canvas"><?php echo isset($this->deliveredParcel[1]['CNT'])?$this->deliveredParcel[1]['CNT']:0;?></div>
+        </div>
+      </div>
+	  <?php }else{ ?>
+	   <div class="col-sm-6 col-md-4 col-lg-2 small-widget left-md md-margin ultra-md m-t-md">
+       <a href="<?php echo $this->url(array('controller'=>'Shipment','action'=>'showallparcel'),'default',true).'?from_date='.date('Y-m-d').'&to_date='.date('Y-m-d'); ?>"> 
+	    <div id="ultra5" class="decor-dark inform inform-view-2">
+          <div class="inform-name2"><?php echo $this->translate("Express"); ?></div>
+          <div class="inform-name"><?php echo $this->translate("Parcel"); ?></div>
+          <div class="inform-canvas"><?php echo $this->express;?></div>
+        </div>
+		</a>
+      </div>
+	  <div class="col-sm-6 col-md-4 col-lg-2 small-widget left-md md-margin ultra-md m-t-md">
+       <a href="<?php echo $this->url(array('controller'=>'Shipment','action'=>'showallparcel'),'default',true).'?service_id=6&from_date='.date('Y-m-d').'&to_date='.date('Y-m-d'); ?>"> 
+	    <div id="ultra5" class="decor-dark inform inform-view-2">
+          <div class="inform-name2"><?php echo $this->translate("Freight"); ?></div>
+          <div class="inform-name"><?php echo $this->translate("Parcel"); ?></div>
+          <div class="inform-canvas"><?php echo $this->freight;?></div>
+        </div>
+		</a>
+      </div>
+	  <?php } ?>
+      <div class="col-sm-6 col-md-4 col-lg-2 small-widget left-md md-margin ultra-md m-t-md">
+        <div id="ultra5" class="decor-dark inform inform-view-2">
+          <div class="inform-name2"><?php echo $this->translate("Delivery"); ?></div>
+          <div class="inform-name"><?php echo $this->translate("Problem"); ?></div>
+          <div class="inform-canvas"><a href="<?php echo $this->url(array('controller'=>'Shipment','action'=>'shipmenthistory'),'default',true).'?status_id=3' ?>" style="color:red"><?php echo $this->errorParcel;?></a></div>
+        </div>
+      </div>
+	    <?php if($this->ModelObj->Useconfig['level_id']==5 || $this->ModelObj->Useconfig['level_id']==10){ ?>
+	   <div class="col-sm-6 col-md-4 col-lg-2 small-widget left-md md-margin ultra-md m-t-md">
+        <div id="ultra5" class="decor-dark inform inform-view-2">
+          <div class="inform-name2"><?php echo $this->translate("In-Transit"); ?></div>
+          <div class="inform-name"><?php echo $this->translate("Parcel"); ?></div>
+          <div class="inform-canvas"><?php echo $this->transit;?></div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-4 col-lg-2 small-widget left-md md-margin ultra-md m-t-md">
+       <a href="javascript:void(0)" onclick="openbox('<?php echo $this->url(array('controller'=>'Drivertracking','action'=>'drivertrack'),'default',true).'?driver_id='.$this->pickups['driver_id'];?>','80%','90%')">
+	   <div id="ultra5" class="decor-dark inform inform-view-2">
+          <div class="inform-name2"><?php echo $this->translate("Pickup"); ?></div>
+		  <?php if(!empty($this->pickups)){?>
+            <div class="inform-name"><?php echo $this->pickups['driver_name'];?></div>
+          <?php }else{ ?>
+			<div class="inform-name"><?php echo 'Not Planned';?></div>	
+		 <?php } ?>
+		  <div class="inform-canvas"><?php echo !empty($this->pickups)?commonfunction::sub_string($this->pickups['pickup_time'],0,5):'';?></div>
+        </div>
+		</a>
+      </div>
+	<?php if(isset($this->api_orders) && $this->api_orders>0){?>  
+	 <div class="col-sm-6 col-md-4 col-lg-2 small-widget left-md md-margin ultra-md m-t-md">
+	 <a href="<?php echo $this->url(array('controller'=>'Shopapi','action'=>'bulkapiimport'),'default',true)?>">
+        <div id="ultra5" class="decor-dark inform inform-view-2">
+          <div class="inform-name2"><?php echo $this->translate("API Shop"); ?></div>
+          <div class="inform-name"><?php echo $this->translate("Orders"); ?></div>
+          <div class="inform-canvas" id="orders"><?php echo $this->api_orders;?></div>
+        </div>
+		</a>	
+      </div>	 
+	  <?php }} ?>
+	   <?php if($this->ModelObj->Useconfig['level_id']!=5 && $this->ModelObj->Useconfig['level_id']!=10){ ?>
+		  <div class="col-sm-6 col-md-4 col-lg-2 small-widget left-md md-margin ultra-md m-t-md">
+        <div id="ultra5" class="decor-dark inform inform-view-2">
+          <div class="inform-name2"><?php echo $this->translate("Online"); ?></div>
+          <div class="inform-name"><?php echo $this->translate("Users"); ?></div>
+          <div class="inform-canvas"><?php echo '0'; ?></div>
+        </div>
+      </div>
+	 <?php } ?> 
+	  
+    </div>
+  
+	<div class="row row-broken" data-height>
+	 <?php if($this->ModelObj->Useconfig['level_id']==5 || $this->ModelObj->Useconfig['level_id']==10){ ?> 
+      <div class="col-sm-12 col-md-6">
+        <div class="decor-default chart content-block" style="border:#000000 1px solid;">
+          <div class="p-full-md">
+            <h6 class="m-r-md m-b-md pull-left"> <?php echo $this->translate("Chat"); ?> </h6>
+            <div class="clearfix"></div>
+          </div>
+          <div id="table" class="">
+					<div class="row odd">
+					<textarea cols="70" rows="10"></textarea>
+					</div>
+					</div>
+       <div class="clearfix"></div>
+	   </div>
+      </div>
+	  
+	  <div class="col-sm-12 col-md-6">
+        <div class="decor-default chart content-block"  style="border:#000000 1px solid;">
+          <div class="p-full-md">
+            <h6 class="m-r-md m-b-md pull-left"> <?php echo $this->translate("Open Helpdesk"); ?> </h6>
+            <div class="clearfix"></div>
+          </div>
+          <div id="table" class="">
+					<div class="header-row row">
+						<span class="cell"><?php echo $this->translate("Ticket Number"); ?></span> 
+						<span class="cell"><?php echo $this->translate("Parcel Number"); ?></span> 
+						<span class="cell"><?php echo $this->translate("Ticket Date"); ?></span> 
+						<span class="cell"><?php echo $this->translate("Status"); ?></span> 
+						<span class="cell"><?php echo $this->translate("Action"); ?></span> 					
+					</div>
+				<?php if(count($this->opentickets)>0){
+					foreach($this->opentickets as $tickets){ ?>	
+					<div class="row odd">
+							<span class="cell" data-label="<?php echo $this->translate("Ticket Number"); ?>"><?php echo $tickets['ticket_no']?></span>
+							<span class="cell" data-label="<?php echo $this->translate("Parcel Number"); ?>"><?php echo $tickets['tracenr_barcode']?></span>
+							<span class="cell" data-label="<?php echo $this->translate("Ticket Date"); ?>"><?php echo date('Y-m-d',strtotime($tickets['create_date']));?></span>
+							<span class="cell" data-label="<?php echo $this->translate("Status"); ?>"></span>
+							<span class="cell" data-label="<?php echo $this->translate("Action"); ?>"><a href="<?php echo $this->url(array('controller'=>'Helpdesk','action'=>'replyform'),'default',true).'?mode=replyform&helpdesk_token='.Zend_Encript_Encription::encode($tickets['helpdesk_token']).'&ticket_no='.Zend_Encript_Encription::encode($tickets['ticket_no'])?>"><i class="fa fa-reply"></i></a></span>
+						</div>
+					<?php }}else{?>
+						 <div class="row odd">
+						   <span class="cell" data-label="<?php echo $this->translate("No Open Ticket"); ?>"><?php echo $this->translate("No Open Ticket"); ?></span></div>
+						<?php } ?>		
+					</div>
+       <div class="clearfix"></div>
+	   </div>
+      </div>
+	<?php }if($this->ModelObj->Useconfig['level_id']!=5 && $this->ModelObj->Useconfig['level_id']!=10){?>  
+	   <div class="col-sm-12 col-md-6">
+        <div class="decor-default chart content-block"  style="border:#000000 1px solid;">
+          <div class="p-full-md">
+            <h6 class="m-r-md m-b-md pull-left"> <?php echo $this->translate("Planned"); ?> </h6>
+            <div class="clearfix"></div>
+          </div>
+          <div id="table" class="">
+					<div class="header-row row">
+						<span class="cell"><?php echo $this->translate("Customer"); ?></span> 
+						<span class="cell"><?php echo $this->translate("Freight"); ?></span> 
+						<span class="cell"><?php echo $this->translate("Express"); ?></span> 
+						<span class="cell"><?php echo $this->translate("Total"); ?></span> 
+						<span class="cell"><?php echo $this->translate("Driver"); ?></span> 
+						<span class="cell"><?php echo $this->translate("Status"); ?></span> 
+					</div>
+				<?php if(count($this->Assignedpickup)>0){
+					foreach($this->Assignedpickup as $pickups){ ?>	
+					<div class="row odd">
+							<span class="cell" data-label="<?php echo $this->translate("Customer"); ?>"><?php echo $pickups['company_name']?></span>
+							<?php $explode_feright = array_count_values(commonfunction::explode_string($pickups['freight'],','));
+							      $explode_express = array_count_values(commonfunction::explode_string($pickups['express'],','));
+								  $expresscount = 0;
+								  foreach($explode_express as $key=>$express){
+								     if(in_array($key,array(5,101,102,103,104,105,106,147,151,152,153,154,155,156))){
+									   $expresscount = $expresscount + $express;
+									 }
+								  }
+							?>
+							<span class="cell" data-label="<?php echo $this->translate("Freight"); ?>"><?php echo isset($explode_feright[6])?$explode_feright[6]:0;?></span>
+							<span class="cell" data-label="<?php echo $this->translate("Express"); ?>"><?php echo $expresscount;?></span>
+							<span class="cell" data-label="<?php echo $this->translate("Total"); ?>"><?php echo $pickups['total_quantity']?></span>
+							<span class="cell" data-label="<?php echo $this->translate("Driver"); ?>"><?php echo $pickups['driver_name']?></span>
+							<span class="cell" data-label="<?php echo $this->translate("Status"); ?>"><img src="<?php echo ($pickups['pickup_status']=='1')?IMAGE_LINK.'/pickup.png':IMAGE_LINK.'/assigned.png' ?>"></span>
+						</div>
+					<?php }}else{?>
+						 <div class="row odd">
+						   <span class="cell" data-label="<?php echo $this->translate("No Planned Yet"); ?>"><?php echo $this->translate("No Planned Yet"); ?></span></div>
+						<?php } ?>		
+					</div>
+       <div class="clearfix"></div>
+	   </div>
+      </div>
+	   
+	   <div class="col-sm-12 col-md-6">
+        <div class="decor-default chart content-block"  style="border:#000000 1px solid;">
+          <div class="p-full-md">
+            <h6 class="m-r-md m-b-md pull-left"> <?php echo $this->translate("Picked Up"); ?> </h6>
+            <div class="clearfix"></div>
+          </div>
+          <div id="table" class="">
+					<div class="header-row row">
+						<span class="cell"><?php echo $this->translate("Driver"); ?></span>
+						<span class="cell"><?php echo $this->translate("Express"); ?></span> 
+						<span class="cell"><?php echo $this->translate("Total"); ?></span> 
+						<span class="cell"><?php echo $this->translate("Track Driver"); ?></span> 
+					</div>
+				<?php if(count($this->pickedup)>0){
+					foreach($this->pickedup as $pickedup){ ?>	
+					<div class="row odd">
+							<span class="cell" data-label="<?php echo $this->translate("Driver"); ?>"><?php echo $pickedup['driver_name'];?></span>
+							<span class="cell" data-label="<?php echo $this->translate("Express"); ?>"><?php echo $pickedup['express'];?></span>
+							<span class="cell" data-label="<?php echo $this->translate("Total"); ?>"><?php echo $pickedup['total']?></span>
+							<span class="cell" data-label="<?php echo $this->translate("Track Driver"); ?>"><a href="javascript:void(0)" onclick="openbox('<?php echo $this->url(array('controller'=>'Drivertracking','action'=>'gpstracking'),'default',true).'?driver_id='.$pickedup['driver_id'];?>','80%','90%')"><i class="fa fa-map-marker fa-2x"></i></a></span>
+						</div>
+					<?php }}else{?>
+						 <div class="row odd">
+						   <span class="cell" data-label="<?php echo $this->translate("Not Picked up yet"); ?>"><?php echo $this->translate("Not Picked up yet"); ?></span></div>
+						<?php } ?>		
+					</div>
+       <div class="clearfix"></div>
+	   </div>
+      </div>
+	  
+	  <div class="col-sm-12 col-md-12">
+        <div class="decor-default chart content-block"  style="border:#000000 1px solid;">
+          <div class="p-full-md">
+            <h6 class="m-r-md m-b-md pull-left"> <?php echo $this->translate("Driver Summary"); ?> </h6>
+            <div class="clearfix"></div>
+          </div>
+          <div id="table" class="">
+					<div class="header-row row">
+						<span class="cell"><?php echo $this->translate("Customer"); ?></span>
+						<span class="cell"><?php echo $this->translate("Driver"); ?></span>
+						<span class="cell"><?php echo $this->translate("Pickup Time"); ?></span>
+						<span class="cell"><?php echo $this->translate("Actual Pickup Time"); ?></span>	
+						<span class="cell"><?php echo $this->translate("Pickedup  Summary"); ?></span> 
+						<span class="cell"><?php echo $this->translate("Total Quantity"); ?></span> 
+						<span class="cell"><?php echo $this->translate("Track"); ?></span> 
+					</div>
+				<?php if(count($this->driverpickupsummary)>0){
+					foreach($this->driverpickupsummary as $driverpickupsummary){ ?>	
+					<div class="row odd">
+							<span class="cell" data-label="<?php echo $this->translate("Customer"); ?>"><?php echo $driverpickupsummary['company_name']?></span>
+							<?php $allforwarders = array_count_values(commonfunction::explode_string($driverpickupsummary['forwarderwise'],','));
+								  $summary = '';
+								  foreach($allforwarders as $key=>$forwarder){
+								     $forwarder_name = $this->ModelObj->ForwarderName($key);
+									 $summary .= $forwarder_name.'-'.$forwarder.'<br>';
+								  }
+							?>
+							<span class="cell" data-label="<?php echo $this->translate("Driver"); ?>"><?php echo $driverpickupsummary['driver_name']?></span>
+							<span class="cell" data-label="<?php echo $this->translate("Pickup Time"); ?>"><?php echo date('H:i A',strtotime($driverpickupsummary['pickup_time']))?></span>
+							<span class="cell" data-label="<?php echo $this->translate("Actual Pickup"); ?>"><?php echo date('H:i A',strtotime($driverpickupsummary['actual_pickup']))?></span>
+							<span class="cell" data-label="<?php echo $this->translate("Summary"); ?>"><?php echo $summary;?></span>
+							<span class="cell" data-label="<?php echo $this->translate("Total"); ?>"><?php echo $driverpickupsummary['total_quantity']?></span>
+							
+							<span class="cell" data-label="<?php echo $this->translate("Track Driver"); ?>"><a href="javascript:void(0)" onclick="openbox('<?php echo $this->url(array('controller'=>'Drivertracking','action'=>'gpstracking'),'default',true).'?driver_id='.$driverpickupsummary['driver_id'];?>','80%','90%')"><i class="fa fa-map-marker fa-2x"></i></a></span>
+							
+							
+						</div>
+					<?php }}else{?>
+						 <div class="row odd">
+						   <span class="cell" data-label="<?php echo $this->translate("No Open Ticket"); ?>"><?php echo $this->translate("No Open Ticket"); ?></span></div>
+						<?php } ?>		
+					</div>
+       <div class="clearfix"></div>
+	   </div>
+      </div>
+	  
+	 <?php  } ?>
+    </div>
+<?php if($this->ModelObj->Useconfig['level_id']==5){?>	
+<script>
+function getOrdersCount(){
+  $.ajax({
+     type : "POST",
+	 url :'<?php echo $this->url(array('controller'=>'Dashboard','action'=>'shoporders'),'default',true);?>',
+	 beforeSend: function() {
+		$("#orders").html("<img src='"+baseUrl+"public/admin_images/loader.gif'>");
+	 },
+	 success:function(msg){ 
+	    $("#orders").html(msg);
+	 }
+  });
+}
+//getOrdersCount();
+
+
+</script>
+<?php } ?>	

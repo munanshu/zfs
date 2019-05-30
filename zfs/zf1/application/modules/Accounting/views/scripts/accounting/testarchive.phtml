@@ -1,0 +1,102 @@
+<?php 
+
+
+// foreach ($this->data as $key => $value) {
+
+// 	echo $key."<br><br>";
+		
+// 		foreach ($value as $k => $val) {
+
+// 			echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$k."( ".count($val)." )"."<br><br>";		
+
+// 				foreach ($val as $sk => $sval) {
+
+// 					echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$sval."<br><br>";		
+
+// 				}
+		
+// 		}
+
+// }
+
+// echo IMAGE_LINK;die;
+
+$data = $this->data;
+?>
+<style>
+
+ 
+#container a{
+	text-decoration:none;
+	color:#057fac;
+}
+#container a:hover{
+	text-decoration:none;
+	color:#999;
+}
+#container h1{
+	font-size:140%;
+	margin:0 20px;
+	line-height:80px;	
+}
+#container{
+	margin:0 auto;
+	width:680px;
+	background:#fff;
+	padding-bottom:20px;
+}
+#content{margin:0 20px;}
+p{	
+	margin:0 auto;
+	width:680px;
+	padding:1em 0;
+}
+ 
+</style>
+<link href="<?=CSS_LINK?>/sitemapstyler.css" rel="stylesheet" type="text/css" media="screen" />
+<script type="text/javascript" src="<?=JS_LINK?>/sitemapstyler.js"></script>
+<div id="container">
+	 <h1>Invoices Hierarchy</h1>
+	<div id="content">
+		
+		 
+				
+		<ul id="sitemap">
+			<?php foreach ($data as $key => $value) { ?>
+
+
+			
+			<li><a href="#"><?=$value['head_code']?> : <?=$value['description']?></a>
+				<ul>
+					<li><a href="#">New Booking</a></li>
+					<?php foreach ($value['invoices'] as $k => $val) { ?>
+
+							<li><a href="#"><?=$k?></a>
+								<ul>
+									<?php foreach ($val as $mk => $mval) {?>
+
+											<li><a href="#"><?=$mk?> : (<?php echo count($mval); ?>)</a>
+													<ul>
+														<?php foreach ($mval as $dkey => $dvalue) { ?>
+															<li><a href="#"><?=$dvalue[0]?> : <?=$dvalue[2]?></a></li>
+														<?php } ?>	
+														 
+													</ul>	
+
+											</li>
+									<?php } ?>
+									 
+								</ul>							
+							</li>
+					 
+					<?php }  ?>
+					
+				</ul>					
+			</li>
+			 <?php } ?>
+		</ul>
+	
+		
+		
+	</div>
+</div>

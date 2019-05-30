@@ -1,0 +1,41 @@
+<?php $form = $this->EditCountryForm; ?>
+<form action="" method="post" name="addcountry" class="inputbox" >
+<div class="col-lg-12 col-md-12 col-sm-12 b-email" style="background:#ffffff;">
+          <div class="b-email-title">
+            <h6>Add New Country</h6>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 col_paddingtop">
+			  <?php echo $form->country_name; ?>
+            </div>
+			<div class="col-sm-6 col_paddingtop">
+              <?php echo $form->continent_id; ?>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-sm-6 col_paddingtop">
+			  <?php echo $form->cncode; ?>
+            </div>
+            <div class="col-sm-6 col_paddingtop">
+			  <?php echo $form->cncode3; ?>
+            </div>
+			<div class="clearfix"></div>
+            <div class="col-sm-6 col_paddingtop">
+			  <?php echo $form->iso_code; ?>
+            </div>
+            <div class="col-sm-6 col_paddingtop">
+			  <?php echo $form->area_code; ?>
+            </div>
+			<div class="clearfix"></div>
+			<div class="col-sm-6 col_paddingtop">
+			  <?php echo $form->postcode_length; ?>
+            </div>
+           <div class="col-sm-6 col_paddingtop">
+    <?php echo $form->no_of_cn23; ?>
+            </div>
+   <div class="col-sm-12 col_paddingtop">
+    <?php echo $form->local_info_service; ?>
+            </div>
+            <div class="col-sm-2 col_paddingtop"> <?php echo $form->submit; ?> </div>
+          </div>
+        </div>
+</form>

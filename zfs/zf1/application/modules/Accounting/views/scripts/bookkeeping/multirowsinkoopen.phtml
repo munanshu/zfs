@@ -1,0 +1,19 @@
+<?php  if(isset($this->ledger_invoice_number)){ ?>
+		<span class="cell" data-label="Max weight"><?php  echo $this->ledger_invoice_number; ?></span>
+<?php } ?>
+
+<?php  if(isset($this->memorial_id)){ ?>
+		<span class="cell" data-label="Max weight"><?php  echo $this->memorial_id; ?></span>
+<?php } ?>
+
+<span class="cell" data-label="Country"><?php  echo $this->definition; ?></span>
+
+									<span class="cell" data-label="Min Weight"><?php  echo $this->ledger_id; ?></span>
+
+									<span class="cell" data-label="Max weight"><?php  echo $this->btw; ?></span>
+									<span class="cell CreditDebitColumnClass" data-label="Max weight"><?php  echo $this->debit; ?></span>
+									<?php  if(isset($this->credit)){ ?>
+												<span class="cell CreditColumnClass" data-label="Max weight"><?php  echo $this->credit; ?></span>
+										<?php } ?>
+									<span class="cell" data-label="Max weight" onclick="removerow($(this).parent('div').attr('rowid'))" >Remove</span> 
+								

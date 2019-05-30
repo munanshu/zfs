@@ -1,0 +1,59 @@
+<link rel="stylesheet" href="<?php echo $this->baseUrl('/public/timepicker/jquery.ui.timepicker.css')?>">
+<script src="<?php echo $this->baseUrl('/public/timepicker/include/ui-1.10.0/jquery.ui.widget.min.js')?>"></script>
+<script src="<?php echo $this->baseUrl('/public/timepicker/jquery.ui.timepicker.js')?>"></script>
+<script src="<?php echo $this->baseUrl('/public/js/planner.js')?>"></script> 
+
+	<div class="row row-broken">
+        <div class="col-sm-12">
+				 <div class="filter">
+				<div class="input-title"><?php echo $this->translate('Delivery Scan')?></div>
+				<div style="background:#ffffff; padding:10px; overflow:auto;text-align:center" id="scan_output">							  
+					<table class="tbl_new">
+					<input type="hidden" name="shipment_type" id="shipment_type">
+					<input type="hidden" name="barcode_id" id="barcode_id">
+					<tbody>
+					<tr><td id="file_error" style="display:none;color:red;text-align:center" colspan="2"></td></tr>
+					<tr>
+						<td style="text-align:right"><strong><?php echo $this->translate('Barcode.')?></strong></td>
+						<td><input name="barcode" id="barcode" onkeypress="deliveryscan(event);" class="inputfield" type="text" style="width:40%"/> 
+						</td>
+					 </tr>
+					 <tr id="status_tr" style="display:none;">
+						<td style="text-align:right"><strong><?php echo $this->translate('Status')?></strong></td>
+						<td><?php echo $this->getHelper('HtmlSelect')->getSelect('status_id',array(array('status_id'=>1,'status_name'=>'Delivered'),array('status_id'=>2,'status_name'=>'Un-Delivered')),'status_id','status_name','',false,array('class'=>'inputfield','style'=>'width:40%','onchange'=>'showdeliverytr(this.value)'));?> 
+						</td>
+					 </tr>
+					 <tr id="received_tr" style="display:none;">
+						<td style="text-align:right"><strong><?php echo $this->translate('Received By')?></strong></td>
+						<td><input type="text" name="received_by" id="received_by" class="inputfield" style="width:40%"></td>
+					 </tr>
+					<tr id="error_tr" style="display:none;">
+						<td style="text-align:right"><strong><?php echo $this->translate('Error List')?></strong></td>
+						<td><?php echo $this->getHelper('HtmlSelect')->getSelect('error_id',$this->mastererror,'master_id','status_name','',false,array('class'=>'inputfield','style'=>'width:40%'));?> </td>
+					 </tr>
+					 <tr id="date_tr" style="display:none;">
+						<td style="text-align:right"><strong><?php echo $this->translate('Date')?></strong></td>
+						<td><input type="text" name="date" id="date" class="inputfield" style="width:20%"></td>
+					 </tr>
+					  <tr id="time_tr" style="display:none;">
+						<td style="text-align:right"><strong><?php echo $this->translate('Time')?></strong></td>
+						<td><input type="text" name="time" id="time" class="inputfield" style="width:10%"></td>
+					 </tr>
+					<tr id="submit_tr" style="display:none;">
+						<td style="text-align:center" colspan="2"><input type="submit" name="Submit" id="Submit" value="Submit" class="btn btn-danger" onclick="SubmitDeliveryScan()"></td>
+						</td>
+					 </tr>
+					</tbody>
+					</table> 
+				</div>
+			</div>
+        </div>
+	</div>
+
+<script type="text/javascript">
+    $('#barcode').focus();
+	$(document).ready(function() {
+		$( "#date" ).datepicker({dateFormat: 'yy-mm-dd'});
+		$('#time').timepicker();
+	} );
+</script>		

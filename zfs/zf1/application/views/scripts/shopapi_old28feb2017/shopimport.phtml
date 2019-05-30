@@ -1,0 +1,64 @@
+<div class="row row-broken">
+      <div class="col-md-12">
+        <ol class="breadcrumb">
+          <li><a href="index.html"><i class="fa fa-home"></i></a></li>
+          <li class="active"><?php echo $this->translate('Shipment') ?></li>
+		  <li class="active"><?php echo $this->translate('Import')?></li>
+		  <li class="active"><?php echo $this->translate('Shop Import')?></li>
+        </ol>
+      </div>
+	  <div class="col-md-12"> <?php echo $this->getHelper('Messages')->getMessages();?> </div>
+</div>
+	<div class="row row-broken">
+        <div class="col-sm-12">
+				 <div class="filter">
+				<div class="input-title"><?php echo $this->translate('Shop Import')?></div>
+			<div class="clear"></div>
+				<div style="background:#ffffff; padding:10px; overflow:auto;text-align:center">
+			<div class="clear-all"></div>
+				<div class="col-sm-2">&nbsp;</div>
+					<div class="col-sm-8">
+				<form id="Importshipmentform" class="inputbox" enctype="multipart/form-data" action="" method="post" onsubmit="return importvalidate()">	
+					<table class="tbl_new">
+					<tbody>
+					<tr id="file_error" style="display:none;color:red;"></tr>
+					<tr><th colspan="2"><?php echo $this->translate('Import')?></th></tr>
+					 <tr>
+						<td style="text-align:center"><?php echo $this->translate('Select Shop')?></td>
+						<td style="width:450px"><?php echo $this->getHelper('HtmlSelect')->getSelect('shop_id',$this->shopList,'shop_id','full_name','',false,array('class'=>'inputfield','onChange'=>'OrderCount()'));?> 
+						</td>
+					 </tr>
+					 <tr>
+						<td colspan="2" id="count" style="text-align:center"></td>
+					</tr>
+					<tr>
+						<td style="text-align:center" colspan="2"><input type="submit" name="import" id="import" value="Import" class="btn btn-danger"></td>
+						</td>
+					 </tr>
+					</tbody>
+					</table>
+				</form>	
+					</div>
+					<div class="col-sm-2">&nbsp;</div>
+					<div class="clear-all"></div>
+				</div>
+			</div>
+        </div>
+	</div>
+<script>
+function OrderCount(){
+   var shop_id = $('#shop_id').val();
+   if(shop_id>0){
+      $.ajax({
+	     type:'POST',
+		 url:'<?php echo $this->url(array('controller'=>'Shopapi','action'=>'ordercount'),'default',true);?>',
+		 data:'shop_id='+shop_id,
+		 success:function(msg){
+		   $('#count').html(msg);
+		 }
+	  });
+   }else{
+      $('#count').html('');
+   }
+}
+</script>	

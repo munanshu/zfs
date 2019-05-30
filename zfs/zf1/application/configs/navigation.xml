@@ -1,0 +1,1028 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configdata>
+    <nav>
+        <label>Dashboard</label>
+        <controller>Dashboard</controller>
+		<module>default</module>
+        <action>index</action>
+        <pages>
+            <Settings>
+                <label>Setting</label>
+                <controller>Settings</controller>
+                <action>printsetting</action>
+				<module>settings</module>
+                <pages>
+                    <countries>
+                    <label>Countries</label>
+					<controller>Settings</controller>
+					<action>generalsetting</action>
+					<module>settings</module>
+                    </countries>
+					<Routing>
+						<label>Routing List</label>
+						<controller>Routing</controller>
+						<action>routinglist</action>
+						<module>settings</module>
+					</Routing>
+					<addrouting>
+						<label>Add Routing</label>
+						<controller>Routing</controller>
+						<action>addrouting</action>
+						<module>settings</module>
+					</addrouting>
+					<weightclasses>
+						<label>Weight Classes</label>
+						<controller>Routing</controller>
+						<action>weightclasses</action>
+						<module>settings</module>
+					</weightclasses>
+					<checkinvoice>
+						<label>Forwarder Invoice Check-in</label>
+						<controller>Forwarderinvoicecheckin</controller>
+						<action>checkinvoice</action>
+						<module>settings</module>
+					</checkinvoice>
+					<import>
+						<label>Import/Export Routing</label>
+						<controller>Routing</controller>
+						<action>import</action>
+						<module>settings</module>
+					</import>
+					<updateprice>
+						<label>Update Customer Price</label>
+						<controller>Routing</controller>
+						<action>updateprice</action>
+						<module>settings</module>
+					</updateprice>
+					<updatepricespecial>
+						<label>Update Special Price</label>
+						<controller>Routing</controller>
+						<action>updatepricespecial</action>
+						<module>settings</module>
+					</updatepricespecial>
+					<printsetting>
+						<label>Print Setting</label>
+						<controller>Settings</controller>
+						<action>printsetting</action>
+						<module>settings</module>
+                    </printsetting>
+					<weightscallers>
+						<label>Weight Scallers</label>
+						<controller>Settings</controller>
+						<action>weightscallers</action>
+						<module>settings</module>
+					</weightscallers>
+					<emailnotification>
+						<label>Email Notification</label>
+						<controller>Settings</controller>
+						<action>emailnotification</action>
+						<module>settings</module>
+					</emailnotification>
+					<packetshop>
+						<label>Packetshop</label>
+						<controller>Settings</controller>
+						<action>packetshop</action>
+						<module>settings</module>
+					</packetshop>
+					<editpacketshop>
+						<label>Edit Packetshop</label>
+						<controller>Settings</controller>
+						<action>editpacketshop</action>
+						<module>settings</module>
+					</editpacketshop>
+					<addpacketshop>
+						<label>Add Packetshop</label>
+						<controller>Settings</controller>
+						<action>addpacketshop</action>
+						<module>settings</module>
+					</addpacketshop>
+					<vehiclesetting>
+						<label>Vehicle Setting</label>
+						<controller>Settings</controller>
+						<action>vehiclesetting</action>
+						<module>settings</module>
+					</vehiclesetting>
+					<blockiplist>
+						<label>Block Ip List</label>
+						<controller>Settings</controller>
+						<action>blockiplist</action>
+						<module>settings</module>
+					</blockiplist>
+					<changelanguage>
+						<label>Change Language</label>
+						<controller>Settings</controller>
+						<action>changelanguage</action>
+						<module>settings</module>
+					</changelanguage>
+					<languages>
+						<label>Language List</label>
+						<controller>Settings</controller>
+						<action>languages</action>
+						<module>settings</module>
+					</languages>
+					<forwarders>
+						<label>Forwarder List</label>
+						<controller>Settings</controller>
+						<action>forwarders</action>
+						<module>settings</module>
+					</forwarders>
+					<services>
+						<label>Services Setting</label>
+						<controller>Settings</controller>
+						<action>services</action>
+						<module>settings</module>
+					</services>
+					<texttranslatelist>
+						<label>Text Translation</label>
+						<controller>Translation</controller>
+						<action>texttranslatelist</action>
+						<module>settings</module>
+					</texttranslatelist>
+					<codelist>
+						<label>Master Status code List</label>
+						<controller>Statuscode</controller>
+						<action>codelist</action>
+						<module>settings</module>
+					</codelist>
+					<forwarderstatuslist>
+						<label>Forwarder Status code List</label>
+						<controller>Statuscode</controller>
+						<action>forwarderstatuslist</action>
+						<module>settings</module>
+					</forwarderstatuslist>
+					<smssetting>
+						<label>SMS Setting</label>
+						<controller>Statuscode</controller>
+						<action>smssetting</action>
+						<module>settings</module>
+					</smssetting>
+					<smsreport>
+						<label>SMS Report</label>
+						<controller>Statuscode</controller>
+						<action>smsreport</action>
+						<module>settings</module>
+					</smsreport>
+                </pages>
+            </Settings>
+			<!--Acciunt-->
+			<Account>
+                <label>Account</label>
+                <controller>Account</controller>
+                <action>myprofile</action>
+				<module>Account</module>
+                <pages>
+					<Depotmanager>
+						<label>Depot Manager</label>
+						<controller>Account</controller>
+						<action>depotmanager</action>
+						<module>Account</module>
+						<pages>
+							<Depotnetworkrouting>
+								<label>Manage Depot Network Routing</label>
+								<controller>Depotnetwork</controller>
+								<action>addeditdepotnetrouting</action>
+								<module>Account</module>
+							</Depotnetworkrouting>
+							<Alldepotnetworkrouting>
+								<label>All Depot Network Routing</label>
+								<controller>Depotnetwork</controller>
+								<action>alldepotnetworkrouting</action>
+								<module>Account</module>
+							</Alldepotnetworkrouting>
+						</pages>
+					</Depotmanager>
+					
+					<DepotForm>
+						<label>Add Depot</label>
+						<controller>Account</controller>
+						<action>depotform</action>
+						<module>Account</module>
+					</DepotForm>
+					<Customer>
+						<label>Customer</label>
+						<controller>Account</controller>
+						<action>customer</action>
+						<module>Account</module>
+					</Customer>
+					<CustomerForm>
+						<label>Add Customer</label>
+						<controller>Account</controller>
+						<action>customerform</action>
+						<module>Account</module>
+					</CustomerForm>
+				   <CustomerRouting>
+						<label>Customer Routing</label>
+						<controller>Customerrouting</controller>
+						<action>customerrouting</action>
+						<module>Account</module>
+					</CustomerRouting>
+					<operator>
+						<label>Operator</label>
+						<controller>Account</controller>
+						<action>operator</action>
+						<module>Account</module>
+					</operator>
+					<customeroperator>
+						<label>Customer Operator</label>
+						<controller>Account</controller>
+						<action>customeroperator</action>
+						<module>Account</module>
+					</customeroperator>
+					<myprofile>
+						<label>My Profile</label>
+						<controller>Account</controller>
+						<action>myprofile</action>
+						<module>Account</module>
+					</myprofile>
+					<shopsetting>
+						<label>Shop Settings</label>
+						<controller>Shopapi</controller>
+						<action>shopsetting</action>
+						<module>default</module>
+					</shopsetting>
+					<changepassword>
+						<label>Change Password</label>
+						<controller>Account</controller>
+						<action>changepassword</action>
+						<module>Account</module>
+					</changepassword>
+					<senderaddress>
+						<label>Sender Address</label>
+						<controller>Senderaddress</controller>
+						<action>senderaddress</action>
+						<module>Account</module>
+					</senderaddress>
+					<index>
+						<label>Privilege List</label>
+						<controller>Privilege</controller>
+						<action>index</action>
+						<module>Account</module>
+					</index>
+					<view>
+						<label>Privilege Edit</label>
+						<controller>Privilege</controller>
+						<action>view</action>
+						<module>Account</module>
+					</view>
+					<operatorform>
+						<label>Edit Operator</label>
+						<controller>Account</controller>
+						<action>operatorform</action>
+						<module>Account</module>
+					</operatorform>
+					<Newsletter>
+						<label>Newsletter List</label>
+						<controller>Newsletter</controller>
+						<action>index</action>
+						<module>Account</module>
+					</Newsletter>
+					<newsletter>
+						<label>Edit Newsletter</label>
+						<controller>Newsletter</controller>
+						<action>newsletter</action>
+						<module>Account</module>
+					</newsletter>
+					<customeroperatorform>
+						<label>Edit Customer Operator</label>
+						<controller>Account</controller>
+						<action>customeroperatorform</action>
+						<module>Account</module>
+					</customeroperatorform>
+					<userprivilege>
+						<label>User Privilege</label>
+						<controller>Privilege</controller>
+						<action>userprivilege</action>
+						<module>Account</module>
+					</userprivilege>
+					<driversettings>
+						<label>Driver List</label>
+						<controller>Account</controller>
+						<action>driversettings</action>
+						<module>Account</module>
+					</driversettings>
+					<driverform>
+						<label>Driver Add/Edit</label>
+						<controller>Account</controller>
+						<action>driverform</action>
+						<module>Account</module>
+					</driverform>
+					<addcustomerrouting>
+						<label>Add Customer Routing</label>
+						<controller>Customerrouting</controller>
+						<action>addcustomerrouting</action>
+						<module>Account</module>
+					</addcustomerrouting>
+					<termcondition>
+						<label>Terms Condition</label>
+						<controller>Terms</controller>
+						<action>termcondition</action>
+						<module>Account</module>
+					</termcondition>
+					<depotnotification>
+						<label>Depot Notification</label>
+						<controller>Terms</controller>
+						<action>depotnotification</action>
+						<module>Account</module>
+					</depotnotification>
+					<settings>
+						<label>Account Setting</label>
+						<controller>Account</controller>
+						<action>settings</action>
+						<module>Account</module>
+					</settings>
+					<senderaddressform>
+						<label>Add/Edit Sender Address</label>
+						<controller>Senderaddress</controller>
+						<action>senderaddressform</action>
+						<module>Account</module>
+					</senderaddressform>
+				</pages>
+			</Account>	
+			
+			<Shipmentmanager>
+                <label>Shipmentmanager</label>
+                <controller>Shipmentmanager</controller>
+                <action>pickrequest</action>
+				<module>Shipmentmanager</module>
+                <pages>
+				   <pickrequest>
+						<label>Pickup Request</label>
+						<controller>Shipmentmanager</controller>
+						<action>pickrequest</action>
+						<module>Shipmentmanager</module>
+					</pickrequest>
+					<returnshipment>
+						<label>Return Shipment</label>
+						<controller>Shipmentmanager</controller>
+						<action>returnshipment</action>
+						<module>Shipmentmanager</module>
+					</returnshipment>
+					<deliverytracker>
+						<label>Delivery Tracker</label>
+						<controller>Shipmentmanager</controller>
+						<action>deliverytracker</action>
+						<module>Shipmentmanager</module>
+					</deliverytracker>
+					<customerscan>
+						<label>Customer Scan</label>
+						<controller>Shipmentmanager</controller>
+						<action>customerscan</action>
+						<module>Shipmentmanager</module>
+					</customerscan>
+				</pages>
+				
+		     </Shipmentmanager>
+			
+			<!--Shipments-->	
+			<Shipment>
+                <label>Shipment</label>
+                <controller>Shipment</controller>
+                <action>shipmenthistory</action>
+				<module>default</module>
+                <pages>
+				   <Newshipment>
+						<label>New Shipment</label>
+						<controller>Shipment</controller>
+						<action>newshipment</action>
+						<module>default</module>
+					</Newshipment>
+					<Showallparcel>
+						<label>Show All parcel</label>
+						<controller>Shipment</controller>
+						<action>showallparcel</action>
+						<module>default</module>
+					</Showallparcel>
+					<shipmenthistory>
+						<label>Shipment History</label>
+						<controller>Shipment</controller>
+						<action>shipmenthistory</action>
+						<module>default</module>
+					</shipmenthistory>
+					<addshipment>
+						<label>Add Shipment</label>
+						<controller>Shipment</controller>
+						<action>addshipment</action>
+						<module>default</module>
+					</addshipment>
+					<editshipment>
+						<label>Edit Shipment</label>
+						<controller>Shipment</controller>
+						<action>editshipment</action>
+						<module>default</module>
+					</editshipment>
+					<shopimport>
+						<label>Shop Import</label>
+						<controller>Shopapi</controller>
+						<action>shopimport</action>
+						<module>default</module>
+					</shopimport>
+					<importlist>
+						<label>Import Shipment List</label>
+						<controller>Shipment</controller>
+						<action>importlist</action>
+						<module>default</module>
+					</importlist>
+					<importerror>
+						<label>Import Error List</label>
+						<controller>Shipment</controller>
+						<action>importerror</action>
+						<module>default</module>
+					</importerror>
+					<importshipment>
+						<label>Import Shipment</label>
+						<controller>Shipment</controller>
+						<action>importshipment</action>
+						<module>default</module>
+					</importshipment>
+					<referenceshipment>
+						<label>Regerence Shipment</label>
+						<controller>Shipment</controller>
+						<action>referenceshipment</action>
+						<module>default</module>
+					</referenceshipment>
+					<refshipmentlist>
+						<label>Regerence Shipmentlist</label>
+						<controller>Shipment</controller>
+						<action>refshipmentlist</action>
+						<module>default</module>
+					</refshipmentlist>
+					<addresslist>
+						<label>Address Book</label>
+						<controller>Addressbook</controller>
+						<action>addresslist</action>
+						<module>default</module>
+					</addresslist>
+					<addressdetail>
+						<label>Address List</label>
+						<controller>Addressbook</controller>
+						<action>addressdetail</action>
+						<module>default</module>
+					</addressdetail>
+					<deletedshipment>
+						<label>Deleted Shipment</label>
+						<controller>Shipment</controller>
+						<action>deletedshipment</action>
+						<module>default</module>
+					</deletedshipment>
+				</pages>
+			</Shipment> 
+			<!--Planner-->	
+			<Planner>
+                <label>Planner</label>
+                <controller>Planner</controller>
+                <action>schedulepickup</action>
+				<module>Planner</module>
+                <pages>
+				   <schedulepickup>
+						<label>Schedule Pickup</label>
+						<controller>Planner</controller>
+						<action>schedulepickup</action>
+						<module>Planner</module>
+					</schedulepickup>
+					<assignedshipment>
+						<label>Assigned Shipment</label>
+						<controller>Planner</controller>
+						<action>assignedshipment</action>
+						<module>Planner</module>
+					</assignedshipment>
+					<scheduledelivery>
+						<label>Schedule Delivery</label>
+						<controller>Delivery</controller>
+						<action>scheduledelivery</action>
+						<module>Planner</module>
+					</scheduledelivery>
+					<assigneddelivery>
+						<label>Assign Delivery</label>
+						<controller>Delivery</controller>
+						<action>assigneddelivery</action>
+						<module>Planner</module>
+					</assigneddelivery>
+					<scheduleroute>
+						<label>Schedule Route</label>
+						<controller>Scheduleroute</controller>
+						<action>route</action>
+						<module>Planner</module>
+					</scheduleroute>
+					<deliveryscan>
+						<label>Delivery Scan</label>
+						<controller>Delivery</controller>
+						<action>deliveryscan</action>
+						<module>Planner</module>
+					</deliveryscan>
+					<todaypicked>
+						<label>Picked History</label>
+						<controller>Planner</controller>
+						<action>todaypicked</action>
+						<module>Planner</module>
+					</todaypicked>
+					<glsmailedparcel>
+						<label>GLS Pickedup</label>
+						<controller>Planner</controller>
+						<action>glsmailedparcel</action>
+						<module>Planner</module>
+					</glsmailedparcel>
+					<failedpickupshipment>
+						<label>Failed Pickup</label>
+						<controller>Planner</controller>
+						<action>failedpickupshipment</action>
+						<module>Planner</module>
+					</failedpickupshipment>
+					<driverlist>
+						<label>Driver List</label>
+						<controller>Planner</controller>
+						<action>driverlist</action>
+						<module>Planner</module>
+					</driverlist>
+					<loginreport>
+						<label>Login Report</label>
+						<controller>Driverreport</controller>
+						<action>loginreport</action>
+						<module>Planner</module>
+					</loginreport>
+					<vehiclereport>
+						<label>Vehicle Report</label>
+						<controller>Driverreport</controller>
+						<action>vehiclereport</action>
+						<module>Planner</module>
+					</vehiclereport>
+					<pickupreport>
+						<label>Pickup Report</label>
+						<controller>Driverreport</controller>
+						<action>pickupreport</action>
+						<module>Planner</module>
+					</pickupreport>
+					<deliveredreport>
+						<label>Delivery Report</label>
+						<controller>Driverreport</controller>
+						<action>deliveredreport</action>
+						<module>Planner</module>
+					</deliveredreport>
+					<leavereport>
+						<label>Leave Report</label>
+						<controller>Driverreport</controller>
+						<action>leavereport</action>
+						<module>Planner</module>
+					</leavereport>
+				</pages>
+			</Planner>
+			
+			<!--Helpdesk-->
+		   <Helpdesk>
+			<label>Helpdesk</label>
+			<controller>Helpdesk</controller>
+			<action>ticketlist</action>
+			<module>Helpdesk</module>
+		   <pages>
+			 <Ticketlist>
+			  <label>Ticket List</label>
+			  <controller>Helpdesk</controller>
+			  <action>ticketlist</action>
+			  <module>Helpdesk</module>
+			 </Ticketlist>
+			 <SummaryTicket>
+			  <label>Summary Ticket</label>
+			  <controller>Helpdesk</controller>
+			  <action>summmarytickets</action>
+			  <module>Helpdesk</module>
+			 </SummaryTicket>
+			 <ReplyForm>
+			  <label>Reply Form</label>
+			  <controller>Helpdesk</controller>
+			  <action>replyform</action>
+			  <module>Helpdesk</module>
+			 </ReplyForm>
+			 <ViewMessage>
+			  <label>View Message</label>
+			  <controller>Helpdesk</controller>
+			  <action>viewmessage</action>
+			  <module>Helpdesk</module>
+			 </ViewMessage>
+			 <HelpdeskSetting>
+			  <label>Helpdesk Setting</label>
+			  <controller>Helpdesk</controller>
+			  <action>helpdesksetting</action>
+			  <module>Helpdesk</module>
+			 </HelpdeskSetting>
+			 <Setstep>
+			  <label>Set Step</label>
+			  <controller>Helpdesk</controller>
+			  <action>setstep</action>
+			  <module>Helpdesk</module>
+			 </Setstep>
+			 <AddnewQuestion>
+			  <label>Add New Question</label>
+			  <controller>Helpdesk</controller>
+			  <action>addnewquestion</action>
+			  <module>Helpdesk</module>
+			 </AddnewQuestion>
+			 <UpdateQuestion>
+			  <label>Update Question</label>
+			  <controller>Helpdesk</controller>
+			  <action>updatequestion</action>
+			  <module>Helpdesk</module>
+			 </UpdateQuestion>
+			 <HelpdeskStatus>
+			  <label>Helpdesk Status</label>
+			  <controller>Helpdesk</controller>
+			  <action>helpdeskstatus</action>
+			  <module>Helpdesk</module>
+			 </HelpdeskStatus>
+			 <FAQDetail>
+			  <label>FAQ Details</label>
+			  <controller>Helpdesk</controller>
+			  <action>faqdetail</action>
+			  <module>Helpdesk</module>
+			 </FAQDetail>
+			 <AddFAQ>
+			  <label>Add FAQ's</label>
+			  <controller>Helpdesk</controller>
+			  <action>addfaq</action>
+			  <module>Helpdesk</module>
+			 </AddFAQ>
+			 <UpdateFAQ>
+			  <label>Update FAQ's</label>
+			  <controller>Helpdesk</controller>
+			  <action>updatefaq</action>
+			  <module>Helpdesk</module>
+			 </UpdateFAQ>
+			<ClaimList>
+			  <label>Claim List</label>
+			  <controller>Claim</controller>
+			  <action>claimlist</action>
+			  <module>Helpdesk</module>
+			 </ClaimList>
+			 <ViewClaim>
+			  <label>View Claim</label>
+			  <controller>Claim</controller>
+			  <action>viewclaims</action>
+			  <module>Helpdesk</module>
+			 </ViewClaim>
+			<ReplyClaim>
+			  <label>Reply Claim</label>
+			  <controller>Claim</controller>
+			  <action>replyclaim</action>
+			  <module>Helpdesk</module>
+			 </ReplyClaim>
+		<ClaimSeting>
+			  <label>Claim Setting</label>
+			  <controller>Claim</controller>
+			  <action>claimsetting</action>
+			  <module>Helpdesk</module>
+			 </ClaimSeting>
+		<ClaimStatus>
+			  <label>Claim Setting</label>
+			  <controller>Claim</controller>
+			  <action>claimstatus</action>
+			  <module>Helpdesk</module>
+		</ClaimStatus>     
+		<AddnewClaimQuestion>
+			  <label>Add New Claim Question</label>
+			  <controller>Claim</controller>
+			  <action>addnewclaimquestion</action>
+			  <module>Helpdesk</module>
+		 </AddnewClaimQuestion>
+			</pages>
+		   </Helpdesk>
+		   <!--Accounting-->	
+			<Accounting>
+                <label>Accounting</label>
+                <controller>Bookkeeping</controller>
+                <action>getbookkeepinglist</action>
+				<module>Accounting</module>
+                <pages>
+				   <setting>
+						<label>Setting</label>
+						<controller>Accountsetting</controller>
+						<action>getaccountheadlist</action>
+						<module>Accounting</module>
+						<pages>
+							 <accounthead>
+							 <label>Account head</label>
+							 <controller>Accountsetting</controller>
+							 <action>getaccountheadlist</action>
+							 <module>Accounting</module>
+							 </accounthead>
+							 <accountgroup>
+							 <label>Account group</label>
+							 <controller>Accountsetting</controller>
+							 <action>getaccountgrouplist</action>
+							 <module>Accounting</module>
+							 </accountgroup>
+							 <accountclass>
+							 <label>Account Class</label>
+							 <controller>Accountsetting</controller>
+							 <action>getaccountclasslist</action>
+							 <module>Accounting</module>
+							 </accountclass>
+							 <accountbank>
+							 <label>Account Bank</label>
+							 <controller>Accountsetting</controller>
+							 <action>getaccountbanklist</action>
+							 <module>Accounting</module>
+							 </accountbank>
+							 <accountfunction>
+							 <label>Account Function</label>
+							 <controller>Accountsetting</controller>
+							 <action>getaccountfunctionlist</action>
+							 <module>Accounting</module>
+							 </accountfunction>
+						</pages>
+					</setting>
+
+					<bookkeeping>
+						<label>Bookkeeping</label>
+						<controller>Bookkeeping</controller>
+						<action>getbookkeepinglist</action>
+						<module>Accounting</module>
+					</bookkeeping>
+					<btwrates>
+						<label>Btw Rates</label>
+						<controller>Accounting</controller>
+						<action>getbtwrates</action>
+						<module>Accounting</module>
+					</btwrates>
+					<suppliers>
+						<label>Suppliers</label>
+						<controller>Accounting</controller>
+						<action>getsupplierlist</action>
+						<module>Accounting</module>
+					</suppliers>
+				    
+				</pages>
+			</Accounting>	 
+		<!--Check-in-->	
+			<Checkin>
+                <label>Checkin</label>
+                <controller>Checkin</controller>
+                <action>parceldetail</action>
+				<module>Checkin</module>
+                <pages>
+				   <parceldetail>
+						<label>Parcel Detail</label>
+						<controller>Checkin</controller>
+						<action>parceldetail</action>
+						<module>Checkin</module>
+					</parceldetail>
+					<checkin>
+						<label>Check-In</label>
+						<controller>Checkin</controller>
+						<action>checkin</action>
+						<module>Checkin</module>
+					</checkin>
+					<batchcheckin>
+						<label>Parcel Detail</label>
+						<controller>Checkin</controller>
+						<action>batchcheckin</action>
+						<module>Checkin</module>
+					</batchcheckin>
+					<forwardermanifest>
+						<label>Forwarder Manifest</label>
+						<controller>Edimanager</controller>
+						<action>forwardermanifest</action>
+						<module>Checkin</module>
+					</forwardermanifest>
+					<edihistory>
+						<label>EDI History</label>
+						<controller>Edimanager</controller>
+						<action>edihistory</action>
+						<module>Checkin</module>
+					</edihistory>
+					<csvcheckin>
+						<label>CSV Check-In</label>
+						<controller>Checkin</controller>
+						<action>csvcheckin</action>
+						<module>Checkin</module>
+					</csvcheckin>
+					<referencecheckin>
+						<label>Reference Check-In</label>
+						<controller>Checkin</controller>
+						<action>referencecheckin</action>
+						<module>Checkin</module>
+					</referencecheckin>
+					<specialdhl>
+						<label>Dobel DHL</label>
+						<controller>Edimanager</controller>
+						<action>specialdhl</action>
+						<module>Checkin</module>
+					</specialdhl>
+					<urgentletter>
+						<label>Correos Urgentletter</label>
+						<controller>Edimanager</controller>
+						<action>urgentletter</action>
+						<module>Checkin</module>
+					</urgentletter>
+					<specialbpost>
+						<label>Maparexx Bpost</label>
+						<controller>Edimanager</controller>
+						<action>specialbpost</action>
+						<module>Checkin</module>
+					</specialbpost>
+					<updatedelivery>
+						<label>Update Delivery</label>
+						<controller>Parcel</controller>
+						<action>updatedelivery</action>
+						<module>Checkin</module>
+					</updatedelivery>
+				</pages>
+			</Checkin>
+			<!--Invoice-->	
+			<Invoicemanager>
+                <label>Invoice</label>
+                <controller>Invoicemanager</controller>
+                <action>invoicelist</action>
+				<module>Invoice</module>
+                <pages>
+				   <invoice>
+						<label>Create Invoice</label>
+						<controller>Invoicemanager</controller>
+						<action>invoice</action>
+						<module>Invoice</module>
+					</invoice>
+					<invoicelist>
+						<label>Invoice List</label>
+						<controller>Invoicemanager</controller>
+						<action>invoicelist</action>
+						<module>Invoice</module>
+					</invoicelist>
+					<codamountdetail>
+						<label>COD Details</label>
+						<controller>Invoicecod</controller>
+						<action>codamountdetail</action>
+						<module>Invoice</module>
+					</codamountdetail>
+					<myinvoice>
+						<label>My Invoice</label>
+						<controller>Invoicemanager</controller>
+						<action>myinvoice</action>
+						<module>Invoice</module>
+					</myinvoice>
+					<allduesinvoice>
+						<label>All Dues</label>
+						<controller>Duesinvoice</controller>
+						<action>allduesinvoice</action>
+						<module>Invoice</module>
+					</allduesinvoice>
+					<editinvoice>
+						<label>Edit Invoice</label>
+						<controller>Invoicemanager</controller>
+						<action>editinvoice</action>
+						<module>Invoice</module>
+					</editinvoice>
+				</pages>
+			</Invoicemanager>
+			<!--Reports-->	
+			<Reports>
+                <label>Reports</label>
+                <controller>Reports</controller>
+                <action>differences</action>
+				<module>Reports</module>
+                <pages>
+				   <differences>
+						<label>Weight Difference</label>
+						<controller>Reports</controller>
+						<action>differences</action>
+						<module>Reports</module>
+					</differences>
+					<graphicalreport>
+						<label>Grafical Report</label>
+						<controller>Reports</controller>
+						<action>graphicalreport</action>
+						<module>Reports</module>
+					</graphicalreport>
+					<forwarderreport>
+						<label>Forwarder Report</label>
+						<controller>Reports</controller>
+						<action>forwarderreport</action>
+						<module>Reports</module>
+					</forwarderreport>
+					<wrongaddress>
+						<label>Wrong Address</label>
+						<controller>Reports</controller>
+						<action>wrongaddress</action>
+						<module>Reports</module>
+					</wrongaddress>
+				</pages>
+			</Reports>
+			<!--Mail Shipment-->	
+			<Mailshipment>
+                <label>Mailshipment</label>
+                <controller>Mailshipment</controller>
+                <action>mailpostlist</action>
+				<module>Mailshipment</module>
+                <pages>
+				   <mailpostlist>
+						<label>New Mailpost List</label>
+						<controller>Mailshipment</controller>
+						<action>mailpostlist</action>
+						<module>Mailshipment</module>
+					</mailpostlist>
+					<mailhistory>
+						<label>Mail History</label>
+						<controller>Mailshipment</controller>
+						<action>mailhistory</action>
+						<module>Mailshipment</module>
+					</mailhistory>
+					<mailbarcodecheckin>
+						<label>Mail Check-In</label>
+						<controller>Mailshipment</controller>
+						<action>mailbarcodecheckin</action>
+						<module>Mailshipment</module>
+					</mailbarcodecheckin>
+					<mailrouting>
+						<label>Mail Routing</label>
+						<controller>Mailshipment</controller>
+						<action>mailrouting</action>
+						<module>Mailshipment</module>
+					</mailrouting>
+					<addmailshipment>
+						<label>Add Mail Post</label>
+						<controller>Mailshipment</controller>
+						<action>addmailshipment</action>
+						<module>Mailshipment</module>
+					</addmailshipment>
+					<editmailpost>
+						<label>Edit Mail-Post</label>
+						<controller>Mailshipment</controller>
+						<action>editmailpost</action>
+						<module>Mailshipment</module>
+					</editmailpost>
+					<deletedmailshipment>
+						<label>Deleted Mail-Post</label>
+						<controller>Mailshipment</controller>
+						<action>deletedmailshipment</action>
+						<module>Mailshipment</module>
+					</deletedmailshipment>
+				</pages>
+			</Mailshipment>	
+			<!--Supplies-->	
+			<Supplies>
+                <label>Supplies</label>
+                <controller>Supplies</controller>
+                <action>productshop</action>
+				<module>Supplies</module>
+                <pages>
+				   <productshop>
+						<label>Product Shop</label>
+						<controller>Supplies</controller>
+						<action>productshop</action>
+						<module>Supplies</module>
+					</productshop>
+				   <shoppingcart>
+						<label>Shopping Cart</label>
+						<controller>Supplies</controller>
+						<action>shoppingcart</action>
+						<module>Supplies</module>
+					</shoppingcart>
+				   <orderlist>
+						<label>Order List</label>
+						<controller>Supplies</controller>
+						<action>orderlist</action>
+						<module>Supplies</module>
+					</orderlist>
+					<productlist>
+						<label>Product List</label>
+						<controller>Supplies</controller>
+						<action>productlist</action>
+						<module>Supplies</module>
+					</productlist>
+				</pages>
+			</Supplies>
+
+			<!-- Old History -->
+				<Oldhistory>
+                <label>Oldhistory</label>
+                <controller>Invoicehistory</controller>
+                <action>getinvoicehistory</action>
+				<module>Oldhistory</module>
+                <pages>
+				   <invoicehistory>
+						<label>Invoice History</label>
+						<controller>Invoicehistory</controller>
+						<action>getinvoicehistory</action>
+						<module>Oldhistory</module>
+					</invoicehistory>
+					<shipmenthistory>
+						<label>Shipment History</label>
+						<controller>Shipmenthistory</controller>
+						<action>getshipmenthistory</action>
+						<module>Oldhistory</module>
+					</shipmenthistory>
+					<edihistory>
+						<label>Edi History</label>
+						<controller>Edihistory</controller>
+						<action>getoldedihistory</action>
+						<module>Oldhistory</module>
+					</edihistory>
+					<parceldetails>
+						<label>Parcel Details</label>
+						<controller>Oldhistory</controller>
+						<action>getoldparceldetails</action>
+						<module>Oldhistory</module>
+					</parceldetails>
+				</pages>
+			</Oldhistory>
+			<!-- Old History -->
+
+        </pages>
+    </nav>
+</configdata>

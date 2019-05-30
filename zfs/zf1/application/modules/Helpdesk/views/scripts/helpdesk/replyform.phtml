@@ -1,0 +1,292 @@
+
+<?php 
+// echo "<pre>"; 
+// print_r($this->sess_data);  
+// print_r($this->ticketdetail);die;  
+?>
+<div class="row row-broken">
+    <div class="col-sm-12">
+        <div class="tabs" id="seventh-tabs">
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-1">
+					<div class="row tab-filter row_nopadding decor-success tab-position">
+						<div class="input-title"><?php echo $this->translate('Reply Message')?></div>
+					</div>
+					<div id="tablegrid">
+                     	<form method="post" name="replyform" enctype="multipart/form-data">
+                            <input type="hidden" name="question_id" value="<?=$this->ticketdetail['question_id'] ?>">
+                            <input type="hidden" name="parent_id" value="<?=$this->ticketdetail['helpdesk_token'] ?>">
+                            <input type="hidden" name="barcode_id" value="<?=$this->ticketdetail['barcode_id'] ?>">
+                            <input type="hidden" name="user_id" value="<?=$this->ticketdetail['user_id'] ?>">							
+							<div class="col-md-8">
+								<div><b><?php echo $this->translate('Reply Message Details: Ticket No: </b>'.$this->ticketdetail['ticket_no'])?></div>
+								<table width="100%" border="0">
+									<tr>
+									   <td width="15%"><b><?php echo $this->translate('Shipment Details:') ?></b></td>
+									   <td style="text-align:left;" colspan="3">
+										<b><?php echo $this->translate('Sender Name: </b>'.$this->parceldetail['company_name']) ?></br>
+										<b><?php echo $this->translate('Barcode No: </b>'.$this->parceldetail['barcode']) ?></br>
+										<b><?php echo $this->translate('Receiver Name: </b>'.$this->parceldetail['rec_name']) ?></br>
+										<b><?php echo $this->translate('Forwarder Name: </b>'.$this->parceldetail['forwarder_name']) ?></br>
+										<b><?php echo $this->translate('Weight: </b>'.$this->parceldetail['weight']) ?></br>
+										<b><?php echo $this->translate('Create Date: </b>'.$this->parceldetail['create_date']) ?></br>
+										<b><?php echo $this->translate('Checkin Date: </b>'.$this->parceldetail['checkin_date']) ?></br>
+									   </td>
+									   <td><?= $this->parceldetail['rec_name'].'</br>'.
+									       $this->parceldetail['rec_street'].' '.$this->parceldetail['rec_streetnr'].' '.$this->parceldetail['rec_street2'].' '.$this->parceldetail['rec_address'].'</br>'.
+										   $this->parceldetail['rec_zipcode'].' '.$this->parceldetail['rec_city'];
+									       ?>
+									   </td>
+									</tr>	
+									<tr>
+									  <td width="15%"><b><?php echo $this->translate('Ticket Information:')?></b></td>
+									  <td style="text-align:left;" colspan="5">
+										<b><?php echo $this->translate('Question: </b>'.$this->ticketdetail['question_type']) ?></br> 
+										<b><?php echo $this->translate('Description: </b>'.$this->ticketdetail['messages']) ?>
+									  </td>
+									</tr>
+									<?php if(in_array($this->sess_data['user_id'],explode(',',$this->ticketdetail['forward_to']))){ ?>
+									<tr>
+									    <td colspan="5">
+										  <?php 
+										    require ROOT_PATH.'/public/fckeditor/FCKeditor.php';
+										    $var = new FCKeditor('description');
+										    $var->BasePath = BASE_URL.'/public/fckeditor/';
+										    $var->Height = '200px';
+										    $var->Weight = '100px';
+										    $var->Value = '';
+										    $var->Create();	
+										   ?>	
+									    </td>  
+									</tr>
+									<tr>
+										<td colspan="5">
+									      <input type="submit" name="internalreply" value="Reply" class="btn btn-danger btn-round">
+									    </td>
+									</tr>
+									<?php }else{?>
+									<tr>
+									    <th><?php echo $this->translate('Logo') ?></th>
+									    <th><?php echo $this->translate('Step No.')?></th>
+									    <th><?php echo $this->translate('Step Name')?></th>
+									    <th><?php echo $this->translate('Step Status')?></th>
+									    <th><?php echo $this->translate('Reply Remarks')?></th>	
+									</tr>
+									<?php foreach($this->previousstep as $key=>$prev_step){ ?>
+									<tr>
+										<td>
+										    <?php if($prev_step['logo']!='' && file_exists(ROOT_PATH.'/public/headerlogo/'.$prev_step['logo'])){ ?>
+												<img src="<?=BASE_URL ?>/public/headerlogo/<?=$prev_step['logo']?>" class="logo">
+											<?php } else{ ?>
+												<img src="<?=BASE_URL?>/public/headerlogo/<?=$prev_step['depot_logo']?>" class="logo">
+											<?php  } ?>
+										</td>
+										<td><b><?= (isset($prev_step['steps']))? $prev_step['steps']:''  ?></b></td>
+										<td><?= (isset($prev_step['step_name']))? $prev_step['step_name']:''  ?></td>
+										<td><?= ($prev_step['current_step_status']=='1')? 'Yes' :'No'; ?></td>
+										<td><?= (isset($prev_step['messages']))? $prev_step['messages']:''  ?>
+										<?php if(!empty($prev_step['uploded_file'])){  ?>
+									    <a target="_blank" href="<?=HELPDESK_DOC.''.$prev_step['uploded_file'] ?>"><i class="fa fa-picture-o fa-2x" title="Print Attachment"></i></a>
+										<?php } ?>
+										</td>
+									</tr>
+									<?php } ?>
+									<?php
+                                    $customstep = array('0'=>'Custom Step one','1'=>'Custom Step Two','2'=>'Custom Step Three','3'=>'Custom Step Four','4'=>'Custom Step Five');    
+									foreach($this->previouscustom as $key=>$custom_step){
+									if ( end(array_keys($this->previouscustom))== $key ) {
+										$lastcustomactivity_id = $custom_step['activity_id'];
+									 } 
+									
+									?>
+									<tr>
+										<td>
+										    <?php if($custom_step['logo']!='' && file_exists(ROOT_PATH.'/public/headerlogo/'.$custom_step['logo'])){ ?>
+												<img src="<?=BASE_URL ?>/public/headerlogo/<?=$custom_step['logo']?>" class="logo">
+											<?php } else{ ?>
+												<img src="<?=BASE_URL?>/public/headerlogo/<?=$custom_step['depot_logo']?>" class="logo">
+											<?php  } ?>
+										</td>
+										<td><b><?=(isset($customstep[$key]))? $customstep[$key]:'' ?></b></td>
+										<td><?=(isset($custom_step['messages'])) ? $custom_step['messages']:'' ?></td>
+										<td>Yes</td>
+										<td><?=(isset($custom_step['messages']))?$custom_step['messages']:'' ?></td>
+									</tr>
+									<?php } ?>
+									<?php if((($this->sess_data['level_id']==1 || $this->sess_data['level_id']==4 || $this->sess_data['level_id']==6) && isset($this->nextsteps[0]['step_auth']) && $this->nextsteps[0]['step_auth']=='0') || ($this->sess_data['level_id']==5 && isset($this->nextsteps[0]['step_auth']) && $this->nextsteps[0]['step_auth']=='1') && !empty($this->nextsteps[0])){								
+							        ?>
+									<tr>
+									    <td>
+											<?php if($this->nextsteps[0]['logo']!='' && file_exists(ROOT_PATH.'/public/headerlogo/'.$this->nextsteps[0]['logo'])){ ?>
+												<img src="<?=BASE_URL ?>/public/headerlogo/<?=$this->nextsteps[0]['logo']?>" class="logo">
+											<?php } else{ ?>
+												<img src="<?=BASE_URL?>/public/headerlogo/<?=$this->nextsteps[0]['depot_logo']?>" class="logo">
+											<?php  } ?>
+									    </td>
+										<td><b><?=(isset($this->nextsteps[0]['steps']))? $this->nextsteps[0]['steps']:'' ?><input type="hidden" name="step" value="<?=(isset($this->nextsteps[0]['step']))? $this->nextsteps[0]['step']:''  ?>"></b></td>
+										<td><?=(isset($this->nextsteps[0]['step_name']))? $this->nextsteps[0]['step_name']:''  ?></td>
+										<td><input type="radio" name="step_status" value="1" checked="checked">Yes&nbsp;<input type="radio" name="step_status" value="0">No</td>
+									    <td><input type="file" name="document_file">
+											<input type="hidden" name="document_upload" value="<?=(isset($this->nextsteps[0]['documents_uploade']))?$this->nextsteps[0]['documents_uploade']:'' ?>">
+										</td>
+									</tr>
+									<?php if($this->sess_data['level_id']==1 || $this->sess_data['level_id']==4 || $this->sess_data['level_id']==6){ ?>
+									<tr>
+										<td colspan="2"><b>Email to Forwarder</b></td>
+										<td><input type="radio" name="forwarder_notify" value="0" checked="checked" onclick="showforwarderemail(this.value)">No&nbsp;<input type="radio" name="forwarder_notify" value="1" onclick="showforwarderemail(this.value)">Yes</td>
+										<td colspan="2"><input type="text" class="inputfield" name="forwarder_email" id="forwarder_email" placeholder="Enter Forwarder Email" style="display:none"></td>
+									</tr>
+									<?php } 
+									if($this->ticketdetail['question_id']!=11 && $this->ticketdetail['master_id']!=1){ ?>
+									<tr>
+									    <td colspan="5">
+										  <?php 
+										    require ROOT_PATH.'/public/fckeditor/FCKeditor.php';
+										    $var = new FCKeditor('description');
+										    $var->BasePath = BASE_URL.'/public/fckeditor/';
+										    $var->Height = '200px';
+										    $var->Weight = '100px';
+										    $var->Value = '';
+										    $var->Create();	
+										   ?>
+										</td> 
+									</tr>
+									<tr>
+										<td colspan="5">
+										  <input type="submit" name="reply" value="Reply" class="btn btn-danger btn-round">&nbsp;&nbsp;
+										  <?php if($this->sess_data['user_id']!=$this->ticketdetail['forward_to']){ 
+										    echo $this->getHelper('HtmlSelect')->getSelect('status',$this->helpdeskstatus,'helpdesk_status_id','helpdesk_status_name',$this->ticketdetail['is_status'],false,array('class'=>'inputfield','style'=>'width:25%'));
+										   } else{ ?>
+										   <input type="hidden" name="status" value="<?=(isset($this->ticketdetail['is_status']))? $this->ticketdetail['is_status']:'' ?>">
+										  <?php } ?>
+										</td>
+									</tr>
+									<?php } else{ ?>
+									<tr>
+									    <td colspan="5">
+									        <?php if($this->ticketdetail['error_status']=='1'){ 
+												$error_url = (isset($this->ticketdetail['dpd_error_url']) && $this->ticketdetail['dpd_error_url']!='')?$this->ticketdetail['dpd_error_url']:BASE_URL.'/Parceltracking/parcelerror?barcode_id='.$this->ticketdetail['barcode_id'].'&helpdesk_token='.$this->ticketdetail['helpdesk_token'].'&ticket_no='.$this->ticketdetail['ticket_no'];
+												?>
+												<iframe src="<?php echo $error_url;?>" width="100%" height="400px"></iframe>
+											<?php } ?>
+										</td>
+									</tr>  
+									<?php } } 
+									if(empty($this->previousstep) && empty($this->nextsteps[0])){ ?>
+                                    <tr>
+									   <td colspan="5">Ticket is UnderProcess</td>
+                                    </tr>
+                                    <?php } }	
+                                    if(!empty($this->previousstep) && empty($this->nextsteps[0]) && !empty($this->previouscustom) && ($this->sess_data['level_id']==5) && $lastcustomactivity_id==11){         
+									?>	
+                                    <tr>
+									<td colspan="5">
+									  <?php 
+										require ROOT_PATH.'/public/fckeditor/FCKeditor.php';
+										$var = new FCKeditor('customdescription');
+										$var->BasePath = BASE_URL.'/public/fckeditor/';
+										$var->Height = '200px';
+										$var->Weight = '100px';
+										$var->Value = '';
+										$var->Create();	
+									   ?>
+									</td>
+									</tr>
+									<tr>
+										<td colspan="5"><input type="submit" name="askquestion" value="Reply" class="btn btn-danger btn-round"></td>
+									</tr>
+                                    <?php } 
+									if(!empty($this->previousstep) && empty($this->nextsteps[0]) && ($this->sess_data['level_id']!=5)){
+									?>
+									<tr>
+										<td colspan="5"><a href="javascript:void(0)" onclick="showeditor('1')"><b>Ask Question to Customer</b></a></td>
+									</tr>
+									<tr>
+										<td colspan="5" id="askqueeditor" style="display:none">
+										  <?php 
+											require ROOT_PATH.'/public/fckeditor/FCKeditor.php';
+											$var = new FCKeditor('customdescription');
+											$var->BasePath = BASE_URL.'/public/fckeditor/';
+											$var->Height = '200px';
+											$var->Weight = '100px';
+											$var->Value = '';
+											$var->Create();	
+										   ?>
+										</td>
+									</tr>
+									<tr>
+									    <td colspan="5" style="display:none" id="askquebutton">
+										  <input type="submit" name="askquestion" value="AskQuestion" class="btn btn-danger btn-round">
+							              <input type="button" name="cancel" value="Cancel" class="btn btn-danger btn-round" onclick="showeditor('0')">
+										</td>
+									</tr>
+                                    <?php } ?>									
+								</table>
+							</div>
+						</form>
+						<div class="col-md-4">
+							<div class="col-md-12"></div>
+							<table width="100%" border="0">
+								<tr>
+								  <th colspan="4">Instructions</th>
+								</tr>
+								<?php foreach($this->steps as $key=>$steps){ ?>
+								<tr>
+								  <td><b><?=(isset($steps['steps']))?$steps['steps']:'' ?></b></td>
+								  <td><?=(isset($steps['step_name'])) ? $steps['step_name']:''  ?></td>
+								  <td><?=(isset($steps['instruction'])) ? $steps['instruction']:'' ?></td>
+								  <td><?=($steps['step_auth']=='0')? 'Operator' : 'Customer';  ?></td>
+								</tr>
+								<?php } ?>
+							</table>
+						</div>
+						
+						<?php if($this->updatetimeStamp['action_date']==''){
+							if($this->errorDetail['master_id']==1 && commonfunction::trimString($this->errorDetail['dpd_error_url'])==''){ ?>
+								<iframe src=""></iframe>
+					   <?php }
+					        else{ ?>
+								<iframe src=""></iframe>
+					   <?php } } ?>
+						
+					</div>	
+				</div>
+                
+	        </div>
+        </div>
+    </div>
+</div>
+<style>
+   th{
+    background: #36384e;
+    padding: 6px!important;
+    text-align: center;
+    color: #fff;
+    font-size: 13px;
+    border-bottom: none !important;
+	}
+	.nodatatxt{
+	font-weight: bold;
+	}
+	#tablegrid input[type="radio"] {
+    display: unset;
+	}
+</style>
+<script>
+function showforwarderemail(input_value){
+if(input_value==1){
+$('#forwarder_email').show();
+}else{
+$('#forwarder_email').hide();
+}
+}
+function showeditor($value){
+if($value==1){
+$('#askqueeditor').show();
+$('#askquebutton').show();
+}else{
+$('#askqueeditor').hide();
+$('#askquebutton').hide();
+}
+}
+</script>

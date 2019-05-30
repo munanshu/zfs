@@ -1,0 +1,112 @@
+
+	<div class="row row-broken">
+        <div class="col-sm-12">
+				 <div class="filter">
+				<div class="input-title"><?php echo $this->translate('Edit Mail/Post')?></div>
+			<div class="clear"></div>
+				<div style="background:#ffffff; padding:10px; overflow:auto;text-align:center">
+				
+			<div class="clear-all"></div>
+				<div class="col-sm-2">&nbsp;</div>
+					<div class="col-sm-8">
+				<form id="Importshipmentform" class="inputbox" enctype="multipart/form-data" action="" method="post" onsubmit="return importvalidate()">
+				<input type="hidden" id="addcount" value="<?php echo count($this->mailPostDetails)?>">
+				<input type="hidden" id="manifest_number" name="manifest_number" value="<?php echo $this->mailPostDetails[0]['manifest_number'];?>">				
+					<table class="tbl_new">
+					<tbody>
+					<tr id="file_error" style="display:none;color:red;"></tr>
+					<tr><th colspan="6"><?php echo $this->translate('Edit Mail/Post')?></th></tr>
+					<?php if($this->ModelObj->Useconfig['level_id']==1 || $this->ModelObj->Useconfig['level_id']==4 || $this->ModelObj->Useconfig['level_id']==6){?>
+					 <tr>
+						<td style="text-align:center"><?php echo $this->translate('Customer')?>:</td>
+						<td colspan="2"><?php echo $this->getHelper('HtmlSelect')->getSelect('user_id',$this->customerlist,'user_id','company_name',(isset($this->mailPostDetails[0]['user_id'])?Zend_Encript_Encription::encode($this->mailPostDetails[0]['user_id']):''),true,array('class'=>'inputfield'));?>  
+						</td>
+						
+						<td colspan="3">&nbsp;</td>
+					 </tr>
+					 <?php } else{ ?>
+					 <input type="hidden" name="user_id" id="user_id" value="(isset($this->mailPostDetails[0]['user_id'])?Zend_Encript_Encription::encode($this->mailPostDetails[0]['user_id']):'')">
+					 <?php } ?>
+					 <tr>
+						 <th><?php echo $this->translate('Country')?></th>
+						 <th><?php echo $this->translate('Weight Class')?></th>
+						 <th><?php echo $this->translate('Quantity')?></th>
+						 <th><?php echo $this->translate('Price')?></th>
+						 <th><?php echo $this->translate('Remark')?></th>
+						 <th>#</th>
+					 </tr>
+					 <?php foreach($this->mailPostDetails as $mailPostDetails){?>
+						<tr id="row1">
+						 <input type="hidden" name="mailshipment_id[]" value="<?php echo $mailPostDetails['mailshipment_id']?>"> 
+						 <td><?php echo $this->getHelper('HtmlSelect')->getSelect('country_id[]',$this->countrylist,'id','country_name',$mailPostDetails['country_id'],false,array('class'=>'inputfield','onchange'=>'getMailPrice(1)','id'=>'country_id1'));?> </td>
+						 <td><?php echo $this->getHelper('HtmlSelect')->getSelect('weight_class[]',$this->weightclass,'class_id','Classes',$mailPostDetails['weight_class'],false,array('class'=>'inputfield','onchange'=>'getMailPrice(1)','id'=>'weight_class1'));?> </td>
+						 <td><input type="text" name="quantity[]" id="quantity1" class="inputfield" onblur="getMailPrice(1);" value="<?php echo $mailPostDetails['quantity']?>"><input type="hidden" name="depot_price[]" id="depot_price1" value="<?php echo $mailPostDetails['depot_price']?>"><input type="hidden" name="customer_price[]" id="customer_price1" value="<?php echo $mailPostDetails['customer_price']?>"></td>
+						 <td id="price1"><?php echo $mailPostDetails['customer_price']?></td>
+						 <td id="remark1"></td>
+						 <td><i class="fa fa-plus-square" onclick="add_more()"></i></td>
+					 </tr>
+					<?php }?>
+					<tr>
+						<td style="text-align:center" colspan="6">
+						<input type="submit" name="update_mail_post" id="update_mail_post" value="Update Mail/Post" class="btn btn-danger"></td>
+						</td>
+						
+					 </tr>
+					</tbody>
+					</table>
+				</form>	
+					</div>
+					<div class="col-sm-2">&nbsp;</div>
+					<div class="clear-all"></div>
+				</div>
+			</div>
+        </div>
+	</div>
+<script>
+
+function add_more(){
+    var count = parseInt($("#addcount").val()) + 1;
+	var html = '';
+	html += '<tr id="row'+count+'">';  
+	html += '<td><?php echo $this->getHelper('HtmlSelect')->getSelect('country_id[]',$this->countrylist,'id','country_name','',false,array('class'=>'inputfield','onchange'=>"getMailPrice('+count+');",'id'=>"country_id'+count+'"));?> </td>';
+	html += '<td><?php echo $this->getHelper('HtmlSelect')->getSelect('weight_class[]',$this->weightclass,'class_id','Classes','',false,array('class'=>'inputfield','onchange'=>"getMailPrice('+count+');",'id'=>"weight_class'+count+'"));?> </td>';
+	html += '<td><input type="text" name="quantity[]" id="quantity'+count+'" onblur="getMailPrice('+count+');" class="inputfield"><input type="hidden" name="depot_price[]" id="depot_price'+count+'"><input type="hidden" name="customer_price[]" id="customer_price'+count+'"></td>';
+	html += '<td id="price'+count+'"></td>';
+	html += '<td id="remark'+count+'"></td>';
+	html += '<td><i class="fa fa-minus-square-o" style="padding-top:15px;" onclick="removerow('+count+')"></i></td></tr>';
+	$("#row"+parseInt($("#addcount").val())).after(html);
+	$("#addcount").val(parseInt(count));
+}
+function removerow(count){
+    $("#row"+count).remove();
+	$("#addcount").val(parseInt($("#addcount").val()) - 1);
+}
+function getMailPrice(count){
+   var user_id = $("#user_id").val();
+   var weight_class = $("#weight_class"+count).val();
+   var country_id = $("#country_id"+count).val();
+   var quantity = $("#quantity"+count).val();
+   //alert(count+'='+user_id+'='+weight_class+'='+country_id+'='+quantity);
+   if(user_id!='' && weight_class>0 && country_id>0  && quantity>0){
+   $.ajax({
+     type :'post',
+	 url: '<?php echo $this->url(array('controller'=>'Mailshipment','action'=>'mailprice'),'default',true)?>',
+	 data: 'user_id='+user_id+'&weight_class='+weight_class+'&country_id='+country_id+'&quantity='+quantity,
+	 dataType : 'json',
+	 success:function(response){ //alert(response);
+	    if(response.status==1){
+		  $("#depot_price"+count).val(response.depot_price);
+		  $("#customer_price"+count).val(response.customer_price);
+		  $("#price"+count).html(response.customer_price);
+		  $("#remark"+count).html(response.remark);
+		}else{
+		  $("#depot_price"+count).val(0);
+		  $("#customer_price"+count).val(0);
+		  $("#price"+count).html('');
+		  $("#remark"+count).html('');
+		}
+	 }
+   });
+  }  
+}
+</script>	

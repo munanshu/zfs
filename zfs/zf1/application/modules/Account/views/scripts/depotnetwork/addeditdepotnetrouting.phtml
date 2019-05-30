@@ -1,0 +1,107 @@
+<?php $form = $this->dn_form; ?>
+
+
+  <div id="table"><div class="header-row row">
+    <span class="cell" style="text-align:center"><h6><?php echo $this->translate("Depot Network Routing");?></h6></span> 
+  </div></div>
+  
+  <div class="row row-broken" style="margin-left:0px !important;margin-right:0px !important;">
+        <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+              <ul class="nav nav-tabs nav-justified">
+            
+                  <li><a href="<?php echo BASE_URL;?>/Depotnetwork/alldepotnetworkrouting/<?=$this->token;?>/add"><?php echo $this->translate("Depot Network List ")?><i class="fa fa-folder"></i></a></li>
+                 
+                 <li  class="active"> <a href="<?php echo BASE_URL;?>/Depotnetwork/addeditdepotnetrouting/<?=$this->token;?>"><?php echo $this->translate("Add new Depot network Routing")?><i class="fa fa-ticket"></i></a> </li>
+        
+              </ul>
+      </div>
+    </div>  
+  </div>
+
+
+     <div class="col-md-12">
+        <div class="tab-content">
+          <div class="tab-pane fade in active" id="tab-1">
+          
+              <form action="" method="post" name="depotnetwork_routing" class="inputbox" >
+                        <div class="col-lg-12 col-md-12 col-sm-12 b-email" style="background:#ffffff;">
+                                  <div class="b-email-title">
+                                    <h6><?=$this->translate('gjjhgjh');?></h6>
+                                  </div>
+                            <div class="row">
+                                    <div class="col-sm-6 col_paddingtop">
+                                      <?php  echo $form->country_id;  ?>
+                                    </div>
+                                <div class="col-sm-6 col_paddingtop">
+                                      <?php echo $form->service_id;  ?> 
+                                    </div>
+                                  <div class="clearfix"></div>
+                            </div>
+                                    <div class="postcodes" >
+                                      <div class="postrows" rowid="1" id="postcode_row_1">
+                                  <?php 
+                                  echo (isset($this->Request['currentMode']) )? '<input type="hidden" name="currentMode" value="'.$this->Request['currentMode'].'">' : '' ; 
+                                  echo (isset($this->Request['editToken']) )? '<input type="hidden" name="editToken" value="'.$this->Request['editToken'].'">' : '' ; 
+                                  echo( $this->formArrayElements(array($form->postcode_start,$form->postcode_end,$form->sc_routing_id),'depotnetwork/multirows.phtml')); ?>
+
+                                      </div>
+                               
+                                    </div>
+                                <!-- <div class="col-sm-12 col_paddingtop"> -->
+                                <!-- </div> -->
+                                   <div class="clearfix"></div>
+                                  <div class="col-sm-2 col_paddingtop"> <?php echo $form->submit; ?> </div>
+                          </div>
+                        </form>
+          
+          </div>
+        </div>  
+      </div>
+
+  
+<script type="text/javascript">
+	
+	function addrows() {
+
+ 			var tr = $(".postrows .row:last");
+ 			var trclone = tr.clone();	
+ 			var trrow = parseInt(trclone.attr('rowid')) ;
+ 			var trrowid = trrow + 1;
+ 			 
+ 				trclone.attr('rowid',trrowid);
+ 				trclone.attr('id','postcode_row_'+trrowid);
+ 				 
+ 				trclone.find('input[name="postcode_start[]"]').attr('id','postcode_start_'+trrowid).val('');
+        trclone.find('input[name="postcode_end[]"]').attr('id','postcode_end'+trrowid).val('');
+
+ 				trclone.find('input[name="sc_routing_id[]"]').attr('id','postcode_end'+trrowid);
+        // trclone.find('.removeme').text(' - Remove');
+         
+      $(".postrows").append(trclone);
+        addremoveicons();
+ 		}
+
+ 	function removethis(ele) {
+ 		var jqthis = $(ele);
+    if($('.postrows .row').length >1)
+ 		jqthis.closest('.row').remove();
+
+	}		
+
+  function addremoveicons() {
+    var htmllast = '<i class="fa fa-plus-square fa-2x" onclick="addrows()"></i>';
+    var html = '<i class="fa fa-minus-square-o fa-2x removeme" style="padding-top:15px;" onclick="removethis(this)"></i>';
+      $('.postrows').find('.lasticon').html(html);
+      $('.postrows').find('.lasticon:last').html(htmllast);
+  }
+
+  $(document).ready(function(){
+    
+    addremoveicons();
+
+  });
+
+</script>
+ 
+           

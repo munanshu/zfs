@@ -1,0 +1,99 @@
+<div class="row row-broken">
+    <div class="col-sm-12">
+        <div class="tabs" id="seventh-tabs">
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-1">
+					<div class="row tab-filter row_nopadding decor-success tab-position">
+						<div class="input-title"><?php echo $this->translate('View Message')?></div>
+					</div>
+					<div id="tablegrid">
+					    <div><b><?php echo $this->translate('Reply Message Details: Ticket No:'.$this->ticketdeatil['ticket_no']) ?></b></div>	
+						<table width="100%" border="0">
+						    <tr>
+                               <td width="15%"><b><?php echo $this->translate('Shipment Details:')?></b></td>
+							   <td style="text-align:left;" colspan="4">
+							    <b><?php echo $this->translate('Customer Name:</b>'.$this->parceldeatil['company_name']) ?></br> 
+							    <b>Barcode No: </b><a href="javascript:void(0);" onclick="javascript:window.open('<?=$this->url(array('controller' => 'Parceltracking','action'=>'tracking'),'default',true).'?tockenno='.Zend_Encript_Encription::encode($this->parceldeatil['barcode_id']);?>','mywindow','status=0,resizable=1,width=1200,height=600,toolbar=0')" title="Track Parcel"><?=$this->parceldeatil['barcode'] ?></a></br>
+								<b><?php echo $this->translate('Sender Name:</b>'.$this->forwarderData['SenderAddress'][0]) ?></br>
+								<b><?php echo $this->translate('Receiver Name:</b>'.$this->parceldeatil['rec_name']) ?></br>
+								<b><?php echo $this->translate('Forwarder Name:</b>'.$this->parceldeatil['forwarder_name']) ?></br>
+								<b><?php echo $this->translate('Weight:</b>'.$this->parceldeatil['weight']) ?></br>
+								<b><?php echo $this->translate('Create Date:</b>'.$this->parceldeatil['create_date']) ?></br>
+								<b><?php echo $this->translate('Checkin Date:</b>'.$this->parceldeatil['checkin_date']) ?></br>
+							   </td>
+							</tr>	
+							<tr>
+							  <td width="15%"><?php echo $this->translate('<b>Ticket Information:</b>') ?></td>
+							  <td style="text-align:left;" colspan="4">
+							    <b><?php echo $this->translate('Question:</b>'.$this->ticketdeatil['question_type']) ?></br> 
+							    <b><?php echo $this->translate('Description:</b>'.$this->ticketdeatil['messages']) ?>
+							  </td>
+							</tr>
+							<?php if(count($this->previousstep)> 0){ ?>
+							<tr>
+							  <th><?php echo $this->translate('Logo') ?></th>
+                              <th><?php echo $this->translate('Step No.') ?></th>
+                              <th><?php echo $this->translate('Step Name') ?></th>
+                              <th><?php echo $this->translate('Step Status') ?></th>
+                              <th><?php echo $this->translate('Reply Remarks') ?></th>
+							</tr>
+							<?php foreach($this->previousstep as $steps){ ?>
+							<tr>
+							  <td>
+								<?php if($steps['logo']!='' && file_exists(ROOT_PATH.'/public/headerlogo/'.$steps['logo'])){ ?>
+									<img src="<?=BASE_URL ?>/public/headerlogo/<?=$steps['logo']?>" class="logo">
+								<?php } else{ ?>
+									<img src="<?=BASE_URL?>/public/headerlogo/<?=$steps['depot_logo']?>" class="logo">
+								<?php  } ?>
+							  </td>
+							  <td><?=$steps['steps'] ?></td>
+							  <td><?=$steps['step_name'] ?></td>
+							  <td><?= ($steps['current_step_status']==1)? 'Yes':'No';?></td>
+							  <td><?=$steps['messages']; 
+							    if(!empty($steps['uploded_file']) && file_exists(ROOT_PATH.'/public/help_desk/'.$steps['uploded_file'])){ ?>
+								<a target="_blank" href="<?= HELPDESK_DOC.''.$steps['uploded_file'] ?>" targe="_blank"><img src="<?=IMAGE_LINK?>/print.png" title="Print Attachment" alt="<?=$steps['uploded_file'] ?>"></a>
+								<?php } ?>
+							  </td>
+							</tr>
+							<?php }
+							$steps = array('0'=>'Custom step one','1'=>'Custom step two','2'=>'Custom step three','3'=>'Custom step four','4'=>'Custom step five');
+							foreach($this->previouscustom as $key=>$custom_step){ ?>
+							<tr>
+							  <td>
+								<?php if($custom_step['logo']!='' && file_exists(ROOT_PATH.'/public/headerlogo/'.$custom_step['logo'])){ ?>
+									<img src="<?=BASE_URL ?>/public/headerlogo/<?=$custom_step['logo']?>" class="logo">
+								<?php } else{ ?>
+									<img src="<?=BASE_URL?>/public/headerlogo/<?=$custom_step['depot_logo']?>" class="logo">
+								<?php  } ?>
+							  </td>
+							  <td><?=(isset($steps[$key]))? $steps[$key]:'' ?></td>
+							  <td><?=$custom_step['messages']?></td>
+							  <td>Yes</td>
+							  <td><?=$custom_step['messages'] ?></td>
+							</tr>
+							<?php } }else{ ?>
+							<tr>
+								<td data-label="No Data" colspan="4"><div class="nodatatxt"><?= ($this->ticketdeatil['is_status']==8)? 'Ticket has been closed!.' : 'This ticket is underprocess!.'; ?></div></td>
+							</tr>
+							<?php } ?>
+						</table>
+					</div>	
+				</div>
+                
+	        </div>
+        </div>
+    </div>
+</div>
+<style>
+   th{
+    background: #36384e;
+    padding: 6px!important;
+    text-align: center;
+    color: #fff;
+    font-size: 13px;
+    border-bottom: none !important;
+	}
+	.nodatatxt{
+	font-weight: bold;
+	}
+</style>

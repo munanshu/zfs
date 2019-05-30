@@ -1,0 +1,8 @@
+		<div class="row">
+			<ol class="breadcrumb">
+				<?php foreach ($this->pages as $page) { ?>
+
+				<li class="active"> <a href="<?=$page->hasPages()? '#' : $page->getHref() ?>"></a> <?=$page->getLabel();?> <em class="fa fa-home"></em></li>
+				<?php } ?>
+			</ol>
+		</div> 

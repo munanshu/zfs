@@ -1,0 +1,379 @@
+<style>
+/* CSS Document */
+body{padding:0; margin:0; color:#333; font-family:Arial, Helvetica, sans-serif}
+.main-page {
+    margin: 10px 0;
+    padding: 0 20px; margin:0 auto; width:980px; 
+}
+.container{ width:100%; margin:0 auto; background-color:#fff; border:#ddd 1px solid; padding:10px; }
+.plr10{padding-left:10px; padding-right:10px;}
+
+.Redtxt{color:#ff0000;}
+
+.col-content{width:75%; padding:0; margin:0;}
+.fl{float:left;}
+
+.product-List{ display:inline-block; width:219px; margin:10px; padding:10px; border:#cccccc 1px solid; text-align:left !important; left:0 !important;}
+.product-List:hover{ 
+				border:#ffd926 1px solid;
+				box-shadow: 0 0 6px -3px #000; width:219px;}
+
+ .widget-title {
+    clear: both;
+    margin: 10px 10px;
+    padding: 15px 0 0;
+}
+.block-account .block-title, .widget-title, .block-title {
+    color: #00b2f6;
+    font-family: "Oswald",sans-serif;
+    font-size: 18px;
+    font-weight: normal;
+    line-height: normal;
+    text-transform: uppercase;
+}
+a.product-image img {
+    max-height:98%;
+    max-width: 98%;
+}
+div.product-info {
+    clear: both;
+}
+.product-name, h3.product-name {
+    display: block;
+    font-weight: normal;
+    line-height: normal;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    text-decoration: none;
+}
+.product-name a, h3.product-name a, h4.product-name a {
+    color: #333333;
+    font-family: Arial;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: normal;
+    text-decoration: none;
+}
+.product-name {
+    font-size: 1em;
+}
+.product-desc{ font-size:11px;}
+.price {
+	white-space: nowrap !important;
+	color:#ff0000;
+	font-size:18px !important;
+}
+button.button {
+    background: url("<?=BASE_URL.'public/webshop_product/btn-bg.png'?>") repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: medium none;
+    border-radius: 0;
+    padding: 5px 10px 5px 10px;
+	position:relative;
+	
+}
+button.button {
+    cursor: pointer;
+    margin: 0;
+    overflow: visible;
+    width: auto;
+	bottom:0;
+}
+button.button:hover {
+    background: url("<?=BASE_URL.'public/webshop_product/nav-active.png'?>") repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.actions ul.add-to-links {
+    clear: both;
+    margin: 10px 0 0;
+    padding: 0; 	
+}
+.add-to-links {
+	float: left;
+	font-size:11px;
+	color:#ff7d59; 
+}
+.add-to-links a:link {
+	float: left;
+	font-size:11px;
+	color:#ff7d59; text-decoration:none;
+}
+.add-to-links a:hover {
+    float: left;
+	font-size:11px;
+	color:#ff7d59; text-decoration:none;
+}
+.col-Right{width:20%; float:right; height:200px;}
+.control-hei{max-height:55px;!important; overflow:hidden; margin:10px 0 10px 0;}
+.org_button {
+    background: none repeat scroll 0% 0% #004FA3;
+    border: 1px solid #004FA3;
+    color: #FFF;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.fa {
+    display: inline-block;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+}
+/*.fa-shopping-cart:before{content:"\f07a"}*/
+span.hidden-xs, span.hidden-sm, span.hidden-md, span.hidden-lg {
+    display: inline;
+}
+.imgloading{position: absolute; background: rgb(0, 0, 0) none repeat scroll 0% 0%; opacity: 0.5; top: 0px; right: 0px; width: 100%; height: 100%; text-align: center;}
+.imgloading img{margin-top:120px}
+.product-List{position:relative}
+div.module h2 span{ width:98%; padding:5px 1%}
+b.cartnav{
+    float: right;
+    position: relative; cursor:pointer}
+	
+	
+b.cartnav a{ background: orange;
+    color: #ffffff;
+    margin: 0 0px 0 0;
+    padding: 0px 10px 5px 0px;
+    text-decoration: none;  height:35px; float:left;}
+	b.cartnav dd{ background: orange;
+    float: left;
+    height: 35px;
+    padding: 2px 10px;}
+b.cartnav img{
+    height: 20px;}
+div.module table td img{float:left}div.module table td span{float:left !important; background:none; margin-left:0px; padding:0px; line-height:30px;text-align:left!important;}
+.module{margin:0px !important; padding:0px !important; border:#ddd 1px solid;}
+
+.cartview{ position: absolute;
+    right:0px;
+    top:35px;
+    width: 365px;
+    z-index: 9999999; border:3px solid orange}
+	
+	div.carttable table {
+  width: 100%;
+  color: black;
+
+}
+div.carttable table tr.odd td {
+  background-color: #f1f5fa;
+}
+div.carttable table td {
+  background-color: #ffffff;
+  padding: 5px;
+  border-right: 1px solid #d9d9d9;
+  border-bottom: 1px solid #d9d9d9;
+  border-top: 1px solid #d9d9d9;
+  border-left: 1px solid #d9d9d9;
+}
+div.carttable table td a{color:#0063be !important; background:none !important;margin: 0;
+    padding: 0;float: right;}
+div.carttable table td img {
+  float: left;
+}
+
+div.carttable table td span {
+  float: left;
+  background: none;
+  margin-left: 18px;
+  padding: 0px;
+  line-height: 30px;
+  text-align: left; font-size: 11px;
+    font-weight: normal;
+}
+
+.bold_text {
+  color: #000000;
+  font-family: tahoma,verdana,arial,helvetica,sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+  text-decoration: none;
+}
+.ProDetails{text-align:left; vertical-align:top; margin-left:20px; width:200px;}
+.detail_cont{text-align:left!important; margin:0px auto !important; padding:0; width:100%;}
+
+.pagewrap {
+    float: left;
+    margin: 20px 0 0 30px;
+    padding: 0;
+    width: 96%;
+}
+</style>
+<div class="row row-broken">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+			  
+              <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-6">
+					<form  action="" method="post">
+					  <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="input-title"><?php echo $this->translate('Webshop Product')?><?=$this->summary?></div>
+					  <div class="clear-all"></div>
+					  <?php if($this->ModelObj->Useconfig['level_id']==1){ ?>
+					  <div class="col-sm-1 col_paddingx10">
+									Depot:
+								  </div>
+							<div class="col-sm-2 col_paddingx10">
+								<label for="input-2" class="input__label input__label--kaede">
+								<span class="input input--kaede">
+								<?php 
+								    echo  $this->getHelper('HtmlSelect')->getSelect('depot_id',$this->DepotList,'user_id','company_name',(isset($this->ModelObj->getData['depot_id'])? $this->ModelObj->getData['depot_id']:''),true,array('class'=>'selectbox','id'=>'depot','onchange'=>'this.form.submit()')); 
+								 ?>
+								
+								</span></label>
+								</div>
+							<?php }else if($this->ModelObj->Useconfig['level_id']==4){?>
+								<input type="hidden" name="depot_id" id="depot" value="<?=Zend_Encript_Encription:: encode($this->ModelObj->Useconfig['user_id'])?>"/>
+								
+							<?php }else if($this->ModelObj->Useconfig['level_id']==5){?>
+								
+								<input type="hidden" name="user_id" id="customer" value="<?=Zend_Encript_Encription:: encode($this->ModelObj->Useconfig['user_id'])?>"/>
+								<input type="hidden" name="depot_id" id="depot" value="<?=Zend_Encript_Encription:: encode($this->ModelObj->Useconfig['parent_id'])?>"/>
+							
+							<?php } else if($this->ModelObj->Useconfig['level_id'] == 6){	
+								$depot_id = $this->ModelObj->getDepotID($this->ModelObj->Useconfig['user_id']);?>						
+								<input type="hidden" name="depot_id" id="depot" value="<?=Zend_Encript_Encription:: encode($depot_id)?>"/>
+								
+							
+							<?php } else if($this->ModelObj->Useconfig['level_id'] == 10){  
+								$depot_id = $this->ModelObj->getDepotID($this->ModelObj->Useconfig['user_id']);?>
+								<input type="hidden" name="user_id" id="customer" value="<?=Zend_Encript_Encription:: encode($this->ModelObj->Useconfig['parent_id'])?>"/>
+								<input type="hidden" name="depot_id" id="depot" value="<?=Zend_Encript_Encription:: encode($depot_id)?>"/>
+							<?php }
+							 if($this->ModelObj->Useconfig['level_id']==1 || $this->ModelObj->Useconfig['level_id']==4 || $this->ModelObj->Useconfig['level_id']==6){ ?>
+						<div class="col-sm-1 col_paddingx10">
+									Customer:
+								  </div>
+							<div class="col-sm-2 col_paddingx10">
+								<label for="input-2" class="input__label input__label--kaede">
+								<span class="input input--kaede">
+								<?php 
+								    echo  $this->getHelper('HtmlSelect')->getSelect('user_id',(count($this->CustomerList>0))? $this->CustomerList : array(),'user_id','company_name',(isset($this->ModelObj->getData['user_id'])? $this->ModelObj->getData['user_id']:''),true,array('class'=>'selectbox','id'=>'customer')); 
+								 ?>
+								
+								</span></label>
+							</div>
+							<?php } ?>
+					  <div class="col-sm-9 col_paddingx10"> <span class="input input--kaede"></span> 
+						</div>
+	
+					</div>
+					<div  id="tablegrid">
+					 <table width="100%" border="0" id="dataTableGridId">
+						<tbody>
+						<?php
+						if(count($this->ProductShop)>0){ ?>
+						         <div class="detail_cont">
+			
+			<!--<a href="<?=$this->url(array('controller'=>'Webshop','action'=>'shoppingcart'),'default',true)?>">View Cart</a>-->
+			<?php 
+				$webshopdetail = $this->ProductShop;
+				if(count($webshopdetail)>0) {
+					foreach($webshopdetail as $key=>$webshop) { 
+						$imgPath = (!empty($webshop['image']) && file_exists(ROOT_PATH."/public/webshop_product/".$webshop['image'])) ? $webshop['image'] :'no_image.jpg';
+						$specialPriceWindow = $this->url(array('controller' => 'Webshop','action'=>'special','token'=>Zend_Encript_Encription:: encode($webshop['product_id'])),'default',true);
+			?>
+			<div class="product-List">
+			<div class="imgloading" id="loader_<?=Zend_Encript_Encription:: encode($webshop['product_id'])?>" style="display:none"><img src="<?=IMAGE_LINK;?>/loader.gif"></div>
+				<a class="fancybox" href="#pro_desc_<?=$key?>"><img alt="" src="<?=BASE_URL.'/public/webshop_product/'.$imgPath?>" height="150" width="170"> </a>
+				<div class="product-info">
+					<div class="control-hei">
+     					<h4 class="product-name"><b><?=$webshop['product_name']?></b></h4>
+     					<div class="product-desc"><p><?=substr(trim($webshop['product_desc']),0,65)?></p></div>
+					</div>
+					<div class="price-box"> <span class="price">&euro;<?=number_format($webshop['price'],2)?></span> 
+						<button onClick="$.buy('<?=Zend_Encript_Encription:: encode($webshop['product_id'])?>')" class="org_button" title="Add to Cart" type="button" style="float:right"><i class="fa fa-shopping-cart"></i><span class="hidden-xs hidden-sm hidden-md">Add to Cart</span></button>
+					</div>
+				</div>
+   			</div>
+			<?php } } ?>
+    	</div>
+		
+		<?php if(count($webshopdetail)>0) { foreach($webshopdetail as $key=>$webshop) { 
+			$imgPath = (!empty($webshop['image']) && file_exists(ROOT_PATH."/public/webshop_product/".$webshop['image'])) ? $webshop['image'] :'no_image.jpg';
+		?>
+		<div id="pro_desc_<?=$key?>" style="display:none; position:relative">
+			<span style="float:left;"><img alt="" src="<?=BASE_URL.'/public/webshop_product/'.$imgPath?>" height="200" width="200"></span>
+			<span class="ProDetails" style="float:right">
+			<h3><?=$webshop['product_name']?></h3>
+  			<p><?=$webshop['product_desc']?></p>
+			<div class="price-box"> <span class="price">&euro;<?=number_format($webshop['price'],2)?></span> 
+						<button onClick="$.buy('<?=Zend_Encript_Encription:: encode($webshop['product_id'])?>')" class="org_button" title="Add to Cart" type="button" style="float:right"><i class="fa fa-shopping-cart"></i><span class="hidden-xs hidden-sm hidden-md">Add to Cart</span></button>
+					</div>
+			</span><div class="clear"></div>
+		</div>
+		
+		<?php } } ?>
+  	</div><?php } else{ ?>
+						<tr>
+						  <td data-label="No Data" colspan="7"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td>
+						  </tr>
+						<?php }
+						?></tbody>
+
+                     </table>
+                    </div>
+					</form>
+					</div>
+                </div>
+					<div>
+			  </div>
+			 </div>
+            </div>
+          </div>
+<script type="text/javascript">
+	$(function() {
+		$('.fancybox').fancybox();
+		
+		$.buy = function(prd) {
+			var depot = $('#depot').val();
+			var user  = $('#customer').val();
+			if(depot!='' && user!=''){
+				$.fancybox.close();
+				$.ajax({
+					type : 'post',
+					url: '<?=$this->url(array('controller'=>'Supplies','action'=>'addtocart'),'default',true)?>',
+					data : 'token='+prd+'&depot='+depot+'&customer='+user,
+					beforeSend : function() {
+					  $('#loader_'+prd).show();
+					 },
+					success : function(resp){	//alert(resp);return false;
+						$('#loader_'+prd).hide();
+						
+						$('#cartitem').html(resp);
+					}
+				});
+			}else{
+				if(depot ==''){
+				alert("Please select Depot !!");return false;
+				}else{
+				alert("Please select customer !");return false;
+				}
+			}	
+		}
+	});
+	function PriceWindowopen(url){
+	$.fancybox({
+			"width": "60%",
+			"height": "90%",
+			"autoScale": true,
+			"transitionIn": "fade",
+			"transitionOut": "fade",
+			"type": "iframe",
+			"href": url
+		});
+	}
+	
+	
+	$.showHide = function(){
+		
+		var ele = document.getElementById("showHideDiv");
+		if(ele.style.display == "block") {
+				ele.style.display = "none";
+		  }
+		else {
+			ele.style.display = "block";
+		}
+	}
+ </script>

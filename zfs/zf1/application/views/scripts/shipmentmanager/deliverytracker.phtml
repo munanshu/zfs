@@ -1,0 +1,131 @@
+<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+		<!-- <form method="post" action="" id="customer" name="customer"> -->
+		
+		<!-- filter starts -->
+		<div class="filter">
+			<div class="input-title"><?php echo $this->translate("Search Delivery Time Against Postcode");?></div>
+			
+			<div class="row row_nopadding decor-success" style="margin-left:0px !important;margin-right:0px !important;">
+
+				<div class="clear-all"></div>
+				
+			</div>
+			
+		</div>
+		<!-- filter ends -->
+		
+<!-- shiv adds this form himself -->
+        <div class="container">
+	
+	  <div class="col-sm-offset-3 col-sm-6">
+		<form class="form-horizontal" action='' method='post' name="" id="">
+		  <div class="form-group">
+		   <label class="control-label col-sm-3">Country:</label>
+		   <div class="col-sm-9">
+		     <select name="country_id" id="country_id" class="form-control">
+		       <option value="">---Select Country---</option>
+		       
+		       
+		       <?php
+		          foreach($this->countries as $country){
+			    
+			    $selected = '';
+			    if(isset($this->PostData['country_id']) && $this->PostData['country_id']== $country['country_id']){
+			       
+			       $selected = 'selected = "selected"';
+			    }
+			    
+			    
+			  echo "<option value='" . $country['country_id'] . "' " . $selected . ">" . $country['country_name'] . "</option>";
+			  }
+		       ?>
+		       
+		     </select>
+		    </div>
+		  </div>
+		 <div class="form-group">
+		    <label class="control-label col-sm-3">Forwarder:</label>
+		    <div class="col-sm-9">
+			<select name="forwarder_id" id="forwarder_id" class="form-control">
+			  <option value="">---Select Forwarder---</option>
+			  
+			  <?php
+			   foreach($this->forwarders as $forwarder){
+			      $selected = '';
+			  ?>
+			  
+				  <?php if(isset($this->PostData['forwarder_id']) && $this->PostData['forwarder_id'] == $forwarder['forwarder_id']){
+				      $selected = "selected = 'selected'";
+				      }
+				  ?>
+			  
+			  <option value="<?php echo $forwarder['forwarder_id']; ?>" <?php echo $selected; ?>><?php echo $forwarder['forwarder_name']; ?></option>
+			  <?php
+			   }
+			  ?>
+			  
+			</select>
+		    </div>
+		 </div>
+		 <div class="form-group">
+		    <label class="control-label col-sm-3">Postal Code:</label>
+		    <div class="col-sm-9">
+		      <input type="text" class="form-control" name="postalcode" id="postalcode" value="<?php  echo isset($this->PostData['postalcode'])? $this->PostData['postalcode']: ''; ?>" />
+		    </div>
+		 </div>
+		 <div class="form-group">
+		    <div class="col-sm-offset-3 col-sm-9">
+		      <button type="submit" class="btn btn-default" title="Search" onclick="" >Search</button>
+		    </div>
+		 </div>
+		</form>
+	   </div>
+	   
+	</div>
+ <!-- the end of delivery tracker form -->
+ 
+        <?php 
+	  if(!empty($this->PostData)){
+	      $deliveryData = $this->deliveryData;
+	      
+	?>
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+						
+				<div id="table">
+					<div class="header-row row"> 
+					<span class="cell"><?php echo $this->translate("Forwarder");?></span> 
+					<span class="cell"><?php echo $this->translate("Country");?></span> 
+					<span class="cell"><?php echo $this->translate("Postal Code");?></span> 
+					<span class="cell"><?php echo $this->translate("Delivery Time");?></span> 
+					<span class="cell"><?php echo $this->translate("Last Delivery");?></span>					
+					</div>
+				<?php if(count($deliveryData)>0){
+				
+					foreach($deliveryData as $index=>$delivery){
+					  $class = (($index)%2==0) ? 'class="row odd"' :'class="row even"';	?>
+					<div <?php echo $class ?>>
+					   <span class="cell" data-label="Company"><?= $this->ModelObj->ForwarderName($delivery['forwarder_id']);?></span> 
+					   <span class="cell" data-label="Company"><?= $this->ModelObj->CountryName($delivery['country_id']);?></span> 
+					   <span class="cell" data-label="Company"><?=($delivery['delivery_zipcode']);?></span> 
+					   <span class="cell" data-label="Company"><?=($delivery['delivery_time']);?></span> 
+					   <span class="cell" data-label="Company"><?=($delivery['last_delivery']);?></span> 
+						
+					</div>
+				<?php }}else{?>
+					
+					<div class="row odd">
+						<span class="cell" colspan="6"><b><?=$this->translate("Record not found !");?></b></span> 
+					</div>
+				<?php }?>	
+
+			</div>
+					 	
+			</form>	
+			</div>
+		<?php
+		}
+		?>
+	</div>
+</div>

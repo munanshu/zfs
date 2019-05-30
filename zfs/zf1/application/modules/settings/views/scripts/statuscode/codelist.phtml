@@ -1,0 +1,150 @@
+<?php 
+$statustype = array('0'=>array('id'=>'all','value'=>'All Errors'),'1'=>array('id'=>'1','value'=>'Active Errors'),'2'=>array('id'=>'0','value'=>'Inactive Errors'),'3'=>array('id'=>'2','value'=>'Deleted Status'));
+$errortype = array('0'=>array('id'=>'all','value'=>'All Status'),'1'=>array('id'=>'0','value'=>'ERROR'),'2'=>array('id'=>'1','value'=>'DELIVERED'),'3'=>array('id'=>'2','value'=>'INFORMATION'));
+ ?>
+<div class="row row-broken">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+			  
+              <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-6">
+					<form>
+					  <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="input-title"><?php echo $this->translate('Master Status code Lists')?></div>
+					  <div class="clear-all"></div>
+					  	<div class="col-sm-2 col_paddingx10">
+						<label for="input-2" class="input__label input__label--kaede"> 
+						<span class="input input--kaede"><a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Statuscode','action'=>'addeditstatuscode'),'default',  true).'?mode=add'?>','60%','90%');"><i class="fa fa-plus-square" aria-hidden="true"></i>
+ <?php echo $this->translate('Add New Service')?></a>
+						</span></label>
+					  </div>
+					  <div class="col-sm-3 col_paddingx10">
+						<label for="input-2" class="input__label input__label--kaede"> 
+						<span class="input input--kaede"><a href="<?=$this->url(array('controller'=>'Statuscode','action'=>'forwarderstatuslist'),'default',  true)?>"><i class="fa fa-plus-square" aria-hidden="true"></i>
+ <?php echo $this->translate('Forwarder Status Code List')?></a></span></label>
+					  </div>
+					   <div class="col-sm-1 col_paddingx10">Code Status:</div>
+						<div class="col-sm-2 col_paddingx10">
+							<?=$this->getHelper('HtmlSelect')->getSelect('error_code',$statustype,'id','value',(isset($this->ModelObj->getData['error_code'])? $this->ModelObj->getData['error_code']:'all'),false,array('class'=>'selectbox','onchange'=>'this.form.submit()'));?>
+						</div>
+					 	<div class="col-sm-1 col_paddingx10">Status Type:</div>
+						<div class="col-sm-2 col_paddingx10">
+							<?=$this->getHelper('HtmlSelect')->getSelect('error_type',$errortype,'id','value',(isset($this->ModelObj->getData['error_type'])? $this->ModelObj->getData['error_type']:'all'),false,array('class'=>'selectbox','onchange'=>'this.form.submit()'));?>
+						</div>
+					  <div class="col-sm-2 col_paddingx10">
+						<label for="input-2" class="input__label input__label--kaede"> 
+						<span class="input input--kaede"><a href="<?=$this->url(array('controller'=>'Statuscode','action'=>'smssetting'),'default',  true)?>"><i class="fa fa-plus-square" aria-hidden="true"></i>
+							<?php echo $this->translate('SMS Setting')?></a>
+						</span></label>
+					  </div>
+					  <div class="col-sm-9 col_paddingx10"> <span class="input input--kaede"></span> 
+						</div>
+	
+					</div>
+					<div  id="tablegrid">
+					 <table width="100%" border="0" id="dataTableGridId">
+					    <thead>
+						<tr>	
+						 		<th><?=$this->translate('S. No.');?></th>
+								<th><?=$this->translate('Status Name');?></th>
+								<th><?=$this->translate('French');?></th>
+								<th><?=$this->translate('Nederlands');?></th>
+								<th><?=$this->translate('Pools');?></th>
+								<th><?=$this->translate('Swedish');?></th>
+								<th><?=$this->translate('German');?></th>
+								<th><?=$this->translate('Italy');?></th>
+								<th><?=$this->translate('Status Code');?> </th>
+								<th><?=$this->translate('Notification Type');?></th>
+								<th><?=$this->translate('Status Type');?></th>
+								<th><?=$this->translate('Status');?></th>
+								<th><?=$this->translate('Action');?></th>
+						</tr>
+						</thead>
+						<tbody>
+						<?php
+						$errorTypes = array('0'=>'ERROR','1'=>'DELIVERED','2'=>'INFORMATION'); $errorColors = array('0'=>'#FF0000','1'=>'#006600','2'=>'#FF9900');
+						if(count($this->errors)>0){
+						 foreach($this->errors as $key=>$errors){
+						 $class = ($key%2==0)?'even':'odd'; ?>
+						<tr class="<?php echo $class;?>">  
+						<td><input type="checkbox" name="admin_ids[]" value="" class="checkBox" /></td>
+						<td><?= $errors['status_name'] ?></td>
+						<td><?= $errors['status_name_french'] ?></td>
+						<td><?= $errors['status_name_nederlands'] ?></td>
+						<td><?= $errors['status_name_pools'] ?></td>
+						<td><?= $errors['status_name_swedish'] ?></td>
+						<td><?= $errors['status_name_german'] ?></td>
+						<td><?= $errors['status_name_italy'] ?></td>
+						<td><?= $errors['code_numeric'] ?></td>  
+						<td><?= $errors['notification_name'] ?></td> 
+						<td id="typeTD_<?=$key?>"><a href="javascript:void(0);" onclick="$showType('<?=$errors['master_id']?>','<?=$errors['error_type']?>','<?=$key?>');" title="Change Type" /><font color="<?=$errorColors[$errors['error_type']]?>"><?=$errorTypes[$errors['error_type']]?></font></a></td>  
+						<td><span class="cell" data-label="Status" id="statusSpan_<?=$key?>" ><?php if($errors['status'] == "1") {  ?><img src="<?=IMAGE_LINK?>/icon_active.gif" align="absmiddle" alt="Active" border="0" onclick="setStatus('<?=STATUS_MASTER?>','status','0','master_id','<?=$errors['master_id']?>','<?=$key?>');" title="Change Status into In-Active" class="changeStatus" />
+						<?php } else { ?>
+						<img src="<?=IMAGE_LINK?>/icon_inactive.gif" align="absmiddle" alt="Active" border="0" onclick="setStatus('<?=STATUS_MASTER?>','status','1','master_id','<?=$errors['master_id']?>','<?=$key?>');" title="Change Status into Active" class="changeStatus" />
+						<?php } ?>
+						</span></td>
+						
+						
+						</td>
+						<td class="cell breadcrumb"><li><a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Statuscode','action'=>'associateforwarder'),'default',  true).'?mode=associeateforwarder&token='.Zend_Encript_Encription:: encode($errors['master_id'])?>','70%','90%');"><i class="fa fa-link" aria-hidden="true" title="Associate from Forwarder Status"></i></a>
+						<!-- | <i class="fa fa-link" aria-hidden="true" title="Associate from trace Track"></i>-->
+						 | <a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Statuscode','action'=>'addeditstatuscode'),'default',  true).'?mode=edit&token='.Zend_Encript_Encription:: encode($errors['master_id'])?>','60%','90%');"><i class="fa fa-edit"></i></a> | <a href="javascript:void(0);" onClick="deleterecord('<?=STATUS_MASTER?>','delete_status','1','master_id','<?=$errors['master_id']?>');"><i class="fa fa-trash"></i></a></li></td>
+					  </tr>
+						<?php }} else{ ?>
+						<tr>
+						  <td data-label="No Data" colspan="6"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td>
+						  </tr>
+						<?php }
+						?></tbody>
+
+                     </table>
+                    </div>
+					
+					 </form>
+					</div>
+                </div>
+					<div>
+			  </div>
+			 </div>
+            </div>
+          </div>
+<script>
+$(document).ready(function() {
+	 commonDataTableView()
+
+} );
+
+
+	$showType = function(errorID,selectedType,tdID){
+			var typeArray	= '<?=implode('^',$errorTypes);?>';
+			var typeString	= typeArray.split('^');
+			var selection  = '<select name="type_'+tdID+'" id="type_'+tdID+'" onchange="$setType('+errorID+',this.value,'+tdID+');">';
+			for(var i=0;i<typeString.length;i++) {
+				var selected = (selectedType==i) ? 'selected="selected"' : '';
+				selection += '<option value="'+i+'"'+selected+'>'+typeString[i]+'</option>';
+			}			
+			selection	   += '</select>';			
+			$("#typeTD_"+tdID).html(selection);
+	}
+	
+	$setType = function(errorID,errorType,tdID) {
+			$.ajax({
+				type : "POST",
+				url  : "<?=BASE_URL?>/Statuscode/changrerrorid?errorID="+errorID+"&error_type="+errorType+"&table=master",
+				beforeSend: function(){
+					$("#typeTD_"+tdID).html('<img src="<?=IMAGE_LINK?>/loader.gif" align="absmiddle" alt="Loader" border="0" title="Please Wait" class="changeStatus" />');
+				},
+				success: function(response) { 
+					if(response) {
+						var typeArray	= '<?=implode('^',$errorTypes);?>';
+						var typeString	= typeArray.split('^');
+						var colorArray	= '<?=implode('^',$errorColors);?>';
+						var colorString	= colorArray.split('^');
+						var newType = '<a href="javascript:void(0);" onclick="$.showType('+errorID+','+errorType+','+tdID+');" title="Change Type"><font color="'+colorString[errorType]+'">'+typeString[errorType]+'</font></a>';
+						//typeString[setType];//'<a href="javascript:void();" onclick="$.showType('+errorID+','+setType+','+tdID+');" title="Change Type" /><font color="'+typeString[setType]+'">'+typeString[setType]+'</font></a>';
+						$("#typeTD_"+tdID).html(newType);
+					}
+				}
+			});
+	}
+</script>

@@ -1,0 +1,82 @@
+
+<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+		<form method="post" action="" id="manifest" name="manifest" onsubmit="return check_item_swisspost()">
+		<!-- filter start -->
+			<!-- filter start -->
+			<div class="filter">
+				<div class="input-title"><?php echo $this->translate("Search");?></div>
+				<div class="row row_nopadding decor-success" style="margin-left:0px !important;margin-right:0px !important;">
+				<div class="clear-all"></div>
+				<div class="col-sm-4 col_paddingtop">
+				<label><?php echo $this->translate("Country");?></label>
+				<select name="country_id" id="country_id" class="inputfield" style="width:60%" onchange="$('#manifest').submit();">
+			    <option value="">--<?php echo $this->translate("Country"); ?>--</option>
+				<?php foreach($this->countryList as $countryList){
+				  $selected = '';
+				  if(isset($this->Request['country_id']) && $countryList['country_id']==$this->Request['country_id']){
+				    $selected = 'selected="selected"';
+				  }?>
+				  <option value="<?php echo $countryList['country_id']?>" <?php echo $selected;?>><?php echo $countryList['country_code_name']?></option>
+				<?php } ?>
+              </select>
+				</div>
+				<div class="clear-all"></div>
+				<div class="col-sm-3 col_paddingtop">
+				  <input type="submit" name="search" id="search"  class="btn btn-danger" value="Search">
+				</div>
+				<div class="col-sm-12 col_paddingtop"></div>
+				</div>
+		</div>
+		<!-- end filter -->
+		<!-- end filter -->
+		
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+						
+				<div id="table">
+					<div class="header-row row"> 
+						<span class="cell"><input type="checkbox" id="check_uncheck_all" onchange="check_uncheckALL(this)"></span>
+						<span class="cell"><?php echo $this->translate("Parcel Number");?></span> 
+						<span class="cell"><?php echo $this->translate("Original Forwarder");?></span> 
+						<span class="cell"><?php echo $this->translate("With Forwarder");?><br><?php echo $this->getHelper('HtmlSelect')->getSelect('bulk_forwarder_id',$this->forwarder,'forwarder_id','forwarder_name','',false,array('class'=>'inputfield','style'=>'width:70%'));?></span> 
+						<span class="cell"><?php echo $this->translate("Mediator Barcode");?><br><input type="text" name="bulk_mediator_barcodes" class="inputfield" style="width:70%"></span> 
+						<span class="cell"><?php echo $this->translate("Checkin Date");?></span>
+						<span class="cell"><?php echo $this->translate("Action");?><input type="submit" name="update" id="update"  class="btn btn-danger" value="Update"></span>						
+					</div>
+					<?php 
+					if(count($this->records)>0){
+						foreach($this->records as $index=>$data){
+							$class = (($index)%2==0) ? 'class="row odd"' :'class="row even"';?>
+						<div <?=$class?>>
+						    <span class="cell" ><input type="checkbox" name="barcode_id[]" id="barcode_id_<?= $data[BARCODE_ID]?>" value="<?= $data[BARCODE_ID]?>" class="check_uncheck_class"></span>
+							<span class="cell" data-label="Barcode"><?=$data['barcode'];?></span>
+							<span class="cell" data-label="Forwarder Name"><?=$data['forwarder_name'];?></span>
+							<span class="cell" data-label="Mediator Forwarder"><?php echo (isset($data['mediator_forwarder']) && $data['mediator_forwarder']!='')?$data['mediator_forwarder']:$this->getHelper('HtmlSelect')->getSelect('forwarder_id'.$data[BARCODE_ID],$this->forwarder,'forwarder_id','forwarder_name','',false,array('class'=>'inputfield','style'=>'width:50%'));?></span>
+							<span class="cell" data-label="Mediator Barcode"><?php if(isset($data['forwarder_barcode']) && $data['forwarder_barcode']!=''){ echo $data['forwarder_barcode'];}else{?><input type="text" name="mediator_barcode<?= $data[BARCODE_ID]?>" id="mediator_barcode<?= $data[BARCODE_ID]?>" class="inputfield"><?php } ?></span>
+							<span class="cell" data-label="Checkin Date"><?=$data['checkin_date'];?></span>
+							<span class="cell" data-label="Action"><?php if(isset($data['forwarder_barcode']) && $data['forwarder_barcode']!=''){ echo '';}else{?><a href="javascript:void(0);" onclick="UpdateMediatorForwarder('<?= $data[BARCODE_ID]?>')"><i class="fa fa-floppy-o fa-2x"></i></a><?php } ?></span>
+						</div>
+					<?php } }else{ ?>
+					<span class="cell" data-label="No Record"><?php echo $this->translate("No Record found!");?></span>
+					<?php  }  ?>
+				</div>
+					 	
+			</form>	
+			</div></div></div>
+<script>
+function UpdateMediatorForwarder(barcode_id){
+    var forwarder_id = $('#forwarder_id'+barcode_id).val();
+	var barcode = $('#mediator_barcode'+barcode_id).val();
+	$.ajax({
+	   type:'POST',
+	   url: '<?php echo $this->url(array('controller'=>'Edimanager','action'=>'singlemediatorfor'),'default',true)?>',
+	   data: 'barcode_id='+barcode_id+'&mediator_forwarder_id='+forwarder_id+'&barcode='+barcode,
+	   success: function(msg){
+	      if($.trim(msg)=='1'){
+		     window.location.reload();
+		  }
+	   }
+	}); 
+}
+</script>			

@@ -1,0 +1,18 @@
+<div class="content container-fluid">
+    <div class="input-title"><?php echo $this->translate('Add New Claim Status') ?></div>
+</div>
+<?php echo $this->getHelper('Messages')->getMessages();?>
+<form id="addnewclaimstatus" name="addnewclaimstatus" class="inputbox" method="post">
+    <div class="col-lg-12 col-md-12 col-sm-12 b-email">
+        <div class="row">
+			<div class="col-sm-6 col_paddingtop">
+		       <span style="color:red;">*</span><label for="claimstatusname" class="required"><?php echo $this->translate('Claim Status Name :') ?></label>
+			   <input type="text" name="addnewclaimstatus" class="inputfield">
+			</div>
+            <div class="col-sm-6 col_paddingtop">
+               <input type="submit" name="editclaimstatus" value="Add new Status" class="btn btn-danger btn-round">
+			</div>
+		</div>
+	</div>
+</form>
+

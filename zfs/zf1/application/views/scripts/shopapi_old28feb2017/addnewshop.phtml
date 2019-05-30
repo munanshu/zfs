@@ -1,0 +1,131 @@
+		<div id="table">
+			<div class="header-row row">
+			<span class="cell" style="text-align:center"><?php echo $this->translate("Add New Shop ");?></span>
+		</div></div>
+
+	<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+			
+	<form method="post" action="" id="shop_form" name="shop_form">
+		
+		<div id="tablegrid">
+			<table width="100%" border="0">
+				<tbody>
+					
+					<tr>
+						<td width="20%">
+							<label for="user"><b><?php echo $this->translate("Customer ");?></b></label>
+						</td>
+						<td width="30%">
+							<label for="user" style="text-align:center"><?php echo $this->customerName;?></label>
+						</td>
+					
+						<td width="15%">
+							<label for="shoptype"><b><?php echo $this->translate("Webshop ");?></b></label>
+						</td>
+						
+						<td width="40%">
+							<select id="shoptype" name="shop_type_id" style="width:80%; padding:5px;15px">
+								<option value="" ><?php echo " Select Webshop "?></option>
+								<?php foreach($this->WebshopList as $key=>$webshop){ 
+									$select = '';
+									if($this->Selectedwebshop==$webshop){
+										$select ="selected='selected'"; 
+									}
+								?>
+								 <option value="<?php echo $key; ?>" <?php echo $select; ?>><?php echo $webshop;?></option>
+								<?php } ?>
+							</select>
+						</td>
+					</tr>
+					
+					<tr>
+						<td width="20%">
+							<label for="shopname"><b><?php echo $this->translate("Shop Name ");?></b></label>
+						</td>
+						<td width="30%">
+							<input type="text" name="shop_name" style="width:80%; padding:5px;15px">
+						</td>
+						
+						<td width="15%">
+							<label for="shopurl"><b><?php echo $this->translate("Shop URL ");?></b></label>
+						</td>
+						
+						<td width="30%">
+							<input type="text" name="shop_url" style="width:80%; padding:5px;15px">
+						</td>
+					</tr>
+					
+					<tr>
+						<td width="20%">
+							<label for="apikey"><b><?php echo $this->translate("API Key ");?></b></label>
+						</td>
+						<td width="30%">
+							<input type="text" name="api_key" style="width:80%; padding:5px;15px">
+						</td>
+						
+						<td width="15%">
+							<label for="apisecret"><b><?php echo $this->translate("API Secret ");?></b></label>
+						</td>
+						
+						<td width="30%">
+							<input type="text" name="api_secret" style="width:80%; padding:5px;15px">
+						</td>
+					</tr>
+					
+					<tr>
+						<td width="20%">
+							<label for="service"><b><?php echo $this->translate("Service ");?></b></label>
+						</td>
+						<td width="30%">
+							<select id="service" name="service_id" style="width:80%; padding:5px;15px">
+								<option value="" ><?php echo " Select Service "?></option>
+								<?php foreach($this->ServiceList as $key=>$service){ 
+									$select = '';
+									if($this->Selectedservice==$service){
+										$select ="selected='selected'"; 
+									}
+								?>
+								 <option value="<?php echo $key; ?>" <?php echo $select; ?>><?php echo $service;?></option>
+								<?php } ?>
+							</select>
+						</td>
+						
+						<td width="20%">
+							<label for="addservice"><b><?php echo $this->translate("Additional Service ");?></b></label>
+						</td>
+						
+						<td width="30%">
+							<select id="addservice" name="add_service_id" style="width:80%; padding:5px;15px">
+								<option value="" ><?php echo " Additional Service "?></option>
+								<?php foreach($this->AddServiceList as $key=>$addservice){ 
+									$select = '';
+									if($this->Selectedaddservice==$addservice){
+										$select ="selected='selected'"; 
+									}
+								?>
+								 <option value="<?php echo $key; ?>" <?php echo $select; ?>><?php echo $addservice;?></option>
+								<?php } ?>
+							</select>
+						</td>
+					</tr>
+					
+					<tr>
+						<td width="20%">
+							<label for="weight"><b><?php echo $this->translate("Weight ");?></b></label>
+						</td>
+						<td width="30%">
+							<input type="text" name="weight" style="width:80%; padding:5px;15px">
+						</td>
+						
+					</tr>
+				
+				
+				</tbody>
+			
+			</table>
+		</div>	
+			<div style="text-align:center">
+				<input type="submit" name="addshop" id="addshop" value="Save" class="btn btn-danger btn-round">
+			</div>
+	</form></div></div>

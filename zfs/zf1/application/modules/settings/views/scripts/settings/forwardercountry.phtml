@@ -1,0 +1,40 @@
+<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+		<form method="post" action="" id="customer" name="customer">
+		
+		<!-- filter start -->
+		<div class="filter">
+			<div class="input-title"><?php echo $this->translate("Forwarder Country List");?></div>
+			
+			<div class="row row_nopadding decor-success" style="margin-left:0px !important;margin-right:0px !important;">
+
+				<div class="clear-all"></div>
+			</div>
+		<!-- filter ends -->
+		
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+						
+				<div id="table">
+					
+				<?php 
+				
+				$forCountryList = array();
+				$exploadeForCountry = '';
+				if(count($this->records)>0){
+				foreach($this->records as $ForCountry){
+				array_push($forCountryList,'<a  href="'.$this->url(array('controller'=>'Settings','action'=>'closeredirect'),'default',true).'?token1='.$this->ModelObj->getData['id'].'&token2='.Zend_Encript_Encription:: encode($ForCountry['country_id']).'">'.$ForCountry['country_name']."</a>");
+				}
+				$exploadeForCountry = implode(", ",$forCountryList);
+				} ?>
+					
+					<div class="row odd">
+						<span style="width:30%" class="cell"><b><?php echo $this->translate("Country");?></b></span> 
+						<span style="width:70%" class="cell"><b><?=$exploadeForCountry;?></b></span> 
+					</div>	
+
+			</div>
+					 	
+			</form>	
+			</div></div></div>
+			

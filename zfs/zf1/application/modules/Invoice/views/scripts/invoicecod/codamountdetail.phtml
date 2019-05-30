@@ -1,0 +1,172 @@
+<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+		<form method="post" action="" id="filter_form" name="filter_form">
+		<!-- filter start -->
+			<div class="filter">
+				<div class="input-title"><?php echo $this->translate("Search");?></div>
+				<div class="row row_nopadding decor-success" style="margin-left:0px !important;margin-right:0px !important;">
+				<div class="clear-all"></div>
+				<div class="col-sm-4 col_paddingtop">
+				<label><?php echo $this->translate("Country");?></label>
+				<select name="country_id" id="country_id" class="inputfield" style="width:60%">
+			    <option value="">--<?php echo $this->translate("Country"); ?>--</option>
+				<?php foreach($this->countrylist as $countrylist){
+				  $selected = '';
+				  if(isset($this->Request['country_id']) && $countrylist['country_id']==$this->Request['country_id']){
+				    $selected = 'selected="selected"';
+				  }?>
+				  <option value="<?php echo $countrylist['country_id']?>" <?php echo $selected;?>><?php echo $countrylist['cncode'].'-'.$countrylist['country_name']?></option>
+				<?php } ?>
+              </select>
+				</div>
+				<div class="col-sm-4 col_paddingtop">
+				<label><?php echo $this->translate("Customer");?></label>
+				<select name="user_id" id="user_id" class="inputfield" style="width:60%">
+			    <option value="">--<?php echo $this->translate("Select"); ?>--</option>
+				<?php foreach($this->depotlist as $depotlist){
+				  $selected = '';
+				  if(isset($this->Request['user_id']) && Zend_Encript_Encription::encode($depotlist['user_id'])==$this->Request['user_id']){
+				    $selected = 'selected="selected"';
+				  }?>
+				  <option value="<?php echo Zend_Encript_Encription::encode($depotlist['user_id'])?>" <?php echo $selected;?>><?php echo commonfunction::utf8Decode($depotlist['company_name'])?></option>
+				<?php } ?>
+              </select>
+				</div>
+				<div class="col-sm-4 col_paddingtop">
+				<label><?php echo $this->translate("Status");?></label>
+				<?php echo $this->getHelper('HtmlSelect')->getSelect('payment_status',array(array('status'=>'Paid','Name'=>'Paid'),array('status'=>'Un-paid','Name'=>'Un-Paid'),array('status'=>'Refuse','Name'=>'Refuse'),array('status'=>'Invoice','Name'=>'Invoice')),'status','Name',(isset($this->Request['payment_status']) && $this->Request['payment_status']!=''?$this->Request['payment_status']:''),false,array('class'=>'inputfield','style'=>"width:60%"));?> 
+				</div>
+				<div class="col-sm-4 col_paddingtop">
+				<label><?php echo $this->translate("Search");?></label>
+				<input type="text" name="search_word" id="search_word" value="<?php echo (isset($this->Request['search_word'])?$this->Request['search_word']:'')?>" class="inputfield" style="width:60%">
+				</div>
+				<div class="col-sm-4 col_paddingtop">
+				<label><?php echo $this->translate("Amount");?></label>
+				<input type="text" name="search_amount" id="search_amount" value="<?php echo (isset($this->Request['search_amount'])?$this->Request['search_amount']:'')?>" class="inputfield" style="width:60%">
+				</div>
+				<div class="col-sm-3 col_paddingtop">
+				  <button class="btn btn-danger btn-round" name="search" type="submit" value="Search"><?php echo $this->translate("Search");?></button>
+				</div>
+				<div class="col-sm-12 col_paddingtop"></div>
+				</div>
+				
+		 
+		</div>
+		</form>	
+		<form method="post" action="" id="import_form" name="import_form" enctype="multipart/form-data">
+		<div class="col-sm-4 col_paddingtop">
+		<label><?php echo $this->translate("Import Type");?></label>
+		<?php echo $this->getHelper('HtmlSelect')->getSelect('import_type',array(array('type'=>'1','Name'=>'GLSDE'),array('type'=>'2','Name'=>'Mondial Relay'),array('type'=>'10','Name'=>'Others')),'type','Name',(isset($this->Request['import_type'])?$this->Request['import_type']:''),false,array('class'=>'inputfield','style'=>"width:60%"));?> 
+		</div>
+		<div class="col-sm-3 col_paddingtop">
+		<input type="file" name="cod_file" id="cod_file">
+		</div>
+		<div class="col-sm-3 col_paddingtop">
+		<button class="btn btn-danger btn-round" name="import" type="submit" value="Import"><?php echo $this->translate("Import");?></button>
+		</div>
+		</form>	
+		<!-- end filter -->
+		
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+				<div id="table">
+					<div class="header-row row"> 
+					<span class="cell"><?php echo $this->translate("COD Packet Number");?></span> 
+					<span class="cell"><?php echo $this->translate("Shipper");?></span> 
+					<span class="cell"><?php echo $this->translate("Receiver");?></span> 
+					<span class="cell"><?php echo $this->translate("Country");?></span> 
+					<span class="cell"><?php echo $this->translate("Weight");?></span> 
+					<span class="cell"><?php echo $this->translate("Reference");?></span>
+					<span class="cell"><?php echo $this->translate("COD Amount");?></span>
+					<span class="cell"><?php echo $this->translate("Paid Amount");?></span>
+					<span class="cell"><?php echo $this->translate("Reasion");?></span>
+					<span class="cell"><?php echo $this->translate("Status");?></span>					
+					</div>
+					<?php  if($this->invoiceList['Total']>0){
+						foreach($this->invoiceList['Record'] as $index=>$data){
+							$class = (($index)%2==0) ? 'class="row odd"' :'class="row even"';?>
+						<div <?=$class?>>
+						<span class="cell" data-label="Barcode">
+						 <a href="javascript:void();" onclick="javascript:window.open('<?php echo $this->url(array('controller' => 'Parceltracking','action'=>'tracking','tockenno'=>Zend_Encript_Encription::encode($data[BARCODE_ID])),'default',true)?>','mywindow','status=0,resizable=1,width=1200,height=600,toolbar=0')" title="Trace Track"><?=$data[TRACENR_BARCODE];?></a>
+						</span>
+						<input type="hidden" name="barcode_user_id" id="barcode_user_id<?=$data[BARCODE_ID];?>" value="<?php echo $data['user_id'] ?>">
+							<span class="cell" data-label="Company"><?=$data['company_name'];?></span>
+							<span class="cell" data-label="Receiver"><?=$data[RECEIVER];?></span>
+							<span class="cell" data-label="Country"><?=$data['country_name'];?></span>
+							<span class="cell" data-label="Weight"><?=$data['weight'];?></span>
+							<span class="cell" data-label="Company"><?=$data[REFERENCE];?></span>
+							<?php $amount = ($data['cod_price']>0)?$data['cod_price']:$data['scod_price'];?>
+							<span class="cell" data-label="Amount"><?=$amount;?></span>
+							<span class="cell" data-label="Paid Amount"><input type="text" name="cod_price" disabled  id="cod_price_<?=$data[BARCODE_ID];?>" value="<?php echo $data['paid'];?>" class="inputfield" style="width:80%"></span>
+							<span class="cell" data-label="Resion"><input type="text" name="resion" class="inputfield" disabled id="resion_<?=$data[BARCODE_ID];?>" value="<?php echo $data['resion']?>"></span>
+							<span class="cell" data-label="Status">
+							<?php if($this->ModelObj->Useconfig['level_id']==1 || $this->ModelObj->Useconfig['level_id']==11){
+							   if($data['depot_invoice_number']>0){
+							   echo $data['depot_invoice_number'];
+							   }else{ 
+							?>
+							<select name="status" id="status<?=$data[BARCODE_ID];?>" onchange="enabaleFields('<?php echo $data[BARCODE_ID];?>',this.value,'<?php echo $amount;?>');">
+							<option value=""><?php echo $this->translate("Status");?></option>
+							<option value="Paid" <?php echo ($data['status']=='Paid')?"selected":''?>><?php echo $this->translate("Paid");?></option>
+							<option value="Un-Paid" <?php echo ($data['status']=='Un-Paid')?"selected":''?>><?php echo $this->translate("Un-Paid");?></option>
+							<option value="Refuse" <?php echo ($data['status']=='Refuse' || $data['status']=='Return')?"selected":''?>><?php echo $this->translate("Refuse");?></option>
+							</select>
+							<i class="fa fa-floppy-o fa-2x" title="Update Detail" onclick="UpdatecodPrice('<?=$data[BARCODE_ID];?>')"></i>
+							<?php } }elseif(in_array($this->ModelObj->Useconfig['level_id'],array(4,5,6,10))){
+							   if($data['customer_invoice_number']>0){
+							      echo $data['customer_invoice_number'];
+							   }elseif($data['paid']>0){
+							      echo 'Paid';
+							   }else{
+							      echo (!empty($data['status']))?$data['status']:'Unpaid';
+							   }?>
+							<?php } ?>
+							</span>
+						</div>
+					<?php }}else{?>
+						
+						<div class="row odd">
+							<span class="cell" colspan="6"><b><?=$this->translate("Recod not found !");?></b></span> 
+						</div>
+					<?php }?>	
+
+				</div>
+				<div class="unit control">
+				  <div class="nav-btns pull-right"> <?php echo commonfunction::PageCounter($this->invoiceList['Total'],$this->Request)?>
+				  </div>
+				</div>	 	
+			
+			</div></div></div>
+<script>
+function enabaleFields(barcod_id,action,amount){
+   
+   if(action=='Refuse' || action=='Un-Paid'){
+      $('#cod_price_'+barcod_id).prop('disabled',true);
+	  $('#resion_'+barcod_id).prop('disabled',false);
+	  $('#cod_price_'+barcod_id).val(0);
+   }else if(action=='Paid'){
+      $('#cod_price_'+barcod_id).val(amount);
+	  $('#cod_price_'+barcod_id).prop('disabled',false);
+	  $('#resion_'+barcod_id).prop('disabled',false);   
+   }else{
+      $('#cod_price_'+barcod_id).val(0);
+	  $('#cod_price_'+barcod_id).prop('disabled',true);
+	  $('#resion_'+barcod_id).prop('disabled',true);  
+   }
+}
+function UpdatecodPrice(barcode_id){
+  var cod_price = $('#cod_price_'+barcode_id).val();
+  var reasion = $('#resion_'+barcode_id).val();
+  var status = $('#status'+barcode_id).val();
+  var user_id = $('#barcode_user_id'+barcode_id).val();
+  $.ajax({
+	type:'POST',
+	url:'<?php echo $this->url(array('controller'=>'Invoicecod','action'=>'updatecod'),'default',true)?>',
+	data:'barcode_id='+barcode_id+'&cod_price='+cod_price+'&reasion='+reasion+'&status='+status+'&barcode_user='+user_id,
+   success:function(msg){
+      $('#cod_price_'+barcode_id).prop('disabled',true);
+	  $('#resion_'+barcode_id).prop('disabled',true);  
+   }
+  });	
+}
+</script>			

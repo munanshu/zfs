@@ -1,0 +1,55 @@
+<div class="row row-broken">
+    <div class="col-sm-12">
+        <div class="tabs" id="seventh-tabs">
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-1">
+				    <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="input-title"><?php echo $this->translate("FAQ's")?></div>
+					  <div class="clear-all"></div>
+					  <div class="col-sm-3 col_paddingx10">
+						<label for="input-2" class="input__label input__label--kaede"> 
+						<span class="input input--kaede"><a href="<?=BASE_URL ?>/Helpdesk/addfaq" class=""><i class="fa fa-plus-square"></i><?php echo $this->translate("Add New Questions");?></a>
+						</span></label>
+					  </div>
+					  <div class="col-sm-9 col_paddingx10"><span class="input input--kaede"></span></div>
+					</div>
+					<div  id="tablegrid">
+						<table width="100%" border="0" id="faqdetail">
+						    <thead>
+							   <tr>
+								<th><?=$this->translate('S. No.');?></th>
+								<th><?=$this->translate('Question');?></th>
+								<th><?=$this->translate('Action');?></th>
+							   </tr>
+						    </thead>
+						  <?php if(count($this->faqquestion)>0 ) { 
+						    foreach($this->faqquestion as $key=>$question){  
+							$class = ($key%2==0) ? 'even' : 'odd';
+						  ?>
+						    <tr class="<?=$class;?>">
+							  <td><?=$key+1; ?></td>
+							  <td><?= $question['question']; ?></td>
+							  <td><a href="<?=$this->url(array('controller'=>'Helpdesk', 'action'=>'updatefaq'),'default',true).'?updateque&que_id='.Zend_Encript_Encription::encode($question['faq_id']) ?>"><img src="<?=IMAGE_LINK?>/edit-icon.png" align="absmiddle" alt="Update Question" border="0"  title="Update Question"></a>|
+							      <a href="javascript:void(0)" onclick="deleterecord('<?=HELPDESK_FAQ_DETAILS?>','delete_status','1','faq_id','<?=$question['faq_id']?>');"><img src="<?=IMAGE_LINK?>/delete.png" align="absmiddle" alt="Delete Question" border="0" title="Delete Question"></a>							  </td>
+                 			</tr>
+						  <?php $key++; } }else{ ?>	
+							<tr>
+							  <td></td><td><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td><td></td>
+							</tr>
+						  <?php } ?>
+						</table>
+					</div>	
+				</div>
+				
+            </div>
+	    </div>
+    </div>
+</div>
+<script>
+$(document).ready(function() {
+	 $('#faqdetail').DataTable( {
+		"pageLength": 100,
+		"lengthMenu": [[10, 25, 50, 100, 200, 500, -1], [10, 25, 50, 100, 200, 500, "All"]],
+    } );
+} );
+</script>

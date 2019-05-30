@@ -1,0 +1,84 @@
+
+<div class="row row-broken">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+              <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-1">
+					<form action="" method="post" name="schedule_form" id="schedule_form">
+					  <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="input-title"><?php echo $this->translate('Failed Pickup')?></div>
+					  <div class="clear-all"></div>
+					  <div class="col-sm-9 col_paddingx10"> <span class="input input--kaede"></span> 
+						</div>
+					</div>
+					<div  id="tablegrid">
+					 <table width="100%" border="0" id="datatableid">
+					    <thead>
+						<tr>
+								<th><?=$this->translate('Customer Name');?></th>
+								<th><?=$this->translate('Driver Name');?> </th>
+								<th><?=$this->translate('Total Weight');?></th>
+								<th><?=$this->translate('Total Quantity');?></th>
+								<th><?=$this->translate('Assign Date');?></th>
+						</tr>
+						</thead>
+						<tbody>
+						<?php
+						if(count($this->records)>0){
+						 foreach($this->records as $key=>$data){
+						 $class = ($key%2==0)?'even':'odd';
+						 ?>
+						<tr class="<?php echo $class;?>">
+                        <td width="10%" data-label="Customer"><?php echo $data['company_name']; ?></td> 
+						<td width="7%" data-label="Driver"><?php echo $data['driver_name']; ?></td>
+						<td width="7%" data-label="Weight"><?php echo $data['total_weight']; ?></td> 
+						<td width="5%" data-label="Quantity"><?php echo $data['total_shipment']; ?></td> 
+						<td width="10%" data-label="Assign Date"><?php echo $data['assign_date']; ?></td> 
+						
+					</tr>
+						<?php }} else{ ?>
+						<tr>
+						  <td></td><td></td><td><?=$this->translate('No Record Found!...')?></td><td></td><td></td>
+						  </tr>
+						<?php }
+						?></tbody>
+
+                     </table>
+                    </div>
+					
+					 </form>
+					</div>
+                </div>
+					<div>
+			  </div>
+			 </div>
+            </div>
+          </div>
+<script>
+$(document).ready(function() {
+	 $('#datatableid').DataTable( {
+		"pageLength": 100,
+		"lengthMenu": [[10, 25, 50, 100, 200, 500, -1], [10, 25, 50, 100, 200, 500, "All"]],
+        initComplete: function () {
+            this.api().columns().every( function () {
+                var column = this;
+                var select = $('<select><option value=""></option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+ 						column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+ 
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+        }
+    } );
+	//$('div.dataTables_filter input').addClass('inputfield');
+} );
+</script>

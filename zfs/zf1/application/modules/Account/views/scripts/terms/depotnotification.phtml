@@ -1,0 +1,58 @@
+<script src="<?php echo $this->baseUrl('public/js/account.js');?>"></script>
+
+	<div id="table"><div class="header-row row">
+		<span class="cell" style="text-align:left"><h6><?php echo $this->translate("Dashboard Newsflash");?></h6></span> 
+	</div></div>
+	
+	<div class="row row-broken" style="margin-left:0px !important;margin-right:0px !important;">
+        <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+              <ul class="nav nav-tabs nav-justified">
+                <li> <a href="../Account/depotmanager"><?php echo $this->translate("List")?><i class="fa fa-folder"></i></a> </li>
+                	
+				<li  class="active"> <a href="depotnotification?token=<?php echo $this->token;?>"><?php echo $this->translate("Depot Notification")?><i class="fa fa-ticket"></i></a> </li>
+				
+              </ul>
+			</div>
+		</div>	
+	</div>	 	
+	
+	
+	<div class="col-md-1"></div>
+		<div class="col-md-10">
+			
+			<div id="table">
+				<div class="header-row row">
+					<span class="cell" style="text-align:center"><?php echo $this->translate("Dashboard Newsflash");?></span>
+				</div></div>
+			
+			<div class="tab-content">
+				<div class="tab-pane fade in active" id="tab-1">
+					<div id="table">
+						<form name="depotnotification" id="depotnotification" class="inputbox" method="post">
+							
+							<div class="col-md-3">
+								<label for="depotmanager"><b><?php echo $this->translate("Depot Manager :");?></b></label></div>
+							<div class="col-md-9"><label for="depotcomapny"><b><?php echo $this->NotifyData['company_name'];?></b></label></div>
+							
+							<div class="col-md-3">
+								 <label for="notification"><b><?php echo $this->translate("Dashboard Newsflash :");?></b></label></div>
+							<div class="col-md-9">	 
+								<?php 
+									require ROOT_PATH.'/public/fckeditor/FCKeditor.php';
+									$var = new FCKeditor('notification');
+									$var->BasePath = BASE_URL.'/public/fckeditor/';
+									$var->Height = '400px';
+									$var->Weight = '200px';
+									$var->Value = stripslashes($this->NotifyData['notification']);
+									$var->Create();
+							
+								?>
+							</div>
+							 <div class="col-sm-12 col_paddingtop" style="text-align:center">
+							  	<input type="submit" name="depotnotification" id="depotnotification" value="Save" class="btn btn-danger btn-round"></div>
+						</form>
+					</div>
+				</div>		
+			</div>		
+		</div>

@@ -1,0 +1,183 @@
+<div class="row row-broken">
+
+          <div class="col-sm-12">
+
+            <div class="tabs" id="seventh-tabs">
+
+			  
+
+              <div class="tab-content">
+
+                <div class="tab-pane fade in active" id="tab-6">
+
+					<form>
+
+					  <div class="row tab-filter row_nopadding decor-success tab-position">
+
+					  <div class="input-title"><?php echo $this->translate('Return Shipment List')?></div>
+
+					  <div class="clear-all"></div>
+
+					  <div class="col-sm-10 col_paddingx10"> <span class="input input--kaede"></span> 
+
+						</div>
+
+	
+
+					</div>
+
+					<div  id="tablegrid">
+
+					 <table width="100%" border="0" id="dataTableGridId">
+
+					    <thead>
+
+						<tr>
+
+								<th><?=$this->translate('Receiver Name');?></th>
+
+								<th><?=$this->translate('Reference');?> </th>
+
+								<th><?=$this->translate('Total Quantity');?></th>
+
+								<th><?=$this->translate('Checked-In');?></th>
+
+								<th><?=$this->translate('Country');?></th>
+
+								<th><?=$this->translate('Postal code');?></th>
+
+								<th><?=$this->translate('Forwarder');?></th>
+
+								<th><?=$this->translate('Weight(Kg)');?></th>
+
+								<th><?=$this->translate('Services');?></th>
+
+								<th><?=$this->translate('Additional Services');?></th>
+
+								<th><?=$this->translate('Create Date');?></th>
+
+								<th><?=$this->translate('Action');?></th>
+
+						</tr>
+
+						</thead>
+
+						<tbody>
+
+						<?php
+
+						if(count($this->ReturnShipmentList)>0){
+
+						 foreach($this->ReturnShipmentList as $key=>$data){
+
+						 $class = ($key%2==0)?'even':'odd'; ?>
+
+						<tr class="<?php echo $class;?>">
+
+						<td data-label="Receiver Name"><?=$data['company_name']; ?></td> 
+
+                        <td data-label="Reference"><?=$data['rec_reference']; ?></td> 
+
+						<td data-label="Total Quantity"><?=$data['quantity']; ?></td>
+
+						<td data-label="Checked-In"><?=$data['CNT'] ?></td>
+
+						<td data-label="Country"><?=$data['country_name']; ?></td> 
+
+						<td data-label="Postal code"><?=$data['rec_zipcode']; ?></td> 
+
+						<td data-label="Forwarder"><?=$data['forwarder_name']; ?></td>
+
+						<td data-label="Weight(Kg)"><?=$data['weight']; ?></td> 
+
+                        <td data-label="Services"><?=$data['service_name']; ?></td> 
+
+						<td data-label="Additional Services"></td>
+
+						<td data-label="Create Date"><?=date('F - d Y',strtotime($data['create_date'])) ?></td>
+
+						<td data-label="Action">
+
+							<a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Shipmentmanager','action'=>'returncheckin'),'default',  true).'?Mode=view&shipment_id='.Zend_Encript_Encription:: encode($data['shipment_id'])?>','60%','100%');">
+
+							<i class="fa fa-check fa-2x" aria-hidden="true"></i></a>|
+
+							<a href="javascript:void(0);" onClick="deleteReturnshipment('<?=$data['shipment_id']?>')"><i class="fa fa-trash fa-2x"></i></a>
+
+						</td>
+
+						</tr>
+
+						<?php }} else{ ?>
+
+						<tr>
+
+						  <td data-label="No Data"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td>
+
+						  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+
+						  </tr>
+
+						<?php }
+
+						?></tbody>
+
+
+
+                     </table>
+
+                    </div>
+
+					
+
+					 </form>
+
+					</div>
+
+                </div>
+
+					<div>
+
+			  </div>
+
+			 </div>
+
+            </div>
+
+          </div>
+
+<script>
+
+$(document).ready(function() {
+
+	 //commonDataTableView();
+	 $('#dataTableGridId').DataTable( {
+		"pageLength": 100,
+		"lengthMenu": [[10, 25, 50, 100, 200, 500, -1], [10, 25, 50, 100, 200, 500, "All"]],
+		"order": [[ 10, "desc" ]],
+        initComplete: function () {
+            this.api().columns().every( function () {
+                var column = this;
+                var select = $('<select><option value=""></option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+ 						column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+ 
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+        }
+    } );
+
+} );
+
+</script>
+
+<script src="<?php echo $this->baseUrl('public/js/shipmentmanager.js');?>"></script>

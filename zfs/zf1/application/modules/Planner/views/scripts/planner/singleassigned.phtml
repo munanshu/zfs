@@ -1,0 +1,106 @@
+<link rel="stylesheet" href="<?php echo $this->baseUrl('/public/timepicker/jquery.ui.timepicker.css')?>">
+<script src="<?php echo $this->baseUrl('/public/timepicker/include/ui-1.10.0/jquery.ui.widget.min.js')?>"></script>
+<script src="<?php echo $this->baseUrl('/public/timepicker/jquery.ui.timepicker.js')?>"></script>
+<div class="row row-broken">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+              <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-1">
+					<form id="assigned_shipment" name="assigned_shipment" action="" method="post">
+					  <input type="hidden" name="parcel_type" id="parcel_type" value="<?php echo isset($this->pickup_detail[0])?$this->pickup_detail[0]:''?>">
+					  <input type="hidden" name="user_id" id="user_id" value="<?php echo isset($this->pickup_detail[5])?$this->pickup_detail[5]:''?>">
+					  <?php $Address = commonfunction::explode_string($this->pickup_detail[2],'^');?>
+					  <input type="hidden" name="name" id="name" value="<?php echo isset($Address[0])?$Address[0]:''?>">
+					  <input type="hidden" name="street1" id="street1" value="<?php echo isset($Address[1])?$Address[1]:''?>">
+					  <input type="hidden" name="street2" id="street2" value="<?php echo isset($Address[2])?$Address[2]:''?>">
+					  <input type="hidden" name="zipcode" id="zipcode" value="<?php echo isset($Address[3])?$Address[3]:''?>">
+					  <input type="hidden" name="city" id="city" value="<?php echo isset($Address[4])?$Address[4]:''?>">
+					  <input type="hidden" name="country" id="country" value="<?php echo isset($Address[5])?$Address[5]:''?>">
+					  <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="input-title"><?php echo $this->translate('Assigned Shipment')?></div>
+					  <div class="clear-all"></div>
+					  <div class="col-sm-3 col_paddingtop">
+					 <label><?php echo $this->translate("Driver"); ?></label>
+					    <?php echo $this->getHelper('HtmlSelect')->getSelect('driver_id',$this->driverList,'driver_id','driver_name','',false,array('class'=>'inputfield','onchange'=>'if(this.value!=""){this.form.submit()}')); ?>
+						
+					</div>
+					 <div class="col-sm-3 col_paddingtop">
+					 <label><?php echo $this->translate("Pickup Date"); ?></label>
+						 <input type="text" name="pickup_date" id="pickup_date" class="inputfield" value="<?php echo isset($this->pickup_detail[3])?$this->pickup_detail[3]:''?>">
+					</div>
+					<div class="clear-all"></div>
+					<div class="col-sm-3 col_paddingtop">
+					 <label><?php echo $this->translate("Pickup Time"); ?></label>
+						 <input type="text" name="pickup_time" id="pickup_time" class="inputfield" value="<?php echo isset($this->pickup_detail[4])?$this->pickup_detail[4]:''?>">
+					</div>
+					<div class="clear-all"></div><div class="col-sm-12 col_paddingtop"></div>
+					</div>
+					<div  id="tablegrid">
+					 <table width="100%" border="0" id="datatableid">
+					    <thead>
+						<tr>
+							<th><input type="checkbox" name="check_uncheck_all" id="check_uncheck_all"></th>
+							<th><?=$this->translate('Barcode');?></th>
+							<th><?=$this->translate('Weight');?> </th>
+							<th><?=$this->translate('Pickup Address');?></th>
+						</tr>
+						</thead>
+						<tbody>
+						<?php
+						if(count($this->schedulepickup)>0){
+						 foreach($this->schedulepickup as $key=>$data){
+						 $class = ($key%2==0)?'even':'odd'; 
+						 //$pickupurl = '?pickup_detail='.$data['parcel_type'].'$'.$data['barcode_id'].'$'.$data['pickup_address'].'$'.$data['pickup_date'].'$'.$data['pickup_time'].'$'.$data['user_id'];
+						 ?>
+						<tr class="<?php echo $class;?>">
+						<td width="4%"><input type="checkbox" name="barcode_id[]" value="<?php echo $data['barcode_id'];?>"></td>
+                        <td width="10%" data-label="Barcode"><?php echo $data['barcode']; ?></td> 
+						<td width="7%" data-label="Weight"><?php echo $data['weight']; ?></td>
+						<td width="10%" data-label="Pickup Address"><?php echo commonfunction::stringReplace('^','<br>',$this->pickup_detail[2]); ?></td> 
+					</tr>
+						<?php }}  ?>
+					</tbody>
+
+                     </table>
+                    </div>
+					
+					 </form>
+					</div>
+                </div>
+					<div>
+			  </div>
+			 </div>
+            </div>
+          </div>
+<script>
+
+	
+$(document).ready(function() {
+	 $('#datatableid').DataTable( {
+		"pageLength": 100,
+		"lengthMenu": [[10, 25, 50, 100, 200, 500, -1], [10, 25, 50, 100, 200, 500, "All"]],
+        initComplete: function () {
+            this.api().columns().every( function () {
+                var column = this;
+                var select = $('<select><option value=""></option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+ 						column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+ 
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+        }
+    } );
+} );
+$( "#pickup_date" ).datepicker();
+$('#pickup_time').timepicker();
+
+</script>

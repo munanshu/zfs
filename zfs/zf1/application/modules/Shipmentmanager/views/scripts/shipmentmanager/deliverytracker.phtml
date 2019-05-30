@@ -1,0 +1,55 @@
+<div class="row row-broken">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+			  <ul class="nav nav-tabs nav-justified">
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-6">
+					<form name="deliverytime" action="" method="post">
+					  <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="input-title"><?php echo $this->translate('Search Delivery Time against Postcode')?></div>
+					  <div class="clear-all"></div>
+					  <div class="col-sm-2 col-md-4">&nbsp;</div>
+					  
+					   <div class="col-sm-8 col-md-4">
+					   
+					   <div class="col-sm-4 col_paddingx10">Country:</div>
+						<div class="col-sm-8 col_paddingx10">
+							<?=$this->getHelper('HtmlSelect')->getSelect('country_id',$this->countryList,'country_id','country_code_name',(isset($this->ModelObj->getData['filter_country'])? $this->ModelObj->getData['filter_country']:''),true,array('id'=>'country_id','class'=>'inputfield'));?>
+						</div>
+						
+						<div class="col-sm-4 col_paddingx10">Forwarder:</div>
+						<div class="col-sm-8 col_paddingx10">
+						<?=$this->getHelper('HtmlSelect')->getSelect('forwarder_id',$this->forwarderList,'forwarder_id','forwarder_name',(isset($this->ModelObj->getData['forwarder_filter'])? $this->ModelObj->getData['forwarder_filter']:''),true,array('id'=>'forwarder_id','class'=>'inputfield'));?>
+						</div>
+						<div class="col-sm-4 col_paddingx10">Postal Code:</div>
+						<div class="col-sm-8 col_paddingx10"><input type="text" name="postalcode" class="inputfield" id="postalcode" value=""/></div>
+						<div class="col-sm-4 col_paddingx10" id="delivery_time_label" style="display:none;" >Set Time:</div>
+						<div class="col-sm-8 col_paddingx10" id="delivery_time_field" style="display:none;"><input type="text" name="delivery_time" class="inputfield" id="delivery_time" value="" placeholder="Set Time"/></div>
+						<div class="col-sm-4 col_paddingx10">&nbsp;</div>
+						<div class="col-sm-8 col_paddingx10">
+							<button type="button" class="btn btn-danger" name="search" title="Search" id="search"onclick="return checkdata('<?php echo $this->url(array('controller' => 'Shipmentmanager', 'action' => 'deliverytracker'), 'default', true); ?>',$(this).text());"/>Search</button> 
+							<button type="button" class="btn btn-danger" style="display:none;" name="addnew" title="Add New" id="addnew" onclick="return checkdata('<?php echo $this->url(array('controller' => 'Shipmentmanager', 'action' => 'deliverytracker'), 'default', true); ?>',$(this).text());">Add New</button> 
+						</div>
+					   </div>
+					    <div class="col-sm-2 col-md-4">&nbsp;</div>
+					 </div>
+					<div  id="tablegrid">
+					 <img src="<?=IMAGE_LINK?>/ajax_loading.gif" id="search_image" name="search_image" title="loader" style="display:none;margin-left: 40%;"/>
+					 <style>
+					 #recorddiv table th { text-align:center !important; padding:5px 0px !important}
+					 </style>
+						<div id="recorddiv">
+						
+						</div>
+					</div>
+					
+					 </form>
+					</div>
+                </div>
+					<div>
+			  </div>
+			 </div>
+            </div>
+          </div>
+<script src="<?php echo $this->baseUrl('public/js/shipmentmanager.js');?>"></script>

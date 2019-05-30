@@ -1,0 +1,19 @@
+
+			 <tr>
+			 <th colspan="2"><?=$this->translate('Driver Name');?></th>	
+			 <th colspan="2"><?=$this->translate('Driver Type');?></th>	
+			 <th><?=$this->translate('Total Hour Planed');?></th>	
+			 <th><?=$this->translate('Total Hour Contract');?></th>	
+			 <th colspan="2"><?=$this->translate('Hour Not Planed');?></th>	
+</tr>
+<?php  foreach($this->Planedsumm['Detail'] as $i=>$value) {
+$class = ($i%2==0)?'':'class="odd"';
+?>
+	<tr <?php echo $class;?>>
+	  <td colspan="2"><?=$value['driver_name']; ?></td>
+	  <td colspan="2"><?=($value['driver_work_type']==1)?'Weekly working hours':'Flexible worker'; ?></td>
+	  <td><?=number_format($this->Planedsumm['TimeData'][$value['driver_id']],2); ?></td>
+	  <td><?=$value['total_workhour']; ?></td>
+	  <td colspan="2"><?=($value['total_workhour']>0)?$value['total_workhour']-number_format($this->Planedsumm['TimeData'][$value['driver_id']],2):0; ?></td>
+	  </tr>
+	<?php } ?>

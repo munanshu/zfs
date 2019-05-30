@@ -1,0 +1,72 @@
+
+<?php //echo "<pre>"; print_r($this->returninfo); die;?>
+<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+		<form method="post" action="" id="customer" name="customer">
+		
+		<!-- filter start -->
+		<div class="filter">
+			<div class="input-title"><?php echo $this->translate("Return Shipment Info");?></div>
+			
+			<div class="row row_nopadding decor-success" style="margin-left:0px !important;margin-right:0px !important;">
+
+				<div class="clear-all"></div>
+			</div>
+		<!-- filter ends -->
+		
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+						
+				<div id="table">
+					<input type="hidden" name="shipment_id" id="shipment_id" value="<?=$this->returninfo[SHIPMENT_ID]?>">
+					<input type="hidden" name="depot_price" id="depot_price" value="<?=$this->returninfo[DEPOT_PRICE]?>">
+					<div class="row odd">
+						<span class="span-label" ><?=$this->translate("Reciever Address")?>:</span> 
+						<span class="span-content" ><?=nl2br(str_replace('^',"\n",str_replace('^^','^',commonfunction::utf8Decode($this->returninfo['reciever_address']))))?></span>
+					</div>
+					<div class="row even">
+						<span class="span-label" ><?=$this->translate("Sernder Address")?>:</span> 
+						<span class="span-content" ><?=implode(array_slice($this->returninfo['SenderAddress'], 0, 7),'<br>')?></span>
+					</div>
+					<div class="row odd">
+						<span class="span-label" ><?=$this->translate("Source Country")?>:</span> 
+						<span class="span-content" ><?=$this->returninfo['rec_country_name']?></span>
+					</div>
+					<div class="row even">
+						<span class="span-label" ><?=$this->translate("Weight(KG)")?>:</span> 
+						<span class="span-content" ><?=$this->returninfo['weight']?></span>
+					</div>
+					<div class="row odd">
+						<span class="span-label" ><?=$this->translate("Reference")?>:</span> 
+						<span class="span-content" ><?=$this->returninfo['rec_reference']?></span>
+					</div>
+					<div class="row even">
+						<span class="span-label" ><?=$this->translate("Service")?>:</span> 
+						<span class="span-content" ><?=$this->returninfo['service_name']?></span>
+					</div>
+					<div class="row odd">
+						<span class="span-label" ><?=$this->translate("Additional Service")?>:</span> 
+						<span class="span-content" ><?=$this->returninfo['addservice']?></span>
+					</div>
+					<div class="row even">
+						<span class="span-label" ><?=$this->translate("Price")?>:</span> 
+						<span class="span-content" ><input name="customer_price" id="customer_price" value="<?=$this->returninfo[CUSTOMER_PRICE]?>" class="selectbox" style="border: black 1px solid;" />
+						</span>
+					</div>
+					<div class="row odd">
+						<span class="span-label" ><?=$this->translate("Select Forwarder")?>:</span> 
+						<span class="span-content" >
+						<?=$this->getHelper('HtmlSelect')->getSelect('forwarder_id',$this->forwarderList,'forwarder_id','forwarder_name',(isset($this->ModelObj->getData['forwarder_filter'])? $this->ModelObj->getData['forwarder_filter']:''),true,array('class'=>'selectbox','id'=>'forwarder_id'));?>
+						</span>
+					</div>
+					<div class="row even col-sm-6 col_paddingtop">
+						<span class="span-label" ><?=$this->translate("Enter Parcel No.")?>:</span> 
+						<span class="span-content" >
+						<input type="text" name="barcode" class="selectbox" style="border: black 1px solid;" id="barcode" onkeypress="returnParcelcheckin(event);"><br>
+						</span>
+					</div
+				</div>
+					 	
+			</form>	
+			</div></div></div>
+<script src="<?php echo $this->baseUrl('public/js/shipmentmanager.js');?>"></script>

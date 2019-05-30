@@ -1,0 +1,72 @@
+<div class="content container-fluid">
+    <div class="input-title"><?php echo $this->translate('Update New Contact Address') ?></div>
+</div>
+<?php $data = $this->getalldata; ?>
+<form id="contactaddress" name="contactaddress" class="inputbox" method="post">
+    <div class="col-sm-3 col_paddingtop"></div>
+    <div class="col-sm-6 col_paddingtop">
+        <div class="row">
+			<div class="col-sm-12 col_paddingtop">
+		       <label for="customer_number" class="required"><?php echo $this->translate('Customer Number:') ?></label>
+			   <input type="text" name="customer_number" value="<?=isset($data['customer_number'])? $data['customer_number']:'' ?>" class="inputfield">
+			</div>
+			<div class="col-sm-6 col_paddingtop">
+		       <span style="color:red;">*</span><label for="name" class="required"><?php echo $this->translate('Name:') ?></label>
+			   <input type="text" name="name" value="<?=isset($data['name'])? $data['name']:'' ?>" class="inputfield" required>
+			</div>
+			<div class="col-sm-6 col_paddingtop">
+		       <label for="contact" class="required"><?php echo $this->translate('Contact:') ?></label>
+			   <input type="text" name="contact" value="<?=isset($data['contact'])? $data['contact']:'' ?>" class="inputfield">
+			</div>
+			
+			<div class="col-sm-4 col_paddingtop">
+		       <span style="color:red;">*</span><label for="street" class="required"><?php echo $this->translate('Street:') ?></label>
+			   <input type="text" name="street" value="<?=isset($data['street'])? $data['street']:'' ?>" class="inputfield" required>
+			</div>
+			
+			<div class="col-sm-4 col_paddingtop">
+		       <span style="color:red;">*</span><label for="street_no" class="required"><?php echo $this->translate('Number:') ?></label>
+			   <input type="text" name="street_no" value="<?=isset($data['street_no'])? $data['street_no']:'' ?>" class="inputfield" required>
+			</div>
+			
+			<div class="col-sm-4 col_paddingtop">
+		       <span style="color:red;">*</span><label for="address" class="required"><?php echo $this->translate('Address:') ?></label>
+			   <input type="text" name="address" value="<?=isset($data['address'])? $data['address']:'' ?>" class="inputfield" required>
+			</div>
+            
+			<div class="col-sm-12 col_paddingtop">
+		       <span style="color:red;">*</span><label for="street2" class="required"><?php echo $this->translate('Street 2:') ?></label>
+			   <input type="text" name="street2" value="<?=isset($data['street2'])? $data['street2']:'' ?>" class="inputfield" required>
+			</div>
+			
+			<div class="col-sm-12 col_paddingtop">
+		       <span style="color:red;">*</span><label for="postal_code" class="required"><?php echo $this->translate('Zip Code:') ?></label>
+			   <input type="text" name="postal_code" value="<?=isset($data['postalcode'])? $data['postalcode']:'' ?>" class="inputfield" required>
+			</div>
+			
+			<div class="col-sm-12 col_paddingtop">
+		       <span style="color:red;">*</span><label for="city" class="required"><?php echo $this->translate('City:') ?></label>
+			   <input type="text" name="city" value="<?=isset($data['city'])? $data['city']:'' ?>" class="inputfield" required>
+			</div>
+			
+			<div class="col-sm-12 col_paddingtop">
+		        <span style="color:red;">*</span><label for="country" class="required"><?php echo $this->translate('Country:') ?></label></br>
+			    <?=$this->getHelper('HtmlSelect')->getSelect('country',$this->countries,'country_id','country_name',isset($data['country_id'])? $data['country_id']:'',false,array('class'=>'inputfield','style'=>'width:60%','required'=>'required')); ?>
+			</div>
+			
+			<div class="col-sm-12 col_paddingtop">
+		       <label for="phone" class="required"><?php echo $this->translate('Phone:') ?></label>
+			   <input type="text" name="phone" value="<?=isset($data['phone'])? $data['phone']:'' ?>" class="inputfield">
+			</div>
+			
+			<div class="col-sm-12 col_paddingtop">
+		       <label for="email_address" class="required"><?php echo $this->translate('Email Address:') ?></label>
+			   <input type="text" name="email_address" value="<?=isset($data['email'])? $data['email']:'' ?>" class="inputfield">
+			</div>
+			
+            <div class="col-sm-12 col_paddingtop">
+               <input type="submit" name="submit" value="Update Profile" class="btn btn-danger btn-round">
+			</div>
+		</div>
+	</div>
+</form>

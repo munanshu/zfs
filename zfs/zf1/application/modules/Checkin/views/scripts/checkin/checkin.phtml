@@ -1,0 +1,35 @@
+<script src="<?php echo $this->baseUrl('/public/js/checkin.js')?>"></script> 
+<div class="row row-broken">
+	  <div class="col-md-12" id="success_msg" style="display:none"><div class="alert alert-icon alert-icon-success alert-success" role="alert">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<strong><?php echo $this->translate('Success Alert')?> !</strong> <?php echo $this->translate('Parcel Checked-in Successfully')?></div>
+		</div>
+</div>
+	<div class="row row-broken">
+        <div class="col-sm-12">
+		
+			
+					
+				 <div class="filter">
+				<div class="input-title"><?php echo $this->translate('Check-In')?></div>
+				
+				<div class="row row_nopadding" id="scan_main" style="backGround-color:#ffffff;margin-left:0px !important;margin-right:0px !important;margin-bottom:5px !important;padding-bottom: 10px;">	
+				<div class="single_input">
+				<label><?php echo $this->translate('Barcode')?></label><input name="barcode" id="barcode" onkeypress="checksubmit(event);" class="inputfield" type="text"/>
+
+								</div>
+								
+				</div>
+				
+			<div class="clear"></div>
+				<div style="background:#ffffff; padding:10px; overflow:auto;text-align:center;  text-transform:uppercase" id="scan_output"></div>
+				
+				
+			</div>
+        </div>
+	</div>
+<span style="display: block;position: fixed;top: 300px;right: -1px; <?php global $objSession; echo (isset($objSession->weight_scale) && $objSession->weight_scale!='')?'background-color:#33FF99':'';?>"><img id="scaler" src="<?php echo (isset($objSession->weight_scale) && $objSession->weight_scale!='')?IMAGE_LINK.'/weight_scaler_connected.png':IMAGE_LINK.'/weight_scaler.png';?>" onclick="weightscalerpopup()" /></span>
+
+<script type="text/javascript">
+    $('#barcode').focus();
+</script>		

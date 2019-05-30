@@ -1,0 +1,71 @@
+<div class="filter">
+				<div class="input-title"><?php echo $this->translate("Add Ticket");?></div>
+			<div class="clear"></div>
+			<div style="background:#ffffff; overflow:auto;text-align:center">
+			<div class="clear-all"></div>
+					<div class="col-sm-12">
+				<form id="helpdesk_ticket" class="inputbox" enctype="multipart/form-data" action="" method="post">	
+				 <input type="hidden" name="barcode_id" id="barcode_id" value="<?php echo $this->Request['barcode_id']?>">
+				 <input type="hidden" name="user_id" value="<?php echo $this->parcelinfo['user_id']?>">
+					<table class="tbl_new">
+					<tbody>
+					<tr id="file_error" style="display:none;color:red;"></tr>
+					<tr><th colspan="2"><?php echo $this->translate("Add Ticket againsed parcel number");?></th></tr>
+					 <tr>
+						<td style="text-align:right"><strong>
+						<?php echo $this->translate("Barcode");?><br>
+						<?php echo $this->translate("Sender");?><br>
+						<?php echo $this->translate("Receiver");?><br>
+						<?php echo $this->translate("Weight");?><br>
+						<?php echo $this->translate("Check-in Date");?><br></strong>
+						</td>
+						<td style="text-align:left">
+						<?php echo trim($this->parcelinfo[BARCODE]);?><br>
+						<?php echo $this->parcelinfo['company_name'];?><br>
+						<?php echo $this->parcelinfo[RECEIVER];?><br>
+						<?php echo $this->parcelinfo[WEIGHT];?><br>
+						<?php echo $this->parcelinfo['checkin_date'];?></td>
+					 </tr>
+					 <tr>
+					   <td style="text-align:right"><?php echo $this->translate("Question Type");?></td>
+						<td><select name="question_id" name="question_id" class="inputfield" style="width:60%" onchange="getalreadyadded(this.value)">
+						  <option value="">--Select--</option>
+						  <?php foreach($this->allquestion as $questions){ ?>
+						  <option value="<?php echo $questions['question_id']?>"><?php echo $questions['question_type']?></option>
+						  <?php  } ?>
+						</select></td>
+					 </tr>
+					 <tr style="display:none" id="show_msg"></tr>
+					<tr id="editor_tr">
+						<td colspan="2"><textarea name="question" rows="4" cols="75"></textarea></td>
+					 </tr>
+					 <tr id="buton_tr"><td colspan="2"  style="text-align:center"><input type="submit" name="addticket" id="addticket" value="<?php echo $this->translate("Add Ticket");?>" class="btn btn-danger btn-round"></td></tr>
+					</tbody>
+					</table>
+				</form>	
+					</div>
+					<div class="clear-all"></div>
+				</div>
+			</div>
+			<script>
+			function getalreadyadded(question_id){
+			   var barcode_id = $('#barcode_id').val();
+			    $.ajax({
+				   type : 'POST',
+				   url: '<?php echo $this->url(array('controller'=>'Helpdesk','action'=>'checkticket'),'default',true);?>',
+				   data : 'barcode_id='+barcode_id+'&question_id='+question_id,
+				   success:function(msg){ //alert(msg);
+					 if(msg=='0'){
+					    $('#editor_tr').show();
+						$('#show_msg').hide();
+						$('#buton_tr').show();
+					 }else{
+					    $('#editor_tr').hide();
+						$('#buton_tr').hide();
+						$('#show_msg').html(msg);
+						$('#show_msg').show();
+					 }
+				   }
+				});
+			}
+			</script>

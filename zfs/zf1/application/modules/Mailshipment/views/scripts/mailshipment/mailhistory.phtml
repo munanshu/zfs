@@ -1,0 +1,134 @@
+
+<style>
+.input_text{border: 1px solid #ccc;
+    box-shadow: 0 1px 3px #ddd inset;
+    box-sizing: border-box;
+    display: inline-block;
+    padding: 5px 10px;
+    font-size: 15px;
+    width: 100%;
+    color: #000000;}
+</style>
+<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+		<form method="post" action="" id="filter_form" name="filter_form">
+		<!-- filter start -->
+			<div class="filter">
+				<div class="input-title"><?php echo $this->translate("Search");?></div>
+				<div class="row row_nopadding decor-success" style="margin-left:0px !important;margin-right:0px !important;">
+				<div class="clear-all"></div>
+				<div class="col-sm-3 col_paddingtop">
+				<label><?php echo $this->translate("Country");?></label>
+				<select name="country_id" id="country_id" class="inputfield" style="width:60%">
+			    <option value="">--<?php echo $this->translate("Country"); ?>--</option>
+				<?php foreach($this->countrylist as $countrylist){
+				  $selected = '';
+				  if(isset($this->Request['country_id']) && $countrylist['id']==$this->Request['country_id']){
+				    $selected = 'selected="selected"';
+				  }?>
+				  <option value="<?php echo $countrylist['id']?>" <?php echo $selected;?>><?php echo $countrylist['country_name']?></option>
+				<?php } ?>
+              </select>
+				</div>
+				<div class="col-sm-3 col_paddingtop">
+				<label><?php echo $this->translate("Weight Class");?></label>
+				<select name="weight_class_id" id="weight_class_id" class="inputfield" style="width:50%">
+			    <option value="">--<?php echo $this->translate("Weight Class"); ?>--</option>
+				<?php foreach($this->weightclass as $weightclass){
+				  $selected = '';
+				  if(isset($this->Request['weight_class_id']) && $weightclass['class_id']==$this->Request['weight_class_id']){
+				    $selected = 'selected="selected"';
+				  }?>
+				  <option value="<?php echo $weightclass['class_id']?>" <?php echo $selected;?>><?php echo $weightclass['min_weight'].' - '.$weightclass['max_weight']?></option>
+				<?php } ?>
+              </select>
+				</div>
+				<?php if($this->ModelObj->Useconfig['level_id']==1 || $this->ModelObj->Useconfig['level_id']==4 || $this->ModelObj->Useconfig['level_id']==6){?>
+				<div class="col-sm-4 col_paddingtop">
+				<label><?php echo $this->translate("Customer");?></label>
+				<select name="user_id" id="user_id" class="inputfield" style="width:60%">
+			    <option value="">--<?php echo $this->translate("Select"); ?>--</option>
+				<?php foreach($this->customerlist as $customerlist){
+				  $selected = '';
+				  if(isset($this->Request['user_id']) && Zend_Encript_Encription::encode($customerlist['user_id'])==$this->Request['user_id']){
+				    $selected = 'selected="selected"';
+				  }?>
+				  <option value="<?php echo Zend_Encript_Encription::encode($customerlist['user_id'])?>" <?php echo $selected;?>><?php echo commonfunction::utf8Decode($customerlist['company_name'])?></option>
+				<?php } ?>
+              </select>
+				</div>
+				<?php } ?>
+				
+				<div class="col-sm-3 col_paddingtop">
+              <label><?php echo $this->translate("From Date");?></label>
+                <input type="text" name="from_date" id="from_date" value="<?php echo (isset($this->Request['from_date'])?$this->Request['from_date']:'')?>"  class="inputfield" style="width:60%">
+              </div>
+            <div class="col-sm-3 col_paddingtop">
+              <label><?php echo $this->translate("To Date");?></label>
+              <input type="text" name="to_date" id="to_date" value="<?php echo (isset($this->Request['to_date'])?$this->Request['to_date']:'')?>"  class="inputfield" style="width:60%">
+            </div>
+			<div class="col-sm-3 col_paddingtop">
+				<label><?php echo $this->translate("Search");?></label>
+				<input type="text" name="search_manifest" id="search_manifest" value="<?php echo (isset($this->Request['search_manifest'])?$this->Request['search_manifest']:'')?>" class="inputfield" style="width:60%">
+				</div>
+				<div class="col-sm-2 col_paddingtop"> <input type="submit" name="submit" value="Search" class="btn btn-danger btn-round"></div>
+				<div class="col-sm-12 col_paddingtop"></div>
+				</div>
+		</div>		
+		<!-- end filter -->
+		
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+				<div id="table">
+					<div class="header-row row"> 
+					<span class="cell"><?php echo $this->translate("Customer");?></span> 
+					<span class="cell"><?php echo $this->translate("Country");?></span> 
+					<span class="cell"><?php echo $this->translate("Weight Class");?></span>
+					<span class="cell"><?php echo $this->translate("Quantity");?></span>
+					<span class="cell"><?php echo $this->translate("Create Date");?></span> 
+					<span class="cell"><?php echo $this->translate("Check-in Date");?></span> 
+					<span class="cell"><?php echo $this->translate("Manifest Number");?></span>				
+					</div>
+					<?php if($this->records['Total']>0){
+						foreach($this->records['Record'] as $index=>$data){
+							$class = (($index)%2==0) ? 'class="row odd"' :'class="row even"';?>
+						<div <?=$class?>>
+							<span class="cell" data-label="Customer"><?=$data['company_name'];?></span>
+							<span class="cell" data-label="Country"><?=$data['mail_country_name']?></span>
+							<span class="cell" data-label="Weight Class"><?= $data['min_weight'].'-'.$data['max_weight']?></span>
+							<span class="cell" data-label="Quantity"><?=$data['total_quantity']?></span>
+							<span class="cell" data-label="Create Date"><?=commonfunction::TimeFormat($data['create_date'])?></span>
+							<span class="cell" data-label="Checkin Date"><?=commonfunction::TimeFormat($data['checkin_date'])?></span>
+							<span class="cell" data-label="Manifest"><?=$data['manifest_number']?></span>
+						</div>
+					<?php }}else{?>
+						
+						<div class="row odd">
+							<span class="cell" colspan="6"><b><?=$this->translate("Recod not found !");?></b></span> 
+						</div>
+					<?php }?>	
+
+				</div>
+				<div class="unit control">
+				  <div class="nav-btns pull-right"> <?php echo commonfunction::PageCounter($this->records['Total'],$this->Request)?>
+				  </div>
+				</div>
+					 	
+			</form>	
+			</div></div></div>
+<script>
+
+$(function() {
+		$( "#from_date" ).datepicker({
+		  dateFormat: 'yy-mm-dd',
+		  showOtherMonths: true,
+		  selectOtherMonths: true
+		});
+		$( "#to_date" ).datepicker({
+		  dateFormat: 'yy-mm-dd',
+		  showOtherMonths: true,
+		  selectOtherMonths: true
+		});
+	
+	});
+</script>			

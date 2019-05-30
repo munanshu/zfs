@@ -1,0 +1,154 @@
+
+	<div id="table"><div class="header-row row">
+		<span class="cell" style="text-align:center"><h6><?php echo $this->translate("Privilege Management");?></h6></span> 
+	</div></div>
+	
+		<div class="row row-broken" style="margin-left:0px !important;margin-right:0px !important;">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+              <ul class="nav nav-tabs nav-justified">
+			  	<?php if($this->LevelId==4){ ?>
+                	<li> <a href="../Account/depotmanager"><?php echo $this->translate("List ");?><i class="fa fa-folder"></i></a> </li>
+				<?php } else{ ?>
+                <li> <a href="../Account/customer"><?php echo $this->translate("List ");?><i class="fa fa-folder"></i></a> </li>
+				<?php } ?>
+                <li class="active"> <a href="userprivilege?token=<?php echo $this->token;?>"><?php echo $this->LevelName.$this->translate(" Privilege");?><i class="fa fa-ticket"></i></a> </li>
+              </ul>
+
+	<div class="tab-content">
+		<div class="tab-pane fade in active" id="tab-1">
+
+		<form method="post" action="" id="userprivilegeform" name="userprivilegeform">
+		
+				<div id="tablegrid">
+					<table width="100%" border="0" id="example">
+					    
+						<tbody>
+						<tr>
+								<td width="15%" style="text-align:left">
+									<label for="userlevel"><b><?php echo $this->translate("Level of System User ");?></b></label>
+								</td>
+								<td style="text-align:left">
+									<label for="userlevel"><?php echo $this->LevelName;?></label>
+								</td>
+						</tr>
+						
+						<tr>
+								<td width="15%" style="text-align:left">
+									<label for="customer"><b><?php echo $this->translate("Company Name ");?></b></label>
+								</td>
+								<td style="text-align:left">
+									<label for="customercomapny"><?php echo $this->customerCompany ;?></label>
+								</td>
+						</tr>
+						
+						<?php if($this->LevelId==5){ ?>
+						<tr>
+							<td width="15%">
+								<label for="privilegetype"><b><?php echo $this->translate("Privilege Type");?></b></label>
+							</td>
+							
+							<td style="text-align:left">
+								<label for="type"><input type="radio" name="privilegetype" id="type-0" value="0" checked="checked" onclick="showhideRow(this.value); " /><?php echo $this->translate("Default Privilege");?></label>&nbsp;&nbsp;
+								
+								<label for="type"><input type="radio" name="privilegetype" id="type-1" value="1"  onclick="showhideRow(this.value); " /><?php echo $this->translate("Custom Privilege");?></label>
+							</td>
+							
+						</tr><?php }?>
+						
+						<tr id="defaultId">
+								<td width="15%" style="text-align:left">
+									<label for="customerprivilege"><b><?php echo $this->translate("Set Privilege");?></b></label>
+								</td>
+								
+								<td width="80%" style="text-align:left">
+									<div>
+									<?php $i=0; foreach($this->AllPrevileges as $module){ 
+										$maincheck = (in_array($module['module_id'],$this->UserPrivilege)) ? 'checked="checked"' : ''; 
+									?>
+										<ul><input type="checkbox" name="ModuleArr[<?=$i;?>]" id="mainmodule_<?= $module['module_id']; ?>" value="<?= $module['module_id'];?>" onclick="moduleChild(this.value); " <?= $maincheck ?> /><?= $module['module_name']; ?>
+										<?php if(count($module['submodule'])>0){ 
+											foreach($module['submodule'] as $submodule){ $i++;
+											$check = (in_array($submodule['module_id'],$this->UserPrivilege)) ? 'checked="checked"' : '';	
+											$style = ($maincheck=='') ? 'style="display:none;"' : '';
+										?>
+												<ul <?= $style ?> class="submodule_<?= $module['module_id']; ?>" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="ModuleArr[<?=$i;?>]" id="submodule" value="<?= $submodule['module_id'];?>" <?= $check ?> /><?= $submodule['module_name']; ?></ul>
+											<?php } } $i++;?>	
+										</ul>
+									<?php } ?></div>
+								</td>
+						</tr>
+						
+						<tr id="customId" style="display:none;">
+								<td width="15%" style="text-align:left"> 
+									<label for="depotprivilege"><b><?php echo $this->translate("Set Privilege");?></b></label>
+								</td>
+								
+								<td width="80%" style="text-align:left">
+									<div>
+									<?php $i=0; foreach($this->DepotPrivileges['module'] as $key=>$module){ ?>
+										
+										<ul><input type="checkbox" name="depotModuleArr[<?=$i;?>]" id="depotmainmodule_<?= $key; ?>" value="<?= $key;?>" onclick="depotmoduleChild(this.value); " /><?= $module; ?>
+										<?php if(array_key_exists($key,$this->DepotPrivileges['submodule'])){ 
+											
+											foreach($this->DepotPrivileges['submodule'][$key] as $index=>$submodule){ $i++;
+											
+										?>
+												<ul style="display:none;" class="depotsubmodule_<?= $key; ?>" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="depotModuleArr[<?=$i;?>]" id="depotsubmodule" value="<?= $index;?>" /><?= $submodule; ?></ul>
+											<?php } $i++;}?>	
+										</ul>
+									<?php } ?></div>
+								</td>
+						</tr>
+						
+						</tbody>
+						<tr>
+						 	<td>&nbsp;</td>	
+						  	<td style="text-align:left">
+						  		<input type="submit" name="userprivilege" id="userprivilege" value="Add Privilege" class="btn btn-danger btn-round">
+						  	</td>
+						</tr>
+                     </table>	
+				</div>
+			</form>	
+			</div></div></div>
+			</div>
+		</div>
+	
+<script> 
+	
+	function moduleChild(id){
+		if($('#mainmodule_'+id).is(':checked')) {
+			$('.submodule_'+id).show();
+		}
+		else{
+			$('.submodule_'+id).hide();
+			$('.submodule_'+id).find('input[type=checkbox]:checked').removeAttr('checked');
+		}
+	}
+	  
+	function showhideRow(id){
+		if(id==0){
+			$('#defaultId').show();
+			$('#customId').hide();
+		}
+		else{
+			$('#defaultId').hide();
+			$('#customId').show();
+		}
+		//alert(id);return false;
+	}
+	
+	function depotmoduleChild(id){
+		if($('#depotmainmodule_'+id).is(':checked')) {
+			$('.depotsubmodule_'+id).show();
+		}
+		else{
+			$('.depotsubmodule_'+id).hide();
+			$('.depotsubmodule_'+id).find('input[type=checkbox]:checked').removeAttr('checked');
+		}
+	}  
+	
+</script>
+	
+	

@@ -1,0 +1,16 @@
+
+<?= $this->doctype() ?>
+ 
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	 <?= $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
+            ->prependStylesheet($this->basePath('lumino/css/style.css'))
+            ->prependStylesheet($this->basePath('lumino/css/datepicker3.css'))
+            ->prependStylesheet($this->basePath('lumino/css/bootstrap.min.css'))
+        ?>
+ 	
+</head>
+<body>

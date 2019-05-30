@@ -1,0 +1,35 @@
+<?php $form = $this->AccountingHeadForm; ?>
+<form action="" method="post" name="addaccounthead" class="inputbox" >
+<div class="col-lg-12 col-md-12 col-sm-12 b-email" style="background:#ffffff;">
+          <div class="b-email-title">
+            <h6><?=$this->translate($this->title);?></h6>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 col_paddingtop">
+			  <?php  echo $form->head_code; echo $form->head_id; ?>
+            </div>
+			<div class="col-sm-6 col_paddingtop">
+              <?php echo $form->head_description; ?>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-sm-6 col_paddingtop">
+			  <?php echo $form->function_id; ?>
+            </div>
+            <div class="col-sm-6 col_paddingtop">
+			  <?php echo $form->btwrate_id; ?>
+            </div>  
+			<div class="clearfix"></div>
+            <div class="col-sm-6 col_paddingtop">
+			  <?php echo $form->class_id; ?>
+            </div>
+            <div class="col-sm-6 col_paddingtop">
+			  <?php echo $form->group_id; ?>
+            </div>
+			<div class="clearfix"></div>
+			 
+            <div class="col-sm-2 col_paddingtop"> <?php echo $form->submit; ?> </div>
+          </div>
+        </div>
+</form>
+          <div id="loader" style="display:none;position:fixed;width:100%;height:100%;text-align:center;top:35%;background:#ffffff;opacity:0.8;"><img src="<?=IMAGE_LINK?>/loader_big.gif">
+          </div>

@@ -1,0 +1,74 @@
+
+
+		<div class="input-title"><?php echo $this->translate("Deleted Mail/Post")?></div>
+	
+		<div class="row row-broken" style="margin-left:0px !important;margin-right:0px !important;">
+          <div class="col-sm-12">
+	<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+			<form method="post" action="" id="maillist" name="maillist">
+						
+				<div id="tablegrid">
+					<table width="100%" border="0" id="example">
+					    <thead>
+						<tr>
+							<th>#</th>
+							<th><?=$this->translate('Manifest No.');?></th>
+							<th><?=$this->translate('Customer');?> </th>
+							<th><?=$this->translate('Quantity');?></th>
+							<th><?=$this->translate('Price');?></th>
+							<th><?=$this->translate('Create Date');?></th>
+							<th><?=$this->translate('Delete Date');?></th>
+						</tr>
+						</thead>
+						
+						<tbody>
+						<?php
+						if(count($this->records)>0){
+							$i=0;
+						 	foreach($this->records as $index=>$data){
+						 	$class = ($i%2==0)?'even':'odd'; ?>
+							<tr class="<?php echo $class;?>">
+								<td><input type="checkbox" name="manifest_number[]" value="<?php echo $data['manifest_number']; ?>"></td> 
+								<td data-label="Manifest No."><?php echo $data['manifest_number']; ?></td> 
+								<td data-label="Customer"><?php echo $data['company_name']; ?></td>
+								<td data-label="Quantity"><?php echo $data['total_quantity']; ?></td> 
+								<td  data-label="Price"><?php echo $data['total_price']; ?></td> 
+								<td data-label="Create Date"><?php echo $data['create_date']; ?></td> 
+								<td data-label="Delete Date"><?php echo $data['delete_date']; ?></td> 
+								
+							</tr>
+						<?php $i++;}} else{ ?>
+						<tr>
+						 <td></td><td></td> <td data-label="No Data"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td><td></td><td></td><td></td><td></td>
+						  </tr>
+						<?php }
+						?></tbody>
+                     </table>
+						
+				</div>
+			</form>	
+			</div></div></div>
+			</div>
+		
+	
+	<script>
+ $(function() {
+		$( "#from_date" ).datepicker({
+		  dateFormat: 'yy-mm-dd',
+		  showOtherMonths: true,
+		  selectOtherMonths: true
+		});
+		$( "#to_date" ).datepicker({
+		  dateFormat: 'yy-mm-dd',
+		  showOtherMonths: true,
+		  selectOtherMonths: true
+		});
+	
+	});
+	$(document).ready(function() {
+	  $('#example').DataTable();
+	 //$('div.dataTables_filter input').addClass('inputfield');
+	} );
+	</script>

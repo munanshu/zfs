@@ -1,0 +1,18 @@
+<div class="content container-fluid">
+    <div class="input-title">Add New helpdesk Status</div>
+</div>
+<?php echo $this->getHelper('Messages')->getMessages();?>
+<form id="addnewclaimstatus" name="addhelpdeskstatus" class="inputbox" method="post">
+    <div class="col-lg-12 col-md-12 col-sm-12 b-email">
+        <div class="row">
+			<div class="col-sm-12 col_paddingtop">
+		       <span style="color:red;">*</span><label for="helpdeskname" class="required"><?php echo $this->translate('Helpdesk Status Name: ') ?></label>
+			   <input type="text" name="helpdeskname" class="inputfield">
+			</div>
+            <div class="col-sm-12 col_paddingtop">
+               <input type="submit" name="addnewhelpdesk" value="Add New Helpdesk" class="btn btn-danger btn-round">
+			</div>
+		</div>
+	</div>
+</form>
+

@@ -1,0 +1,53 @@
+<div class="row row-broken">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+			  <ul class="nav nav-tabs nav-justified">
+				<?=$this->ModelObj->tabNavigation(); ?>
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-3">
+					<form>
+					  <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="input-title"><?php echo $this->translate('Weight Scaller Setting')?></div>
+					  <div class="clear-all"></div>
+					</div>
+                  <div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+					  
+                    <div id="table">
+                      <div class="header-row row">
+					    <span class="cell primary"><?=$this->translate('Link or IP Address');?></span> 
+						<span class="cell"><?=$this->translate('Serial number');?></span>
+						<span class="cell"><?=$this->translate('Machine Name');?> </span>
+						<span class="cell"><?=$this->translate('Action');?></span>
+					  </div>
+         
+					    <?php
+						if(count($this->scallers)>0){
+						 foreach($this->scallers as $key=>$data){
+						 $class = ($key%2==0)?'row even':'row odd'; ?>
+						<div class="<?php echo $class;?>">
+                        <span class="cell" data-label="IP Address"><?php echo $data['machine_url']; ?><input type="hidden" name="serial_id<?php echo $key?>" value="<?php echo $data['serial_id'];?>" /><input type="hidden" name="sequesnce<?php echo $key?>" value="<?php echo $key?>" /></span> 
+						<span class="cell" data-label="Serial No."><?php echo $data['serial_no']; ?></span>
+						<span class="cell" data-label="Machine Name"><?php echo $data['machine_name']; ?></span>
+						<span class="cell breadcrumb"><li><a href="javascript:void(0);" onClick="deleterecord('<?=WEIGHT_SCALER_INFO?>','is_delete','1','serial_id','<?=$data['serial_id']?>');"><i class="fa fa-trash"></i></a> </li></span>
+					 </div>
+						<?php }} else{ ?>
+						  <span class="cell" data-label="No Data"><?=$this->translate('No Record Found!...')?></span>
+						<?php }
+						?>
+                      
+                    </div>
+					 </form>
+                    <div class="unit control">
+					  <div class="col-sm-3 col_paddingx10"><b></b></div>
+                      <div class="nav-btns pull-right"><b></b>
+                      </div>
+                    </div>
+					</div>
+                </div>
+			  </div>
+			 </div>
+			   <div class="input-title">Add Weight Scaller</div>
+			 <?php echo $this->scallerForm; ?>
+            </div>
+          </div>

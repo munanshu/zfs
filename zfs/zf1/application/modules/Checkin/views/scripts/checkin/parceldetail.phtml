@@ -1,0 +1,481 @@
+<?php //echo "<pre>"; print_r($this->parceldetails);die;?>
+<script src="<?php echo $this->baseUrl('/public/js/checkin.js')?>"></script> 
+<style>
+.responsivegrid {font-size:12px; padding-bottom:0px}
+.responsivegrid .pad{margin:0px !important; padding:0px !important}
+.responsivegrid b{color:#ffffff; text-align:center; background:#484b68;  padding:5px 0px; float:left; width:100%}
+.responsivegrid ul{float:left; margin:0px; padding:0px; width:100%}
+.responsivegrid ul li{ float:left; width:100%;  border-left:1px solid #cccccc}
+.responsivegrid ul li.odd{background:#f1f5fa; overflow:auto}
+.responsivegrid ul li.even{background:#ffffff; overflow:auto}
+.responsivegrid ul li div.lineG{margin:0px; padding:4px 4px; border-right:1px solid #cccccc; border-bottom:1px solid #cccccc; }
+.choosefile { 
+	float: left;position: relative; margin: 0 0 40px;}
+.chooser { position: absolute; z-index: 1; opacity: 0; cursor: pointer;}
+.chooser-2 { opacity:1;}
+.deleteme{
+	cursor: pointer;
+}
+.deleteme:hover{
+	font-weight: bold;
+}
+.loader{
+	display: none;
+	position: relative;
+	float: right;
+}
+.hiddenform {
+	display: none;
+}
+.deliverySignature{
+	border: 1px solid black;
+	border-radius: 2px;
+}
+.signbig {
+	border: 1px solid black;
+	border-radius: 2px;
+}
+
+</style>
+<form name="parcel_detail" id="parcel_detail" action="" method="post">
+<div class="decor-default responsivegrid">
+      <div class="col-md-12 pad"><div class="input-title"><?php echo $this->translate('Parcel Detail') ?></div></div>
+      <div class="clear-all"></div>
+      <ul>
+	    <li class="odd">
+          <div class="col-xs-6 col-md-2 lineG" style="height:43px"><strong><?php echo $this->translate('Serach Barcode') ?></strong> </div>
+          <div class="col-xs-6 col-md-3 lineG" style="height:43px"><input type="text" name="search_barcode" id="search_barcode" class="inputfield" value="<?php echo isset($this->parceldetails['barcode'])?$this->parceldetails['barcode']:(isset($this->Request['search_barcode'])?$this->Request['search_barcode']:'');?>"></div>
+          <div class="col-xs-6 col-md-7 lineG" style="height:43px"><input type="submit" name="search" id="search" value="Search" class="btn btn-danger"></div>
+        </li>
+	   <?php if(!empty($this->parceldetails)){?>	
+        <li class="odd">
+          <div class="col-xs-6 col-md-1 lineG"><strong><?php echo $this->translate('Barcode') ?></strong> </div>
+          <div class="col-xs-6 col-md-3 lineG"><a href="javascript:void(0);" onclick="javascript:window.open('<?=$this->url(array('controller' => 'Parceltracking','action'=>'tracking'),'default',true).'?tockenno='.Zend_Encript_Encription::encode($this->parceldetails[BARCODE_ID]);?>','mywindow','status=0,scrollbars=1,resizable=1,width=1200,height=600,toolbar=0')" title="Track Parcel"><?php echo $this->parceldetails['barcode'];?></a></div>
+          <div class="col-xs-6 col-md-1 lineG"><strong><?php echo $this->translate('Shipper') ?></strong></div>
+          <div class="col-xs-6 col-md-3 lineG"><?php echo $this->parceldetails['company_name'];?></div>
+          <div class="col-xs-6 col-md-1 lineG"><strong><?php echo $this->translate('Reference') ?></strong></div>
+          <div class="col-xs-6 col-md-3 lineG"><?php echo $this->parceldetails[REFERENCE];?></div>
+        </li>
+		<li class="even">
+          <div class="col-xs-6 col-md-2 lineG"><strong><?php echo $this->translate('Forwarder') ?></strong> </div>
+          <div class="col-xs-6 col-md-2 lineG"><?php echo $this->parceldetails['forwarder_name'];?></div>
+          <div class="col-xs-6 col-md-2 lineG"><strong><?php echo $this->translate('Weight') ?></strong></div>
+          <div class="col-xs-6 col-md-2 lineG"><?php echo $this->parceldetails[WEIGHT];?></div>
+          <div class="col-xs-6 col-md-2 lineG"><strong><?php echo $this->translate('Service') ?></strong></div>
+          <div class="col-xs-6 col-md-2 lineG"><?php echo $this->parceldetails['service_name'];?></div>
+        </li>
+	 <?php if($this->ModelObj->Useconfig['level_id']!=5 && $this->ModelObj->Useconfig['level_id']!=10){?>	
+		<li class="odd">
+          <div class="col-xs-6 col-md-2 lineG"><strong><?php echo $this->translate('Shipping Price') ?></strong> </div>
+          <div class="col-xs-6 col-md-2 lineG"><?php echo $this->parceldetails['customer_price'];?></div>
+          <div class="col-xs-6 col-md-1 lineG"><strong><?php echo $this->translate('Old Barcode') ?></strong></div>
+		  <div class="col-xs-6 col-md-3 lineG"><?php echo isset($this->parceldetails['old_barcode'])?$this->parceldetails['old_barcode']:'N/A';?></div>
+          <div class="col-xs-6 col-md-2 lineG"><?php echo $this->translate('Old Weight') ?></div>
+          <div class="col-xs-6 col-md-2 lineG"><?php echo isset($this->parceldetails['old_weight'])?$this->parceldetails['old_weight']:'N/A';?></div>
+        </li>
+	<?php } ?>	
+		<li class="even">
+          <div class="col-xs-6 col-md-2 lineG"><strong><?php echo $this->translate('Reciver Headings') ?></strong> </div>
+          <div class="col-xs-6 col-md-3 lineG"><strong><?php echo $this->translate('Receiver Detail') ?></strong></div>
+		  <div class="col-xs-6 col-md-3 lineG"><strong><?php echo $this->translate('Sender Detail') ?></strong></div>
+		  <div class="col-xs-6 col-md-2 lineG">&nbsp;</div>
+		  <div class="col-xs-6 col-md-2 lineG">&nbsp;</div>
+		 </li>
+		 <li class="odd">
+          <div class="col-xs-6 col-md-2 lineG"><strong><?php echo $this->translate('Name/Contact').'<br>'.$this->translate('Street/H.No./Address').'<br>'.$this->translate('Street2').'<br>'.$this->translate('Zipcode/City').'<br>'.$this->translate('Country').'<br>'.$this->translate('Email').'<br>'.$this->translate('Phone')?></strong> </div>
+          <div class="col-xs-6 col-md-3 lineG" style="height:135px"><?php echo $this->parceldetails[RECEIVER].'/'.$this->parceldetails[CONTACT].'<br>'.$this->parceldetails[STREET].'/'.$this->parceldetails[STREETNR].'/'.$this->parceldetails[ADDRESS].'<br>'.$this->parceldetails[STREET2].'<br>'.$this->parceldetails[ZIPCODE].'/'.$this->parceldetails[CITY].'<br>'.$this->parceldetails['country_name'].'<br>'.$this->parceldetails[EMAIL].'<br>'.$this->parceldetails[PHONE];?></div>
+		  <div class="col-xs-6 col-md-7 lineG" style="height:135px"><?php 
+						 $sender = $this->parceldetails['forwarder_details']['SenderAddress'];
+						echo $sender[0].'<br>'.$sender[1].'<br>'.$sender[2].'<br>'.$sender[4].' '.$sender[3].'<br>'.$sender[5].' '.(isset($sender[6])?$sender[6]:'')?></div>
+		
+		 </li>
+		 <li class="even">
+		  <??>
+          <div class="col-xs-6 col-md-3 lineG"><strong><?php echo $this->translate('Create Date').'/'.$this->translate('By').'/'.$this->translate('Ip').'/'.$this->translate('Type'),!empty($this->parceldetails['old_barcode'])?'/'.$this->translate('Old Barcode').'/'.$this->translate('Old Forwarder Name'):''?></strong> </div>
+		  <?php $shipmentAdded = $this->ModelObj->getCustomerDetails($this->parceldetails['create_by']);?>
+		  <div class="col-xs-6 col-md-9 lineG"><?php echo $this->parceldetails['create_date'].' / '.$shipmentAdded['company_name'].' / '.$this->parceldetails['create_ip'].' / '.$this->parceldetails['shipment_mode'], !empty($this->parceldetails['old_barcode'])?' / '.$this->parceldetails['old_barcode'].' / '.$this->ModelObj->ForwarderName($this->parceldetails['old_forwarder']):''?></div>
+		 </li>
+	 <?php if($this->parceldetails['delete_status']=='0'){ ?>	 
+		 <?php if($this->parceldetails['driver_id']>0){?> 
+		 <li class="odd">
+          <div class="col-xs-6 col-md-3 lineG"><strong><?php echo $this->translate('Assigned Date').'/'.$this->translate('Driver').'/'.$this->translate('Pickup Date')?></strong> </div>
+		   <?php $driverdetail = $this->ModelObj->driverdetails($this->parceldetails['driver_id']);?>
+		   <div class="col-xs-6 col-md-5 lineG"><?php echo $this->parceldetails['assigned_date'].' / '.$driverdetail['driver_name'].' / '.($this->parceldetails['pickup_status']=='1')?$this->parceldetails['pickup_date']:'N/A';?>
+		  </div>
+		  		
+		  
+		 </li>
+		 <?php }?>
+		 <?php if($this->parceldetails['checkin_status']=='1'){?>
+		   <li class="even">
+		        <?php $checkinBy = $this->ModelObj->getCustomerDetails($this->parceldetails['checkin_by']);?>
+			  <div class="col-xs-6 col-md-3 lineG"><strong><?php echo $this->translate('Check-In Date').'/'.$this->translate('By').'/'.$this->translate('Ip')?></strong> </div>
+			  <div class="col-xs-6 col-md-9 lineG"><?php echo $this->parceldetails['checkin_date'].' / '.$checkinBy['company_name']. ' / '.$this->parceldetails['checkin_ip'];?></div>
+		  </li> 
+	   <?php } ?>
+		 <?php if($this->parceldetails['checkin_status']=='1' && $this->parceldetails['email_notification']=='1'){?>
+			  <li class="odd">
+				  <div class="col-xs-6 col-md-3 lineG"><strong><?php echo $this->translate('Email Notification');?></strong> </div>
+				  <div class="col-xs-6 col-md-9 lineG"><?php echo $this->parceldetails['checkin_date'];?></div>
+			  </li> 
+		<?php } ?>
+		 <?php if($this->parceldetails['hub_status']=='1'){
+			    $hubdetails = $this->ModelObj->getHubDetails($this->parceldetails['barcode_id']);
+			 ?>
+			 <li class="odd">
+				  <div class="col-xs-6 col-md-3 lineG"><strong><?php echo $this->translate('Hub Scan Date').'/'.$this->translate('By').'/'.$this->translate('Ip');?></strong> </div>
+				  <div class="col-xs-6 col-md-9 lineG"><?php echo $this->parceldetails['checkin_date'] .' / '.$hubdetails['company_name'].' / '.$hubdetails['hub_checkin_ip'];?></div>
+
+			  </li> 		   
+	   <?php } ?>
+	   <?php if($this->parceldetails['edi_status']=='1'){
+		   ?>
+		   <li class="even">
+				  <div class="col-xs-6 col-md-3 lineG"><strong><?php echo $this->translate('Edi Date').'/'.$this->translate('By').'/'.$this->translate('Ip').'/'.$this->translate('Manifest No.');?></strong> </div>
+				  <div class="col-xs-6 col-md-9 lineG"><?php echo $this->parceldetails['edi_date'].' / / '.$this->parceldetails['manifest_number'];?></div>
+			  </li>
+	   <?php }if($this->parceldetails['customer_invoice_status']=='1' || $this->parceldetails['depot_invoice_status']=='1'){
+		   ?>
+		   <li class="odd">
+				  <div class="col-xs-6 col-md-2 lineG"><strong><?php echo $this->translate('Customer Invoice');?></strong> </div>
+				  <div class="col-xs-6 col-md-2 lineG"><?php echo $this->parceldetails['customer_invoice_number'];?></div>
+				 <?php if($this->ModelObj->Useconfig['level_id']!=5){ ?> 
+				 <div class="col-xs-6 col-md-2 lineG"><strong><?php echo $this->translate('Depot Invoice');?></strong></div>
+				  <div class="col-xs-6 col-md-2 lineG"><?php echo $this->parceldetails['depot_invoice_number'];?></div>
+				 <?php } ?>
+			  </li>
+	   <?php } ?>
+	   <?php if($this->parceldetails['delivery_status']=='1'){ ?>
+		   <li class="even">
+				  <div class="col-xs-6 col-md-3 lineG"><strong><?php echo $this->translate('Delivery Date').'/'.$this->translate('Received By').'/Signature';?></strong> </div>
+				  <div class="col-xs-6 col-md-3 lineG"><?php echo date( "Y-m-d H:i" , strtotime($this->parceldetails['delivery_date']) ) .' / '.$this->parceldetails['received_by'];?></div>
+				  <?php if(isset($this->parceldetails['signature']) && !empty($this->parceldetails['signature'])){ 
+
+		  			$innerfolder = (isset($this->parceldetails['deliveryassigneddate']) && !empty($this->parceldetails['deliveryassigneddate']) && $this->parceldetails['deliveryassigneddate'] != '0000-00-00 00:00:00' ) ? date('Y_m',strtotime($this->parceldetails['deliveryassigneddate']))."/" : false ;
+		  			if($innerfolder){
+		  				$imgsrc = DRIVER_SIGNATURE_LINK.$innerfolder.$this->parceldetails['signature'];
+		  			?>
+		  			 
+		  			<div class="col-xs-6 col-md-1 lineG deliverySignature" >
+		  				<a href="#myModal" role="button" data-toggle="modal"><img width="60" height="16" src="<?=$imgsrc?>"></a>
+		  			</div>
+
+		  		<?php } } ?>
+			  </li>
+	   <?php } ?>
+	   <?php if($this->ModelObj->Useconfig['level_id']!=5 && $this->ModelObj->Useconfig['level_id']!=10){?>
+	   <li class="odd">
+		  <?php if($this->parceldetails['checkin_status']=='1'){?>
+		  <div class="col-xs-6 col-md-2 lineG"><strong> <a href="javascript:void(0);" onclick="printaction(4,'<?php echo $this->parceldetails['barcode_id'];?>')"><i class="fa fa-bars fa-2x"></i><?php echo $this->translate('Print Performa Invoice') ?></a></strong> </div>
+		  <div class="col-xs-6 col-md-2 lineG"><strong> <a href="javascript:void(0);" onclick="printaction(3,'<?php echo $this->parceldetails['barcode_id'];?>')"><i class="fa fa-files-o fa-2x"></i><?php echo $this->translate('Print CN23+CP71') ?></a></strong> </div>
+		  <div class="col-xs-6 col-md-2 lineG"><strong> <a href="javascript:void(0);" onclick="openbox('<?php echo $this->url(array('controller'=>'Helpdesk','action'=>'addticket'),'default',true).'?barcode_id='.$this->parceldetails['barcode_id'];?>','','')"><i class="fa fa-ticket fa-2x"></i><?php echo $this->translate('Generate Ticket') ?></a></strong> </div>
+		  <div class="col-xs-6 col-md-2 lineG"><strong><a href="javascript:void(0);" onclick="openbox('<?php echo $this->url(array('controller'=>'Claim','action'=>'addclaim'),'default',true).'?barcode_id='.$this->parceldetails['barcode_id'];?>','','')"><i class="fa fa-folder-open fa-2x"></i><?php echo $this->translate('Add Claim') ?></a></strong></div>
+          <?php if($this->parceldetails['depot_invoice_status']=='0' && $this->parceldetails['customer_invoice_status']=='0'){?>
+		  <div class="col-xs-6 col-md-2 lineG"><strong><a href="javascript:void(0);" onclick="doactions(1,'<?php echo $this->parceldetails['barcode_id'];?>')"><i class="fa fa-undo fa-2x"></i><?php echo $this->translate('Revert Parcel') ?></a></strong></div>
+          <?php } ?>
+		 <div class="col-xs-6 col-md-2 lineG"><strong><a href="javascript:void(0);" onclick="printlabelwithCheckin('<?php echo $this->parceldetails['barcode_id'];?>',0,0,0)"><i class="fa fa-print fa-2x"></i><?php echo $this->translate('Print') ?></a></strong></div>
+		  <?php } ?>
+          <?php if($this->parceldetails['depot_invoice_status']=='0' && $this->parceldetails['customer_invoice_status']=='0'){?>
+			<div class="col-xs-6 col-md-2 lineG"><strong><a href="javascript:void(0);" onclick="doactions(2,'<?php echo $this->parceldetails['barcode_id'];?>')"><i class="fa fa-trash-o fa-2x"></i><?php echo $this->translate('Delete Parcel') ?></a></strong></div>
+		  <?php } ?>
+		
+		<?php if($this->parceldetails['checkin_status']=='0'){?>
+          <div class="col-xs-6 col-md-2 lineG"><strong><a href="<?=$this->url(array('controller'=>'Shipment','action'=>'editshipment'),'default',  true).'?shipment_id='.Zend_Encript_Encription::encode($this->parceldetails['shipment_id'])?>"><i class="fa fa-pencil-square-o fa-2x"></i><?php echo $this->translate('Edit') ?></a></strong></div>
+		<?php } 
+
+		if((isset($this->parceldetails['delivery_status']) && $this->parceldetails['delivery_status']!=1 ) && $this->parceldetails['checkin_status']==1 ){ ?>
+			<div class="col-xs-6 col-md-2 lineG">
+				<strong>
+					<a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller' => 'Parcel','action'=>'updatedelivery'),'default',true).'?search_barcode='.Zend_Encript_Encription::encode($this->Request["search_barcode"])."&f_name=".Zend_Encript_Encription::encode($this->parceldetails['forwarder_id']);?>','80%','80%')" title="Update Delivery"><i class='fa fa-plus-square fa-2x'></i>Update Parcel Delivery
+					</a>
+				</strong>
+			</div>
+			<?php } ?>
+			 
+				
+			 
+			<?php   if($this->ModelObj->Useconfig['level_id']==1 && empty($this->parceldetails['upload_file']) ) {  ?>
+			<div class="col-xs-6 col-md-4 lineG ">
+
+				<div class="choosefile">
+					<strong>
+					  <input type="file" name="document_id" id="document_id" onchange="UploadAdditionalDoc('<?=Zend_Encript_Encription::encode($this->parceldetails['barcode_id']) ?>',this.id)" class="chooser">
+						<a href="javascript:void(0);" title="Update Delivery"><i class='fa fa-plus-square fa-2x'></i> Add Documents
+						</a>
+					</strong>
+				</div>
+				<div class="loader">
+				<img src="<?=IMAGE_LINK."/loader.gif"?>"> 
+				</div>
+				
+			</div>
+			<?php } ?>
+
+			 
+	   </li>
+     <?php if($this->parceldetails['checkin_status']=='1'){?>	   
+		<li class="even">
+          <div class="col-xs-6 col-md-2 lineG" style="height:50px"><strong><?php echo $this->translate('Assign Error')?></strong> </div>
+		  
+          <div class="col-xs-6 col-md-3 lineG" style="height:50px"> 
+		  <select name="status_id" id="status_id" class="inputfield">
+		  <option value="">--[code]-Error Name--</option>
+		  <?php foreach($this->errolist as $errolist){?>
+				<option value="<?php echo $errolist['error_id']?>"><?php echo '['.$errolist['error_numeric'].']-'.$errolist['error_desc']?></option>
+		  <?php } ?>
+		  </select></div>
+		  
+          <div class="col-xs-6 col-md-7 lineG" style="height:50px"><input type="submit" name="assign_errors" id="assign_errors" value="Assign Error" class="btn btn-danger"></div>
+        </li>
+	   
+	   <div class="clear-all"></div>
+	 <div class="col-md-12 pad"><div class="input-title"><?php echo $this->translate('Event Details') ?></div></div>
+    
+	    <li class="odd">
+          <div class="col-xs-6 col-md-3 lineG" style="height:43px"><strong><?php echo $this->translate('Depot') ?>/<?php echo $this->translate('Customer') ?> </strong> </div>
+          <div class="col-xs-6 col-md-9 lineG" style="height:43px">
+		  <?php echo $this->parceldetails['forwarder_details']['CustomerAddress']['parent_company'].'/'.$this->parceldetails['forwarder_details']['CustomerAddress']['company_name']?>
+		  </div>
+        </li>
+		<li class="even">
+          <div class="col-xs-6 col-md-3 lineG" style="height:43px"><strong><?php echo $this->translate('Event Action') ?></strong> </div>
+          <div class="col-xs-6 col-md-3 lineG" style="height:43px">
+			 <select name="event_action_id" id="event_action_id" class="inputfield" onchange="if(this.value==1){$('#span_depot').show();$('#span_customer').hide();}else if(this.value==2){$('#span_depot').hide();$('#span_customer').show();}else{$('#span_depot').hide();$('#span_customer').hide();}">
+			 <option value="">-- Select Event Action --</option>
+				<option value="1">Return To Depot</option>
+				<option value="2">Return To Customer</option>
+			 </select>
+		  </div>
+		  <div class="col-xs-6 col-md-6 lineG" style="height:43px">
+		  <span  id="span_depot" style="display:none">
+		  <?php echo $this->translate('Depot') ?>  :   <?php echo $this->parceldetails['forwarder_details']['CustomerAddress']['parent_company'];?>
+		 </span>
+		  <span  id="span_customer" style="display:none">
+		  <?php echo $this->translate('Customer') ?>  :  <?php echo $this->parceldetails['forwarder_details']['CustomerAddress']['company_name']?>
+		  </span>
+		  </div>
+          
+        </li>
+		<li class="odd">
+          <div class="col-xs-6 col-md-3 lineG" style="height:50px"><strong><?php echo $this->translate('Information') ?></strong> </div>
+          <div class="col-xs-6 col-md-3 lineG" style="height:50px">
+		 <textarea cols="20" rows="2" name="eventInfo"></textarea>
+		  </div>
+		  <div class="col-xs-6 col-md-3 lineG" style="height:50px">
+		  <strong><?php echo $this->translate('Comment') ?></strong>
+		  </div>
+		  <div class="col-xs-6 col-md-3 lineG" style="height:50px">
+		  <textarea cols="20" rows="2" name="eventComment"></textarea>
+		  </div>
+          
+        </li>
+		<li class="odd">
+          <div class="col-xs-6 col-md-12 lineG" style="height:43px;text-align:center"><input type="submit" name="event" id="event" value="Add Event" class="btn btn-danger"></div>
+          
+        </li>
+		<div class="clear-all"></div>
+	 <?php if(!empty($this->eventhistories)){?>
+	    <li class="odd">
+          <div class="col-xs-6 col-md-3 lineG"><strong><?php echo $this->translate('Event Action') ?></strong> </div>
+          <div class="col-xs-6 col-md-3 lineG"><strong><?php echo $this->translate('Event Date') ?></strong> </div>
+		  <div class="col-xs-6 col-md-3 lineG"><strong><?php echo $this->translate('Info') ?></strong> </div>
+		  <div class="col-xs-6 col-md-3 lineG"><strong><?php echo $this->translate('Comment') ?></strong></div>
+        </li>
+		<?php foreach($this->eventhistories as $eventhistories){?>
+		  <li class="even">
+          <div class="col-xs-6 col-md-3 lineG" style="height:30px"><?php echo ($eventhistories['event_action']==1)?'Return to Depot':'Return To Customer';?></div>
+          <div class="col-xs-6 col-md-3 lineG" style="height:30px" ><?php echo $eventhistories['event_date']?></div>
+		  <div class="col-xs-6 col-md-3 lineG" style="height:30px"><?php echo $eventhistories['eventInfo']?></div>
+		  <div class="col-xs-6 col-md-3 lineG" style="height:30px"><?php echo $eventhistories['eventComment']?></div>
+        </li>
+		<?php } ?>
+	
+	  <?php } ?> 
+	
+     <div class="clear-all"></div>
+	 <?php if(isset($this->tracking_log)){?>
+	 <div class="col-md-12 pad"><div class="input-title"><?php echo $this->translate('Status Detail') ?></div></div>
+
+	    <li class="odd">
+          <div class="col-xs-6 col-md-3 lineG"><strong><?php echo $this->translate('Status Date') ?></strong> </div>
+          <div class="col-xs-6 col-md-3 lineG"><strong><?php echo $this->translate('Status Name') ?></strong> </div>
+		  <div class="col-xs-6 col-md-3 lineG"><strong><?php echo $this->translate('Assign Date') ?></strong> </div>
+		  <div class="col-xs-6 col-md-3 lineG"><strong><?php echo $this->translate('Action') ?></strong></div>
+        </li>
+		<?php foreach($this->tracking_log as $tracking_log){?>
+		  <li class="odd">
+          <div class="col-xs-6 col-md-3 lineG" style="height:40px"><?php echo $tracking_log['status_date']?></div>
+          <div class="col-xs-6 col-md-3 lineG" style="height:40px"><?php echo $tracking_log['error_desc']?></div>
+		  <div class="col-xs-6 col-md-3 lineG" style="height:40px"><?php echo $tracking_log['added_date']?></div>
+		  <div class="col-xs-6 col-md-3 lineG" style="height:40px"><?php echo $this->parceldetails['tracenr_barcode']?></div>
+        </li>
+		<?php } ?>
+	
+	  <?php } ?> 
+	  <div class="clear-all"></div>
+	 <?php if(!empty($this->old_address)){?> 
+	 <div class="col-md-12 pad"><div class="input-title"><?php echo $this->translate('Old Address') ?></div></div>
+	    <li class="even">
+          <div class="col-xs-6 col-md-2 lineG"><strong><?php echo $this->translate('Receiver') ?></strong> </div>
+          <div class="col-xs-6 col-md-2 lineG"><strong><?php echo $this->translate('Address') ?></strong> </div>
+		  <div class="col-xs-6 col-md-2 lineG"><strong><?php echo $this->translate('Zipcode') ?></strong> </div>
+		  <div class="col-xs-6 col-md-2 lineG"><strong><?php echo $this->translate('City') ?></strong> </div>
+		  <div class="col-xs-6 col-md-2 lineG"><strong><?php echo $this->translate('Phone') ?></strong></div>
+		  <div class="col-xs-6 col-md-2 lineG"><strong><?php echo $this->translate('Email Timestamp') ?></strong></div>
+        </li>
+		<?php foreach($this->old_address as $old_address){?>
+		  <li class="odd">
+          <div class="col-xs-6 col-md-2 lineG"><?php echo $old_address[RECEIVER]?></div>
+          <div class="col-xs-6 col-md-2 lineG"><?php echo $old_address[STREET].' '.$old_address[STREETNR].' '.$old_address[ADDRESS].' '.$old_address[STREET2]?></div>
+		  <div class="col-xs-6 col-md-2 lineG"><?php echo $old_address[ZIPCODE]?></div>
+		  <div class="col-xs-6 col-md-2 lineG"><?php echo $old_address[CITY]?></div>
+		  <div class="col-xs-6 col-md-2 lineG"><?php echo $old_address[PHONE]?></div>
+		  <div class="col-xs-6 col-md-2 lineG"><?php echo $old_address['email_sent_timestamp']?></div>
+        </li>
+		<?php } ?>
+	 <?php } }?> 
+	 
+	  <?php  } ?>
+
+	  	<?php if(isset($this->parceldetails['upload_file']) && !empty($this->parceldetails['upload_file'])){  ?>
+	 	 <li class="even">
+
+			<div class="col-xs-6 col-md-4 lineG ">
+
+				<div class="additionaldoc">
+				 <a href='<?=$this->baseUrl('Parcel/docdownload')."?doc_id=".Zend_Encript_Encription::encode($this->parceldetails['document_id'])?>' >  <i class='fa fa-file fa-2x'></i> Custom Document </a>  
+				 
+				<!-- <a href="<?=$this->baseUrl('Parcel/deleteadditionaldoc')."?doc_id=".Zend_Encript_Encription::encode($this->parceldetails['document_id'])."&search_barcode=".$this->Request['search_barcode'];?>" onclick="if(confirm('Are you sure, you want to delete this?'))return true; else return false;">
+					<span class="deleteme" > X </span>
+				</a> -->
+				</div>
+			</div></li>
+			<?php } ?>
+
+	<?php } ?>
+	 <?php if($this->parceldetails['delete_status']=='1'){ 
+	    $deletedinfo  = $this->ModelObj->getDeletedInf($this->parceldetails['barcode_id']);
+	 ?>	
+	 	 <li class="odd">
+          <div class="col-xs-6 col-md-3 lineG"><strong><?php echo $this->translate('Deleted Date/By/Ip')?></strong> </div>
+		  <div class="col-xs-6 col-md-9 lineG"><?php echo $deletedinfo['deleted_date'].' / '.$deletedinfo['company_name'].' / '.$deletedinfo['deleted_ip'];?></div>
+		 </li>
+	 <?php } ?>  
+  <?php }else{ ?>
+    <li class="even">
+          <div class="col-xs-12 col-md-12 lineG"><strong><?php echo $this->translate('Search Valid Parcel!') ?></strong> </div>
+	</li>
+	<?php } ?>
+ </ul>  
+ </div>
+ </form>
+ <div class="hiddenform">
+					<form action="<?=$this->baseUrl('Checkin/parceldetail')?>" method="post" id="hiddenform">
+						<input type="hidden" name="search_barcode" value="<?=$this->Request['search_barcode']?>">	
+					</form>
+				</div>
+<!-- Modal HTML -->
+
+<div id="myModal" class="modal fade">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                <h4 class="modal-title">Delivery Signature</h4>
+
+            </div>
+
+            <div class="modal-body">
+	            <div class="signbig">
+	            	
+	                <img width="500" height="300" src="<?=$imgsrc?>">
+	            </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>				
+ <script>
+ function doactions(action,barcode_id){
+    $.ajax({
+		   type: 'post',
+		   url: baseUrl+'Checkin/parceldooption',
+		   data: 'barcode_id='+barcode_id+'&doaction='+action,
+		   //dataType : 'json',
+		   // beforeSend: function() {
+		    // $('#ajax_loading').html("<img src='"+baseUrl+"public/admin_images/ajax_loading.gif'>");
+		    // $('#ajax_loading').show();
+		  // },
+		  success: function(msg){ //alert(msg);return false;
+		     window.location.reload();
+		  }
+	});	  
+ }
+ 
+ function printaction(action,barcode_id){
+    $.ajax({
+		   type: 'post',
+		   url: baseUrl+'Checkin/parceldooption',
+		   data: 'barcode_id='+barcode_id+'&doaction='+action,
+		  success: function(msg){
+		     window.open($.trim(msg));
+		  }
+	});	  
+ }
+
+  function UploadAdditionalDoc(bid,inputid) {
+	var filedata = $("#"+inputid)[0].files[0];
+	var formdata = new FormData();	
+	formdata.append('filedata',filedata);
+	formdata.append('uploadon',1);
+	formdata.append('bid',bid);
+
+	$.ajax({
+		url : baseUrl+'Parcel/additionaldocument',
+		type : "post",
+		dataType : 'json',
+		beforeSend:function(){
+			$(".loader").show();
+		},
+		data : formdata,
+		contentType:false,
+	    processData:false,
+	    cache:false,
+		success : function(res){
+			if(res.status == 1 ){
+				$("#hiddenform").submit();
+				 
+			}
+			alert(res.message);
+		},
+		complete : function(){
+			$(".loader").hide();
+		}
+	})
+
+
+ }
+
+ function baseName(str)
+{
+   var base = new String(str).substring(str.lastIndexOf('/') + 1); 
+    if(base.lastIndexOf(".") != -1)       
+        base = base.substring(0, base.lastIndexOf("."));
+   return base;
+}
+
+ </script>

@@ -1,0 +1,256 @@
+<div class="row row-broken">
+    <div class="col-sm-12 col_paddingtop">
+        <div class="tabs" id="seventh-tabs">
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-2">
+				    <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="input-title"><?php echo $this->translate('Add Claim')?></div>
+					  <div class="clear-all"></div>
+					</div>
+					<div id="tablegrid">
+					    <form method="post" name="addclaim" enctype="multipart/form-data">
+						   <input type="hidden" name="user_id" value="<?=$this->shipmentData['user_id']?>">
+							<table width="95%" border="0" style="margin:0 auto">
+								<tr>
+								 <th colspan="2" style="text-align:center"><b>Claim form for <?=(isset($this->shipmentData['tracenr_barcode']))? $this->shipmentData['tracenr_barcode']:''; ?></b></th>
+								</tr>
+								<?php foreach($this->claimQue as $claim_que){
+									if($claim_que['sub_question']==0){
+								?>
+							
+								
+								<tr id="questiontr_main_id_<?=$claim_que['question_id']?>">
+									<td><?= $claim_que['question']?>  <span class='error'>* </span></td>
+									<?php if($claim_que['question_type']=='select'){ ?>
+									<td>
+										<select name="questionmainselect_<?=$claim_que['question_id'] ?>" id="<?=$claim_que['question_id'] ?>" onchange="decideblockmainselect(this.id, this.value);" class="inputfield" required>
+										 <?php $question_options= commonfunction::explode_string($claim_que['question_options'],';'); ?>
+											<option value="">---<?= $claim_que['question'] ?>---</option>
+											<?php foreach($question_options as $options_val){
+											  $queoption_value = commonfunction::explode_string($options_val,'|'); 
+											if($options_val!=''){ ?>
+											<option value="<?=$queoption_value[1] ?>"><?=$queoption_value[0] ?></option>  
+									  <?php } } ?>
+										</select>
+									</td>  
+							 <?php  } 
+							 
+									else if($claim_que['question_type']=='radio'){ ?>
+									<td id="questiontd_id_<?=$claim_que['question_id'] ?>">	
+									<?php $question_options= commonfunction::explode_string($claim_que['question_options'],';'); ?>
+											<?php foreach($question_options as $options_val){
+											  $queoption_value = commonfunction::explode_string($options_val,'|'); 
+											if($options_val!=''){ ?>
+											<div class="control-group">
+												<label class="control control--radio"><input type="radio" name="questionmainradio_<?=$claim_que['question_id'] ?>" id="<?=$claim_que['question_id'] ?>" value="<?=$queoption_value[1]?>" class="printlabel" onclick="decidedatamainradio(this.id,this.value);" required><?=$queoption_value[0] ?><div class="control__indicator"></div></label>
+										   </div>
+									  <?php } } ?>
+									</td>
+							  <?php } 
+							  
+									else if($claim_que['question_type']=='text'){ ?>
+									<td id="questiontd_id_<?=$claim_que['question_id'] ?>">
+										<input type="text" name="questionfield_<?=$claim_que['question_id'] ?>" id="<?=$claim_que['question_id']?>" class="inputfield" required>
+									</td>
+							  <?php }  
+									
+									else if($claim_que['question_type']=='file'){ ?>
+									<td id="questiontd_id_<?=$claim_que['question_id'] ?>">
+										<input type="file" name="questionfield_<?=$claim_que['question_id'] ?>" id="<?=$claim_que['question_id'] ?>" class="inputfield" required> 
+									</td>
+							  <?php } ?>
+									
+								</tr>
+								
+							<?php } } ?>
+							
+								<?php foreach($this->claimQue as $claim_que){
+								if($claim_que['sub_question']>=1){ ?>
+							
+								<tr id="questiontr_id_<?=$claim_que['question_id']?>">
+										<td><?= $claim_que['question']; ?>  <span class='error'>* </span></td>
+										<?php if($claim_que['question_type']=='select'){ ?>
+										<td>
+											<select name="questionfield_<?=$claim_que['question_id'] ?>" id="<?=$claim_que['question_id'] ?>" class="inputfield" onchange="decideblockselect2(this.name, this.value);" required>
+											 <?php $question_options= commonfunction::explode_string($claim_que['question_options'],';'); ?>
+												<option value="">---<?= $claim_que['question'] ?>---</option>
+												<?php foreach($question_options as $options_val){
+												  $queoption_value = commonfunction::explode_string($options_val,'|'); 
+												if($options_val!=''){ ?>
+												<option value="<?=$queoption_value[1] ?>"><?=$queoption_value[0] ?></option>  
+										  <?php } } ?>
+											</select>
+										</td>  
+								 <?php  } 
+								 
+										else if($claim_que['question_type']=='radio'){ ?>
+										<td id="questiontd_id_<?=$claim_que['question_id'] ?>">	
+										<?php $question_options= commonfunction::explode_string($claim_que['question_options'],';'); ?>
+												<?php foreach($question_options as $options_val){
+												  $queoption_value = commonfunction::explode_string($options_val,'|'); 
+												if($options_val!=''){ ?>
+												<div class="control-group">
+													<label class="control control--radio"><input type="radio" name="questionfield_<?=$claim_que['question_id'] ?>" id="<?=$claim_que['question_id'] ?>" value="<?=$queoption_value[1]?>" class="printlabel" onclick="decidedataradio(this.name,this.value);" required><?=$queoption_value[0] ?><div class="control__indicator"></div></label>
+											   </div>
+										  <?php } } ?>
+										</td>
+								  <?php } 
+								  
+										else if($claim_que['question_type']=='text'){ ?>
+										<td id="questiontd_id_<?=$claim_que['question_id'] ?>">
+											<input type="text" name="questionfield_<?=$claim_que['question_id'] ?>" id="<?=$claim_que['question_id']?>" class="inputfield" required>
+										</td>
+								  <?php }  
+										
+										else if($claim_que['question_type']=='file'){ ?>
+										<td id="questiontd_id_<?=$claim_que['question_id'] ?>">
+											<input type="file" name="questionfield_<?=$claim_que['question_id'] ?>" id="<?=$claim_que['question_id'] ?>" class="inputfield" required>
+										</td>
+								  <?php } ?>
+										
+								</tr>
+								
+							<?php } } ?>
+								<tr id="submit_tr">
+									<td colspan="2"><input type="submit" name="addClaim" value="Add Claim" class="btn btn-danger btn-round"></td>
+								</tr>
+							
+							</table>
+						</form>	
+					</div>	
+				</div>
+				
+            </div>
+	    </div>
+    </div>
+</div>
+
+<style>
+	.control{float:none;line-height:25px;} #tablegrid input[type="radio"] {
+    display: block;} .error{color: red; font-size: 13px;}
+}
+</style>
+
+<script>
+$(document).ready(function(){
+$('#submit_tr').hide();
+$('[id^="questiontr_id_"]').hide();
+});
+
+function decideblockmainselect(select_id, select_val){
+
+if(select_val==''){
+	$('#submit_tr').hide();
+}
+else{
+	$('#submit_tr').show();
+}
+$.ajax({
+   type : "POST",
+   url  : baseUrl+'Claim/claimquebyoptionid',
+   data:  'question_id='+select_id+'&sub_question_option='+select_val,
+   success: function(response){
+    decideblockdata(response);
+  }
+});
+
+}
+
+function decideblockdata(data){
+	data = $.parseJSON(data);
+    $.each(data.claimallque, function() {
+	  $.each(this, function(key, val) { 
+	    if(key=='question_id'){
+		 $('#questiontr_id_'+val).hide();
+		 $('input[name=questionfield_'+val+']').attr("disabled", "disabled");
+         $('select[name=questionfield_'+val+']').attr("disabled", "disabled");
+		}
+	  });
+	});
+	
+	$.each(data.claimque, function() {
+	  $.each(this, function(key, val) { 
+	    if(key=='question_id'){
+		 $('#questiontr_id_'+val).show();
+		 $('input[name=questionfield_'+val+']').removeAttr("disabled");
+         $('select[name=questionfield_'+val+']').removeAttr("disabled");
+		}
+      });
+	});
+}
+
+function decideblockselect2(questionid,option_val){
+	if (questionid.indexOf("questionfield_") >= 0){
+	  var question_id = questionid.substr(questionid.indexOf("_") + 1);
+	    $.ajax({
+		   type : "POST",
+		   url  : baseUrl+'Claim/claimquebyoptionid',
+		   data:  'question_id='+question_id+'&sub_question_option='+option_val,
+		   success: function(data){
+		    data = $.parseJSON(data);
+			$.each(data.claimque, function() {
+			  $.each(this, function(key, val) {
+				if(key=='question_id'){ 
+				 $('#questiontr_id_'+val).show();
+				 $('input[name=questionfield_'+val+']').removeAttr("disabled");
+				 $('select[name=questionfield_'+val+']').removeAttr("disabled");
+				}
+			  });
+			});
+			
+			$.each(data.claimotherqsss, function() {
+			  $.each(this, function(key, val) { 
+				if(key=='question_id'){
+				 $('#questiontr_id_'+val).hide();
+				 $('input[name=questionfield_'+val+']').attr("disabled", "disabled");
+				 $('select[name=questionfield_'+val+']').attr("disabled", "disabled");
+				}
+			  });
+			});
+			
+		  }
+	    });
+	}
+}
+
+function decidedataradio(questionid,option_val){
+
+    if (questionid.indexOf("questionfield_") >= 0){
+	  var question_id = questionid.substr(questionid.indexOf("_") + 1);
+	  $.ajax({
+		   type : "POST",
+		   url  : baseUrl+'Claim/claimquebyoptionid',
+		   data:  'question_id='+question_id+'&sub_question_option='+option_val,
+		   success: function(data){
+		    data = $.parseJSON(data);
+			$.each(data.claimque, function() {
+			  $.each(this, function(key, val) {
+				if(key=='question_id'){ 
+				 $('#questiontr_id_'+val).show();
+				 $('input[name=questionfield_'+val+']').removeAttr("disabled");
+				 $('select[name=questionfield_'+val+']').removeAttr("disabled");
+				}
+			  });
+			});
+			
+			$.each(data.claimotherqsss, function() {
+			    $.each(this, function(key, val) { 
+					if(key=='question_id'){
+						$('#questiontr_id_'+val).hide();
+						$('input[name=questionfield_'+val+']').attr("disabled", "disabled");
+						$('select[name=questionfield_'+val+']').attr("disabled", "disabled");
+					}
+			    });
+			});
+			
+		  }
+	  });
+	}
+
+}
+
+function decidedatamainradio(que_id,que_val){
+	decideblockmainselect(que_id,que_val);
+}
+</script>
+

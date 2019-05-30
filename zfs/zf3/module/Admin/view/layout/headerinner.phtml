@@ -1,0 +1,31 @@
+<?php $session = new \Zend\Session\Container('CurrentUser'); 
+$this->layout()->setVariable('AdminSession',$session);
+
+?>
+<?= $this->doctype() ?>
+ 
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	 
+	
+	 <?= $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
+            ->prependStylesheet($this->basePath('lumino/css/dataTable.css'))
+            ->prependStylesheet($this->basePath('lumino/css/styles.css'))
+            ->prependStylesheet($this->basePath('lumino/css/datepicker3.css'))
+            ->prependStylesheet($this->basePath('JeeGoo/jeegoopopup/skins/basic/style.css'))
+            ->prependStylesheet($this->basePath('lumino/css/bootstrap.min.css'))
+        ?>
+        <?= $this->headScript()
+            ->prependFile($this->basePath('JeeGoo/jeegoopopup/jquery.jeegoopopup.1.0.0.js'))
+            ->prependFile('https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js')
+            ->prependFile('https://code.jquery.com/jquery-1.12.4.js')
+            ->prependFile($this->basePath('lumino/js/custom.js'))
+            ->prependFile($this->basePath('lumino/js/bootstrap.min.js'))
+            ->prependFile($this->basePath('lumino/js/jquery-1.11.1.min.js'))
+        ?>
+
+ 	
+</head>
+<body>

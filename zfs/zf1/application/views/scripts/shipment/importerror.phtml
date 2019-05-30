@@ -1,0 +1,97 @@
+<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+		<form method="post" action="" id="filter_form" name="filter_form">
+		<!-- filter start -->
+			<div class="filter">
+				<div class="input-title"><?php echo $this->translate("Search");?></div>
+				<div class="row row_nopadding decor-success" style="margin-left:0px !important;margin-right:0px !important;">
+				<div class="clear-all"></div>
+				<div class="col-sm-4 col_paddingtop">
+				<label><?php echo $this->translate("Country");?></label>
+				<select name="country_id" id="country_id" class="inputfield">
+			    <option value="">--<?php echo $this->translate("Country"); ?>--</option>
+				<?php foreach($this->countrylist as $countrylist){
+				  $selected = '';
+				  if(isset($this->Request['country_id']) && $countrylist['country_id']==$this->Request['country_id']){
+				    $selected = 'selected="selected"';
+				  }?>
+				  <option value="<?php echo $countrylist['country_id']?>" <?php echo $selected;?>><?php echo $countrylist['cncode'].'-'.$countrylist['country_name']?></option>
+				<?php } ?>
+              </select>
+				</div>
+				<?php if($this->ModelObj->Useconfig['level_id']==1 || $this->ModelObj->Useconfig['level_id']==11){?>
+				<div class="col-sm-5 col_paddingtop">
+				<label><?php echo $this->translate("Depot");?></label>
+				<select name="user_id" id="user_id" class="inputfield">
+			    <option value="">--<?php echo $this->translate("Select"); ?>--</option>
+				<?php foreach($this->depotlist as $depotlist){
+				  $selected = '';
+				  if(isset($this->Request['user_id']) && $depotlist['user_id']==$this->Request['user_id']){
+				    $selected = 'selected="selected"';
+				  }?>
+				  <option value="<?php echo $depotlist['user_id']?>" <?php echo $selected;?>><?php echo commonfunction::utf8Decode($depotlist['company_name'])?></option>
+				<?php } ?>
+              </select>
+				</div>
+				<?php } ?>
+				</div>
+		<!-- end filter -->
+		
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+				<div id="table">
+					<div class="header-row row"> 
+					<span class="cell"><input type="checkbox" name="checkAll" id="checkAll"/></span> 
+					<span class="cell"><?php echo $this->translate("Receiver");?></span> 
+					<span class="cell"><?php echo $this->translate("Street");?></span>
+					<span class="cell"><?php echo $this->translate("Reference");?></span> 
+					<span class="cell"><?php echo $this->translate("Country");?></span> 
+					<span class="cell"><?php echo $this->translate("Postalcode");?></span> 
+					<span class="cell"><?php echo $this->translate("Quantity");?></span> 
+					<span class="cell"><?php echo $this->translate("Service");?></span> 
+					<span class="cell"><?php echo $this->translate("Create Date");?></span>
+ 				<span class="cell"><?php echo $this->translate("Action");?></span>				
+					</div>
+					<?php if(count($this->records)>0){
+					
+						foreach($this->records as $index=>$data){
+							$class = (($index)%2==0) ? 'class="row odd"' :'class="row even"';?>
+						<div <?=$class?>>
+							<span class="cell" data-label="ID"><input type="checkbox" name="temp_id[]" value=<?=$data['temp_id'];?>"/></span>
+							<span class="cell" data-label="Receiver"><?=$data[RECEIVER];?></span>
+							<span class="cell" data-label="STREET"><?=$data[STREET];?></span>
+							<span class="cell" data-label="REFERENCE"><?= $data[REFERENCE]?></span>
+							<span class="cell" data-label="Country"><?= $data['country_name']?></span>
+							<span class="cell" data-label="Zipcode"><?=$data[ZIPCODE]?></span>
+							<span class="cell" data-label="Quantity"><?=$data[QUANTITY]?></span>
+							<span class="cell" data-label="Service"><?=$data['internal_code']?></span>
+							<span class="cell" data-label="Create Date"><?=$data['create_date']?></span>
+							<span class="cell" data-label="Action">
+							<a href="<?php echo $this->url(array('controller'=>'Shipment','action'=>'importedit'),'default',true).'?temp_id='.Zend_Encript_Encription::encode($data['temp_id']);?>"><img src="<?=IMAGE_LINK.'/edit-icon.png'?>" title="Edit Shipment"></a>&nbsp;|&nbsp;
+							<a href="javascript:void(0);"  onclick="printlabel('<?php echo $this->url(array('controller'=>'Shipment','action'=>'delete'),'default',true).'?temp_id='.Zend_Encript_Encription::encode($data['temp_id']);?>')"><img src="<?=IMAGE_LINK.'/delete.png'?>" title="Delete"></a></span>
+							</span> 
+						</div>
+					<?php }}else{?>
+						
+						<div class="row odd">
+							<span class="cell" colspan="6"><b><?=$this->translate("Recod not found !");?></b></span> 
+						</div>
+					<?php }?>	
+
+				</div>
+					 	
+			</form>	
+			</div></div></div>
+<script>
+function Addrouting(){
+   var user_id = $('#user_id').val();
+   if(user_id>0){
+       openbox('<?php echo $this->url(array('controller'=>'Routing','action'=>'addrouting'),'default',true);?>?user_id='+user_id,'70%','90%');
+   }else{
+     alert('Please select Depot first');return false;
+   }
+}
+function Editrouting(url){
+    openbox(url,'70%','90%');
+}
+</script>			

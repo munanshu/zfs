@@ -1,0 +1,64 @@
+<div class="row row-broken">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+			<div class="tab-content">
+			 <div class="tab-pane fade in active" id="tab-1">
+
+				<form method="post" action="" id="filter_form" name="filter_form">
+				<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+						<div class="input-title"><?php echo $this->translate('Wrong Address')?></div>
+						<div class="clear-all"></div>
+					</div>
+					<div  id="tablegrid">
+					<table width="100%" border="0" id="dataTableGridId">
+								<thead>
+								<tr> 
+									<th><?php echo $this->translate("Barcode");?></th>
+									<th><?php echo $this->translate("Customer");?></th>
+									<th><?php echo $this->translate("Forwarder");?></th> 
+									<th><?php echo $this->translate("Error Name");?></th>
+									<th><?php echo $this->translate("Assign Date");?></th>
+									<th><?php echo $this->translate("Last Response");?></th>
+									<th><?php echo $this->translate("Total Re-Send");?></th>
+									<th><?php echo $this->translate("Action");?></th>
+								</tr>
+						</thead>
+						<tbody>
+						<?php if(count($this->records)>0){
+							
+								foreach($this->records as $index=>$data){
+									 $class = ($index%2==0)?'even':'odd'; ?>
+									<tr <?=$class?>>
+										<td data-label="Parcel Number"><a href="javascript:void(0);" onclick="javascript:window.open('<?=$this->url(array('controller' => 'Parceltracking','action'=>'tracking'),'default',true).'?tockenno='.Zend_Encript_Encription::encode($data[BARCODE_ID]);?>','mywindow','status=0,resizable=1,width=1200,height=600,toolbar=0')" title="Track Parcel"><?= $data[TRACENR_BARCODE]?></a></td>
+										<td data-label="Customer"><?=commonfunction::utf8Decode($data['company_name']);?></td>
+										<td data-label="Forwarder"><?= $data['forwarder_name']?></td>
+										<td data-label="Error Name"><?= $data['error_desc']?></td>
+										<td data-label="Assign Date"><?= $data['status_date']?></td>
+										<td data-label="Last Resend"><?= $data['status_date']?></td>
+										<td data-label="Total Resend"><?=$data['resend_count'];?></td>
+										<td data-label="Action"></td>
+									</tr>
+								<?php }}else{?>
+									
+									<tr>
+									  <td><?=$this->translate('No Record Found!...')?></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+									</tr>
+									
+								<?php }?> </tbody>
+
+                     </table>
+                    </div>
+					
+					 </form>
+					</div>
+                </div>
+					<div>
+			  </div>
+			 </div>
+            </div>
+          </div>
+<script>
+$(document).ready(function() {
+	 commonDataTableView()
+} );
+</script>

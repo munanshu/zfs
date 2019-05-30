@@ -1,0 +1,87 @@
+
+<div class="row row-broken">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+			  <ul class="nav nav-tabs nav-justified">
+                <?=$this->ModelObj->Navigation(); ?>
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-1">
+					<form>
+					  <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="input-title"><?php echo $this->translate('Vehicle Report')?></div>
+					  <div class="clear-all"></div>
+					  
+					  <div class="col-sm-9 col_paddingx10"> <span class="input input--kaede"></span> 
+						</div>
+	
+					</div>
+					<div  id="tablegrid">
+					 <table width="100%" border="0" id="dataTableGridId">
+					    <thead>
+						<tr>
+								<th><?=$this->translate('Driver Name');?></th>
+								<th><?=$this->translate('Vehicle Number');?> </th>
+								<th><?=$this->translate('Time In');?></th>
+								<th><?=$this->translate('Time In');?></th>
+								<th><?=$this->translate('ISO Country CODE');?></th>
+								<th><?=$this->translate('Dialing Code');?></th>
+								<th><?=$this->translate('PostCode Length');?></th>
+								<th><?=$this->translate('No. of CN23');?></th>
+								<th><?=$this->translate('Status');?></th>
+								<th><?=$this->translate('Total Port');?></th>
+								<th><?=$this->translate('Action');?></th>
+						</tr>
+						</thead>
+						<tbody>
+						<?php
+						if(count($this->CountryDetail)>0){
+						 foreach($this->CountryDetail as $key=>$data){
+						 $class = ($key%2==0)?'even':'odd'; ?>
+						<tr class="<?php echo $class;?>">
+                        <td width="10%" data-label="Shop NAme"><?php echo $data['country_name']; ?></td> 
+						<td width="10%" data-label="Country"><?php echo $data['continent_name']; ?></td>
+						<td width="10%" data-label="Postal Code"><?php echo $data['cncode']; ?></td> 
+						<td width="5%" data-label="City Name"><?php echo $data['cncode3']; ?></td> 
+						<td width="10%" data-label="address"><?php echo $data['iso_code']; ?></td> 
+						<td width="10%" data-label="address"><?php echo $data['area_code']; ?></td>
+						<td width="5%" data-label="address"><?php echo ($data['postcode_length'] == 0) ? '' : $data['postcode_length']; ?></td>
+						<td width="10%" data-label="address"><?php echo $data['no_of_cn23']; ?></td>  
+						<td width="10%"><span class="cell" data-label="Status" id="statusSpan_<?=$key?>" ><?php if($data['Status'] == "1") {  ?><img src="<?=IMAGE_LINK?>/icon_active.gif" align="absmiddle" alt="Active" border="0" onclick="setStatus('<?=COUNTRIES?>','Status','0','country_id','<?=$data['country_id']?>','<?=$key?>');" title="Change Status into In-Active" class="changeStatus" />
+						<?php } else { ?>
+						<img src="<?=IMAGE_LINK?>/icon_inactive.gif" align="absmiddle" alt="Active" border="0" onclick="setStatus('<?=COUNTRIES?>','Status','1','country_id','<?=$data['country_id']?>','<?=$key?>');" title="Change Status into Active" class="changeStatus" />
+						<?php } ?>
+						</span></td>
+						
+						<td width="10%" data-label="Total Port"><?php if($data['TotalPort']>0) {?>
+						 <a onclick="openbox('<?=$this->url(array('controller'=>'Settings','action'=>'portlist'),'default',true).'?id='.$data['country_id']?>','60%','71%');" href="javascript:void(0);" title="Port List of <?php echo $data['country_name']?>"><?php echo $data['TotalPort']?></a>
+						 <?php } else { echo $data['TotalPort']; } ?></td>
+						<td width="10%" data-label="Action">
+						<a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Settings','action'=>'addeditport'),'default',true).'?id='.$data['country_id'].'&mode=add'?>','60%','48%');" class="fancybox" title="Add More Port"><i class="fa fa-plus-square"></i></a>|<a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Settings','action'=>'editcountry'),'default',true).'?id='.$data['country_id']?>','60%','80%');"> <i class="fa fa-edit"></i></a>|<a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Settings','action'=>'countrysetting'),'default',true).'?country_id='.Zend_Encript_Encription:: encode($data['country_id'])?>','60%','50%');"> <i class="fa fa-cog"></i></a>
+						
+						
+                        </td> 
+					</tr>
+						<?php }} else{ ?>
+						<tr>
+						  <td data-label="No Data" colspan="7"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td>
+						  </tr>
+						<?php }
+						?></tbody>
+
+                     </table>
+                    </div>
+					
+					 </form>
+					</div>
+                </div>
+					<div>
+			  </div>
+			 </div>
+            </div>
+          </div>
+<script>
+$(document).ready(function() {
+	 commonDataTableView()
+} );
+</script>

@@ -1,0 +1,80 @@
+
+<div class="col-md-2"></div>
+	<div class="col-md-8">
+		<div id="table"><div class="header-row row">
+		<span class="cell" style="text-align:center"><?=$this->ForwarderName.' '.$this->translate("Forwarder Country");?></span>
+</div></div>
+	
+	
+	<div class="tab-content">
+		<div class="tab-pane fade in active" id="tab-1">
+
+			<form method="post" action="" id="senderaddresscountry" name="senderaddresscountry">
+					
+				<div id="tablegrid">
+				 	<table width="100%" border="0" id="example">
+						<thead>
+							<tr>
+								<td style="text-align:center"><b><?=$this->translate('All Countries');?></b></td>
+								<td colspan="2" style="text-align:center"><b><?=$this->translate('Selected Countries');?></b></td>
+							</tr>	
+						</thead>
+					
+						<tbody>
+							<tr>
+								<?php  $countries = $this->CountryDetail ;
+									$deletedata = array();
+								$countryedit = $this->ForwarderCountry;
+								foreach($countryedit as $unsetdata){
+									$deletedata[] = $unsetdata['country_id'];
+								
+								}
+								 ?>
+										 
+								<td style="width:45%; text-align:center"><select name="country[]" id="boxa" multiple="multiple" style="width:80%;height:200px;">
+									<option value="">-- Select Country --</option>    
+									
+									<?php foreach($countries as $value){
+									if(!in_array($value['country_id'], $deletedata)){?>
+									<option value="<?=$value['country_id']; ?>"><?=$value['country_code_name'];?>
+									</option>
+									<?php } } ?>
+								</td></select>
+								
+								<td style="width:10%; vertical-align:middle"> 
+									<input type="button" name="right" class="inputbutton" value="  >>>"  onclick="javascript:addvalue();" ><br />
+									<input type="button" name="left" class="inputbutton" value="  <<<"  onclick="javascript:removevalue();" >
+								</td>
+								  
+								<td style="width:45%; text-align:center"><select name="country_id[]"  id="boxb" multiple="multiple" style="width:80%;height:200px;">
+									
+									<?php foreach($countryedit as $sendercountry){ ?>  
+										<option  selected="selected" value="<?php echo $sendercountry['country_id']; ?>"><?php  echo  $sendercountry['country_name']; ?></option>
+									<?php } ?>
+								</td></select>
+							</tr>
+							
+							<tr>
+								<td colspan="3" style="text-align:center"><input type="submit" name="submit" class="btn btn-danger btn-round" value="Saved Country">
+								</td>
+							</tr>
+						</tbody>
+				 	</table>
+				</div>
+			</form>	
+		</div>
+	</div>
+
+
+	
+<script type="text/javascript">
+
+ function addvalue(){
+    return !$('#boxa option:selected').remove().appendTo('#boxb'); 
+ }
+
+ function removevalue(){
+    return !$('#boxb option:selected').remove().appendTo('#boxa');
+ }
+
+</script>	

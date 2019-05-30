@@ -1,0 +1,114 @@
+			<div class="row row-broken">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+              <ul class="nav nav-tabs nav-justified">
+              </ul>
+
+	<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+			<!-- filter start -->
+			<div class="filter">
+				<div class="input-title"><?php echo $this->translate("Customer Scan")?></div>			
+				<div class="row row_nopadding decor-success" style="margin-left:0px !important;margin-right:0px !important;">
+							<div class="row row_nopadding" id="scan_main" style="backGround-color:#ffffff;margin-left:0px !important;margin-right:0px !important;margin-bottom:5px !important;padding-bottom: 10px;">
+			     <img src="<?=IMAGE_LINK?>/ajax_loading.gif" id="search_image" name="search_image" title="loader" style="display:none;margin-left: 40%;"/>	
+				<div class="single_input">
+				<span id="errbarcode" class="err"></span>
+					<input type="text" name="barcode" id="barcode" onkeypress="customerscan(event);" class="inputfield" placeholder="Enter Barcode"/>
+				</div>
+								
+				</div>
+			  <form method="post" action="" id="customer" name="customer">
+				<div class="clear-all"></div>
+				<?php if($this->ModelObj->Useconfig['level_id']!=5 && $this->ModelObj->Useconfig['level_id']!=10){?>
+				<div class="col-sm-1 col_paddingx10">Customer:</div>
+				<div class="col-sm-2 col_paddingx10"><?php 
+				echo  $this->getHelper('HtmlSelect')->getSelect('filter_customer',$this->customerList,'user_id','company_name',(isset($this->ModelObj->getData['filter_customer'])? $this->ModelObj->getData['filter_customer']:''),true,array('class'=>'selectbox')); 
+				?></div>
+				<?php } ?>
+				<div class="col-sm-1 col_paddingx10">Country:</div>
+				<div class="col-sm-2 col_paddingx10">
+					<?=$this->getHelper('HtmlSelect')->getSelect('filter_country',$this->countryList,'country_id','country_code_name',(isset($this->ModelObj->getData['filter_country'])? $this->ModelObj->getData['filter_country']:''),true,array('class'=>'selectbox'));?>
+				</div>
+				<?php if($this->ModelObj->Useconfig['level_id']!=5 && $this->ModelObj->Useconfig['level_id']!=10){?>
+				<div class="col-sm-1 col_paddingx10">Forwarder:</div>
+				<div class="col-sm-2 col_paddingx10">
+				<?=$this->getHelper('HtmlSelect')->getSelect('forwarder_filter',$this->forwarderList,'forwarder_id','forwarder_name',(isset($this->ModelObj->getData['forwarder_filter'])? $this->ModelObj->getData['forwarder_filter']:''),true,array('class'=>'selectbox'));?>
+				</div>
+				<?php } ?>
+				<div class="col-sm-2 col_paddingx10">
+					<input class="btn btn-danger" name="sunmiy" type="submit" value="search"/>
+			  	</div>
+				</div>
+			</div>
+			
+		<!-- end filter -->
+		
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+				<div class="col-sm-3 col_paddingtop" style="margin-bottom: 7px;">
+				<select name="batchcheckin" class="inputfield" id="batchcheckin" onChange="javascript:if(this.value == 'CustomerScan') this.form.submit(); else return false; " >
+					<option value="" selected="selected"><?php echo $this->translate('With Selected');?></option>
+					<option value="CustomerScan"><?php echo $this->translate('Customer Scan');?></option>
+				</select>						
+			</div>		
+				<div id="table">
+					<div class="header-row row">
+					    <span class="cell primary"><input name="check_uncheck_all" id="check_uncheck_all" onchange="check_uncheckALL(this)" type="checkbox"></span>
+						<span class="cell"><?php echo $this->translate("Parcel Number");?></span>
+						<span class="cell"><?php echo $this->translate("No. of Parcels");?></span>
+						<span class="cell"><?php echo $this->translate("Customer");?></span> 
+						<span class="cell"><?php echo $this->translate("Country");?></span>
+						<span class="cell"><?php echo $this->translate("Forwarder");?></span>
+						<span class="cell"><?php echo $this->translate("Weight (kg)");?></span> 
+						<span class="cell"><?php echo $this->translate("Services");?></span>
+						<span class="cell"><?php echo $this->translate("Additional Services");?></span>
+						<span class="cell"><?php echo $this->translate("Create Date");?></span>
+						<span class="cell"><?php echo $this->translate("Reference");?></span>
+					</div>
+					
+					<?php if(count($this->CustomerScanList['Records'])>0){
+					
+						foreach($this->CustomerScanList['Records'] as $index=>$data){
+							$class = (($index)%2==0) ? 'class="row odd"' :'class="row even"';
+						?>
+						<div <?=$class?>>
+							<input type="radio" name="expand" class="res_dio">
+							<span class="cell" data-label="Batch CheckIn"><input type="checkbox" name="barcode_id[]" value="<?= $data[BARCODE_ID]?>" class="check_uncheck_class" /></span>
+							<span class="cell" data-label="Parcel Number"><?= $data[BARCODE]?></span>
+							<span class="cell" data-label="No. of Parcel">
+							<?php 
+								if ($data[QUANTITY]<=1) {
+									$parcel_no = 1;
+								} else {
+									$parcel_no = commonfunction::sub_String($data[REFERENCE],-1) + 1;
+								}?>
+							<?=$parcel_no.'/'.$data[QUANTITY]?></span>
+							<span class="cell" data-label="Customer"><?= $data['company_name']?></span>
+							<span class="cell" data-label="Country"><?= $data[COUNTRY_NAME]?></span>
+							<span class="cell" data-label="Forwarder"><?= $data['forwarder_name']?></span> 
+							<span class="cell" data-label="Weight (kg)"><?=$data[WEIGHT]?></span>
+							<span class="cell" data-label="Services"><?=$data['service_name']?></span>
+							<span class="cell" data-label="Additional Services"><?=$data[ADDSERVICE_ID]?></span>
+							<span class="cell" data-label="Create Date"><?=date('F-d-Y',strtotime($data['create_date']))?></span>
+							<span class="cell" data-label="Reference"><?=$data[REFERENCE]?></span>
+							</span>
+						</div>
+					<?php }}else{?>
+						<div class="row odd">
+							<span class="cell"<b><?=$this->translate("Recod not found !");?></b> </span>
+						</div>
+					<?php }?>
+				</div>
+					<div class="unit control">
+                      <div class="nav-btns pull-right"> <?php echo commonfunction::PageCounter($this->CustomerScanList['Total'],$this->ModelObj->getData)?>
+                      </div>
+                    </div>
+				</form>	
+				</div>
+    </div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="<?php echo $this->baseUrl('public/js/shipmentmanager.js');?>"></script>

@@ -1,0 +1,112 @@
+<style> 
+body{ background:#ffffff !important}
+</style>
+<div >
+          <div>
+            <div class="tabs" id="seventh-tabs">
+			  
+              <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-6">
+					<form>
+					  <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="input-title"><?php echo $this->translate('Update Webshop Order')?></div>
+					  <div class="clear-all"></div>
+					</div>
+					<div  id="tablegrid">
+					<div class="col-sm-12 col_paddingx10"><span id="error_message" name="error_message" style="color: red;"></span></div>
+					<input type="hidden" name="oldorder_number" id="oldorder" value="<?=$this->orderlist[0]['order_number']; ?>" />
+					<input type="hidden" name="order_id" id="order_id" value="<?=$this->ModelObj->getData['order_id']; ?>" />
+					<?php if($this->ModelObj->Useconfig['level_id']!=5) { 
+						$customerId = $this->orderlist[0]['user_id'];?>
+						<div class="col-sm-3 col_paddingx10"><b><?=$this->translate('Customer Name:');?> </b></div>
+						<div class="col-sm-3 col_paddingx10" data-label="Customer Name"><?php echo $this->orderlist[0]['company_name'];?></div> 
+						<div class="col-sm-3 col_paddingx10"><b><?=$this->translate('Order Number:');?></b></div>
+                        <div class="col-sm-3 col_paddingx10" data-label="Order Number"><input type="text" name="order_number" class="inputfield" id="order_no" onchange="return checkorder('<?=$this->orderlist[0]['order_id']?>');"  required value="<?=$this->orderlist[0]['order_number']?>"></div>
+						<?php } else { 
+						$customerId = $this->ModelObj->Useconfig['user_id']; ?>
+						<div class="col-sm-3 col_paddingx10"><b><?=$this->translate('Order Number:');?></b></div>
+                        <div class="col-sm-3 col_paddingx10" data-label="Order Number"><input type="text" name="order_number" class="inputfield" id="order_no" onchange="return checkorder('<?=$this->orderlist[0]['order_id']?>');"  required value="<?=$this->orderlist[0]['order_number']?>"></div>
+						<?php } ?>
+						<input type="hidden" name="user_id" id="customer_id" value="<?=$customerId?>" />
+						<input type="hidden" name="added_row" id="added_row" value="<?=count($this->orderlist)?>"/>
+						<input type="hidden" name="total_row" id="total_row" value="<?=count($this->orderlist)?>"/>
+					 <table width="100%" border="0" id="dataTableGridId">
+					    <thead>
+						<tr>
+								<th><?=$this->translate('Image');?></th>
+								<th><?=$this->translate('Product');?> </th>
+								<th><?=$this->translate('Quantity');?></th>
+								<th><?=$this->translate('Unit Price');?></th>
+								<th><?=$this->translate('Total Price');?></th>
+								<th><?=$this->translate('Action');?></th>
+						</tr>
+						</thead>
+						<tbody>
+						<?php
+						$subtotal = 0;
+						$i = 1;
+						if(count($this->orderlist)>0){
+						 foreach($this->orderlist as $key=>$order){
+						 $class = ($key%2==0)?'even':'odd';
+							$thumbimgPath = (!empty($order['image']) && file_exists(ROOT_PATH."/public/webshop_product/thumbs/".$order['image'])) ? $order['image'] :'';
+							if($thumbimgPath==''){
+								$imgPath = (!empty($order['image']) && file_exists(ROOT_PATH."/public/webshop_product/".$order['image'])) ? $order['image'] :'no_image.jpg';
+							}	
+						$subtotal += $order['price'];?>
+						<tr id='row_id_<?= $i?>' class="<?php echo $class;?>">
+						<input type='hidden' name='product[]' id='product<?= $i;?>' value='<?= $order['product_id'];?>'/>
+						<input type='hidden' name='price[]' id='price<?= $i;?>' value='<?= $order['price'];?>'/>
+						<?php if($thumbimgPath!=''){ ?>
+						<td data-label="Image"><img src="<?=BASE_URL.'/public/webshop_product/thumbs/'.$thumbimgPath?>" width='50px' height='50px'></td>
+						<?php }else{?>
+						<td data-label="Image"><img src="<?=BASE_URL.'/public/webshop_product/'.$imgPath?>" width='50px' height='50px'></td>
+						<?php }?>
+						<td data-label="Product Name"><?=$order['product_name']; ?></td> 
+						<td data-label="Quantity"><div class="col-sm-4 col_paddingx10"><input type='text' class="inputfield" name='quantity[]' id='quantity<?= $i;?>' style="width: 90px;" value='<?= $order['quantity'];?>' onblur='return getprice("<?= $i; ?>");' onkeyup='return getprice("<?= $i; ?>");'/></div></td>  
+                        <td data-label="Unit Price">&euro; <?=number_format($order['unitprice'],2)?></td>
+						<td name='total_price[]' id='total_price<?= $i;?>'>&euro; <?= number_format($order['price'],2);?></td>						
+						<input type='hidden' name='total[]' id='total<?= $i;?>' value='<?= number_format($order['price'],2);?>'/>
+						<td data-label="Action">
+							<?php if(count($this->orderlist)>1){?>
+							<a title="Remove" name='remove<?= $i;?>' id='remove<?= $i;?>' onclick='return hiderow("<?= $i;?>","<?= $order['product_id'];?>");'><i class="fa fa-trash fa-2x" title="Delete Product"></i></a>
+							<?php }?>
+						</td>
+							<input type='hidden' name='old_product_id[<?=$order['product_id']?>]' id='product_id<?= $order['product_id'];?>' value='<?= $order['product_id'];?>'/>
+
+						</tr>
+						<?php $i++; } ?>
+						<tr>
+						<td>&nbsp</td>
+						<td>&nbsp</td>
+						<td>&nbsp</td>
+						<td align="right"><b><?=$this->translate('Sub-Total');?></b></td>
+						<td align='center' name='subtotal' id='subtotal'>&euro;<?=number_format($subtotal,2)?></td>
+						<input type='hidden' name='alltotal' id='alltotal' value='<?= number_format($subtotal,2);?>'/>
+						<td align="center">
+							<input type="submit" name="editshoporder" id="editshoporder" class="btn btn-danger btn-round" onclick="return validation();" value="Update" />
+						</td>
+						</tr><?php } else{ ?>
+						<tr>
+						  <td data-label="No Data" colspan="7"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td>
+						  </tr>
+						<?php }
+						?></tbody>
+
+                     </table>
+                    </div>
+					
+					 </form>
+					</div>
+                </div>
+					<div>
+			  </div>
+			 </div>
+            </div>
+          </div>
+<script>
+$(document).ready(function() {
+	 commonDataTableView();
+} );
+   
+</script>
+<script src="<?php echo $this->baseUrl('public/js/supplies.js');?>"></script>

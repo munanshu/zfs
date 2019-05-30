@@ -1,0 +1,13 @@
+<?php include 'addshipment.phtml'; ?>
+<script>
+onclickservice('<?php echo $this->records[SERVICE_ID];?>','<?php echo $this->records[FORWARDER_ID];?>','<?php echo $this->records['original_forwarder'];?>');
+validatepostcode('<?php echo $this->records[ZIPCODE];?>');
+PostalcodeChange('<?php echo $this->records[ZIPCODE];?>','<?php echo $this->records[STREET];?>','<?php echo $this->records[CITY];?>');
+fieldvalidate('<?php echo $this->records[WEIGHT];?>','weight');
+onweightchange();
+onclickaddservice('<?php echo $this->records[ADDSERVICE_ID];?>','<?php echo $this->records[FORWARDER_ID];?>','<?php echo $this->records['original_forwarder'];?>');
+fieldvalidate('<?php echo $this->records[RECEIVER];?>','rec_name');
+fieldvalidate('<?php echo $this->records[STREETNR];?>','rec_streetnr');
+validateEmail();
+SenderAddress('<?php echo $this->records['senderaddress_id'];?>');
+</script>

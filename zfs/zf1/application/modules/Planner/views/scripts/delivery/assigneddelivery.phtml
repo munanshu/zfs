@@ -1,0 +1,106 @@
+
+	
+		<div class="row row-broken">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+              <ul class="nav nav-tabs nav-justified">
+              </ul>
+
+	<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+			<form method="post" action="" id="customer" name="customer">
+			<!-- filter start -->
+			<div class="filter">
+				<div class="input-title"><?php echo $this->translate("Assign Delivery")?></div>
+				
+				<div class="row row_nopadding decor-success" style="margin-left:0px !important;margin-right:0px !important;">
+
+				<div class="clear-all"></div>
+				<div class="col-sm-3 col_paddingtop">
+				<label><?php echo $this->translate("Customer")?>:</label><?php 
+				echo  $this->getHelper('HtmlSelect')->getSelect('filter_customer',$this->customerList,'user_id','company_name',(isset($this->ModelObj->getData['filter_customer'])? $this->ModelObj->getData['filter_customer']:''),true,array('class'=>'selectbox')); 
+				?></div>
+				<div class="col-sm-3 col_paddingtop">
+				<label><?php echo $this->translate("Driver")?>:</label>
+		        <?php echo  $this->getHelper('HtmlSelect')->getSelect('filter_driver',$this->driver_list,'driver_id','driver_name',(isset($this->ModelObj->getData['filter_driver'])? $this->ModelObj->getData['filter_driver']:''),true,array('class'=>'selectbox','onchange'=>'this.form.submit()'));?></div>
+				
+				<div class="col-sm-3 col_paddingtop">
+				<label><?php echo $this->translate("Parcel No")?>.:</label>
+				<input type="text" class="selectbox" name="filter_barcode" id="filter_barcode" class="look" value="<?=(isset($this->ModelObj->getData['filter_barcode']))?$this->ModelObj->getData['filter_barcode']:'';?>" />
+				</div>
+				<div class="col-sm-3 col_paddingtop">
+					<input class="btn btn-danger" name="sunmiy" type="submit" value="search"/>
+					<input class="btn btn-danger" name="driver_manifest" type="submit" value="Driver Manifest"/>
+			  	</div>
+				<div class="col-sm-12 col_paddingtop"></div>
+				</div>
+			</div>
+			
+		<!-- end filter -->
+		<div class="col-sm-3 col_paddingtop">
+		 <label><strong><?php echo $this->translate("Re-Assign Driver"); ?></strong></label>
+			<?php echo  $this->getHelper('HtmlSelect')->getSelect('driver_id',$this->driver_list,'driver_id','driver_name',(isset($this->ModelObj->getData['driver_id'])? $this->ModelObj->getData['driver_id']:''),true,array('class'=>'selectbox','onchange'=>'this.form.submit()')); ?>
+		</div>
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+						
+				<div id="table">
+					<div class="header-row row">
+						<span class="cell primary"><input type="checkbox" id="barcodeId" class="check_uncheck_class" onclick="check_uncheckALL(this)"/></span> 
+
+						<span class="cell primary"><?php echo $this->translate("Customer Name");?></span>
+						<span class="cell"><?php echo $this->translate("Depot Manager");?></span>
+						<span class="cell"><?php echo $this->translate("Parcel No.");?></span> 
+						<span class="cell"><?php echo $this->translate("Weight");?></span>
+						<span class="cell"><?php echo $this->translate("Assign Date");?></span>
+						<span class="cell"><?php echo $this->translate("Deliver Address");?></span>
+						<span class="cell"><?php echo $this->translate("Expected Delivery Date");?></span>
+						<span class="cell"><?php echo $this->translate("Expected Delivery Time");?></span>
+						<span class="cell"><?php echo $this->translate("Assigned To Driver");?></span> 
+						<!--<span class="cell"><?php echo $this->translate("Reassign Driver");?></span> -->
+					</div>
+					
+					<?php if(count($this->records)>0){
+					
+						foreach($this->records as $index=>$data){
+							$class = (($index)%2==0) ? 'class="row odd"' :'class="row even"';
+							$background = '';
+							if($data['shipment_type']==2){
+								$background = 'style="background-color:tomato"';
+							 }
+						 ?>
+						<div <?=$class?> <?php echo $background;?>>
+							<input type="radio" name="expand" class="res_dio">
+							<?php $date = (!empty($data['delivery_date']) && $data['delivery_date']!='0000-00-00 00:00:00')?date('Y-m-d',strtotime($data['delivery_date'])):'0000-00-00';
+								  $time = (!empty($data['delivery_date']) && $data['delivery_date']!='0000-00-00 00:00:00')?date('h:i',strtotime($data['delivery_date'])):'00:00:00';  ?>
+							<span class="cell" data-label="Selected"><input type="checkbox" id="barcodeId" class="check_uncheck_class" name="barcode_id[]" value="<?=$data['barcode_id'].'&'.$data['shipment_type']?>"/></span>
+							<input type="hidden" name="manifest_data[<?php echo $data['barcode_id']?>]" value="<?=$data['barcode_id'].'@'.$data['shipment_type'].'@'.$data['delivery_address'].'@'.$data['weight'].'@'.$data['delivery_date'].'@'.$data['user_id'].'@'.$data['barcode']?>">
+							<span class="cell" data-label="Customer Manager"><?= $data['company_name']?></span>
+							<span class="cell" data-label="Depot Manager"><?= $data['depot_name']?></span>
+							<span class="cell" data-label="Parcel No."><?= $data['barcode']?></span>
+							<span class="cell" data-label="Weight"><?= $data['weight']?></span>
+							<span class="cell" data-label="Create Date"><?= $data['assign_date']?></span> 
+							<span class="cell" data-label="Reciever Address"><?= nl2br(str_replace('^',"\n",str_replace('^^','^',commonfunction::utf8Decode($data['delivery_address']))))?></span>
+							<?php  $url = $this->url(array('controller'=>'Delivery','action'=>'setdatetime'),'default',true)
+							.'?date='.$date.'&time='.$time.'&token='.Zend_Encript_Encription :: encode($data['barcode_id']).'&shipment_type='.$data['shipment_type'];?> 
+							<span class="cell" data-label="Reciving Date"><a href="javascript:void(0);" onclick="openbox('<?=$url?>','30%','60%');"><?=($date!='0000-00-00')?$date:'Set Date'?></i></a></span>
+							<span class="cell" data-label="Reciving Time"><a href="javascript:void(0);" onclick="openbox('<?=$url?>','30%','60%');"><?=($time!='00:00:00')?$time:'Set Time'?></i></a></span>
+							</span>
+							<span class="cell" data-label="Driver Name"><?= $data['driver_name']?></span>
+								</div><?php echo $this->paginator; ?>
+					<?php }}else{?>
+						<div class="row odd">
+							<span class="cell"<b><?=$this->translate("Recod not found !");?></b> </span>
+						</div>
+					<?php }?>	
+				</div>
+				</form>	
+				</div>
+    </div>
+			</div>
+		</div>
+	</div>
+</div>
+	
+	
+<script src="<?php echo $this->baseUrl('public/js/schedule.js');?>"></script>

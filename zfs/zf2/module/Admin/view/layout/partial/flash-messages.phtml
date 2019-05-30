@@ -1,0 +1,38 @@
+<?php /* ?>
+<div class="server-error">
+<?php
+$flashMessage = $this->flashMessenger()->getMessages();
+
+if (count($flashMessage)) :
+    ?>
+<ul>
+    <?php 
+        foreach ($flashMessage as $msg) : 
+            foreach ($msg as $type => $message) :
+    ?>
+        <li><span class="<?php echo $type; ?>"><?php echo $message; ?></span></li>
+    <?php endforeach; ?>
+    <?php endforeach; ?>
+</ul>
+<?php endif; ?>
+<?php if(isset($this->messages)) : ?>
+<ul>
+    <?php foreach ($this->messages as $type => $msg) : ?>
+    <li><span class="<?php echo $type; ?>"><?php echo $msg; ?></span></li>
+    <?php endforeach; ?>
+</ul>
+<?php endif; ?>
+</div>
+<?php */ ?>
+
+
+<!-- bg-primary => empty-message,bg-success => checkmark,bg-warning => flag,bg-danger => cancel -->
+<div class="row">
+            <div class="col-lg-12">
+                 
+                <div class="alert bg-<?=$this->msg_type;?>" role="alert">
+                    <svg class="glyph stroked <?=$this->class1;?>"><use xlink:href="#stroked-<?=$this->class1;?>"></use></svg> <?=$this->msg;?> <a href="javascript:void(0)" class="pull-right"><span onclick="$(this).parents('.alert').hide()" class="glyphicon glyphicon-remove"></span></a>
+                </div>
+                 
+            </div>
+        </div> 

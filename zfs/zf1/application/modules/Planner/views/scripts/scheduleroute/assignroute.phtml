@@ -1,0 +1,176 @@
+
+<div class="row row-broken">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+			  
+              <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-6">
+					<form  name="listFrom" id="listForm" action="" method="post">
+					  <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="input-title"><?php echo $this->translate('Assign Route')?></div>
+					  <div class="clear-all"></div>
+					  <div class="col-sm-3 col_paddingx10">
+						<input type="submit" class="btn btn-danger btn-round"  name="Copy" value="Copy Last week Schedule" style="margin-top: 0px;"/>
+					  </div>
+					  	<div class="col-sm-2 col_paddingx10">
+									Next Schedule:
+								  </div>
+							<div class="col-sm-3 col_paddingx10">
+								<label for="input-2" class="input__label input__label--kaede">
+								<span class="input input--kaede">
+								<?php $nextdates = $day = date('l',strtotime(date('Y-m-d')));
+									 $date1 = ($day=='Saturday' || $day=='Sunday')?date("Y-m-d",strtotime('next monday+7 days')):date("Y-m-d",strtotime('next monday'));
+									 $date1_to = date('Y-m-d',strtotime("+4 days", strtotime($date1)));
+									 $date2 = date('Y-m-d',strtotime("+7 days", strtotime($date1)));
+									 $date2_to = date('Y-m-d',strtotime("+4 days", strtotime($date2)));?>
+						 
+									  <select name="nextweek" onchange="chnagedate(this.value)">
+										<option value=""><?=$this->translate('Schedule Next Week');?></option>
+										<option value="<?php echo $date1?>" <?php echo (isset($this->ModelObj->getData['nextweek']) && $date1==$this->ModelObj->getData['nextweek'])?'selected="selected"':'';?>><?php echo $date1.' To '.$date1_to; ?></option>
+										<option value="<?php echo $date2?>" <?php echo (isset($this->ModelObj->getData['nextweek']) && $date2==$this->ModelObj->getData['nextweek'])?'selected="selected"':'';?>><?php echo $date2.' To '.$date2_to;?></option>
+									  </select>
+								
+								</span></label>
+							</div>
+					  <div class="col-sm-5 col_paddingx10"> <span class="input input--kaede"></span> 
+						</div>
+	
+					</div>
+					<div  id="tablegrid">
+					 <table width="100%" border="0" id="dataTableGridId">
+					 <thead id="detailtd">
+					  </thead>
+					    <thead>
+						<tr>
+								<th><?=$this->translate('Task');?></th>
+								<th><?=$this->translate('Driven Days');?> </th>
+								<th><?=$this->translate('Timing');?></th>
+								<?php 
+								 $day = date('l',strtotime(date('Y-m-d')));
+								 if(isset($this->ModelObj->getData['nextweek']) && $this->ModelObj->getData['nextweek']!=''){
+									$date = $this->ModelObj->getData['nextweek'];
+								 }else{
+								 $date = ($day=='Saturday' || $day=='Sunday')?date("Y-m-d",strtotime('next monday')):date("Y-m-d",strtotime('monday this week'));
+								 }
+								for ($x = 0; $x < 5; $x++) { 
+								$day =  date('l', strtotime("+$x days", strtotime($date)));
+								$dates[] = date('Y-m-d', strtotime("+$x days", strtotime($date)));
+								$days[] = date('Y-m-d', strtotime("+$x days", strtotime($date)));
+								  ?>
+								 <th>
+								 <?php echo date('Y-m-d', strtotime("+$x days", strtotime($date)))."<br>(".$day.")"?>
+								 </th> 
+								<?php }?>
+								
+						</tr>
+						</thead>
+						<tbody>
+						<?php
+						if(count($this->ModelObj->daybyRouteList())>0){
+						 foreach($this->ModelObj->daybyRouteList() as $key=>$data){
+						 $class = ($key%2==0)?'even':'odd'; ?>
+						<tr class="<?php echo $class;?>">
+						<td  data-label="Task"><?=$this->translate($data['routename']); ?></td> 
+                        <td  data-label="Driven Days"><?=$this->translate($data['driven_days']); ?></td> 
+						<td data-label="Total Work Hour"><?=date('H:i',strtotime($data['start_time'])).' to '.date('H:i',strtotime($data['end_time'])); ?></td>
+						<td ><input type="hidden" name="route_time[<?php echo $data['route_id']?>]" value="<?php echo (strtotime($data['end_time']) - strtotime($data['start_time']))/3600; ?>" />
+							 <?php if($data['driven_days']=='All Days' || $data['driven_days']=='Monday'){ 
+							 $date1 = isset($this->copy_schedule[0])?$this->copy_schedule[0]:$dates[0];
+							 $assdriver = $this->ModelObj->getAssignedRouteDriver($date1,$data['route_id']);
+							 $color = ($assdriver>0)?'style="background-color: rgb(127, 255, 212);"':'';
+							 ?>
+							 <select class="selectbox" name="driver_id[<?php echo $dates[0];?>][<?php echo $data['route_id']?>]" id="driver_id1<?php echo $data['route_id']?>" onchange="getDetailsRow('1','<?php echo $data['route_id']?>','<?php echo $dates[0];?>')" <?php echo $color;?>>
+                              <option value=""><?=$this->translate('-Select Driver-');?></option>
+                              <?php foreach($this->driver_list as $value) {
+						      $drivertype = ($value['driver_work_type'] == '1') ? 'Fixed Hour worker' : 'Flexible Worker' ; ?>
+                              <option value="<?php echo $value['driver_id'];?>" <?php if($assdriver && $assdriver==$value['driver_id']){echo 'selected="selected"';}?>>
+							  <?php echo $value['driver_name']." (".$drivertype."-".$value['total_workhour'].")"; ?></option>
+                              <?php }	?>
+                            </select>
+							<?php } ?></td>
+						<td>
+						<?php if($data['driven_days']=='All Days' || $data['driven_days']=='Tuesday'){ 
+							  $date2 = isset($this->copy_schedule[1])?$this->copy_schedule[1]:$dates[1];
+							  $assdriver = $this->ModelObj->getAssignedRouteDriver($date2,$data['route_id']);
+							  $color = ($assdriver>0)?'style="background-color: rgb(127, 255, 212);"':'';
+							  ?>
+							 <select class="selectbox" name="driver_id[<?php echo $dates[1];?>][<?php echo $data['route_id']?>]" id="driver_id2<?php echo $data['route_id']?>" onchange="getDetailsRow('2','<?php echo $data['route_id']?>','<?php echo $dates[1];?>')" <?php echo $color;?>>
+                              <option value=""><?=$this->translate('-Select Driver-');?></option>
+                              <?php 
+						 foreach($this->driver_list as $value) { $drivertype = ($value['driver_work_type']==1)?'Fixed Hour worker':'Flexible Worker';
+						 ?>
+                              <option value="<?php echo $value['driver_id'];?>" <?php if($assdriver && $assdriver==$value['driver_id']){echo 'selected="selected"';}?>><?php echo $value['driver_name']." (".$drivertype."-".$value['total_workhour'].")"; ?></option>
+                              <?php }	?>
+                            </select>
+							<?php }	?></td>
+						 <td><?php if($data['driven_days']=='All Days' || $data['driven_days']=='Wednesday'){ 
+							  $date3 = isset($this->copy_schedule[2])?$this->copy_schedule[2]:$dates[2];
+							  $assdriver = $this->ModelObj->getAssignedRouteDriver($date3,$data['route_id']);
+							 $color = ($assdriver>0)?'style="background-color: rgb(127, 255, 212);"':'';
+							  ?>
+							 <select class="selectbox" name="driver_id[<?php echo $dates[2];?>][<?php echo $data['route_id']?>]" id="driver_id3<?php echo $data['route_id']?>" onchange="getDetailsRow('3','<?php echo $data['route_id']?>','<?php echo $dates[2];?>')" <?php echo $color;?>>
+                              <option value=""><?=$this->translate('-Select Driver-');?></option>
+                              <?php 
+						 foreach($this->driver_list as $value) { $drivertype = ($value['driver_work_type']==1)?'Fixed Hour worker':'Flexible Worker';
+						 ?>
+                              <option value="<?php echo $value['driver_id'];?>" <?php if($assdriver && $assdriver==$value['driver_id']){echo 'selected="selected"';}?>><?php echo $value['driver_name']." (".$drivertype."-".$value['total_workhour'].")"; ?></option>
+                              <?php }	?>
+                            </select>
+							<?php }	?></td>
+							  <td>
+							  <?php if($data['driven_days']=='All Days' || $data['driven_days']=='Thursday'){ 
+							  $date4 = isset($this->copy_schedule[3])?$this->copy_schedule[3]:$dates[3];
+							  $assdriver = $this->ModelObj->getAssignedRouteDriver($date4,$data['route_id']);
+							 $color = ($assdriver>0)?'style="background-color: rgb(127, 255, 212);"':'';
+							  ?>
+							 <select class="selectbox" name="driver_id[<?php echo $dates[3];?>][<?php echo $data['route_id']?>]" id="driver_id4<?php echo $data['route_id']?>" onchange="getDetailsRow('4','<?php echo $data['route_id']?>','<?php echo $dates[3];?>')" <?php echo $color;?>>
+                              <option value=""><?=$this->translate('-Select Driver-');?></option>
+                              <?php 
+						 foreach($this->driver_list as $value) { $drivertype = ($value['driver_work_type']==1)?'Fixed Hour worker':'Flexible Worker';
+						 ?>
+                              <option value="<?php echo $value['driver_id'];?>" <?php if($assdriver && $assdriver==$value['driver_id']){echo 'selected="selected"';}?>><?php echo $value['driver_name']." (".$drivertype."-".$value['total_workhour'].")"; ?></option>
+                              <?php }	?>
+                            </select>
+							<?php }	?>
+							</td>
+							 <td>
+							 <?php if($data['driven_days']=='All Days' || $data['driven_days']=='Friday'){ 
+							 $date5 = isset($this->copy_schedule[4])?$this->copy_schedule[4]:$dates[4];
+							 $assdriver = $this->ModelObj->getAssignedRouteDriver($date5,$data['route_id']);
+							 $color = ($assdriver>0)?'style="background-color: rgb(127, 255, 212);"':'';
+							 ?>
+							 <select class="selectbox" name="driver_id[<?php echo $dates[4];?>][<?php echo $data['route_id']?>]" id="driver_id5<?php echo $data['route_id']?>" onchange="getDetailsRow('5','<?php echo $data['route_id']?>','<?php echo $dates[4];?>')" <?php echo $color;?>>
+                              <option value=""><?=$this->translate('-Select Driver-');?></option>
+                              <?php 
+						 foreach($this->driver_list as $value) { $drivertype = ($value['driver_work_type']==1)?'Fixed Hour worker':'Flexible Worker';
+						 ?>
+                              <option value="<?php echo $value['driver_id'];?>" <?php if($assdriver && $assdriver==$value['driver_id']){echo 'selected="selected"';}?>><?php echo $value['driver_name']." (".$drivertype."-".$value['total_workhour'].")"; ?></option>
+                              <?php }	?>
+                            </select>
+							<?php }	?>
+							</td>
+						</tr>
+						<?php } ?>
+						<tr><td colspan="8" aliegn="center"><input type="submit" name="submit" value="Assign" class="btn btn-danger btn-round" style="float: right;" /></td></tr><?php } else{ ?><tr>
+						  <td data-label="No Data" colspan="7"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td>
+						  </tr>
+						<?php }
+						?></tbody>
+
+                     </table>
+                    </div>
+					
+					 </form>
+					</div>
+                </div>
+					<div>
+			  </div>
+			 </div>
+            </div>
+          </div>
+<script>
+$(document).ready(function() {
+	 commonDataTableView();
+} );
+</script>
+<script src="<?php echo $this->baseUrl('public/js/schedule.js');?>"></script>

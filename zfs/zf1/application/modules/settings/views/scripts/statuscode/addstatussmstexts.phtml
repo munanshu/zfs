@@ -1,0 +1,38 @@
+<div class="input-title"><?=$this->title?></div>
+
+<?=$this->form;?>
+
+
+<script type="text/javascript">
+	
+var isnumeric = function(value){
+	return !isNaN(parseFloat(value)) ? parseFloat(value) : 0 ;
+}
+
+
+	function getSmsTexts(master_id) {
+
+		var masterid = isnumeric(master_id);
+		var querystring = "masterid="+masterid;
+		if(masterid!=0){
+			$.ajax({
+				url : '<?=$this->baseUrl()?>/Statuscode/getmastersmstexts',
+				type : 'post',
+				dataType : 'json',
+				data : querystring,
+				success : function(resp){
+					var form = $('#smstxtform');
+					if( resp.hasOwnProperty('status') ){
+						$(resp.data).each(function(i,val){
+							ele = form.find('textarea[id='+val.language_id+']');
+							ele.val(val.smstxt);
+						});
+					}else form.find('textarea').val(null);
+				}
+			});
+		}
+
+	}
+
+
+</script>

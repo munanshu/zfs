@@ -1,0 +1,85 @@
+<div class="row row-broken">
+    <div class="col-sm-12">
+        <div class="tabs" id="seventh-tabs">
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-1">
+				    <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="col-sm-3 col_paddingx10">
+						<label for="input-2" class="input__label input__label--kaede"> 
+						<span class="input input--kaede"><a href="<?=BASE_URL ?>/Helpdesk/faqdetail" class=""><i class="fa fa-plus-square"></i><?php echo $this->translate("Question Details");?></a>
+						</span></label>
+					  </div>
+					  <div class="clear-all"></div>
+					  <div class="col-sm-9 col_paddingx10"><span class="input input--kaede"></span></div>
+					</div>
+					<form method="post" name="addquestion" enctype="multipart/form-data">
+					    <div class="col-sm-3 col_paddingtop">
+						    <label for="questiontype"><b><?php echo $this->translate('Question Type:') ?></b></label>
+						    <select name="que_type" class="inputfield" onchange="getoptionval(this.value)">
+							  <option value="1">FAQ Question</option>
+							  <option value="2">Hepldesk Question</option>
+							</select>
+					    </div>
+						<div class="clearfix"></div>
+						<div class="col-sm-5 col_paddingtop" id="operators_div">
+						  <label for="operators"><b><?php echo $this->translate('Operators') ?></b></label>
+						    <select name="operatortype[]" class="inputfield" multiple="multiple">
+                            <?php foreach($this->opertortype as $operatortype) {?>							
+							  <option value="<?= $operatortype['user_id']; ?>"><?=$operatortype['company_name']; ?></option>
+							<?php } ?>
+							</select>
+						</div>
+						<div class="clearfix"></div>
+						<div class="col-sm-12 col_paddingtop" id="question_div">
+						  <label for="question"><b><?php echo $this->translate('Question:') ?></b></label>
+						  <?php 
+						   require ROOT_PATH.'/public/fckeditor/FCKeditor.php';
+						   $var = new FCKeditor('question');
+						   $var->BasePath = BASE_URL.'/public/fckeditor/';
+						   $var->Height = '200px';
+						   $var->Weight = '100px';
+						   $var->Value = '';
+						   $var->Create();	
+						   ?>	
+						</div>
+						<div class="clearfix"></div>
+						<div class="col-sm-12 col_paddingtop" id="answer_div">
+						  <label for="answer"><b><?php echo $this->translate('Answer:') ?></b></label>
+						  <?php 
+						   require ROOT_PATH.'/public/fckeditor/FCKeditor.php';
+						   $var = new FCKeditor('answer');
+						   $var->BasePath = BASE_URL.'/public/fckeditor/';
+						   $var->Height = '200px';
+						   $var->Weight = '100px';
+						   $var->Value = '';
+						   $var->Create();	
+						  ?>
+						</div>
+						<div class="clearfix"></div>
+						<div class="col-sm-12 col_paddingtop">
+						  <input type="submit" name="addquestion" value="Submit" class="btn btn-danger btn-round">
+						</div>
+						<div class="clearfix"></div>
+					</form>
+				</div>
+            </div>
+	    </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function(){
+  $('#operators_div').hide();
+});
+function getoptionval(option_val){
+  if(option_val=='2'){
+    $('#answer_div').hide();
+	$('#operators_div').show();
+  }
+  else{
+    $('#operators_div').hide();
+	$('#answer_div').show();
+  }
+}
+
+</script>

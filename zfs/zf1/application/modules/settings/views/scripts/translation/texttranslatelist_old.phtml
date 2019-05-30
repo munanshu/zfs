@@ -1,0 +1,113 @@
+
+<div class="col-sm-12 col_paddingx10"><span id="error_message" name="error_message" style="color: green;"></span></div><div class="row row-broken">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+              <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-7">
+					<form method="post" name= "blockip_form">
+					  <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="input-title"><?php echo $this->translate('Text Translation')?></div>
+					  <div class="clear-all"></div>
+					  <div class="col-sm-3 col_paddingx10">
+						<label for="input-2" class="input__label input__label--kaede"> 
+						<span class="input input--kaede">
+						<a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Translation','action'=>'addtext'),'default',true)?>','60%','80%');"> <img src="<?=IMAGE_LINK?>/addmore.gif" /> <?php echo $this->translate('Add New Text')?></a>
+						</span></label>
+					  </div>
+					  <div class="col-sm-9 col_paddingx10"> <span class="input input--kaede"></span> 
+						</div>
+					</div>
+             
+					 <div  id="tablegrid">
+					 <table width="100%" border="0" id="dataTableGridId">
+					    <thead>
+						<tr>
+								<th><?=$this->translate('Translation for');?></th>
+									<?php foreach($this->Language as $value) {?>
+									<th><?=ucfirst($value['language_name']);?></th>
+								<?php }?>
+								<th><?=$this->translate('Action');?></th>
+						</tr>
+						</thead>
+						<tbody>
+						<?php
+						$translation = $this->ModelObj->getTranslations();
+						$tranData = $this->TranslationList;
+						if(count($tranData)>0){
+						 for($i=0;$i<count($tranData);$i++){?>
+							<tr class="<?php print $i%2 == 0 ? '' : 'odd'; ?>">
+							<td align="left" class="smalltext">
+							<?php echo $text = trim($tranData[$i]['translationFor']);
+							$codes = '';
+							?>
+							</td>
+							<?php for($j=0;$j<count($this->Language);$j++){?> 
+							<td align="left" class="smalltext">
+							<input type="hidden" name="<?php echo $this->Language[$i]['language_code'] ?><?php echo $text ?>" id="old_<?php echo $this->Language[$j]['language_code'] ?><?php echo preg_replace("/[^a-z0-9.]+/i", "_",$text) ?>" value="<?=(isset($translation[$this->Language[$j]['language_name']][$text]))?$translation[$this->Language[$j]['language_name']][$text] : ''; ?>" class="inputfield"  style="width:140px;"/>
+							<input type="text" name="<?=(isset( $translation[$this->Language[$j]['language_name']][$text]))?$translation[$this->Language[$j]['language_name']][$text]:''; ?>" id="<?php echo $this->Language[$j]['language_code'] ?><?php echo preg_replace("/[^a-z0-9.]+/i", "_",$text) ?>" value="<?=(isset($translation[$this->Language[$j]['language_name']][$text]))?$translation[$this->Language[$j]['language_name']][$text] :""; ?>"  style="width:140px;" class="inputfield" readonly="readonly"/>
+							</td>
+							<?php $codes .= $this->Language[$j]['language_code'].','; ?>
+							<?php }?>
+							<td>
+							<span id="edit<?php echo $i;?>" align="left" class="smalltext" onclick="edit('<?php echo preg_replace("/[^a-z0-9.]+/i", "_",$text);?>','<?php echo $codes;?>','<?php echo $i;?>');">
+							<i class="fa fa-edit fa-2x" title="Edit"></i>
+							</span>
+							<span id="save<?php echo $i;?>" onclick="save('<?php echo preg_replace("/[^a-z0-9.]+/i", "_",$text);?>','<?php echo $codes;?>','<?php echo $i;?>');" align="center" class="smalltext" style="display:none"><img src="<?php echo IMAGE_LINK?>/save.png" title="Edit" />
+							<input type="hidden" name="valuekey<?php echo $i;?>" id="valuekey<?php echo $i;?>" value="<?php echo $text.'=';?>" />
+							</span>
+							</td>
+							</tr>
+							<?php }} else{ ?>
+						<tr>
+						  <td data-label="No Data" colspan="7"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td>
+						  </tr>
+						<?php }
+						?></tbody>
+
+                     </table>
+                    </div>
+					
+                
+
+				</form>
+			  </div>
+			 </div>
+			 </div>
+			 </div>
+            </div>
+<script>
+$(document).ready(function() {
+	 commonDataTableView();
+} );
+function edit(ids,code,count){
+   var codArr = code.split(",");
+   for(var i=0;i<(codArr.length)-1;i++){
+      $("#"+codArr[i]+ids).attr('readOnly',false); 
+    }
+	$("#edit"+count).hide(); 
+	$("#save"+count).show();
+}
+function save(ids,code,count){
+   var codArr = code.split(",");
+   var olddata = '';
+   var newdata = '';
+   for(var i=0;i<(codArr.length)-1;i++){
+      olddata  += $("#old_"+codArr[i]+ids).val()+','; 
+	
+    }
+	var oldkayval = $("#valuekey"+count).val();//alert(oldkayval);
+	for(var i=0;i<(codArr.length)-1;i++){
+      newdata  += $("#"+codArr[i]+ids).val()+','; 
+	
+    }
+   $.ajax({
+		  url: "<?php echo $this->url(array('controller' => 'Translation','action'=>'translationedit'),'default',true)?>?olddata="+encodeURIComponent(oldkayval)+"&newdata="+encodeURIComponent(newdata),
+		  success: function(data) {//alert(data);
+		     $("#edit"+count).show(); 
+			 $("#save"+count).hide();
+			 $("#error_message").text("Text has changed successfully !!");
+		  }
+	});
+}
+
+</script>

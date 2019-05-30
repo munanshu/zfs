@@ -1,0 +1,68 @@
+		
+		
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="page-header">Cetegories</h1>
+			</div>
+		</div><!--/.row-->
+		
+		<div class="panel panel-container">
+			<div class="row">
+			<div class="col-lg-12">
+
+				<button type="button" id="openpopup" onclick="$.jeegoopopup.open({width:'800',height:'400',center:true,url:'<?=$this->url('admin/default' ,array('controller'=>'categories','action'=>'addcategory'))?>'});"  class="btn btn-sm btn-primary openbox">Add Category</button>
+				 
+			 
+
+				<table id="example" class="display" style="width:100%">
+				        <thead>
+				            <tr>
+				                <th>Category Name</th>
+				                <th>Category Description</th>
+				                <th>Image</th>
+				                <th>Status</th>
+				                <th>Created By / Date</th>
+				                <th>Actions</th>
+				            </tr>
+				        </thead>
+				        <tbody>
+				        	<?php 
+
+				        		foreach ($this->Categories as $catid => $Category) { ?>
+
+						            <tr>
+						                <td><?=$Category['CustomName']?></td>
+						                <td><?=$Category['category_desc']?></td>
+						                <td><?php $imageurl = !empty($Category['path_storage'])? $Category['path_storage']: $this->layout()->systemGlobals::CategoryImageDir."/default.png"; ?>
+						                 <img class="categorythumb" src="<?=$this->basepath().'/'.$imageurl?>"></td>
+						                <td><?php $color = $Category['is_Active']? 'green' : 'red' ; ?>
+						                	<div class="categoryStatus" style="background-color:<?=$color;?>"></div> 
+						                		
+						                	</td>
+						                <td><?=$Category['username']." / ".date('D d Y H:i a', strtotime($Category['created_date']))?></td>
+						                <td> <i class="fa fa-trash"></i> edit | delete </td>
+						            </tr>
+
+				        	<?php	
+				        			}
+				        	 ?>
+				             
+				        </tbody>
+				         
+				    </table>
+				 </div>
+			</div><!--/.row-->
+		</div>
+		 
+
+<script type="text/javascript">
+	
+	$(document).ready(function()  {
+    	$('#example').DataTable( {
+        	"dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>',
+        	"aaSorting": []
+    	} );
+	} );
+
+</script>
+		

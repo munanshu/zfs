@@ -1,0 +1,57 @@
+<div class="content container-fluid">
+    <div class="input-title">Edit Claim Status</div>
+</div>
+<?php echo $this->getHelper('Messages')->getMessages();?>
+<form id="updateclaimstatus" name="updateclaimstatus" class="inputbox" method="post">
+    <div class="col-lg-12 col-md-12 col-sm-12 b-email">
+        <div class="row">
+			<div class="col-sm-6 col_paddingtop">
+		       <span style="color:red;">*</span><label for="claimstatusname" class="required"><?php echo $this->translate('Claim Status Name :') ?></label>
+			   <input type="text" name="claimstatusname" value="<?=(isset($this->getstatus['0']['claim_status_name']))? $this->getstatus['0']['claim_status_name']:''; ?>" class="inputfield">
+			</div>
+            <div class="col-sm-6 col_paddingtop">
+			   <label for="select_notification" class="required"><?php echo $this->translate('Select Notification Option :') ?></label>
+               <div class="control-group">
+               <label class="control control--radio"><input type="radio" name="select_notification" value="1" <?php if(isset($this->getstatus['0']['notification_id']) && $this->getstatus['0']['notification_id']>'0'){echo 'checked="checked"'; } ?>class="printlabel" onclick="showoption(1)">Used Existing Notification<div class="control__indicator"></div></label>
+			   <label class="control control--radio"><input type="radio" name="select_notification" value="0" class="printlabel" onclick="showoption(0)">Create New Notification<div class="control__indicator"></div></label>
+			   </div>
+			</div>
+            <div class="col-sm-6 col_paddingtop" id="exising_notification">
+			   <label for="notification" class="optional"><?php echo $this->translate('Select Notification:') ?></label>
+                    <?php echo $this->getHelper('HtmlSelect')->getSelect('notificationid',$this->notificationlist,'notification_id','notification_name',(isset($this->getstatus['0']['notification_id']))?$this->getstatus['0']['notification_id']: '',false,array('class'=>'inputfield')); ?>
+			</div>
+            <div class="col-sm-6 col_paddingtop" id="new_notification_name">
+			   <label for="newnotification" class="optional"><?php echo $this->translate('New Notification Name :') ?></label>
+               <input type="text" name="newnotification" value="" class="inputfield">
+			</div>
+            <div class="col-sm-6 col_paddingtop">
+               <input type="submit" name="editclaimstatus" value="Update Status" class="btn btn-danger btn-round">
+			</div>
+		</div>
+	</div>
+</form>
+<script>
+$( document ).ready(function() {
+  var notification_id = "<?= $this->getstatus['0']['notification_id'] ?>";  
+  if(notification_id > 0){
+    showoption(notification_id);
+  }
+  else{
+    $('#exising_notification').hide();
+    $('#notoficationid').prop( "disabled", true );
+	$('#new_notification_name').hide();
+  }
+});
+function showoption(val){
+  if(val > 0){
+    $('#exising_notification').show();
+    $('#notoficationid').prop( "disabled", false );
+	$('#new_notification_name').hide();
+  }
+  else{
+    $('#exising_notification').hide();
+    $('#notoficationid').prop( "disabled", true );
+	$('#new_notification_name').show();
+  }
+} 
+</script>

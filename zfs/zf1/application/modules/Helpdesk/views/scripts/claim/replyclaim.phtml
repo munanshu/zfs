@@ -1,0 +1,105 @@
+<div class="row row-broken">
+    <div class="col-sm-12">
+        <div class="tabs" id="seventh-tabs">
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-1">
+					<div id="tablegrid">
+                     	<form method="post" name="replyclaims" enctype="multipart/form-data">
+						    <?php $claimData = $this->claimData[0];  ?>
+							<table width="100%" border="0">
+							    <tr>
+							        <th colspan="8">Claim For <?=$claimData['tracenr_barcode'] ?></th>
+							    </tr>
+                                <tr>
+									<td><b><?php echo $this->translate('Claim Number :') ?></b></td>
+									<td><?=$claimData['claim_id'] ?></td>
+									<td><b><?php echo $this->translate('Claim Date :') ?></b></td>
+									<td><?=date('M - d, Y H:i',strtotime($claimData['created_date'])) ?></td>
+									<td><b><?php echo $this->translate('Claim By :') ?></b></td>
+									<td><?=$claimData['claim_id'] ?></td>
+									<td><b><?php echo $this->translate('Claim Status :') ?></b></td>
+									<td><?=$claimData['claim_status_name'] ?></td>
+                                </tr>
+                                <tr>
+									<td><b><?php echo $this->translate('Parcel Number :') ?></b></td>
+									<td><?=$claimData['tracenr_barcode'] ?></td>
+									<td><b><?php echo $this->translate('Weight :') ?></b></td>
+									<td><?=$claimData['weight'] ?></td>
+									<td><b><?php echo $this->translate('Forwarder :') ?></b></td>
+									<td><?=$claimData['forwarder_name'] ?></td>
+									<td><b><?php echo $this->translate('Service :') ?></b></td>
+									<td><?=$claimData['service_name'] ?></td>
+                                </tr>
+                                <tr>
+									<td><b><?php echo $this->translate('Create Date :') ?></b></td>
+									<td><?=date('M - d, Y H:i',strtotime($claimData['create_date'])) ?></td>
+									<td><b><?php echo $this->translate('Check-in Date :') ?></b></td>
+									<td><?=date('M - d, Y H:i',strtotime($claimData['checkin_date'])) ?></td>
+									<td><b><?php echo $this->translate('Merk :') ?></b></td>
+									<td><?=$claimData['goods_id'] ?></td>
+									<td><b><?php echo $this->translate('Type :') ?></b></td>
+									<td><?=$claimData['goods_description'] ?></td>
+                                </tr>
+                                <tr>
+								    <td><b>Heading</b></td>
+									<td colspan="3"><b><?php echo $this->translate('Receiver Info :') ?></b></td>
+									<td colspan="4"><b><?php echo $this->translate('Sender Info :') ?></b></td>
+                                </tr>
+                                <tr>
+								    <td><b><?php echo $this->translate('Name / Contact</br>Street / Address</br>Postcode / City</br>Country</br>Phone</br>Email') ?></b></td>
+									<td colspan="3"><?=$claimData['rec_name'].' '.$claimData['rec_contact'].'</br>'.$claimData['rec_street'].' '.$claimData['rec_streetnr'].' '.$claimData['rec_address'].' '.$claimData['rec_street2'].'</br>'.$claimData['rec_zipcode'].' '.$claimData['rec_city'].'</br>'.$this->recCountry['rec_cncode'].' '.$this->recCountry['rec_country_name'].'</br>'.$claimData['rec_phone'].'</br>'.$claimData['rec_email'] ?></td>
+									<td colspan="4"><?=$this->forwarderData['SenderAddress'][0].'</br>'.$this->forwarderData['SenderAddress'][1].'</br>'.$this->forwarderData['SenderAddress'][2].'</br>'.$this->forwarderData['SenderAddress'][3].' '.$this->forwarderData['SenderAddress'][4].'</br>'.$this->forwarderData['SenderAddress'][5].' '.$this->forwarderData['SenderAddress'][6].'</br>'.$this->forwarderData['SenderAddress'][9].'</br>'.$this->forwarderData['SenderAddress'][10] ?></td>
+                                </tr>
+                                <tr>
+							        <th colspan="8"><?php echo $this->translate('Reply Block for Question') ?></th>
+							    </tr>
+								<tr>
+									<td colspan="8">
+									   <textarea class="inputfield" name="reply_message" rows="6" cols="140" required></textarea>
+									</td>
+								</tr>
+                                <tr>
+									<td colspan="8"><input type="submit" name="submit" value="Post Claim Reply" class="btn btn-danger btn-round"></td>
+								</tr>
+                                <tr>
+									<th colspan="4"><?php echo $this->translate('Reply By Operator') ?></th>
+									<th colspan="4"><?php echo $this->translate('Date Of Reply') ?></th>
+								</tr>
+								<?php foreach($this->replyDetail as $reply){ ?>
+                                <tr>
+									<td colspan="4"><?=$reply['reply_message'] ?></td>
+									<td colspan="4"><?=$reply['reply_date'] ?></td>
+								</tr>		
+                                <?php } ?>	
+                                <tr>
+									<th colspan="8"><?php echo $this->translate('Other Notes') ?> <a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Helpdesk','action'=>'helpdesknotification'),'default',true).'?type=claim&token='.Zend_Encript_Encription:: encode($this->ticketdetail['ticket_no'])?>','60%','53%');" class="fancybox" title="Add Note"><i class="fa fa-sticky-note fa-2x" style="color: white;" aria-hidden="true"></i></a>  </th>
+
+
+
+
+								</tr>
+
+							</table>
+					    </form>
+					</div>
+				</div>	
+			</div>
+	    </div>
+    </div>
+</div>
+<style>
+th{
+background: #36384e;
+padding: 6px!important;
+text-align: center;
+color: #fff;
+font-size: 15px;
+border-bottom: none !important;
+}
+#tablegrid {
+    overflow: hidden;
+}
+#tablegrid td{
+text-align:left;
+}
+</style>

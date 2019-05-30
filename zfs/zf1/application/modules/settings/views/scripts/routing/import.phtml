@@ -1,0 +1,93 @@
+<div class="row row-broken">
+        <div class="col-sm-12">
+				 <div class="filter">
+				<div class="input-title"><?php echo $this->translate('Import/Export')?></div>
+			<div class="clear"></div>
+				<div style="background:#ffffff; padding:10px; overflow:auto;text-align:center">
+				<div class="clear-all"></div>
+			<div class="clear-all"></div>
+				<div class="col-sm-2">&nbsp;</div>
+					<div class="col-sm-8">
+				<form id="Importshipmentform" class="inputbox" enctype="multipart/form-data" action="" method="post" onsubmit="return importvalidate()">	
+					<table class="tbl_new">
+					<tbody>
+					<tr id="file_error" style="display:none;color:red;"></tr>
+					<tr><th colspan="2"><?php echo $this->translate('Import/Export')?></th></tr>
+					 <tr>
+						<td style="text-align:center"><?php echo $this->translate('Action')?></td>
+						<td style="width:450px">
+						<select name="import_export_mode" id="import_export_mode" class="inputfield" onchange="exportimport(this.value);">
+						<?php if($this->ModelObj->Useconfig['level_id']==1 || $this->ModelObj->Useconfig['level_id']==11){?>
+							<option value="1"><?php echo $this->translate('Export Routing')?></option>
+							<option value="2"><?php echo $this->translate('Import Routing')?></option>
+							<option value="3"><?php echo $this->translate('Update Depot Price')?></option>
+						 <?php }elseif($this->ModelObj->Useconfig['level_id']==4 || $this->ModelObj->Useconfig['level_id']==6){?>
+						    <option value="4"><?php echo $this->translate('Export Customer Price')?></option>
+							<option value="5"><?php echo $this->translate('Export Special Price')?></option>
+							<option value="6"><?php echo $this->translate('Update Customer Price')?></option>
+							<option value="7"><?php echo $this->translate('Update Special Price')?></option>
+						<?php } ?>
+						</select>
+						</td>
+					 </tr>
+					  <tr>
+					   <?php if($this->ModelObj->Useconfig['level_id']==1 || $this->ModelObj->Useconfig['level_id']==11){?>
+							<td style="text-align:center"><?php echo $this->translate('Select Depot')?></td>
+						<td style="width:450px"><?php echo $this->getHelper('HtmlSelect')->getSelect('user_id',$this->depotlist,'user_id','company_name','',true,array('class'=>'inputfield'));?> 
+						</td>
+						 <?php }elseif($this->ModelObj->Useconfig['level_id']==4 || $this->ModelObj->Useconfig['level_id']==6){?>
+						    <td style="text-align:center;display:none"  id="spl_cus1"><?php echo $this->translate('Select Customer')?></td>
+						    <td style="width:450px;display:none" id="spl_cus"><?php echo $this->getHelper('HtmlSelect')->getSelect('user_id',$this->specialpricecustomer,'user_id','company_name','',true,array('class'=>'inputfield'));?> 
+						</td>
+						<?php } ?>
+					 </tr>
+					 <tr id="file_row" style="display:none">
+						<td colspan="2"><input style="margin:auto" type="file" name="import_file" id="import_file"></td>
+					</tr>
+					<tr>
+						<td style="text-align:center" colspan="2"><input type="submit" name="import_exp" id="import_exp" value="Submit" class="btn btn-danger"></td>
+						</td>
+					 </tr>
+					</tbody>
+					</table>
+				</form>	
+					</div>
+					<div class="col-sm-2">&nbsp;</div>
+					<div class="clear-all"></div>
+				</div>
+			</div>
+        </div>
+	</div>
+<script>
+function exportimport(option_id){
+   switch(option_id){
+     case '1':
+	    $('#file_row').hide();
+	 break;
+	 case '2':
+	 case '3':
+	    $('#file_row').show();
+	 break;
+	 case '4':
+	    $('#file_row').hide();
+		$('#spl_cus').hide();
+		$('#spl_cus1').hide();
+	 break;
+	 case '5':
+	    $('#file_row').hide();
+		$('#spl_cus').show();
+		$('#spl_cus1').show();
+	 break;
+	 case '6':
+	    $('#file_row').show();
+		$('#spl_cus').hide();
+		$('#spl_cus1').hide();
+	 break;
+	 case '7':
+	    $('#file_row').show();
+		$('#spl_cus').show();
+		$('#spl_cus1').show();
+	 break;
+   }
+}
+</script>

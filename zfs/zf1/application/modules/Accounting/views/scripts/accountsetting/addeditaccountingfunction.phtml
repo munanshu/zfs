@@ -1,0 +1,21 @@
+<?php $form = $this->AccountingFunctionForm; ?>
+<form action="" method="post" name="addaccounthead" class="inputbox" >
+<div class="col-lg-12 col-md-12 col-sm-12 b-email" style="background:#ffffff;">
+          <div class="b-email-title">
+            <h6><?=$this->translate($this->title);?></h6>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 col_paddingtop">
+			  <?php  echo $form->description; echo $form->function_id; ?>
+            </div>
+			 
+             
+             
+			<div class="clearfix"></div>
+             
+			 
+            <div class="col-sm-2 col_paddingtop"> <?php echo $form->submit; ?> </div>
+          </div>
+        </div>
+</form>
+           

@@ -1,0 +1,125 @@
+
+	<div class="input-title"><?php echo $this->translate("Customer Routing Manager")?></div>
+	
+	<div class="row row-broken" style="margin-left:0px !important;margin-right:0px !important;">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+              <ul class="nav nav-tabs nav-justified">
+                <li class="active"> <a href="customerrouting?token=<?php echo $this->token;?>"><?php echo $this->translate("List ")?><i class="fa fa-folder"></i></a> </li>
+                <li> <a href="addcustomerrouting?token=<?php echo $this->token;?>"><?php echo $this->translate("Assign Forwarder ")?><i class="fa fa-ticket"></i></a> </li>
+              </ul>
+			  
+	<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+		<form method="post" action="" id="customerrouting" name="customerrouting">
+					
+				<div id="tablegrid">
+					 <table width="100%" border="0">
+					   
+						<tbody>
+							<tr>
+								<td width="20%" style="text-align:left">
+									<label for="user"><b><?php echo $this->translate("Customer ");?></b></label>
+								</td>
+								<td style="text-align:left">
+									<label for="user" style="text-align:center"><?php echo $this->customerName;?></label>
+								</td>
+							</tr>
+							
+							<!--<tr>
+								<td width="20%">
+									<label for="country"><b><?php echo $this->translate("Country ");?></b></label>
+								</td>
+								
+								<td width="80%">
+									<select id="country" name="country_id" style="width:40%; padding:5px;15px" onchange="javascript:ShowList();">
+										<option value="" ><?php echo "All Country Route Information"?></option>
+										<?php foreach($this->CountryList as $key=>$country){ ?>
+											
+										 <option value="<?php echo $key ?>" ><?php echo $country;?></option>
+										
+										<?php } ?>
+									</select>
+								</td>
+							</tr>-->
+						</tbody>
+                     </table>
+					 
+					 <table width="100%" border="0" id="custRouting">
+					 	<thead>
+							<tr>
+								<th width="15%"><?=$this->translate('Country');?></th>
+								<th width="20%"><?=$this->translate('Forwarder');?> </th>
+								<th width="55%"><?=$this->translate('Selected Services');?></th>
+								<th width="15%"><?=$this->translate('Action');?></th>
+							</tr>	
+						</thead>
+						<tbody>
+							<?php $i=0; if(count($this->records)>0){ 
+								  foreach($this->records as $key=>$data){
+								  	$selectedService ='';
+									$class = ($i%2==0)?'even':'odd'; ?>
+								  	<tr class="<?php echo $class;?>">
+										<td data-label="Country"><?php echo $data['country_name']; ?></td>
+										<td data-label="Forwarder"><?php echo $data['forwarder_name']; ?></td>
+										<td data-label="services">
+											<?php foreach($this->CountryForwarderService[$key] as $index=>$service){ 
+												$selectedService .= $service['service_name'].',';
+											} echo $selectedService;?></td>
+										
+										<td>
+											<div class="action-btns btn-group pull-center breadcrumb" role="group"><li>
+							 				
+											<a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Customerrouting','action'=>'editrouting'),'default',true).'?token='.Zend_Encript_Encription :: encode($data['user_id']).'&country_id='. $data['country_id'].'&forwarder_id='.$data['forwarder_id'];?>','70%','60%');"><i class="fa fa-edit" title="Update Routing"></i></a> |
+											
+											<a href='<?=$this->url(array('controller'=>'Customerrouting','action'=>'deleterouting'),'default',  true).'?token='.Zend_Encript_Encription:: encode($data['user_id']).'&Country= '.$data['country_id'].'&Forwarder='.$data['forwarder_id'];?>','60%','40%';"><i class="fa fa-trash"  onclick="return confirm('Are you sure want to delete this Record !')" title="Delete Routing"></i></a>
+											</li></div>
+										</td>
+									</tr>	
+							<?php }$i++; }else{ ?>
+								<tr>
+									<td>&nbsp;</td><td>&nbsp;</td>
+									<td><?php echo $this->translate(" No Forwarder Assigned ");?></td>
+									<td>&nbsp;</td>
+								</tr>
+							<?php } ?>
+						</tbody>
+					 
+					 </table>
+				</div>
+			</form>	
+			</div></div></div>
+			</div>
+		</div>
+	
+	<script>
+	
+		$(document).ready(function() {
+		  $('#custRouting').DataTable({
+		  "pageLength": 100,
+		  "lengthMenu": [[10, 25, 50, 100, 200, 500, -1], [10, 25, 50, 100, 200, 500, "All"]],
+				initComplete: function () {
+					this.api().columns().every( function () {
+						var column = this;
+						var select = $('<select><option value=""></option></select>')
+							.appendTo( $(column.footer()).empty() )
+							.on( 'change', function () {
+								var val = $.fn.dataTable.util.escapeRegex(
+									$(this).val()
+								);
+			   column
+									.search( val ? '^'+val+'$' : '', true, false )
+									.draw();
+							} );
+		 
+						column.data().unique().sort().each( function ( d, j ) {
+							select.append( '<option value="'+d+'">'+d+'</option>' )
+						} );
+					} );
+				}
+			});
+		
+		} );
+	</script>	
+	

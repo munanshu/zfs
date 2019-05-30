@@ -1,0 +1,167 @@
+
+<div class="row row-broken">
+	<div class="col-md-12">
+		<ol class="breadcrumb">
+			<li><a href="../dashboard"><i class="fa fa-home"></i></a></li>
+			<li><a href="../Account/myprofile"><?php echo $this->translate("Account");?></a></li>
+			<li><a href="../Account/customer"><?php echo $this->translate("Customer");?></a></li>
+			<li class="active"><a href="privelege"><?php echo $this->translate("Privilege");?></a></li>
+		</ol>
+	</div>
+</div>
+
+
+	<div id="table"><div class="header-row row">
+		<span class="cell" style="text-align:center"><h6><?php echo $this->translate("Privilege Management");?></h6></span> 
+	</div></div>
+	
+		<div class="row row-broken" style="margin-left:0px !important;margin-right:0px !important;">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+              <ul class="nav nav-tabs nav-justified">
+                <li class="active"> <a href="../Account/customer"><?php echo $this->translate("List");?><i class="fa fa-folder"></i></a> </li>
+                <li> <a href="privilege"><?php echo $this->translate("Customer Privilege");?><i class="fa fa-ticket"></i></a> </li>
+              </ul>
+
+	<div class="tab-content">
+		<div class="tab-pane fade in active" id="tab-1">
+
+		<form method="post" action="" id="privilegeform" name="privilegeform">
+		
+				<div id="tablegrid">
+					<table width="100%" border="0" id="example">
+					    
+						<tbody>
+						<tr class="even">
+								<td width="15%" style="text-align:left">
+									<label for="userlevel"><b><?php echo $this->translate("Level of System User ");?></b></label>
+								</td>
+								<td style="text-align:left">
+									<label for="userlevel"><?php echo $this->translate("External Customer");?></label>
+								</td>
+						</tr>
+						
+						<tr class="odd" style="text-align:left">
+								<td width="15%" style="text-align:left">
+									<label for="customer"><b><?php echo $this->translate("Company Name ");?></b></label>
+								</td>
+								<td style="text-align:left">
+									<label for="customercomapny"><?php echo $this->customerCompany ;?></label>
+								</td>
+						</tr>
+						
+						<tr class="even">
+							<td width="15%" style="text-align:left">
+								<label for="privilegetype"><b><?php echo $this->translate("Privilege Type");?></b></label>
+							</td>
+							
+							<td style="text-align:left">
+								<label for="type"><input type="radio" name="privilegetype" id="type-0" value="0" checked="checked" onclick="showhideRow(this.value); " /><?php echo $this->translate("Default Privilege");?></label>&nbsp;&nbsp;
+								
+								<label for="type"><input type="radio" name="privilegetype" id="type-1" value="1"  onclick="showhideRow(this.value); " /><?php echo $this->translate("Custom Privilege");?></label>
+							</td>
+							
+						</tr>
+						
+						<tr id="defaultId" class="odd">
+								<td width="15%" style="text-align:left">
+									<label for="customerprivilege"><b><?php echo $this->translate("Privilege");?></b></label>
+								</td>
+								
+								<td width="80%" style="text-align:left">
+									<div>
+									<?php $i=0; foreach($this->AllPrevileges as $module){ 
+										$maincheck = (in_array($module['module_id'],$this->UserPrivilege)) ? 'checked="checked"' : ''; 
+									?>
+										<ul><input type="checkbox" name="ModuleArr[<?=$i;?>]" id="mainmodule_<?= $module['module_id']; ?>" value="<?= $module['module_id'];?>" onclick="moduleChild(this.value); " <?= $maincheck ?> /><?= $module['module_name']; ?>
+										<?php if(count($module['submodule'])>0){ 
+											foreach($module['submodule'] as $submodule){ $i++;
+											$check = (in_array($submodule['module_id'],$this->UserPrivilege)) ? 'checked="checked"' : '';	
+											$style = ($maincheck=='') ? 'style="display:none;"' : '';
+										?>
+												<ul <?= $style ?> class="submodule_<?= $module['module_id']; ?>" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="ModuleArr[<?=$i;?>]" id="submodule" value="<?= $submodule['module_id'];?>" <?= $check ?> /><?= $submodule['module_name']; ?></ul>
+											<?php } $i++;}?>	
+										</ul>
+									<?php } ?></div>
+								</td>
+						</tr>
+						
+						<tr id="customId" style="display:none;" class="odd">
+								<td width="15%" style="text-align:left">
+									<label for="depotprivilege"><b><?php echo $this->translate("Privilege");?></b></label>
+								</td>
+								
+								<td width="80%" style="text-align:left">
+									<div>
+									<?php $i=0; if(count($this->DepotPrivileges)>0){
+									
+										foreach($this->DepotPrivileges['module'] as $key=>$module){ ?>
+										
+										<ul><input type="checkbox" name="depotModuleArr[<?=$i;?>]" id="depotmainmodule_<?= $key; ?>" value="<?= $key;?>" onclick="depotmoduleChild(this.value); " /><?= $module; ?>
+										<?php if(array_key_exists($key,$this->DepotPrivileges['submodule'])){ 
+											
+											foreach($this->DepotPrivileges['submodule'][$key] as $index=>$submodule){ $i++;
+											
+										?>
+												<ul style="display:none;" class="depotsubmodule_<?= $key; ?>" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="depotModuleArr[<?=$i;?>]" id="depotsubmodule" value="<?= $index;?>" /><?= $submodule; ?></ul>
+											<?php } $i++;}?>	
+										</ul>
+									<?php } }else{ ?>
+										<label for="depotprivilege"><?php echo $this->translate("Depot Default Privilege not found !");?></label>
+									<?php }?>	
+									</div>
+								</td>
+						</tr>
+						
+						</tbody>
+						<tr>
+						 	<td>&nbsp;</td>	
+						  	<td style="text-align:left">
+						  		<input type="submit" name="userprivilege" id="userprivilege" value="App Privilege" class="btn btn-danger btn-round">
+						  	</td>
+						</tr>
+                     </table>	
+				</div>
+				
+			</form>	
+			</div></div></div>
+			</div>
+		</div>
+	
+<script> 
+	
+	function moduleChild(id){
+		if($('#mainmodule_'+id).is(':checked')) {
+			$('.submodule_'+id).show();
+		}
+		else{
+			$('.submodule_'+id).hide();
+			$('.submodule_'+id).find('input[type=checkbox]:checked').removeAttr('checked');
+		}
+	}
+	  
+	function showhideRow(id){
+		if(id==0){
+			$('#defaultId').show();
+			$('#customId').hide();
+		}
+		else{
+			$('#defaultId').hide();
+			$('#customId').show();
+		}
+		//alert(id);return false;
+	}
+	
+	function depotmoduleChild(id){
+		if($('#depotmainmodule_'+id).is(':checked')) {
+			$('.depotsubmodule_'+id).show();
+		}
+		else{
+			$('.depotsubmodule_'+id).hide();
+			$('.depotsubmodule_'+id).find('input[type=checkbox]:checked').removeAttr('checked');
+		}
+	}  
+	
+</script>
+	
+	

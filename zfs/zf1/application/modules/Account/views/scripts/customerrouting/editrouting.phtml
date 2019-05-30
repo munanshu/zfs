@@ -1,0 +1,81 @@
+	<div id="table"><div class="header-row row">
+		<span class="cell" style="text-align:center"><?php echo $this->translate("Update Customer Routing ");?></span>
+	</div></div>
+	
+	<div class="col-md-2"></div>
+	<div class="col-md-8">				  
+		 <div class="tab-content">
+		 	<div class="tab-pane fade in active" id="tab-1">
+
+				<form method="post" action="" id="updaterouting" name="updaterouting">
+					
+					<div id="tablegrid">
+										 
+					 	<table width="100%" border="0">
+			<input type="hidden" name="oldforwarder" id="oldforwarder" value="<?= $this->RoutingData['forwarder_id'];?>" />
+							
+							<tr class="even">
+								<td width="15%"><b><?php echo $this->translate("Country ");?></b></td>
+								<td width="20%"><b><?php echo $this->translate("Forwarder ");?></b></td>
+								<td width="30%"><b><?php echo $this->translate("Service ");?></b></td>
+								<td width="30%"><b><?php echo $this->translate("Selected Service");?></b></td>
+							</tr>
+						
+						<tr id="row_1">
+							<td width="15%"><?php echo $this->RoutingData['country_name']; ?></td>
+							<td width="20%">
+								<select id="forwarder_1" name="newforwarder" style="width:80%; padding:5px;10px">
+									<option value="" ><?php echo "Select"?></option>
+									<?php foreach($this->CountryForwarderList as $index=>$forwarder){ 
+										$select ='';
+										if($index==$this->RoutingData['forwarder_id']){
+											$select = 'selected="selected"';
+										}
+									?>
+										
+									 <option value="<?php echo $index;?>" <?php echo $select; ?> ><?php echo $forwarder;?></option>
+									
+									<?php } ?>
+								</select>
+							
+							</td>
+							<td width="30%">
+								<select id="service_1" name="service_id[]" multiple="multiple" style="height:180px"  onchange="$.ShowService(1);">
+									<option value="" ><?php echo "Select"?></option>
+									<?php foreach($this->ServiceList as $key=>$service){ 
+										$select ='';
+										if(array_key_exists($key,$this->selectedService)){
+											$select = 'selected="selected"';
+										}
+									?>
+									 <option value="<?php echo $key ?>" <?php echo $select; ?> ><?php echo $service.',';?></option>
+									
+									<?php } ?>
+								</select>
+							</td>
+							<td width="30%" id="add_1"></td>
+						</tr>
+					 	
+					 </table>
+				</div>
+				<div style="text-align:center">
+					<input type="submit" name="updaterouting" id="updaterouting" value="Update" class="btn btn-danger btn-round">
+				</div>
+					 
+			</form>	
+			</div></div>
+		
+	<script type="text/javascript">
+		 
+		var Services = $('#service_1').find(":selected").text();
+		$('#add_1').html(Services);
+			
+			
+		 $.ShowService = function(id){
+		 	var Services = $('#service_'+id).find(":selected").text();
+			$('#add_'+id).html(Services);
+		 	//alert(id);//return false;
+		 }
+		 
+	
+	</script>	

@@ -1,0 +1,222 @@
+<style>
+.responsivegrid {font-size:12px; padding-bottom:0px}
+.responsivegrid .pad{margin:0px !important; padding:0px !important}
+.responsivegrid b{color:#ffffff; text-align:center; background:#484b68;  padding:5px 0px; float:left; width:100%}
+.responsivegrid ul{float:left; margin:0px; padding:0px; width:100%}
+.responsivegrid ul li{ float:left; width:100%;  border-left:1px solid #cccccc}
+.responsivegrid ul li.odd{background:#f1f5fa; overflow:auto}
+.responsivegrid ul li.even{background:#ffffff; overflow:auto}
+.responsivegrid ul li div.lineG{margin:0px; padding:4px 4px; border-right:1px solid #cccccc; border-bottom:1px solid #cccccc; }
+</style>
+<div class="decor-default responsivegrid">
+      <div class="col-md-12 pad"><b><?php echo $this->translate("Parcel Information"); ?></b></div>
+      <div class="clear-all"></div>
+      <ul>
+        <li class="odd">
+          <div class="col-xs-6 col-md-2 lineG"><strong><?php echo $this->translate("Receiver Name"); ?>:</strong> </div>
+          <div class="col-xs-6 col-md-2 lineG"><?php echo $this->parcelinfo[RECEIVER]?></div>
+          <div class="col-xs-6 col-md-2 lineG"><strong><?php echo $this->translate("Postal Code"); ?>:</strong></div>
+          <div class="col-xs-6 col-md-2 lineG"><?php echo $this->parcelinfo[ZIPCODE]?></div>
+          <div class="col-xs-6 col-md-2 lineG"><strong><?php echo $this->translate("Source Country"); ?></strong></div>
+          <div class="col-xs-6 col-md-2 lineG"><?php echo $this->parcelinfo['sender_country']?></div>
+        </li>
+        <li class="even">
+          <div class="col-xs-6 col-md-2 lineG"><strong><?php echo $this->translate("Destination Country"); ?>:</strong> </div>
+          <div class="col-xs-6 col-md-2 lineG"><?php echo $this->parcelinfo['rec_country_name']?></div>
+          <div class="col-xs-6 col-md-2 lineG"><strong><?php echo $this->translate("Forwarder"); ?>:</strong></div>
+          <div class="col-xs-6 col-md-2 lineG"><?php echo $this->parcelinfo['forwarder_name']?></div>
+          <div class="col-xs-6 col-md-2 lineG"><strong><?php echo $this->translate("Actual Weight"); ?>(kg)</strong></div>
+          <div class="col-xs-6 col-md-2 lineG"><?php echo $this->parcelinfo['weight']?></div>
+        </li>
+        <li class="odd">
+          <div class="col-xs-6 col-md-2 lineG"><strong><?php echo $this->translate("Create Date"); ?>:</strong> </div>
+          <div class="col-xs-6 col-md-2 lineG"><?php echo commonfunction::TimeFormat($this->parcelinfo['create_date'])?></div>
+          <div class="col-xs-6 col-md-2 lineG"><strong><?php echo $this->translate("Check-in Date"); ?>: </strong></div>
+          <div class="col-xs-6 col-md-2 lineG"><?php echo ($this->parcelinfo['checkin_status']=='1')?commonfunction::TimeFormat($this->parcelinfo['checkin_date']):'N/A'?> </div>
+          <div class="col-xs-6 col-md-2 lineG"><strong><?php echo $this->translate("Delivery Date"); ?>:</strong></div>
+		  <div class="col-xs-6 col-md-2 lineG"><?php echo ($this->parcelinfo['delivery_status']=='1')?$this->parcelinfo['delivery_date']:'N/A'; ?></div>
+        </li>
+        <li class="even">
+          <div class="col-xs-12 col-md-2 lineG"><strong><?php echo $this->translate("Email Notification"); ?>:</strong> </div>
+          <div class="col-xs-12 col-md-2 lineG"><?php echo ($this->parcelinfo['checkin_status']=='1' && $this->parcelinfo['email_notification']=='1' && $this->parcelinfo['rec_email']!='')?('Send/'.commonfunction::TimeFormat($this->parcelinfo['checkin_date'])):'N/A'?></div>
+          <div class="col-xs-12 col-md-2 lineG"><strong><?php echo $this->translate("Error Notification"); ?>:</strong></div>
+          <div class="col-xs-12 col-md-2 lineG">Not Sent</div>
+		  <div class="col-xs-12 col-md-2 lineG"><strong><?php echo $this->translate("Received By"); ?>:</strong></div>
+          <div class="col-xs-12 col-md-2 lineG"><?php echo ($this->parcelinfo['received_by']!='')?$this->parcelinfo['received_by']:'N/A'?></div>
+		  <div class="col-xs-12 col-md-12  lineG" style="text-align:center"><a class="btn btn-primary" target="_blank" href="<?php echo $this->parcelinfo['tracking_link'];?>" style="width:150px">Local Trace</a></div>
+        </li>
+        <li class="even" style="border-left:none;display:none" >
+          <div style="margin:5px; overflow:auto">
+            <table class="table table-bordered table-striped"  style="margin-bottom:10px">
+              <tbody>
+                <tr height="24">
+                  <th align="center"><strong>Assigned Date</strong></th>
+                  <th align="center"><strong>Assigned BY / IP</strong></th>
+                  <th align="center"><strong>Status Timestamp</strong></th>
+                  <th align="center"><strong>Error Name</strong></th>
+                </tr>
+                <tr>
+                  <td> 01 Feb 2017, 11:22 AM</td>
+                  <td><strong>Parcel Pakket</strong> / RETURN_FILE</td>
+                  <td>01 Feb 2017, 10:18 AM</td>
+                  <td> delivered to consignee </td>
+                </tr>
+                <tr>
+                  <td> 01 Feb 2017, 03:30 AM</td>
+                  <td><strong>Parcel Pakket</strong> / RETURN_FILE</td>
+                  <td>31 Jan 2017, 03:36 PM</td>
+                  <td> receipt at parcelshop </td>
+                </tr>
+                <tr>
+                  <td> 01 Feb 2017, 03:30 AM</td>
+                  <td><strong>Parcel Pakket</strong> / RETURN_FILE</td>
+                  <td>31 Jan 2017, 04:34 AM</td>
+                  <td> processed at depot </td>
+                </tr>
+                <tr>
+                  <td> 01 Feb 2017, 03:30 AM</td>
+                  <td><strong>Parcel Pakket</strong> / RETURN_FILE</td>
+                  <td>31 Jan 2017, 04:24 AM</td>
+                  <td> receipt at depot or hub </td>
+                </tr>
+                <tr>
+                  <td> 28 Jan 2017, 03:30 AM</td>
+                  <td><strong>Parcel Pakket</strong> / RETURN_FILE</td>
+                  <td>27 Jan 2017, 04:46 PM</td>
+                  <td> receipt at depot or hub </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </li>
+      </ul>
+      <div class="clear-all"></div>
+	  
+      <div style="margin:10px .5%; float:left; width:99%; border:1px solid #cccccc;">
+       <?php if($this->parcelinfo['error_status']=='1' && isset($this->parcelinfo['master_id']) && $this->parcelinfo['master_id']==1){ 
+	    $error_url = (isset($this->parcelinfo['dpd_error_url']) && $this->parcelinfo['dpd_error_url']!='')?$this->parcelinfo['dpd_error_url']:BASE_URL.'/Parceltracking/parcelerror?barcode_id='.$this->parcelinfo['barcode_id'];
+		?>
+	      <iframe src="<?php echo $error_url;?>" width="100%" height="400px"></iframe>
+	  <?php }else{ ?>
+	   <div class="col-xs-12 col-md-8 pad">
+          <div style="overflow:auto; margin:5px">
+            <table class="table table-bordered table-striped" style="margin-bottom:10px">
+              <tbody>
+                <tr><?php //echo "<pre>";print_r($this->parcelinfo);die;?>
+                  <td style="position:relative;background:  url(http://www.dpost.be/public/admin_images/bg.png) repeat-x top left;background-position:-5px 0px, right top,center top; -moz-border-radius-topleft: 10px;-webkit-border-top-left-radius: 10px;border-top-left-radius: 10px;-moz-border-radius-topright: 10px;-webkit-border-top-right-radius: 10px;border-top-right-radius: 10px;" colspan="9">
+				   <?php 
+				     if($this->parcelinfo['senderaddress_id']=='B'){ 
+					     $logo = $this->parcelinfo['forwarder_detail']['CustomerAddress']['logo'];
+					 }else{
+				       $logo = (file_exists($this->parcelinfo['CustomerLogo']))?$this->parcelinfo['CustomerLogo']:$this->parcelinfo['DepotLogo'];
+					 }  
+					 ?> 
+				  <img style="width:215px; height:70px;margin:10px; float:left; z-index:999" src="<?php echo LOGO_LINK.'/'.basename($logo);?>">
+				  
+				  <img style="height:50px; float:right; z-index:999" src="http://www.dpost.be/public/admin_images/Tracking.png"> </td>
+                </tr>
+                <tr>
+                  <th colspan="5" style="background:#484b68; color:#ffffff; text-align:center; font-weight:bold"><?php echo $this->translate("Parcel Number"); ?> : <?php echo $this->parcelinfo[TRACENR_BARCODE]?></th>
+                </tr>
+                <tr>
+                  <th  style="background:#484b68; color:#ffffff;  text-align:center; font-weight:bold"><?php echo $this->translate("Location"); ?></th>
+                  <th  style="background:#484b68; color:#ffffff;  text-align:center; font-weight:bold"><?php echo $this->translate("Status"); ?></th>
+                  <th  style="background:#484b68; color:#ffffff;  text-align:center; font-weight:bold"><?php echo $this->translate("Updated On"); ?></th>
+                </tr>
+				
+                <?php 
+					$latitude = array();
+					$langitude = array();
+					$status = array();
+					$icon = array();
+
+          // echo "<pre>"; print_r($this->parcelinfo);die;
+				foreach($this->parcelinfo['Tracking'] as $key=>$trackings){ 
+					$latitude[] = $trackings['latitude'];
+					$langitude[] = $trackings['longitude'];
+					$status[] = commonfunction::stringReplace("'",'',commonfunction::remove_accent($trackings['status']));
+					$icon[] = $trackings['icon'];
+				?>
+				       <tr <?php ($key%2==0)?'class="odd"':''?>>
+						  <td><?php echo $trackings['location']?></td>
+						  <td><?php echo $trackings['status']?></td>
+						  <td><?php echo date('d-m-Y H:i',strtotime($trackings['updatedon']))?></td>
+						</tr>
+				<?php }?>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+		<div class="col-xs-12 col-md-4 pad">
+		<div style=" margin:5px;height:350px"  id="map_convas"></div>
+		</div>
+		<?php } ?>
+      </div>
+	   
+	</div>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiqLmgnnMs-zB-zeZxgOe9NgqGDI4XvY8"></script>	
+<script type="text/javascript">
+
+  function initialize() {
+     var myOptions = {
+		zoomControl:true,
+	    zoomControlOptions: {
+			style:google.maps.ZoomControlStyle.DEFAULT
+	  	},
+		mapTypeId: google.maps.MapTypeId.ROADMAP
+	  }
+	
+	var map = new google.maps.Map(document.getElementById("map_convas"), myOptions);
+     // var map = new google.maps.Map(document.getElementById('map_convas'), {
+      // zoom: 10,
+      // center: new google.maps.LatLng(53.0000, 9.0000),
+      // mapTypeId: google.maps.MapTypeId.ROADMAP
+    // });
+	
+	var latitude = '<?php echo implode('#',$latitude)?>';
+	var langitude = '<?php echo implode('#',$langitude)?>';
+	var status = '<?php echo implode('#',$status)?>';
+	var icons = '<?php echo implode('#',$icon)?>';
+	latitude = latitude.split('#');
+	langitude = langitude.split('#');
+	status = status.split('#');
+	icons = icons.split('#');
+	//location_icon = location_icon.split('#');
+    var infowindow = new google.maps.InfoWindow();
+    var flightPlanCoordinates = []; 
+    var marker, i;
+	var bounds = new google.maps.LatLngBounds();
+    for (i = 0; i < latitude.length; i++) { 
+      var newlatlang1 = new google.maps.LatLng(latitude[i],langitude[i]);
+	  bounds.extend(newlatlang1);
+	  map.fitBounds(bounds);	
+	  map.setCenter(bounds.getCenter());
+	  flightPlanCoordinates.push(newlatlang1); 
+	  marker = new google.maps.Marker({	
+					title: status[i],
+					map: map, 
+					position: newlatlang1,
+					icon:'<?php echo IMAGE_LINK;?>/'+icons[i]
+	   });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(status[i]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+	  var flightPath = new google.maps.Polyline({
+				path: flightPlanCoordinates,
+				geodesic: true,
+				strokeColor: '#008000',
+				strokeOpacity: 0.8,
+				strokeWeight: 4
+			});
+			
+			flightPath.setMap(map);
+    }
+  }
+  initialize();
+</script>  
+	

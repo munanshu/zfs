@@ -1,0 +1,55 @@
+	<div class="tab-content">
+<div class="tab-pane fade in active" id="tab-1">
+<form action="" method="post" name="routing_form" id="routing_form" class="inputbox" >
+<input type="hidden" name="user_id" value="<?php echo $this->records['user_id'];?>">
+<input type="hidden" name="country_id" value="<?php echo $this->records['country_id'];?>">
+<input type="hidden" name="min_weight" value="<?php echo $this->records['min_weight'];?>">
+<input type="hidden" name="max_weight" value="<?php echo $this->records['max_weight'];?>">
+<div class="col-lg-12 col-md-12 col-sm-12 b-email" style="background:#ffffff;">
+          <div class="b-email-title">
+            <h6><?php echo $this->translate("Edit Routing");?></h6>
+          </div>
+          <div class="row">
+			<div class="col-sm-3 col_paddingtop">
+			 <label><?php echo $this->translate("Port"); ?></label>
+			 </div>
+			  <div class="col-sm-2 col_paddingtop">
+			 <label><?php echo $this->translate("Price"); ?></label>
+			 </div>
+			 <div class="col-sm-2 col_paddingtop">
+			 <label><?php echo $this->translate("Import Surcharge"); ?></label>
+			 </div>
+			 <div class="col-sm-2 col_paddingtop">
+			 <label><?php echo $this->translate("Destination Surcharge"); ?></label>
+			 </div>
+		<input type="hidden" id="record_count" value="1">
+		<div class="clearfix"></div>
+	   
+	   <div id="postcode_range1">		
+		<div class="col-sm-3 col_paddingtop">
+			<?php echo $this->getHelper('HtmlSelect')->getSelect('port',$this->portlist,'port_id','port_name',(isset($this->records['des_port'])?$this->records['des_port']:''),false,array('class'=>'inputfield'));?>
+            </div>
+		<div class="col-sm-2 col_paddingtop">
+				 <input type="text" name="price" id="price1" class="inputfield" value="<?php echo $this->records['depot_price']?>">
+            </div>
+		<div class="col-sm-2 col_paddingtop">
+				 <input type="text" name="import_sercharge" id="import_sercharge1" class="inputfield" value="<?php echo $this->records['dep_import_surcharge']?>">
+            </div>
+		<div class="col-sm-2 col_paddingtop">
+				 <input type="text" name="destination_sercharge" id="destination_sercharge1" class="inputfield" value="<?php echo $this->records['dep_destination_charge']?>">
+            </div>	
+      </div>
+   <div class="clearfix"></div>
+
+   </div>
+   
+   <div class="clearfix"></div>
+    <div class="col-sm-2 col_paddingtop"> <input type="submit" name="update_routing" value="Update" class="btn btn-danger btn-round"></div>
+   
+   
+</div>
+</form>
+</div>
+
+</div>
+

@@ -1,0 +1,115 @@
+<link rel="stylesheet" href="<?php echo $this->baseUrl('/public/timepicker/jquery.ui.timepicker.css')?>">
+<script src="<?php echo $this->baseUrl('/public/timepicker/include/ui-1.10.0/jquery.ui.widget.min.js')?>"></script>
+<script src="<?php echo $this->baseUrl('/public/timepicker/jquery.ui.timepicker.js')?>"></script>
+
+	<div class="row row-broken">
+        <div class="col-sm-12">
+				 <div class="filter">
+				<div class="input-title"><?php echo $this->translate($this->title)?></div>
+			<div class="clear"></div>
+				<div style="background:#ffffff; padding:10px; overflow:auto;text-align:center">
+			<div class="clear-all"></div>
+				 
+					<div class="col-sm-12">
+							<?php $form = $this->DeliveryForm; ?>
+							<form action="" method="post" id="DeliveryForm" name="DeliveryForm" class="inputbox" onsubmit="return removerestriction();" >
+								 
+							           
+							          <div class="row">
+								            <div class="col-sm-4 col_paddingtop">
+											  <?php  echo $form->date_time; ?>
+								            </div>
+											<div class="col-sm-4 col_paddingtop">
+								              <?php echo $form->barcode; ?> 
+								            </div>
+								            <div class="col-sm-4 col_paddingtop">
+										  <?php  echo $form->forwarder_id; ?>
+							            </div>
+											<div class="clearfix"></div>
+							          </div>
+							           <div class="row">
+							            
+										<div class="col-sm-2 col_paddingtop">
+							              <?php echo $form->time; ?> 
+							            </div>
+							            <div class="col-sm-4 col_paddingtop">
+							              <?php echo $form->status; ?> 
+							            </div>
+							            <div class="col-sm-4 col_paddingtop">
+										  <?php  echo $form->rec_name; ?>
+							            </div>
+							            <div class="col-sm-2 col_paddingtop"> <?php echo $form->submit; ?> </div>
+							            <div class="clearfix"></div>
+										 
+							             
+							          </div>
+							           
+							     
+							</form>
+							<div id="loader" style="position:absolute;width:100%;top:0;display:none;height:100%;background: #ffffff"> <img src="<?=IMAGE_LINK?>/loader_big.gif">  </div>
+					</div>
+					<div class="col-sm-2">&nbsp;</div>
+					<div class="clear-all"></div>
+				</div>
+			</div>
+        </div>
+	</div>
+<script>
+function clickTimePicker(id){
+$('#'+id).timepicker();
+}
+
+function removerestriction() {
+
+	$('#forwarder_id').removeAttr('disabled');
+	return true;
+}
+
+function submitMe(val){
+	if(val !=''){
+		
+		var action = '<?php echo BASE_URL; ?>/Parcel/getforwarderstatuscode'; 
+		var queryString = 'forwarder_id='+val;
+		$.ajax({
+		  url  : action,
+		  type : 'post',
+		  beforeSend : function(){
+		  	$("#loader").fadeIn();
+		  },
+		  data : queryString,
+		  dataType : 'json',
+		  success : function(res){
+		  	var selectBox = '<option value="">Select Status</option>';
+		  	if(res.hasOwnProperty('status')){
+		  		alert(res.message);
+		  		$("#statuses").html(selectBox);
+		  	}
+		  	else {
+		  		$.each(res,function(i,val){
+		  			selectBox += "<option value='"+i+"'>"+val+"</option>";
+		  		});
+		  		$("#statuses").html(selectBox);
+		  	}
+		  },
+		  complete : function(){
+		  	$("#loader").fadeOut();
+
+		  }
+
+		});
+	}
+
+
+}
+
+ $(function() {
+  $( "#assigndate" ).datepicker({
+    dateFormat: 'yy-mm-dd',
+    showOtherMonths: true,
+    selectOtherMonths: true
+  });
+
+	$('#assigntime').timepicker();
+
+ });  
+</script>

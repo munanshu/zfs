@@ -1,0 +1,107 @@
+
+<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+		<form method="post" action="" id="filter_form" name="filter_form">
+		<!-- filter start -->
+			<div class="filter">
+				<div class="input-title"><?php echo $this->translate("Search");?></div>
+				<div class="row row_nopadding decor-success" style="margin-left:0px !important;margin-right:0px !important;">
+				<div class="clear-all"></div>
+				<div class="col-sm-4 col_paddingtop">
+				<label><?php echo $this->translate("Country");?></label>
+				<select name="country_id" id="country_id" class="inputfield" style="width:60%" onchange="$('#filter_form').submit();">
+			    <option value="">--<?php echo $this->translate("Country"); ?>--</option>
+				<?php foreach($this->countrylist as $countrylist){
+				  $selected = '';
+				  if(isset($this->Request['country_id']) && $countrylist['country_id']==$this->Request['country_id']){
+				    $selected = 'selected="selected"';
+				  }?>
+				  <option value="<?php echo $countrylist['country_id']?>" <?php echo $selected;?>><?php echo $countrylist['cncode'].'-'.$countrylist['country_name']?></option>
+				<?php } ?>
+              </select>
+				</div>
+				<?php if($this->ModelObj->Useconfig['level_id']==1 || $this->ModelObj->Useconfig['level_id']==11){?>
+				<div class="col-sm-4 col_paddingtop">
+				<label><?php echo $this->translate("Depot");?></label>
+				<select name="user_id" id="user_id" class="inputfield" style="width:60%" onchange="$('#filter_form').submit();">
+			    <option value="">--<?php echo $this->translate("Select"); ?>--</option>
+				<?php foreach($this->depotlist as $depotlist){
+				  $selected = '';
+				  if(isset($this->Request['user_id']) && Zend_Encript_Encription::encode($depotlist['user_id'])==$this->Request['user_id']){
+				    $selected = 'selected="selected"';
+				  }?>
+				  <option value="<?php echo Zend_Encript_Encription::encode($depotlist['user_id'])?>" <?php echo $selected;?>><?php echo commonfunction::utf8Decode($depotlist['company_name'])?></option>
+				<?php } ?>
+              </select>
+				</div>
+				<?php } ?>
+				<div class="col-sm-3 col_paddingtop">
+				<label><?php echo $this->translate("Service");?></label>
+			      <select name="service_id" id="service_id" class="inputfield" style="margin-left: 0px; width:50%"  onchange="$('#filter_form').submit();">
+				 <option value="">--<?php echo $this->translate("Select Service"); ?>--</option>
+				<?php foreach($this->servicelist as $servicelist){
+				  $selected = '';
+				  if(isset($this->Request['service_id']) && $servicelist['service_id']==$this->Request['service_id']){
+				    $selected = 'selected="selected"';
+				  }?>
+				  <option value="<?php echo $servicelist['service_id']?>" <?php echo $selected;?>><?php echo $servicelist['service_name']?></option>
+				<?php } ?>
+              </select>
+				</div>
+				<div class="col-sm-12 col_paddingtop"></div>
+				</div>
+			<div class="clear-all"></div>
+			 <a href="javascript:void(0);" onclick="if($('#user_id').val()!=''){openbox('<?php echo $this->url(array('controller'=>'Routing','action'=>'addweightclass'),'default',true);?>?user_id='+$('#user_id').val()+'','60%','80%')}else{alert('Please select Depot first');return false;}"><i class="fa fa-plus-square"></i><?php echo $this->translate("Add Weight class"); ?></a>
+			  <a href="<?php echo $this->url(array('controller'=>'Routing','action'=>'routinglist'),'default',true);?>"><i class="fa fa-plus-square"></i><?php echo $this->translate("Routing List"); ?></a>
+			</div>
+		<!-- end filter -->
+		
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+				<div id="table">
+					<div class="header-row row"> 
+					<span class="cell"><?php echo $this->translate("Company");?></span> 
+					<span class="cell"><?php echo $this->translate("Country");?></span> 
+					<span class="cell"><?php echo $this->translate("Servce");?></span> 
+					<span class="cell"><?php echo $this->translate("Weight Class");?></span> 
+					<span class="cell"><?php echo $this->translate("Action");?></span>				
+					</div>
+					<?php if($this->records['Total']>0){
+					
+						foreach($this->records['Records'] as $index=>$data){
+							$class = (($index)%2==0) ? 'class="row odd"' :'class="row even"';
+							$parent_service = (!empty($data['parent_name']))?'<b>-'.$data['parent_name'].'</b>':'';
+							?>
+						<div <?=$class?>>
+							<span class="cell" data-label="Company"><?=$data['company_name'];?></span>
+							<span class="cell" data-label="Country"><?=$data['country_name'];?></span> 
+							<span class="cell" data-label="Service"><?=$data['service_name'].$parent_service;?></span>
+							<span class="cell" data-label="Class"><?= commonfunction::stringReplace(',','<br>',$data['weight_class'])?></span>
+							<span class="cell" data-label="Action"><a href="javascript:void(0);" onclick="if(confirm('Are you sure you want to delete this class?')){ deleteweightClass('<?php echo $this->url(array('controller'=>'Routing','action'=>'deleteweightclass'),'default',true).'?class_ids='.$data['class_ids']; ?>')}"><i class="fa fa-times fa-2x" title='<?php echo $this->translate("Delete Weight class"); ?>'></i></a></span>
+							</span> 
+						</div>
+					<?php }}else{?>
+						
+						<div class="row odd">
+							<span class="cell" colspan="6"><b><?=$this->translate("Recod not found !");?></b></span> 
+						</div>
+					<?php }?>	
+
+				</div>
+				<div class="unit control">
+					<div class="nav-btns pull-right"> <?php echo commonfunction::PageCounter($this->records['Total'],$this->Request)?>
+				  </div>
+				</div> 		 	
+			</form>	
+			</div></div></div>
+<script>
+function deleteweightClass(urls){
+  $.ajax({
+    type:'post',
+	url: urls,
+	success: function(msg){
+	   window.location.reload();   
+	}
+  });
+}
+</script>			

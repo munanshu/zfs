@@ -1,0 +1,53 @@
+<script src="<?php echo $this->baseUrl('public/js/account.js');?>"></script>
+
+	<div id="table"><div class="header-row row">
+		<span class="cell" style="text-align:center"><h6><?php echo $this->translate("All Settings");?></h6></span> 
+	</div></div>
+	
+	<div class="row row-broken" style="margin-left:0px !important;margin-right:0px !important;">
+        <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+              <ul class="nav nav-tabs nav-justified">
+			  	<?php if($this->Userlevel==5){ ?>
+                	<li><a href="customer"><?php echo $this->translate("List")?><i class="fa fa-folder"></i></a></li>
+                <?php } else{ ?>	
+					<li><a href="depotmanager"><?php echo $this->translate("List")?><i class="fa fa-folder"></i></a></li>
+				<?php }?>	
+				<li  class="active"> <a href="settings?token=<?php echo $this->token;?>"><?php echo $this->translate("All Settings")?><i class="fa fa-ticket"></i></a> </li>
+				
+              </ul>
+			</div>
+		</div>	
+	</div>
+	
+	<?php if($this->Userlevel==5){ ?>
+		<div class="col-md-2"></div>
+			<div class="col-md-8">
+				<div class="tab-content">
+					<div class="tab-pane fade in active" id="tab-1">
+					
+						<?php echo $this->settingData; ?>
+					
+					</div>
+				</div>	
+			</div>
+		<div class="col-md-2"></div>	
+	<?php }else{ ?>	
+			<div class="col-md-12">
+				<div class="tab-content">
+					<div class="tab-pane fade in active" id="tab-1">
+					
+						<?php echo $this->settingData; ?>
+					
+					</div>
+				</div>	
+			</div>
+	<?php } ?>
+	
+	
+<script type="text/javascript">	
+	$(document).ready(function(){
+		$('#warehouse').hide();
+	});	
+	
+</script>

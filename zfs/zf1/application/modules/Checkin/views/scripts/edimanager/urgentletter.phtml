@@ -1,0 +1,85 @@
+<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+		<form method="post" action="" id="manifest" name="manifest" onsubmit="return check_item_swisspost()">
+		<!-- filter start -->
+			<!-- filter start -->
+			<div class="filter">
+				<div class="input-title"><?php echo $this->translate("Forwarder Manifest");?></div>
+				<div class="row row_nopadding decor-success" style="margin-left:0px !important;margin-right:0px !important;">
+				
+				<div class="clear-all"></div>
+				<div class="col-sm-3 col_paddingtop">
+				 <input type="submit" name="forwarder_manifest" id="forwarder_manifest"  class="btn btn-danger" value="<?php echo $this->translate("Generate Edi and Manifest");?>">
+				</div>
+				<?php if(isset($this->Request['forwarder_id']) && ($this->Request['forwarder_id']==49 || $this->Request['forwarder_id']==51)){?>
+				<div class="col-sm-2 col_paddingtop">
+						<input type="text" name="total_item" id="total_item"  class="inputfield" placeholder="Total Item" style="background-color: cyan;" value="<?php echo isset($this->Request['total_item'])?$this->Request['total_item']:''?>">
+				</div>
+				<div class="col-sm-2 col_paddingtop">
+						<input type="text" name="total_weight" id="total_weight"  class="inputfield" placeholder="Total Weight" style="background-color: cyan;" value="<?php echo isset($this->Request['total_item'])?$this->Request['total_item']:''?>">
+				</div>
+				<?php } ?>
+				<div class="col-sm-2 col_paddingtop">
+				<?php if(((isset($this->Request['user_id']) && $this->Request['user_id']!='') ||  $this->ModelObj->Useconfig['level_id']==4 || $this->ModelObj->Useconfig['level_id']==6)){?>
+						<input type="submit" name="hub_manifest" id="hub_manifest"  class="btn btn-danger" value="<?php echo $this->translate("Send to Hub");?>">
+				<?php } ?>
+				</div>
+				<div class="col-sm-12 col_paddingtop"></div>
+				</div>
+		</div>
+		<!-- end filter -->
+		<!-- end filter -->
+		
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+						
+				<div id="table">
+					<div class="header-row row"> 
+						<span class="cell"><input type="checkbox" id="check_uncheck_all" onchange="check_uncheckALL(this)"></span>
+						<span class="cell"><?php echo $this->translate("Parcel Number");?></span> 
+						<span class="cell"><?php echo $this->translate("Customer");?></span>
+						<span class="cell"><?php echo $this->translate("Receiver");?></span>
+						<span class="cell"><?php echo $this->translate("Country");?></span>
+						<span class="cell"><?php echo $this->translate("Forwarder");?></span>						
+						<span class="cell"><?php echo $this->translate("Weight");?>(kg)</span>
+						<span class="cell"><?php echo $this->translate("Services");?></span>
+						<span class="cell"><?php echo $this->translate("Check-In Date");?></span>
+						<span class="cell"><?php echo $this->translate("Create Date");?></span> 				
+					</div>
+					<?php 
+					if(count($this->records)>0){
+						foreach($this->records as $index=>$data){
+							$class = (($index)%2==0) ? 'class="row odd"' :'class="row even"';?>
+						<div <?=$class?>>
+						<span class="cell" data-label="Record"><input type="checkbox" name="barcode_id[]" id="barcode_id<?= $data[BARCODE_ID]?>" value="<?= $data[BARCODE_ID]?>" class="check_uncheck_class"></span></span>
+							<span class="cell" data-label="Barcode"><?=$data[BARCODE];?></a></span>
+							<span class="cell" data-label="Customer"><?=$data['company_name'];?></span>
+							<span class="cell" data-label="Receiver"><?=$data[RECEIVER];?></span>
+							<span class="cell" data-label="Forwarder"><?=$data['country_name'];?></span>
+							<span class="cell" data-label="Forwarder"><?=$data['forwarder_name'];?></span>
+							<span class="cell" data-label="Forwarder"><?=$data['weight'];?></span>
+							<span class="cell" data-label="Service"><?=$data['service_name'];?></span>
+							<span class="cell" data-label="Check-In Date"><?=commonfunction::TimeFormat($data['checkin_date']);?></span>
+							<span class="cell" data-label="Create Date"><?=commonfunction::TimeFormat($data['create_date']);?></span>
+						</div>
+					<?php } }else{ ?>
+					<span class="cell" data-label="No Record"><?php echo $this->translate("No Record found!");?></span>
+					<?php  }  ?>
+				</div>
+					 	
+			</form>	
+			</div></div></div>
+	<script>
+function check_item_swisspost(){
+    var forwarder_id = '<?php echo $this->Request['forwarder_id']?>';
+	var item_weight = $('#total_weight').val();
+	var item_quantity = $('#total_item').val();
+	if((forwarder_id==49 || forwarder_id==51) && (item_weight<=0 || item_quantity<=0)){
+	   alert('<?php echo $this->translate("Please fill Total Item and Total Weight");?>');
+	   return false;
+	}else{
+	  return true;
+	}
+
+}
+</script>	

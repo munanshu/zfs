@@ -1,0 +1,202 @@
+<div class="row row-broken">
+    <div class="col-sm-12">
+        <div class="tabs" id="seventh-tabs">
+			<ul class="nav nav-tabs nav-justified">
+                <li class="active"><a href="<?=BASE_URL?>/Helpdesk/helpdesksetting" data-toggle=""><?php echo $this->translate('Question') ?></a> </li>
+				<li><a href="#" data-toggle="tab"><?php echo $this->translate('Status') ?></a></li>
+            </ul>
+			<div class="col-sm-12 col_paddingtop">
+					<div class="tab-content">
+						<div class="tab-pane fade in active" id="tab-1">
+						  <form method="post" name="replyform" class="inputbox" id="replyform" enctype="multipart/form-data">
+						    <?php $count='0'; ?>
+							<input type="hidden" id="add_more" value="<?= $count ?>">
+							<input type="hidden" name="question_id" id="question_id" value="<?=$this->ModelObj->getData['question_id']; ?>">
+							<table class="tbl_new">
+								<tr>
+									<th><?php echo $this->translate('Steps') ?></th>
+									<th><?php echo $this->translate('Step Name') ?></th>
+									<th><?php echo $this->translate('Instructions') ?></th>
+									<th><?php echo $this->translate('Documents Status') ?></th>
+									<th><?php echo $this->translate('Parent Status') ?></th>
+									<th><?php echo $this->translate('Step For') ?></th>
+									<th><?php echo $this->translate('Action') ?></th>
+								</tr>
+					        <?php if(!empty($this->steps)){ 
+							    foreach($this->steps as $key=>$step){
+							?> 
+							    <tr id="row<?=$count ?>">
+								  <td>
+									<select id="step<?= $count;?>" name="step<?=$count;?>" class="inputfield">
+									  <option value="0">--Select Step--</option>
+									  <?php $i=1;
+										$steplistdata = $this->steplistdata; 
+										foreach($steplistdata as $steplist){
+										
+										$selected='';
+											if($step['step']==$i){
+											 $selected= 'selected="selected"';
+											} ?>
+										<option value="<?=$steplist['value']?>" <?=$selected ?>><?=$steplist['steplist']; ?></option>
+									  <?php $i++; } ?>
+									</select>
+								  </td>
+								  <td><input type="text" class="inputfield" name="steps_name<?=$count;?>" id="steps_name<?= $count;?>" value="<?= $step['step_name'] ?>"></td>
+								  <td><textarea cols="20" rows="3" name="instruction<?= $count;?>" id="instruction<?= $count;?>"><?=$step['instruction'] ?></textarea></td>
+								  <td><input type="checkbox" name="documents_uploade<?= $count ?>" id="documents_uploade<?=$count; ?>" <?php if($step['documents_uploade']==1){echo 'checked="checked"';} ?>>Documents Require</td>
+								  <td>
+									
+									<select name="parent_step<?=$count;?>" class="inputfield" id="parent_step<?=$count; ?>">
+									<?php
+									   $parent_steps=$this->ModelObj->getparentstep($step['question_id'],$step['step'],$step['parent_step']);
+									   echo $parent_steps;							
+									?>
+									</select>
+									<?php if($count>0){ ?>
+									  <input type="radio" name="status<?php echo $count;?>" id="status<?php echo $count;?>"  value="1" <?php if($step['parent_status']==1){ echo 'checked="checked"'; } ?>>Yes
+									  <input type="radio" name="status<?php echo $count;?>" id="status<?php echo $count;?>" value="0" <?php if($step['parent_status']==0) { echo 'checked="checked"'; } ?>>No	
+									<?php } ?>
+								  </td>
+								  
+								  <td>
+									<input type="radio" name="step_auth<?=$count ?>" id="step_auth<?=$count ?>" value="1" <?php if($step['step_auth']==1) { echo 'checked="checked"'; } ?>>Customer 
+									<input type="radio" name="step_auth<?=$count ?>" id="step_auth<?=$count ?>" value="0" <?php if($step['step_auth']==0) { echo 'checked="checked"'; } ?>>Operator
+								  </td>
+								  <td>
+								  <?php if(count($this->steps)<1) {?>
+								  <i class="fa fa-plus-square" onclick="add_more()"></i>
+								  <?php } else{ ?>
+								    <i class="fa fa-pencil-square-o" onclick="editsteps('<?=$count ?>')"></i>  
+								  <?php } ?>
+								  </td>
+							    </tr>
+							<?php $count++;  } } ?>
+							    
+								
+								<tr id="row<?=$count+1; ?>">
+								  <td> 
+									<select id="step<?= $count+1;?>" name="step<?=$count+1;?>" class="inputfield">
+									 <option value="0">--Select Step--</option>
+									<?php
+                                    $steplistdata = $this->steplistdata;
+									foreach($steplistdata as $steplist){ ?>
+								      <option value="<?=$steplist['value'] ?>"><?= $steplist['steplist'] ?></option>
+									<?php } ?>
+									</select>
+								  </td> 
+								  <td><input type="text" class="inputfield" name="steps_name<?=$count+1;?>" id="steps_name<?= $count+1;?>"></td>
+								  <td><textarea cols="20" rows="3" name="instruction<?= $count+1;?>" id="instruction<?= $count+1;?>"></textarea></td>
+								  <td><input type="checkbox" name="document_upload<?= $count+1; ?>">Documents Required</td>
+								  <td>
+									<?php
+									foreach($this->steps as $step){
+									 $options=$this->ModelObj->getparentstep($step['question_id'],$step['step'],$step['parent_step'],true);
+									}								
+									?>
+									<select name="parent_step<?=$count +1 ?>" class="inputfield" id="parent_step<?=$count+1 ?>">
+									  <option value="0">parent status</option>
+									  <?= $options; ?>
+									</select>
+									<?php if($count>0){ ?>
+									  <input type="radio" name="status<?php echo $count+1;?>" id="status<?php echo $count+1;?>"  value="1"/>Yes
+									  <input type="radio" name="status<?php echo $count+1;?>" id="status<?php echo $count+1;?>" value="0" />No	
+									<?php } ?>
+								  </td>
+								  <td>
+									<input type="radio" name="step_auth<?=$count+1 ?>" id="step_auth<?=$count+1; ?>" value="1">Customer <input type="radio" name="step_auth<?=$count+1; ?>" id="step_auth<?=$count+1 ?>" value="0">Operator
+								  </td>
+								  <td><i class="fa fa-plus-square" onclick="add_more('<?php echo $count+1; ?>')"></i></td>
+								</tr>
+							</table>
+						  </form>
+						</div>
+					</div>
+            </div>
+	    </div>
+    </div>
+</div>
+<script>
+ function add_more(id){
+    var question_id = $("#question_id").val();
+	var step = $("#step"+id).val();
+	var steps_name = $("#steps_name"+id).val();
+	var instruction = $("#instruction"+id).val();
+	var document_upload = $("#document_upload"+id).is(':checked') ? 1 : 0;
+	var parent_step = $("#parent_step"+id).val();
+	var parent_status = document.getElementsByName("status"+id);
+	var step_authenticate = document.getElementsByName("step_auth"+id);
+	var status='';
+	var step_auth ='';
+	for(var i=0; i<parent_status.length; i++){
+	   if(parent_status[i].checked){
+	    status = parent_status[i].value;
+	   }
+	}
+	for(var i=0; i<step_authenticate.length; i++){
+	  if(step_authenticate[i].checked){
+	    step_auth = step_authenticate[i].value;		
+	  }
+	}
+	
+	if(step<='0' && id>'1'){
+	  alert('Please select step');
+	  return false;
+	}
+	else if(step_auth=='' && id>'1'){
+	 alert('Please select step user');
+	 return false;
+	}
+
+	else if(status=='' && id>'1'){
+	 alert('Please checked Parent Yes or No');
+	 return false;
+	}
+	
+	$.ajax({
+	    type: "POST",
+		url : '<?php echo $this->url(array('controller'=>'Helpdesk','action'=>'addsteps'),'default',true)?>',
+		data : 'question_id='+question_id+'&step='+step+'&step_name='+steps_name+'&instruction='+instruction+'&parent_step='+parent_step+'&document_upload='+document_upload+'&count='+id+'&parent_status='+status+'&step_auth='+step_auth,
+		success:function(msg){ 
+		$("#row"+id).after(msg);
+		window.location.reload();
+	    }
+	})
+	
+}
+
+function editsteps(id){
+    var question_id = $("#question_id").val();
+	var step = $("#step"+id).val();
+	var steps_name = $("#steps_name"+id).val();
+	var instruction = $("#instruction"+id).val();
+	var parent_step = $("#parent_step"+id).val();
+	var document_upload = $("#documents_uploade"+id).is(':checked') ? 1 : 0;
+	var parent_status = document.getElementsByName("status"+id);
+	var step_authenticate = document.getElementsByName("step_auth"+id);
+	var status='';
+	var step_auth ='';
+	for(var i=0; i<parent_status.length; i++){
+	   if(parent_status[i].checked){
+	    status = parent_status[i].value;
+		
+	   }
+	}
+	
+	for(var i=0; i<step_authenticate.length; i++){
+	  if(step_authenticate[i].checked){
+	    step_auth = step_authenticate[i].value;		
+	  }
+	}
+	   
+	$.ajax({
+	    type: "POST",
+		url : '<?php echo $this->url(array('controller'=>'Helpdesk','action'=>'editsteps'),'default',true)?>',
+		data : 'question_id='+question_id+'&step='+step+'&step_name='+steps_name+'&instruction='+instruction+'&parent_step='+parent_step+'&document_upload='+document_upload+'&parent_status='+status+'&count='+id+'&step_auth='+step_auth,
+		success:function(msg){
+        var msg = "Question has been updated successfully";		
+		alert(msg);
+		}
+	})
+	
+}
+</script>

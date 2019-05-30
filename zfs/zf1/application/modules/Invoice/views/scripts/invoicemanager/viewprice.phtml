@@ -1,0 +1,115 @@
+<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+		<form method="post" action="" id="filter_form" name="filter_form">
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+				<div id="table">
+				     <div  id="tablegrid">
+					<table width="100%" border="0" id="dataTableGridId">
+								<thead>
+								<tr> 
+									<th><?php echo $this->translate("Barcode");?></th> 
+									<th><?php echo $this->translate("Parcel No.");?></th>
+									<th><?php echo $this->translate("Forwarder");?></th> 
+									<th><?php echo $this->translate("Country");?></th> 
+									<th><?php echo $this->translate("Weight");?></th> 
+									<th><?php echo $this->translate("Depot Price");?></th> 
+									<th><?php echo $this->translate("Customer Price");?></th>
+									<th><?php echo $this->translate("Action");?></th>
+								</tr>
+						</thead>
+						<tbody>
+						<?php if(count($this->records)>0){
+							
+								foreach($this->records as $index=>$data){
+									 $class = ($index%2==0)?'even':'odd'; ?>
+									<tr <?=$class?>>
+										<td data-label="Barcode"><?=$data['barcode'];?></td> 
+										<td data-label="No. Parcel">
+										<?php 
+											if ($data[QUANTITY]<=1) {
+												$parcel_no = 1;
+											} else {
+												$strchar = strrchr($data[REFERENCE], "-");
+												$parcel_no = $strchar[1] + 1;
+											}?>
+										<?=$parcel_no.'/'.$data[QUANTITY]?></td>
+										<td data-label="Forwarder"><?=$data['forwarder_name'];?></td>
+										<td data-label="Country"><?= $data['country_name']?></td>
+										<td data-label="Weight"><?= $data['weight']?></td>
+										<td data-label="Depot Price"><input type="text" name="depot_price" id="depot_price<?=$data['barcode_id'];?>" value="<?= $data['depot_price']?>" class="inputfield" style="width:80%" disabled="disabled"></td>
+										<td data-label="Customer Price"><input type="text" name="customer_price" id="customer_price<?=$data['barcode_id'];?>" value="<?= $data['customer_price']?>" class="inputfield" style="width:80%" disabled="disabled"></td>
+										<td data-label="Action"><i class="fa fa-edit fa-2x" title="Edit" id="edit<?=$data['barcode_id'];?>" onclick="SavePrice('Edit','<?=$data['barcode_id'];?>')"></i>
+										<i class="fa fa-floppy-o fa-2x" title="Save" style="display:none" id="save<?=$data['barcode_id'];?>" onclick="SavePrice('Save','<?=$data['barcode_id'];?>')"></i>
+										<i class="fa fa-times fa-2x" title="Cancel" style="display:none" id="cancel<?=$data['barcode_id'];?>" onclick="SavePrice('Cancel','<?=$data['barcode_id'];?>')"></i></td>
+									</tr>
+								<?php }}else{?>
+									
+									<tr>
+									  <td data-label="No Data" colspan="10"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td>
+									</tr>
+									
+								<?php }?> </tbody>
+
+                     </table>
+                    </div>					 	
+			</form>	
+			</div></div></div>
+<script>
+function SavePrice(action,id){
+   var level_id = '<?php echo $this->ModelObj->Useconfig['level_id'] ?>';
+   var id_field;
+   if(level_id==1 || level_id==11){
+       id_field = 'depot_price';
+   }else{
+	   id_field = 'customer_price'; 
+   }
+   if(action=='Edit'){
+	    $('#'+id_field+id).attr('disabled',false);
+		$('#save'+id).show();
+		$('#cancel'+id).show();
+		$('#edit'+id).hide();
+   }else if(action=='Cancel'){
+	    $('#'+id_field+id).attr('disabled',true);
+		$('#save'+id).hide();
+		$('#cancel'+id).hide();
+		$('#edit'+id).show();
+   }else{
+	  var price =  $('#'+id_field+id).val(); 
+	  $.ajax({
+		  type : 'POST',
+		  url  : '<?php echo $this->url(array('controller'=>'Invoicemanager','action'=>'updateprice'),'default',true);?>',
+		  data : 'barcode_id='+id+'&price='+price,
+		  success:function(msg){
+		    $('#'+id_field+id).attr('disabled',true);
+			$('#save'+id).hide();
+			$('#cancel'+id).hide();
+			$('#edit'+id).show();
+		  }
+	  });
+   }
+}
+$('#dataTableGridId').DataTable( {
+		"pageLength": 100,
+		"lengthMenu": [[10, 25, 50, 100, 200, 500, -1], [10, 25, 50, 100, 200, 500, "All"]],
+        initComplete: function () {
+            this.api().columns().every( function () {
+                var column = this;
+                var select = $('<select><option value=""></option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+ 						column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+ 
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+        }
+    } );
+</script>			

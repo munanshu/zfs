@@ -1,0 +1,81 @@
+<?php $form = $this->form; ?>
+
+<div class="col-sm-12 col_paddingtop">
+<div  id="tablegrid">
+                     <div id="table">
+
+							 	<div class="header-row row"> 
+
+										<?php  
+
+										   if($this->Request['FormType'] == 'MEMORIAL'){
+										   		?>
+												<span class="cell" data-label="Max weight"><?php echo $this->translate("Memorial Number");?></span>
+												<?php
+										   } 		
+
+											elseif(isset($form->ledger_invoice_number)){ ?>
+												<span class="cell" data-label="Max weight"><?php echo $this->translate("Invoice Number");?></span>
+											<?php }
+
+
+										 ?>
+
+										<span class="cell"><?php echo $this->translate("Definition");?></span> 
+
+										<span class="cell"><?php echo $this->translate("Ledger Account");?></span> 
+
+										<span class="cell"><?php echo $this->translate("BTW");?></span> 
+
+										<span class="cell" id="CreditDebitColumn" ><?php echo ($this->Request['FormType'] == 'VERKOOPEN')?   $this->translate("Credit") : $this->translate("Debit"); ?></span> 
+
+										<?php  if(isset($form->credit)){ ?>
+											<span class="cell" id="CreditColumn" data-label="Max weight"><?php echo $this->translate("Credit");?></span>
+										<?php } ?>
+
+								</div>
+
+								<?php $form_type = $this->Request['FormType'];
+									 
+									switch ($form_type) {
+
+										 	 	case 'MEMORIAL':
+										 	 		echo( $this->formArrayElements(
+													        array($form->memorial_id,$form->definition, $form->ledger_id,$form->btw,$form->debit,$form->credit), 
+													        'bookkeeping/multirowsinkoopen.phtml'
+													    )); 
+										 	 		break;	
+
+										 	 	case 'POSTBANK':
+										 	 		 
+										 	 		// break;
+
+										 	 	case 'BANK':
+										 	 		 echo( $this->formArrayElements(
+													        array($form->ledger_invoice_number,$form->definition, $form->ledger_id,$form->btw,$form->debit,$form->credit), 
+													        'bookkeeping/multirowsinkoopen.phtml'
+													    ));
+										 	 		break;	
+										 	 	
+										 	 	case 'INKOOPEN':
+										 	 		echo( $this->formArrayElements(
+													        array($form->definition, $form->ledger_id,$form->btw,$form->debit), 
+													        'bookkeeping/multirowsinkoopen.phtml'
+													    ));
+										 	 		break;
+
+										 	 	case 'VERKOOPEN':
+										 	 		echo( $this->formArrayElements(
+													        array($form->definition, $form->ledger_id,$form->btw,$form->credit), 
+													        'bookkeeping/multirows.phtml'
+													    ));
+										 	 		break;		
+
+										 	 	default:
+										 	 		 
+										 	 		break;
+										 	 }
+								       
+								?>
+					</div>
+                     </div></div>

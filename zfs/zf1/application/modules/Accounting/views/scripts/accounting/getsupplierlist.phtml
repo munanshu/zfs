@@ -1,0 +1,249 @@
+<style>
+<!--Tooltip CSS-->
+	.demo a{
+		display:inline-block;
+		position:relative;
+	}
+	.em1{
+		color:#009933;
+	}	
+	.tooltip-container {
+		position:relative;	/* Forces tooltip to be relative to the element, not the page */
+		cursor:help;		/* Makes you cursor have the help symbol */
+	}	
+	.tooltip {
+		display:block;
+		position:absolute;
+		width:250px;
+		padding:5px 15px;
+		left:50%;
+		bottom:25px;
+		margin-left:-95px;
+		/* Tooltip Style */
+		color:#fff;
+		border:2px solid rgba(34,34,34,0.9);
+		background:rgba(51,51,51,0.9);
+		text-align:center;
+		border-radius:3px;
+		/* Tooltip Style */
+		opacity:0;
+		box-shadow:0px 0px 3px rgba(0, 0, 0, 0.3);
+		-webkit-transition:all 0.2s ease-in-out;
+		-moz-transition:all 0.2s ease-in-out;
+		-0-transition:all 0.2s ease-in-out;
+		-ms-transition:all 0.2s ease-in-out;
+		transition:all 0.2s ease-in-out;
+		-webkit-transform:scale(0);
+		-moz-transform:scale(0);
+		-o-transform:scale(0);
+		-ms-transform:scale(0);
+		transform:scale(0);
+		/* reset tooltip, to not use container styling */
+		font-size:14px;
+		font-weight:normal;
+		font-style:normal;
+	}
+	
+	.tooltip:before, .tooltip:after{
+		content:'';
+		position:absolute;
+		bottom:-13px;
+		left:50%;
+		margin-left:-9px;
+		width:0;
+		height:0;
+		border-left:10px solid transparent;
+		border-right:10px solid transparent;
+		border-top:10px solid rgba(0,0,0,0.1);
+	}
+	.tooltip:after{
+		bottom:-12px;
+		margin-left:-10px;
+		border-top:10px solid rgba(34,34,34,0.9);
+	}
+	
+	.tooltip-container:hover .tooltip, a:hover .tooltip {
+		/* Makes the Tooltip slightly transparent, Lets the barely see though it */
+		opacity:0.9;
+		/* Changes the scale from 0 to 1 - This is what animtes our tooltip! */
+		-webkit-transform:scale(1);
+		-moz-transform:scale(1);
+		-o-transform:scale(1);
+		-ms-transform:scale(1);
+		transform:scale(1);
+		font-family: Verdana;
+		font-size:11px;
+	}
+	
+	/* Pure CSS3 Animated Tooltip - Custom Classes
+	---------------------------------------------------- */
+	.tooltip-style1 {
+		color:#000;
+		border:2px solid #fff;
+		background:rgba(246,246,246,0.9);
+		font-style:italic;
+	}
+	.tooltip-style1:after{
+		border-top:10px solid #fff;
+	}
+	</style>
+<div class="row row-broken">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+			  
+              <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-6">
+					<form>
+					  <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="input-title"><?php echo $this->translate('Forwarder Status code Lists')?></div>
+					  <div class="clear-all"></div>
+					  <?php $SuppliersNames = $this->SuppliersNames; ?>
+					  <div class="col-sm-2 col_paddingx10">Supplier Names :</div>
+						<div class="col-sm-2 col_paddingx10">
+
+							<input type="text" name="company_name" value="<?=isset($this->ModelObj->getData['company_name'])? $this->ModelObj->getData['company_name']:''?>" class="inputfield" required>
+
+						</div>
+					 	 <div class="col-sm-2 col_paddingtop">
+
+					<button onclick="this.form.submit()" class="btn btn-danger btn-round" name="search" type="submit" value="search">Submit</button>
+
+			  	</div>
+
+					  <div class="col-sm-3 col_paddingx10">
+						<label for="input-2" class="input__label input__label--kaede"> 
+						<span class="input input--kaede"><a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Accounting','action'=>'addeditsupplier'),'default',  true).'?mode=add'?>','70%','90%');"><i class="fa fa-plus-square" aria-hidden="true"></i>
+ <?php echo $this->translate('Add Supplier')?></a>
+						</span></label>
+					  </div>
+					   
+					  <div class="col-sm-9 col_paddingx10"> <span class="input input--kaede"></span> 
+						</div>
+	
+					</div>
+					 <div id="table">
+
+					 <div class="header-row row"> 
+
+					<span class="cell"><?php echo $this->translate("Supplier Name");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Contact Person");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Postal Code");?></span> 
+
+					<span class="cell"><?php echo $this->translate("City");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Address");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Bank Detail");?></span>
+
+					<span class="cell"><?php echo $this->translate("Status");?></span> 
+
+					<span class="cell"><?php echo $this->translate("Action");?></span>				
+
+					</div>
+
+					<?php 
+					 
+					if($this->AccountingSuppliers['total']>0){
+
+					
+
+						foreach($this->AccountingSuppliers['data'] as $key=>$data){
+
+							$class = (($key)%2==0) ? 'class="row odd"' :'class="row even"';?>
+
+						<div <?=$class?>>
+
+							<span class="cell" data-label="Country"><?=$data['company_name'];?></span>
+
+							<span class="cell" data-label="Min Weight"><?= $data['contact_name']?></span>
+
+							<span class="cell" data-label="Max weight"><?= $data['postalcode']?></span>
+							<span class="cell" data-label="Max weight"><?= $data['city']?></span>
+							<span class="cell" data-label="Max weight"><?= $data['supplier_address']?></span>
+							 
+
+							 <span class="cell" data-label="Status" style="color:green">
+								<p class="tooltip-container" style="color:green">
+								 <i class="fa fa-eye fa-2x"></i>
+								 <span class="tooltip"> 
+								 <?php $bank=0; if(isset($data['bank_account']) && !empty($data['bank_account'])){ ?>
+							 <span  data-label="Max weight"> Bank Account : <?= $data['bank_account']?> </span><br>   <?php }else $bank +=1; ?>
+							 <?php if(isset($data['btw_no']) && !empty($data['btw_no'])){ ?>
+							 <span  data-label="Max weight"> Btw Number : <?= $data['btw_no']?> </span><br>   <?php }else $bank +=1;?>
+							 <?php if(isset($data['kvk_no']) && !empty($data['kvk_no'])){ ?>
+							 <span  data-label="Max weight"> Kvk Number : <?= $data['kvk_no']?> </span><br>   <?php }else $bank +=1;?>
+							 <?php if(isset($data['account_holder']) && !empty($data['account_holder'])){ ?>
+							 <span  data-label="Max weight"> Account Holder : <?= $data['account_holder']?> </span> <br>  <?php }else $bank +=1;?>
+							 <?php if(isset($data['creditcard_no']) && !empty($data['creditcard_no'])){ ?>
+							 <span  data-label="Max weight"> Credit Card Number : <?= $data['creditcard_no']?> </span><br>   <?php }else $bank +=1;?>
+							 <?php if(isset($data['credit_period']) && !empty($data['credit_period'])){ ?>
+							 <span  data-label="Max weight"> Credit Period : <?= $data['credit_period']?> </span> <br>  <?php }else $bank +=1;?>
+							 	<?php if($bank == 6){
+							 		?><span  data-label="Max weight"> Bank Details Not Available </span>
+							 		<?php
+							 		}  ?>
+							    
+							 </span>
+								</p>
+							</span>
+							 
+
+							
+
+							<span class="cell" data-label="Max weight"><span class="cell" data-label="Status" id="statusSpan_<?=$key?>" ><?php if($data['status'] == "1") {  ?><img src="<?=IMAGE_LINK?>/icon_active.gif" align="absmiddle" alt="Active" border="0" onclick="setStatus('<?=AccountingSuppliers?>','status','0','supplier_id','<?=$data['supplier_id']?>','<?=$key?>');" title="Change Status into In-Active" class="changeStatus" />
+						<?php } else { ?>
+						<img src="<?=IMAGE_LINK?>/icon_inactive.gif" align="absmiddle" alt="Active" border="0" onclick="setStatus('<?=AccountingSuppliers?>','status','1','supplier_id','<?=$data['supplier_id']?>','<?=$key?>');" title="Change Status into Active" class="changeStatus" />
+						<?php } ?>
+						</span></span>
+
+							 
+						<span class="cell" data-label="Max weight">
+								<a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Accounting','action'=>'addeditsupplier'),'default',  true).'?mode=edit&token='.Zend_Encript_Encription:: encode($data['supplier_id'])?>','60%','90%');">
+						<i class="fa fa-edit fa-2x"></i></a>  
+							</span>
+							 
+
+							 
+
+						</div>
+
+					<?php }}else{?>
+
+						
+
+						<div class="row odd">
+
+							<span class="cell" colspan="6"><b><?=$this->translate("Recod not found !");?></b></span> 
+
+						</div>
+
+					<?php }?>	
+
+
+
+				</div>
+					<div class="unit control">
+
+					<div class="nav-btns pull-right"> <?php echo commonfunction::PageCounter($this->AccountingSuppliers['total'],$this->Request)?>
+
+				  </div>
+
+				</div> 
+					 </form>
+					</div>
+                </div>
+					<div>
+			  </div>
+			 </div>
+            </div>
+          </div>
+<script>
+$(document).ready(function() {
+	 commonDataTableView();
+} );
+
+
+	 
+</script>

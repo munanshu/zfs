@@ -1,0 +1,12 @@
+<link rel="stylesheet" href="<?=$this->baseUrl('public/timepicker/include/ui-1.10.0/ui-lightness/jquery-ui-1.10.0.custom.min.css');?>">
+<link rel="stylesheet" href="<?=$this->baseUrl('public/timepicker/jquery.ui.timepicker.css.css');?>">
+<script type="text/javascript" src="<?=$this->baseUrl('public/timepicker/include/ui-1.10.0/jquery.ui.widget.min.js')?>"></script>
+<script type="text/javascript" src="<?=$this->baseUrl('public/timepicker/include/ui-1.10.0/jquery.ui.tabs.min.js')?>"></script>
+<script type="text/javascript" src="<?=$this->baseUrl('public/timepicker/jquery.ui.timepicker.js')?>"></script>
+<div class="input-title"><?=$this->title?></div>
+<?php echo $this->plannerForm; ?>
+<script>
+function clickTimePicker(id){
+$('#'+id).timepicker();
+}
+</script>

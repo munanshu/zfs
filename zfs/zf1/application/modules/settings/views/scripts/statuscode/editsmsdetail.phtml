@@ -1,0 +1,61 @@
+<div class="input-title"><?=$this->translate("SMS Days For Status Code");?></div>
+<form action="" method="post" name="transitdetail" class="inputbox" >
+<input type="hidden" id="record_count" value="<?php echo count($this->SMSData)+1;?>">
+<div class="col-lg-12 col-md-12 col-sm-12 b-email">
+		    <div class="row">	
+				 <?php $i =0;
+					   foreach($this->SMSData as $key=>$data){
+					   $i =$key+1;				   ?>
+					   <div id="weight_classes<?= $i = $i+1?>">
+								<div class="col-sm-3 col_paddingtop">
+								 <label><?php echo $this->translate("Forwarder"); ?></label>
+									 <?=$this->getHelper('HtmlSelect')->getSelect('forwarder_id[]',$this->forwarders,'forwarder_id','forwarder_name',(isset($data['forwarder_id']))?$data['forwarder_id']:'',false,array('class'=>'inputfield')); ?>
+								</div>
+								<div class="col-sm-3 col_paddingtop">
+									<label><?php echo $this->translate("SMS Days"); ?></label>
+									<input type="text" name="sms_days[]" id="transit_days" placeholder="Enter Days" class="inputfield" required value="<?=(isset($data['sms_days']))?$data['sms_days']:''?>">	
+								</div>
+							<div class="col-sm-1 col_paddingtop">
+							 <i class="fa fa-minus-square-o" style="padding-top:15px;" onclick="removerow(<?=$i?>)"></i>
+						  </div>	
+						   <div class="clearfix"></div>
+					  </div> 
+			  <?php } ?>
+				<div id="weight_classes<?= $i=$i+1?>">
+						<div class="col-sm-3 col_paddingtop">
+						 <label><?php echo $this->translate("Forwarder"); ?></label>
+							 <?=$this->getHelper('HtmlSelect')->getSelect('forwarder_id[]',$this->forwarders,'forwarder_id','forwarder_name','',false,array('class'=>'inputfield')); ?>
+						</div>
+						<div class="col-sm-3 col_paddingtop">
+							<label><?php echo $this->translate("SMS Days"); ?></label>
+							<input type="text" name="sms_days[]" id="transit_days" placeholder="Enter Days" class="inputfield">	
+						</div>
+					<div class="col-sm-1 col_paddingtop">
+					 <i class="fa fa-plus-square" style="padding-top:35px;" onclick="addnewrow()"></i>
+				  </div>	
+				   <div class="clearfix"></div>
+			  </div> 
+			   <div class="col-sm-12 col_paddingtop"></div>
+				<div class="col-sm-4 col_paddingtop"> <input type="submit" name="submit" value="Submit Detail" class="btn btn-danger btn-round"></div>
+		    </div>
+        </div>
+</form>
+<script>
+function addnewrow(){
+    var count = parseInt($("#record_count").val()) + 1; 
+	var row_content = '<div id="weight_classes'+count+'">';
+	row_content += '<div class="col-sm-3 col_paddingtop">';
+	row_content += '<label><?php echo $this->translate("Forwrder"); ?></label>';
+	row_content += '<?=$this->getHelper('HtmlSelect')->getSelect('forwarder_id[]',$this->forwarders,'forwarder_id','forwarder_name','',false,array('class'=>'inputfield','required'=>'required')); ?></div>';
+	row_content += '<div class="col-sm-3 col_paddingtop"><label><?php echo $this->translate("SMS Days"); ?></label><input type="text" required name="sms_days[]" id="sms_days" placeholder="Enter Days" class="inputfield"></div>';
+	row_content += '<div class="col-sm-1 col_paddingtop">';
+	row_content += '<i class="fa fa-minus-square-o" style="padding-top:15px;" onclick="removerow('+count+')"></i></div>';
+	row_content += '<div class="clearfix"></div></div>';
+	$("#weight_classes"+parseInt($("#record_count").val())).after(row_content);
+	$("#record_count").val(parseInt(count));
+}
+function removerow(count){
+    $("#weight_classes"+count).remove();
+	$("#record_count").val(parseInt($("#record_count").val()) - 1);
+}
+</script>

@@ -1,0 +1,113 @@
+<link rel="stylesheet" href="<?php echo $this->baseUrl('/public/timepicker/jquery.ui.timepicker.css')?>">
+<script src="<?php echo $this->baseUrl('/public/timepicker/include/ui-1.10.0/jquery.ui.widget.min.js')?>"></script>
+<script src="<?php echo $this->baseUrl('/public/timepicker/jquery.ui.timepicker.js')?>"></script>
+<?php $form = $this->InvoiceHistoryForm; $invoicedata = $this->InvoiceHistoryData; ?>
+<form action="" method="post" name="addcountry" class="inputbox" >
+<div class="col-lg-12 col-md-12 col-sm-12 b-email" style="background:#ffffff;">
+          <div class="b-email-title">
+            <h6><?=$this->title;?></h6>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 col_paddingtop">
+			        <?php echo $this->translate('Customer')?> 
+            </div>
+			       <div class="col-sm-6 col_paddingtop">
+              <?php echo $invoicedata['company_name']; ?>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-sm-6 col_paddingtop">
+			       <?php echo $this->translate('Invoice Number')?></div>
+            <div class="col-sm-6 col_paddingtop">
+			       <?php echo $invoicedata['invoice_number']; ?>
+            </div>
+			<div class="clearfix"></div>
+            <div class="col-sm-6 col_paddingtop">
+			   <?php echo $this->translate('Total Amount')?>
+            </div>
+            <div class="col-sm-6 col_paddingtop">
+			   <?php echo $invoicedata['total_amount']; ?>
+            </div>
+			<div class="clearfix"></div>
+			<div class="col-sm-6 col_paddingtop">
+			  <?php echo $this->translate('Create Date')?>
+            </div>
+          
+			<div class="col-sm-6 col_paddingtop">
+			<?php echo $invoicedata['invoice_date']; ?>
+					</div>
+		      <div class="clearfix"></div>
+
+          <div class="col-sm-6 col_paddingtop">
+        <?php echo $this->translate('Payment Mode')?>
+            </div>
+          
+      <div class="col-sm-6 col_paddingtop">
+      <?php echo $form->payment_mode; ?>
+          </div>
+          <div class="clearfix"></div>
+
+
+
+
+          <div class="col-sm-6 col_paddingtop">
+        <?php echo $this->translate('Amount')?>
+            </div>
+          
+      <div class="col-sm-6 col_paddingtop">
+      <?php echo $form->paid_amount; ?>
+          </div>
+          <div class="clearfix"></div>
+
+
+          <div class="col-sm-6 col_paddingtop">
+        <?php echo $this->translate('Payment Date')?>
+            </div>
+          
+      <div class="col-sm-6 col_paddingtop">
+      <?php echo $form->payment_date; ?>
+          </div>
+          <div class="clearfix"></div>
+
+
+          <div class="col-sm-6 col_paddingtop">
+        <?php echo $this->translate('Payment Status')?>
+            </div>
+          
+      <div class="col-sm-6 col_paddingtop">
+      <?php echo $form->payment_status; ?>
+          </div>
+          <div class="clearfix"></div>
+          <div class="col-sm-6 col_paddingtop">
+        <?php echo $this->translate('Remark')?>
+            </div>
+          
+      <div class="col-sm-6 col_paddingtop">
+      <?php echo $form->remark,$form->invoice_number,$form->invoice_id; ?>
+          </div>
+          <div class="clearfix"></div>
+           
+
+
+
+
+
+
+            <div class="col-sm-2 col_paddingtop"> <?php echo $form->submit; ?> </div>
+          </div>
+* fields are Mandatory
+        </div>
+
+</form>
+
+<script>
+function clickTimePicker(id){
+$('#'+id).timepicker();
+}
+ $(function() {
+  $( "#assigndate" ).datepicker({
+    dateFormat: 'yy-mm-dd',
+    showOtherMonths: true,
+    selectOtherMonths: true
+  });
+ });  
+</script>

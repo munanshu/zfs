@@ -1,0 +1,37 @@
+<?php global $objSession; ?>
+
+<?php if(isset($objSession->defaultMsg)){?>
+<div class="alert alert-block" role="alert">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <strong>General Alert!</strong> <?php echo $objSession->defaultMsg?>.
+</div>
+<?php unset($objSession->defaultMsg);?>
+<?php }?>
+
+
+<?php if(isset($objSession->infoMsg)){?>
+<div class="alert alert-icon alert-icon-info alert-info" role="alert">
+<button type="button" class="close" data-dismiss="alert">&times;</button>
+    <strong>Info !</strong> <?php echo $objSession->infoMsg?>.
+</div>
+<?php unset($objSession->infoMsg);?>
+<?php }?>
+
+
+
+<?php if(isset($objSession->successMsg)){?>
+<div class="alert alert-icon alert-icon-success alert-success" role="alert">
+<button type="button" class="close" data-dismiss="alert">&times;</button>
+    <strong>Success Alert !</strong> <?php echo $objSession->successMsg?>.
+</div>
+<?php unset($objSession->successMsg);?>
+<?php }?>
+
+
+<?php if(isset($objSession->errorMsg)){?>
+<div class="alert alert-icon alert-icon-danger alert-danger" role="alert">
+<button type="button" class="close" data-dismiss="alert">&times;</button>
+    <strong>Error!</strong> <?php echo $objSession->errorMsg?>.
+</div>
+<?php unset($objSession->errorMsg);?>
+<?php }?>

@@ -1,0 +1,97 @@
+
+	<div class="row row-broken">
+        <div class="col-sm-12">
+				 <div class="filter">
+				<div class="input-title"><?php echo $this->translate('Edit Invoice')?></div>
+			<div class="clear"></div>
+				<div style="background:#ffffff; padding:10px; overflow:auto;text-align:center">
+			<div class="clear-all"></div>
+				<div class="col-sm-2">&nbsp;</div>
+					<div class="col-sm-8">
+				<form id="Importshipmentform" class="inputbox" enctype="multipart/form-data" action="" method="post" onsubmit="return importvalidate()">	
+					<table class="tbl_new">
+					<tbody>
+					<tr><th colspan="2"><?php echo $this->translate('Edit')?></th></tr>
+					 <tr class="even">
+						<td><?php echo $this->translate('Customer')?></td>
+						<td><?php echo $this->invoiceList['company_name'];?></td>
+					</tr>
+					<tr class="odd">
+						<td><?php echo $this->translate('Invoice Number')?></td>
+						<td><?php echo $this->invoiceList['invoice_number'];?></td>
+					</tr>
+					<tr class="even">
+						<td><?php echo $this->translate('Total Amount')?></td>
+						<td><?php echo $this->invoiceList['total_amount'];?></td>
+					</tr>
+					<tr class="odd">
+						<td><?php echo $this->translate('Create Date')?></td>
+						<td><?php echo $this->invoiceList['invoice_date'];?></td>
+					</tr>
+					<tr>
+						<td><?php echo $this->translate('Payment Mode')?></td>
+						<td><select name="payment_mode" class="inputfield">
+						    <option value=""><?php echo $this->translate('Select Mode')?></option>
+							<option value="Bank" <?php echo ($this->invoiceList['payment_mode']=='Bank')?'selected="selected"':'';?>><?php echo $this->translate('Bank')?></option>
+							<option value="PayPal" <?php echo ($this->invoiceList['payment_mode']=='PayPal')?'selected="selected"':'';?>><?php echo $this->translate('PayPal')?></option>
+							<option value="Cash" <?php echo ($this->invoiceList['payment_mode']=='Cash')?'selected="selected"':'';?>><?php echo $this->translate('Cash')?></option>
+						</select></td>
+					</tr>
+					<tr>
+						<td><?php echo $this->translate('Amount')?></td>
+						<td><input type="text" name="paid_amount" id="paid_amount" value="<?php echo ($this->invoiceList['paid_amount']>0)?$this->invoiceList['paid_amount']:$this->invoiceList['total_amount'];?>" class="inputfield"></td>
+					</tr>
+					<tr>
+						<td><?php echo $this->translate('Payment Date')?></td>
+						<td><input type="text" name="payment_date" id="payment_date" value="<?php echo ($this->invoiceList['payment_date']!='0000-00-00')?$this->invoiceList['payment_date']:date('Y-m-d');?>" style="border: 1px solid #ccc"></td>
+					</tr>
+					<tr>
+						<td><?php echo $this->translate('Payment Status')?></td>
+						<td><input type="radio" name="payment_status" id="payment_status" value="1" checked >Paid &nbsp;<input type="radio" name="payment_status" id="payment_status" value="0">Un-Paid</td>
+					</tr>
+					<tr>
+						<td><?php echo $this->translate('Remark')?></td>
+						<td><textarea col="5" row="5" name="remark"><?php echo $this->invoiceList['remark'];?></textarea></td>
+					</tr>
+					<tr>
+						<td style="text-align:center" colspan="2"><input type="submit" name="update" id="update" value="Update Invoice" class="btn btn-danger"> 
+						</td>
+					 </tr>
+					</tbody>
+					</table>
+				</form>	
+					</div>
+					<div class="col-sm-2">&nbsp;</div>
+					<div class="clear-all"></div>
+				</div>
+			</div>
+        </div>
+	</div>
+<script>
+function importvalidate(){
+   var user_id = $('#user_id').val();
+   var files = $('#import_file').val();
+   var ext = files.split('.').pop().toLowerCase();
+  if(ext!='csv'){
+	  $('#file_error').html('<td colspan="2">Only CSV file allowed</td>');
+	  $('#file_error').show();
+	  setTimeout("$('#file_error').hide();",5000);
+	  return false;
+  }else if(user_id==''){
+      $('#file_error').html('<td colspan="2">Please Customer</td>');
+	  $('#file_error').show();
+	  setTimeout("$('#file_error').hide();",5000);
+	  return false;
+   }else{
+	 $('#file_error').html('');
+	  $('#file_error').hide();
+	  return true;
+   }   
+}
+$( function() {
+    $( "#payment_date" ).datepicker({
+	      dateFormat:'yy-mm-dd'	
+		
+	});
+  } );
+</script>	

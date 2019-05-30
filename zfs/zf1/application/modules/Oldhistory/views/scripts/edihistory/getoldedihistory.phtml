@@ -1,0 +1,126 @@
+<?php $forwarders = $this->forwarders; ?>	
+	<div class="row row-broken">
+        <div class="col-sm-12">
+			<div class="tabs" id="seventh-tabs">
+			  <ul class="nav nav-tabs nav-justified">
+				<?=$this->ModelObj->tabNavigation(); ?>
+              </ul>
+			  
+				<div class="tab-content">
+					 <div class="tab-pane fade in active" id="tab-1">
+					<form>
+					  <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="input-title"><?php echo $this->translate('Old Edi History')?></div>
+					  <div class="clear-all"></div>
+
+					  		<div class="col-sm-1 col_paddingx10"><?php echo $this->translate("Forwarder List :");?></div>
+						<div class="col-sm-3 col_paddingx10">
+							<?=$this->getHelper('HtmlSelect')->getSelect('forwarder_id',$forwarders,'forwarder_id','forwarder_name',(isset($this->ModelObj->getData['forwarder_id'])? $this->ModelObj->getData['forwarder_id']:false),false,array('class'=>'selectbox','onchange'=>''));?>
+						</div>
+
+
+							  <div class="col-sm-3 col_paddingtop">
+						  <label><?php echo $this->translate("From Date");?></label>
+							<input type="text" name="from_date" id="from_date" value="<?php echo (isset($this->Request['from_date'])?$this->Request['from_date']:'')?>"  class="inputfield" style="width:60%">
+						  </div>
+						<div class="col-sm-3 col_paddingtop">
+						  <label><?php echo $this->translate("To Date");?></label>
+						  <input type="text" name="to_date" id="to_date" value="<?php echo (isset($this->Request['to_date'])?$this->Request['to_date']:'')?>"  class="inputfield" style="width:60%">
+						</div>
+						<div class="col-sm-2 col_paddingtop">
+						  <button class="btn btn-danger btn-round" name="search" type="submit" value="Search"><?php echo $this->translate("Search");?></button>
+						</div>
+						<div class="clear-all"></div>
+
+
+					  <div class="col-sm-2 col_paddingx10">
+						 
+					  </div>
+					  <div class="col-sm-9 col_paddingx10"> <span class="input input--kaede"></span> 
+						</div>
+						<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+						
+				<div id="table">
+					<div class="header-row row"> 
+						<span class="cell"><?php echo $this->translate("Forwarder Name");?></span> 
+						<span class="cell"><?php echo $this->translate("Edi");?></span> 
+						<span class="cell"><?php echo $this->translate("Create Date");?></span> 
+						<span class="cell"><?php echo $this->translate("Upload Status");?></span> 
+						<span class="cell"><?php echo $this->translate("Download EDI");?></span> 
+						<span class="cell"><?php echo $this->translate("View Manifest");?></span>
+					</div>
+					<?php 
+					if($this->edihistory['Total']>0){
+						foreach($this->edihistory['Records'] as $index=>$data){
+							$class = (($index)%2==0) ? 'class="row odd"' :'class="row even"';?>
+						<div <?=$class?>>
+							<span class="cell" data-label="Forwarder Name"><?=$data['forwarder_name'];?></span>
+							<span class="cell" data-label="EDI File"><?=$data['edi_file_name'];?></span>
+							<span class="cell" data-label="Create Date"><?=commonfunction::TimeFormat($data['create_date']);?></span>
+							<span class="cell" data-label="Upload Status"><img src="<?=($data['upload_status']=='1')?IMAGE_LINK.'/icon_active.gif':IMAGE_LINK.'/icon_inactive.gif';?>"></span>
+							<?php  
+
+								$filename = ROOT_PATH.'/private/EDI/'.date('Y_m',strtotime($data['create_date'])).'/'.$data['edi_file_name'];
+						   		if(file_exists($filename))
+							      
+							 	{
+
+							?>
+							<span class="cell" data-label="Download"><a href="<?php echo $this->url(array('controller'=>'Edihistory','action'=>'downloadedifile'),'default',true).'?file_name='.date('Y_m',strtotime($data['create_date'])).'/'.$data['edi_file_name'].'&mode=Download&forwarder='.$data['forwarder_id']?>"><i class="fa fa-download fa-2x" title="<?php echo $this->translate("Download");?>"></i></a></span>
+							<?php }else { ?>
+
+								<span class="cell" data-label="Download"> N/A </span>
+
+							<?php } ?>
+
+							<?php if(isset($data['manifest_file_name']) && !empty($data['manifest_file_name'])) { ?>
+							<span class="cell" data-label="Manifest"><a target="_blank" href="<?=FORWARDER_MANIFEST_OPEN.date('Y_d',strtotime($data['create_date'])).'/'.$data['manifest_file_name'];?>"><i class="fa fa-eye fa-2x" title="<?php echo $this->translate("View Manifest");?>"></i></a></span>
+							 <?php }else {
+							 	?>
+							 	<span class="cell" data-label="Manifest">N/A</span>
+							 	<?php
+							 	} ?>
+							 
+						</div>
+					<?php } }else{ ?>
+					<span class="cell" data-label="No Record"><?php echo $this->translate("No Record found!");?></span>
+					<?php  }  ?>
+				</div>
+					 	
+			</div>
+					</div>
+					 
+					  <div class="unit control">
+
+					<div class="nav-btns pull-right"> <?php echo commonfunction::PageCounter($this->edihistory['Total'],$this->Request)?>
+
+				  </div>
+
+				</div>
+					
+					 </form>
+					</div>
+				</div>
+			</div>
+        </div>
+     </div>
+<script>
+$(document).ready(function() {
+	 commonDataTableView()
+} );
+</script>
+<script>
+$(function() {
+		$( "#from_date" ).datepicker({
+		  dateFormat: 'yy-mm-dd',
+		  showOtherMonths: true,
+		  selectOtherMonths: true
+		});
+		$( "#to_date" ).datepicker({
+		  dateFormat: 'yy-mm-dd',
+		  showOtherMonths: true,
+		  selectOtherMonths: true
+		});
+	
+	});
+</script>			

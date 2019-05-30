@@ -1,0 +1,140 @@
+<div class="tab-content">
+		 <div class="tab-pane fade in active" id="tab-1">
+
+		<form method="post" action="" id="invoicefilter" name="invoicefilter">
+		<!-- filter start -->
+			<div class="filter">
+				<div class="input-title"><?php echo $this->translate("Dues Invoice");?></div>
+				
+				<div class="row row_nopadding decor-success" style="margin-left:0px !important;margin-right:0px !important;">
+
+				<div class="clear-all"></div>
+				<div class="col-sm-3 col_paddingtop">
+						<label><?php echo $this->translate('Customer');?></label>
+						<select name="user_id" id="user_id" class="inputfield" style="width:60%">
+						<option value="">--<?php echo $this->translate('Customer');?>--</option>
+						<?php foreach($this->userlist as $userlist){
+						  $selected = '';
+						  if(isset($this->Request['user_id']) && Zend_Encript_Encription::encode($userlist['user_id'])==$this->Request['user_id']){
+							$selected = 'selected="selected"';
+						  }?>
+						  <option value="<?php echo Zend_Encript_Encription::encode($userlist['user_id'])?>" <?php echo $selected;?>><?php echo $userlist['company_name']?></option>
+						<?php } ?>
+              </select>
+				</div>
+				<div class="col-sm-3 col_paddingtop">
+				<label><?php echo $this->translate("From Date");?></label>
+                <input type="text" name="from_date" id="from_date" value="<?php echo (isset($this->Request['from_date'])?$this->Request['from_date']:'')?>"  class="inputfield" style="width:60%">
+              </div>
+				<div class="col-sm-3 col_paddingtop">
+				  <label><?php echo $this->translate("To Date");?></label>
+				  <input type="text" name="to_date" id="to_date" value="<?php echo (isset($this->Request['to_date'])?$this->Request['to_date']:'')?>"  class="inputfield" style="width:60%">
+				</div>
+				<div class="col-sm-3 col_paddingtop">
+					<label><?php echo $this->translate("Status");?></label>
+					<?php echo $this->getHelper('HtmlSelect')->getSelect('status',array(array('type'=>'1','Name'=>'Un-paid Invoice'),array('type'=>'2','Name'=>'Parcetial Paid')),'type','Name',(isset($this->Request['status'])?$this->Request['status']:''),false,array('class'=>'inputfield','style'=>"width:60%"));?> 
+					</div>
+				<div class="col-sm-4 col_paddingtop">
+					<label><?php echo $this->translate("Reminder");?></label>
+					<?php echo $this->getHelper('HtmlSelect')->getSelect('status',array(array('type'=>'1','Name'=>'Un-paid Invoice'),array('type'=>'2','Name'=>'Parcetial Paid')),'type','Name',(isset($this->Request['status'])?$this->Request['status']:''),false,array('class'=>'inputfield','style'=>"width:60%"));?> 
+					</div>
+				<div class="col-sm-3 col_paddingtop">
+					<button class="btn btn-danger btn-round" name="search" type="submit" value="search">Submit</button>
+			  	</div>
+				</div>
+			</div>
+			
+		<!-- end filter -->
+		</form>
+		<form method="post" action="" id="dues_invoice" name="dues_invoice">
+		
+		<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+						
+				<div id="table">
+					<div class="header-row row">
+					<span class="cell"><input type="checkbox" id="check_uncheck_all" onchange="check_uncheckALL(this)"></span> 
+					<span class="cell"><?php echo $this->translate("Customer Code");?></span> 
+					<span class="cell"><?php echo $this->translate("Customer");?></span> 
+					<span class="cell"><?php echo $this->translate("Invoice");?></span> 
+					<span class="cell"><?php echo $this->translate("Total Amount");?></span> 
+					<span class="cell"><?php echo $this->translate("Max Payment Day");?></span> 
+					<span class="cell"><?php echo $this->translate("Total Paid Amount");?></span>
+					<span class="cell"><?php echo $this->translate("Total Due Amount");?></span> 
+					<span class="cell"><?php echo $this->translate("Invoice Notification");?></span> 
+					<span class="cell"><?php echo $this->translate("Status");?></span>
+					<span class="cell"><?php echo $this->translate("Action");?></span> 					
+					</div>
+					<?php 
+					if(count($this->records)>0){
+						foreach($this->records as $index=>$data){
+							$class = (($index)%2==0) ? 'class="row odd"' :'class="row even"';?>
+						<div <?=$class?>>
+							<span class="cell" data-label="Company"><input type="checkbox" id="user_id_<?php echo $data[ADMIN_ID];?>" name="invoice_ids[]" value="<?php echo Zend_Encript_Encription::encode($data[ADMIN_ID]);?>" class="check_uncheck_class"></span> 
+							<span class="cell" data-label="Customer Code"><?= $data['customer_number']?></span>
+							<span class="cell" data-label="Company"><?=commonfunction::utf8Decode($data['company_name']);?></span>
+							<span class="cell" data-label="Invoice Number"><?= $data['invoice_number']?></span>
+							<span class="cell" data-label="Total Amount">&euro;<?=commonfunction::numberformat($data['total_amount'],2,', ','. ')?></span>
+							<span class="cell" data-label="Payment Days"><?= $data['payment_days']?></span>
+							<span class="cell" data-label="Paid Amount">&euro;<?=commonfunction::numberformat($data['paid_amount'],2,', ','. ')?></span>
+							<span class="cell" data-label="Total Amount">&euro;<?=commonfunction::numberformat($data['total_amount']-$data['paid_amount'],2,', ','. ')?></span>
+							<span class="cell" data-label="Notification">
+							<select id="invoice_notification<?php echo $key?>" name="invoice_notification[]">
+								<option value="">Select Reminder </option>
+								<option value="32">Reminder One  </option>
+								<option value="33">Reminder Two</option>
+								<option value="34">Reminder Three </option>
+								<option value="35">Reminder Four </option>
+								<option value="36">Reminder Five </option>
+							</select>
+							</span>
+							<span class="cell" data-label="Status">
+							   <select id="status_<?php echo $Invoice[ADMIN_ID] ; ?>" name="status[]" style="width:100%;" onchange="setduesstatus(<?php echo $Invoice[ADMIN_ID] ; ?>)">
+									<option value="">Select Status</option>
+									<option value="0">Processing</option>
+									<option value="1">Completed </option>
+							  </select>
+							</span>
+							<span class="cell" data-label="Action" style="font-size:20px">
+							<a href="javascript:void(0)" onclick="openbox('<?php echo $this->url(array('controller'=>'Duesinvoice','action'=>'paymenthistory'),'default',true).'?user_id='.Zend_Encript_Encription::encode($data[ADMIN_ID]);?>','60%','70%');"><i class="fa fa-credit-card" title="Payment History"></i></a>&nbsp;|&nbsp;
+							<a href="javascript:void(0)" onclick="emailaction('<?php echo Zend_Encript_Encription::encode($data[ADMIN_ID]);?>','Send');"><i class="fa fa-envelope" title="Send Email"></i></a>&nbsp;|&nbsp;
+							<a href="javascript:void(0)" onclick="emailaction('<?php echo Zend_Encript_Encription::encode($data[ADMIN_ID]);?>','Print');"><i class="fa fa-print" title="Print Email"></i></a>&nbsp;|&nbsp;
+							<i class="fa fa-history" title="Email History"></i>&nbsp;|&nbsp;
+							<i class="fa fa-file-pdf-o" title="Export Invoice"></i>&nbsp;|&nbsp;
+							<i class="fa fa-gavel" title="Confirm To loyer"></i>&nbsp;|&nbsp;
+							<i class="fa fa-trash-o" title="Delete"></i>
+							</span>
+						</div>
+					<?php } } else{?>
+						
+						<div class="row odd">
+							<span class="cell" colspan="6"><b><?=$this->translate("Recod not found !");?></b></span> 
+						</div>
+					<?php }?>
+				</div>	
+			</form>	
+			</div></div></div>
+<script>
+$(function() {
+		$( "#from_date" ).datepicker({
+		  dateFormat: 'yy-mm-dd',
+		  showOtherMonths: true,
+		  selectOtherMonths: true
+		});
+		$( "#to_date" ).datepicker({
+		  dateFormat: 'yy-mm-dd',
+		  showOtherMonths: true,
+		  selectOtherMonths: true
+		});
+	
+	});
+function emailaction(user_id){
+   $.ajax({
+      type:'Post',
+	  url:'<?php echo $this->url(array('controller'=>'Duesinvoice','action'=>'emailaction'),'default',true);?>',
+	  data: 'user_id='+user_id,
+	  success:function(msg){
+	     alert(msg);
+	  }
+   });
+}	
+</script>			

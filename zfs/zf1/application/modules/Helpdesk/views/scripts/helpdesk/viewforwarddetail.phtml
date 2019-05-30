@@ -1,0 +1,35 @@
+<div class="content container-fluid">
+    <div class="input-title"><?php echo $this->translate('Ticket Forward Detail') ?></div>
+</div>
+<div id="tablegrid">
+	<table width="100%" border="0">
+	<?php if(count($this->forwarderDetail)>0){ ?>
+	    <thead>
+		<tr>
+			<th><?php echo $this->translate('Operator') ?></th>
+			<th><?php echo $this->translate('Forward Message/Reply')?></th>
+			<th><?php echo $this->translate('Activity Date')?></th>
+		</tr>
+		</thead>
+		<?php foreach($this->forwarderDetail as $forwarderDetail){ //echo "<pre>"; print_r($forwarderDetail); ?>
+		<tr>
+			<td align="left"><?='<b>'.$forwarderDetail['company_name'].'<b>'?></td>
+			<td><?= ($forwarderDetail['activity_id']==4)?'<b>Send:-</b>'.$forwarderDetail['messages']:'<b>Reply:-</b>'.$forwarderDetail['messages']; ?></td>
+			<td><?= $forwarderDetail['activity_date']  ?></td>
+		</tr>
+	<?php } } ?>
+	</table>
+</div>
+<style>
+th{
+    background: #36384e;
+    padding: 6px!important;
+    text-align: center;
+    color: #fff;
+    font-size: 13px;
+    border-bottom: none !important;
+}
+#tablegrid td {
+    text-align: left!important;
+}
+</style>

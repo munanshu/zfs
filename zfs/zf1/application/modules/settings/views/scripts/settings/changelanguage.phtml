@@ -1,0 +1,46 @@
+	<div class="row row-broken">
+        <div class="col-sm-12">
+			<div class="tabs" id="seventh-tabs">
+			  <ul class="nav nav-tabs nav-justified">
+				<?=$this->ModelObj->tabNavigation(); ?>
+              </ul>
+				<div class="tab-content">
+					<div class="tab-pane fade in active" id="tab-2">
+						<div class="col-inside-lg decor-default">
+             	  
+							<div class="row tab-filter row_nopadding decor-success tab-position">
+							  <div class="input-title">Change Language</div>
+							  <div class="clear-all"></div>
+								<?php $form = $this->changeLanguageSettingForm; ?>
+						<form action="" method="post" name="changelanguage" class="inputbox" >
+							<div class="col-lg- col-md-12 col-sm-12 b-email" style="background:#ffffff;">
+							  <div class="row">
+							  <div class="col-sm-4 col_paddingtop">
+								</div>
+							  	<div class="col-sm-3 col_paddingtop">
+								  <?php echo $form->language_id; ?>
+								</div>
+								<div class="clear-all"></div>
+								<div class="col-sm-2 col_paddingtop">
+								  <?php echo $form->submit; ?>
+								</div>
+								<div class="col-sm-3 col_paddingtop">
+								</div>
+								<div class="clear-all"></div>
+								
+							  </div>
+							</div>
+						</form>
+							</div>
+							
+							</div>
+						</div>
+					</div>
+				</div>
+            </div>
+        </div>
+	<script>
+	$(document).ready(function(){
+   			$( ".control--radio" ).append('<div class="control__indicator"></div>');
+	});
+	</script>

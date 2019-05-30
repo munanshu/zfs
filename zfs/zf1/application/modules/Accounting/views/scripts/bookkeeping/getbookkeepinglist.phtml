@@ -1,0 +1,286 @@
+<?php 
+
+ $data = $this->data;
+ $form_types = array('2'=>'BANK','3'=>'POSTBANK','5'=>'VERKOOPEN','6'=>'INKOOPEN','17'=>'MEMORIAL','47'=>'MEMORIAL');
+// echo die;
+ ?>
+<link href="<?=CSS_LINK?>/sitemapstyler.css" rel="stylesheet" type="text/css" media="screen" />
+<script type="text/javascript" src="<?=JS_LINK?>/sitemapstyler.js"></script>
+
+<div class="row row-broken">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+			   
+              <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-1">
+					<form>
+					  <div class="row tab-filter row_nopadding decor-success tab-position">
+					  		<div class="input-title"><?php echo $this->translate('Bookkeeping')?></div>
+					  		<div class="clear-all"></div>
+					   
+					  		<div class="col-sm-9 col_paddingx10"> <span class="input input--kaede"></span> 
+							</div>
+	
+					  </div>
+					  	<div class="row">
+						  <div id="container" class="col-sm-5" >
+							  
+							<div id="content">
+								
+								 
+										
+								<ul id="sitemap">
+									<?php foreach ($data as $key => $value) { ?>
+
+
+									
+									<li><a href="#"><?=$value['head_code']?> : <?php echo $this->translate($value['description'])?></a>
+										<ul>
+											<li><a href="javascript:void(0)" onclick="newform('<?=isset($form_types[$value['head_id']])?$form_types[$value['head_id']]:'';?>','<?=$value['head_id']?>','<?=BASE_URL."/Bookkeeping/getbookform"?>' )" >New Booking</a></li>
+											<?php foreach ($value['invoices'] as $k => $val) { ?>
+
+						<li><a href="#"><?php echo $this->translate($k)?></a>
+							<ul>
+								<?php foreach ($val as $mk => $mval) {?>
+
+							<li><a href="#"><?php echo $this->translate($mk)?> : (<?php echo count($mval); ?>)</a>
+								<ul>
+									<?php foreach ($mval as $dkey => $dvalue) { ?>
+										<li><a href="javascript:void(0)" onclick="getInvoice('<?=isset($form_types[$dvalue[0]])?$form_types[$dvalue[0]]:'';?>','<?=$dvalue[0]?>','<?=BASE_URL."/Bookkeeping/getbookform"?>','edit','<?=$dvalue[4]?>' )" ><?=$dvalue[3]?> : <?= (isset($dvalue[1]) && !empty($dvalue[1]))? $dvalue[1]: ( (isset($dvalue[2]) && !empty($dvalue[2]))? $dvalue[2] :  $dvalue[5] ) ;  ?></a>
+										</li>
+									<?php } ?>	
+									 
+								</ul>	
+
+							</li>
+								<?php } ?>
+								 
+							</ul>							
+						</li>
+											 
+											<?php }  ?>
+											
+										</ul>					
+									</li>
+									 <?php } ?>
+								</ul>
+							
+								
+								
+							</div>
+							
+						</div>
+						 
+						 
+							<div  class="col-sm-7" >
+									
+									<div id="loader" style="display:none;position:absolute;width:100%;height:100%;text-align:center;top:0%;background:#ffffff;opacity:0.8;z-index: 1000"><img src="<?=IMAGE_LINK?>/loader_big.gif">
+          							</div>
+          							<div   id="formContent" style="z-index: 999">
+							 
+									</div>
+							</div>
+						</div>
+						
+					 </form>
+					</div>
+                </div>
+					
+			 </div>
+            </div>
+          </div>
+ 
+ <script type="text/javascript">
+
+ 		function getInvoice(form_type,ledger_head,url,mode,invoice_id) {
+ 			var querystring = 'FormType='+form_type+'&ledger_head='+ledger_head+"&mode="+mode+"&invoice_id="+invoice_id;
+ 			$.ajax({
+	 			 	type:'post',
+	 			 	url : url,
+	 			 	beforeSend : function(){
+ 			 		$("#loader").show();
+ 			 	},
+	 			 	data : querystring,
+	 			 	success : function(resp){
+	 			 		 $('#formContent').html(resp); 
+ 			 		 	 commonDataTableView(); 
+	 			 		  
+	 			 	},
+ 			 	complete : function() {
+ 			 		$("#loader").hide();
+ 			 	}
+	 			 })
+ 			 
+ 		}
+ 		
+ 		function newform(form_type,head_id,action) {
+ 			var querystring = "mode=add&FormType="+form_type+"&HeadId="+head_id;
+ 			 $.ajax({
+ 			 	type:'post',
+ 			 	url : action,
+ 			 	beforeSend : function(){
+ 			 		$("#loader").show();
+ 			 	},
+ 			 	data : querystring,
+ 			 	success : function(resp){
+ 			 		// alert(resp);
+ 			 		 $('#formContent').html(resp); 
+ 			 		 commonDataTableView();
+ 			 	},
+ 			 	complete : function() {
+ 			 		$("#loader").hide();
+ 			 	}
+ 			 });
+
+ 		}
+
+ 		function removerow(row_id) {
+
+ 			var total = $("#table .row").length;
+ 				if(total > 2){
+ 					  $('div[rowid='+row_id+']').remove();
+ 				}
+
+ 		}
+
+ 		function addrows() {
+
+ 			var tr = $("#table div:last");
+ 			var trklone = tr.clone();	
+ 			var trrow = parseInt(trklone.attr('rowid')) ;
+ 			var trrowid = trrow + 1;
+ 			if(trrowid%2 == 0) var oddeve = 'row even'; else var oddeve = 'row odd';
+ 			var trrowname = trklone.attr('rowname');
+ 				trklone.attr('rowid',trrowid);
+ 				trklone.attr('rowname', 'invrow_'+trrowid);
+ 				trklone.find('input[name="definition[]"]').attr('id','definition_'+trrowid);
+ 				trklone.find('select[name="ledger_id[]"]').attr('id','ledger_'+trrowid);
+ 				trklone.find('select[name="btw[]"]').attr('id','btw_'+trrowid);
+ 				trklone.find('input[name="credit[]"]').attr('id','credit_'+trrowid);
+ 				trklone.find('input[name="debit[]"]').attr('id','debit_'+trrowid);
+ 				trklone.attr('class', oddeve);
+ 			$("#table").append(trklone);
+ 		}
+
+ 		function calculateLedgerRule(ledger_val,ledger_id) {
+
+ 			if(ledger_val == ''){
+ 				alert('please select an option');
+ 				return false;
+ 			}
+ 			var parentdiv = $('#'+ledger_id).parents('div').attr('rowname');
+
+ 			var creditcurrele = ($("div[rowname='"+parentdiv+"']").find('input[labelname="credit"]').length && !$("div[rowname='"+parentdiv+"']").find('input[labelname="credit"]').attr('disabled')) ? $("div[rowname='"+parentdiv+"']").find('input[labelname="credit"]') :$("div[rowname='"+parentdiv+"']").find('input[labelname="debit"]') ;
+ 			var btwcurrele = $("div[rowname='"+parentdiv+"']").find('select[labelname="btw"]');
+ 			var currnt_credit = creditcurrele.val();
+ 			if(currnt_credit == '' || /^[0-9]+$/.test(currnt_credit) != true ){
+ 				// alert(currnt_credit);
+ 				creditcurrele.val(0);
+ 				currnt_credit = 0;
+ 			}
+
+ 			var currnt_btw = btwcurrele.val();
+ 			var sum = 0;
+
+ 			var totallingele =  $('input[name="credit[]"]').length? $('input[name="credit[]"]'): $('input[name="debit[]"]');
+ 			var credits = totallingele.not(this).map(function(){
+ 						
+       				sum = sum + parseInt(this.value); 
+       				return this.value
+   				}).get()
+ 			 
+ 			var creditTotal = sum - currnt_credit;
+ 			var credit_amount =  ($("#credit_amount").length  && !$("#credit_amount").attr('disabled') ) ? $("#credit_amount").val():   $("#debit_amount").val()        ;
+ 			var amount = 0;
+ 			var btw = 0;
+ 			if(credit_amount>0){
+ 				if(currnt_btw > 0){
+ 					var amount = (credit_amount - creditTotal);
+ 					var  percent = ( (credit_amount * currnt_btw)/100 );
+ 					 amount = amount - percent;
+ 					 btw = currnt_btw;	
+ 				}
+ 				else var amount = (credit_amount - creditTotal);
+
+ 			}  
+ 			  creditcurrele.val(Math.round(amount));
+ 			  btwcurrele.val(btw);
+
+ 		}
+
+ 		function SaveInvoice() {
+ 			var action = "<?=BASE_URL.'/Bookkeeping/addeditinvoice'?>";
+ 			var querystring = $("#invoice").serialize();	
+
+ 				 $.ajax({
+	 			 	type:'post',
+	 			 	url : action,
+	 			 	beforeSend : function(){
+ 			 		$("#loader").show();
+ 			 		},
+	 			 	data : querystring,
+	 			 	dataType : 'json',
+	 			 	success : function(resp){
+	 			 		 if(resp.status==0){
+	 			 		 	$('.errormessage').text('');
+	 			 		 	$.each(resp.messages,function(i,val){
+	 			 		 		$("#invoice").find('input[name="'+val.element+'"]').parent().next('span').text(val.message);
+	 			 		 	});
+	 			 		 
+	 			 		 }
+	 			 		 else location.reload();
+	 			 		 
+	 			 	},
+	 			 	complete : function() {
+	 			 		$("#loader").hide();
+	 			 	}
+	 			 })
+
+
+ 			return false;
+ 		}
+
+
+ 		function removecolumn(column_name) {
+ 			var CreditDebitColumnClass = $(".CreditDebitColumnClass").html();
+ 			var CreditColumnClass = $(".CreditColumnClass").html();
+
+
+		    if(column_name == "debit_amount"){
+
+		        $(".CreditDebitColumnClass").show();
+		        $("#CreditDebitColumn").show();
+		        $(".CreditColumnClass").remove();
+		        $("#CreditColumn").hide(CreditDebitColumnClass);
+		        $("#credit_amount").attr('disabled','disabled');
+
+		    }
+
+		    if(column_name == "credit_amount"){
+
+		        $(".CreditDebitColumnClass").remove();
+		        $("#CreditDebitColumn").hide();
+		        $(".CreditColumnClass").html(CreditColumnClass);
+		        $("#CreditColumn").show();
+		        $("#debit_amount").attr('disabled','disabled');
+		        
+		    }      
+
+		    
+
+		}
+
+		function forceEnable(column_name) {
+		  // alert(1);
+		    if(column_name == "debit_amount") 
+		        $("#"+column_name).removeAttr('disabled','disabled');
+
+		    if(column_name == "credit_amount") 
+		        $("#"+column_name).removeAttr('disabled','disabled');
+
+		     removecolumn(column_name);    
+		}
+
+
+
+ </script>

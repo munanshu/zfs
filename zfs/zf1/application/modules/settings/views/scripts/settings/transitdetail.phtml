@@ -1,0 +1,68 @@
+<div class="input-title"><?=$this->translate("Service Counrty Info & Transit Time");?></div>
+<form action="" method="post" name="transitdetail" class="inputbox" >
+<input type="hidden" id="record_count" value="<?php echo count($this->transitData)+1;?>">
+<div class="col-lg-12 col-md-12 col-sm-12 b-email">
+		    <div class="row">
+			   <?php $i =0;
+					   foreach($this->transitData as $key=>$data){
+					   $i =$key+1; ?>
+					   <div id="weight_classes<?= $i = $i+1?>">
+								<div class="col-sm-3 col_paddingtop">
+								 <label><?php echo $this->translate("Country"); ?></label>
+									 <?=$this->getHelper('HtmlSelect')->getSelect('country_id[]',$this->allcountry,'country_id','country_code_name',(isset($data['country_id']))?Zend_Encript_Encription::encode($data['country_id']):'',true,array('class'=>'inputfield')); ?>
+								</div>
+								<div class="col-sm-3 col_paddingtop">
+									<label><?php echo $this->translate("Transit Days"); ?></label>
+									<input type="text" name="transit_days[]" id="transit_days" placeholder="Transit Days" class="inputfield" required value="<?=(isset($data['transit_days']))?$data['transit_days']:''?>">	
+								</div>
+								<div class="col-sm-4 col_paddingtop">
+									  <textarea name="transit_desc[]" rows="2" placeholder="Enter General Description"><?=(isset($data['transit_desc']))?$data['transit_desc']:''?></textarea> 
+								</div>
+							<div class="col-sm-1 col_paddingtop">
+							 <i class="fa fa-minus-square-o" style="padding-top:15px;" onclick="removerow(<?=$i?>)"></i>
+						  </div>	
+						   <div class="clearfix"></div>
+					  </div> 
+			  <?php } ?>
+				<div id="weight_classes<?= $i=$i+1?>">
+						<div class="col-sm-3 col_paddingtop">
+						 <label><?php echo $this->translate("Country"); ?></label>
+							 <?=$this->getHelper('HtmlSelect')->getSelect('country_id[]',$this->allcountry,'country_id','country_code_name','',true,array('class'=>'inputfield')); ?>
+						</div>
+						<div class="col-sm-3 col_paddingtop">
+							<label><?php echo $this->translate("Transit Days"); ?></label>
+							<input type="text" name="transit_days[]" id="transit_days" placeholder="Transit Days" class="inputfield">	
+						</div>
+						<div class="col-sm-4 col_paddingtop">
+							  <textarea name="transit_desc[]" rows="2" placeholder="Enter General Description"></textarea> 
+						</div>
+					<div class="col-sm-1 col_paddingtop">
+					 <i class="fa fa-plus-square" style="padding-top:35px;" onclick="addnewrow()"></i>
+				  </div>	
+				   <div class="clearfix"></div>
+			  </div> 
+			   <div class="col-sm-12 col_paddingtop"></div>
+				<div class="col-sm-4 col_paddingtop"> <input type="submit" name="submit" value="Submit Detail" class="btn btn-danger btn-round"></div>
+		    </div>
+        </div>
+</form>
+<script>
+function addnewrow(){
+    var count = parseInt($("#record_count").val()) + 1; 
+	var row_content = '<div id="weight_classes'+count+'">';
+	row_content += '<div class="col-sm-3 col_paddingtop">';
+	row_content += '<label><?php echo $this->translate("Country"); ?></label>';
+	row_content += '<?=$this->getHelper('HtmlSelect')->getSelect('country_id[]',$this->allcountry,'country_id','country_code_name','',true,array('class'=>'inputfield','required'=>'required')); ?></div>';
+	row_content += '<div class="col-sm-3 col_paddingtop"><label><?php echo $this->translate("Transit Days"); ?></label><input type="text" required name="transit_days[]" id="transit_days" placeholder="Transit Days" class="inputfield"></div>';
+	row_content += '<div class="col-sm-4 col_paddingtop"><textarea name="transit_desc[]" rows="2" placeholder="Enter General Description"></textarea></div>';
+	row_content += '<div class="col-sm-1 col_paddingtop">';
+	row_content += '<i class="fa fa-minus-square-o" style="padding-top:15px;" onclick="removerow('+count+')"></i></div>';
+	row_content += '<div class="clearfix"></div></div>';
+	$("#weight_classes"+parseInt($("#record_count").val())).after(row_content);
+	$("#record_count").val(parseInt(count));
+}
+function removerow(count){
+    $("#weight_classes"+count).remove();
+	$("#record_count").val(parseInt($("#record_count").val()) - 1);
+}
+</script>

@@ -1,0 +1,143 @@
+<div class="row row-broken">
+
+          <div class="col-sm-12">
+
+            <div class="tabs" id="seventh-tabs">
+
+			<div class="tab-content">
+
+			 <div class="tab-pane fade in active" id="tab-1">
+
+
+
+				<form method="post" action="" id="filter_form" name="filter_form">
+
+				<div class="b-email-list ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+
+						<div class="input-title"><?php echo $this->translate('Forwarder List')?></div>
+
+						<div class="clear-all"></div>
+
+					</div>
+
+					<div  id="tablegrid">
+
+					<table width="100%" border="0" id="dataTableGridId">
+
+								<thead>
+
+								<tr> 
+
+									<th><?php echo $this->translate("FID");?></th>
+
+									<th><?php echo $this->translate("Forwarder Name");?></th>
+
+									<th><?php echo $this->translate("Start Range");?></th>
+
+									<th><?php echo $this->translate("End Range");?></th> 
+
+									<th><?php echo $this->translate("Last Range");?></th>
+
+									<th><?php echo $this->translate("Sender Add.");?></th>
+
+									<th><?php echo $this->translate("Return Add.");?></th>
+
+									<th><?php echo $this->translate("Depot Add.");?></th>
+
+									<th><?php echo $this->translate("Customer Number");?></th> 
+
+									<th><?php echo $this->translate("Action");?></th>
+
+								</tr>
+
+						</thead>
+
+						<tbody>
+
+						<?php if(count($this->records)>0){
+
+							
+
+								foreach($this->records as $index=>$data){
+
+									 $class = ($index%2==0)?'even':'odd'; ?>
+
+									<tr <?=$class?>>
+
+										<td data-label="FID"><?=$data[FORWARDER_ID];?></td>
+
+										<td data-label="Forwarder Name"><?=$data['forwarder_name'];?></td>
+
+										<td data-label="Start Range"><?= $data['tracking_start']?></td>
+
+										<td data-label="End Range"><?= $data['tracking_end']?></td>
+
+										<td data-label="Last Range"><?= $data['last_tracking']?></td>
+
+										<td data-label="Sender Add"><?= nl2br($data['sender_address'])?></td>
+
+										<td data-label="Return Add"><?= nl2br($data['return_address'])?></td>
+
+										<td data-label="Depot Add"><?= nl2br($data['depot_address'])?></td>
+
+										<td data-label="Customer Number"><?=$data['customer_number'];?></td>
+
+										<td data-label="Action"><a href="<?=$this->url(array('controller'=>'Settings','action'=>'editforwarder'),'default',  true).'?forwarder_id='.Zend_Encript_Encription:: encode($data[FORWARDER_ID])?>"><i class="fa fa-edit fa-2x" title="Edit Forwarder"></i></a>
+
+											<!--|<a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Settings','action'=>'forwardercountry'),'default',true).'?id='.Zend_Encript_Encription:: encode($data[FORWARDER_ID])?>','60%','90%');"><i class="fa fa-eye fa-2x" title="View Forwarder"></i></a>-->
+
+											|<a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Settings','action'=>'countryservice'),'default',true).'?token1='.Zend_Encript_Encription:: encode($data[FORWARDER_ID])?>','60%','70%');"><i class="fa fa-cog fa-2x" title="Forwarder Country"></i></i></a>
+
+										</td>
+
+									</tr>
+
+								<?php }}else{?>
+
+									
+
+									<tr>
+
+									  <td data-label="No Data"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td>
+
+									  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+
+									</tr>
+
+									
+
+								<?php }?> </tbody>
+
+
+
+                     </table>
+
+                    </div>
+
+					
+
+					 </form>
+
+					</div>
+
+                </div>
+
+					<div>
+
+			  </div>
+
+			 </div>
+
+            </div>
+
+          </div>
+
+<script>
+
+$(document).ready(function() {
+
+	 commonDataTableView()
+
+} );
+
+</script>

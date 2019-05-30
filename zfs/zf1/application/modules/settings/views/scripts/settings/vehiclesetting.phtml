@@ -1,0 +1,80 @@
+<div class="row row-broken">
+          <div class="col-sm-12">
+            <div class="tabs" id="seventh-tabs">
+			  <ul class="nav nav-tabs nav-justified">
+			  	<?=$this->ModelObj->tabNavigation(); ?>
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab-6">
+					<form>
+					  <div class="row tab-filter row_nopadding decor-success tab-position">
+					  <div class="input-title"><?php echo $this->translate('Vehicle Setting')?></div>
+					  <div class="clear-all"></div>
+					  <div class="col-sm-3 col_paddingx10">
+						<label for="input-2" class="input__label input__label--kaede"> 
+						<span class="input input--kaede"><a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Settings','action'=>'addeditvehiclesetting'),'default',  true).'?mode=add'?>','60%','40%');"> <img src="<?=IMAGE_LINK?>/addmore.gif" /> <?php echo $this->translate('Add New Vehicle')?></a>
+						</span></label>
+					  </div>
+					  <div class="col-sm-9 col_paddingx10"> <span class="input input--kaede"></span> 
+						</div>
+	
+					</div>
+					<div  id="tablegrid">
+					 <table width="100%" border="0" id="dataTableGridId">
+					    <thead>
+						<tr>
+								<th><?=$this->translate('S. No.');?></th>
+								<th><?=$this->translate('Vehicle Name');?> </th>
+								<th><?=$this->translate('LicePlat');?></th>
+								<th><?=$this->translate('KM on Tacho');?></th>
+								<th><?=$this->translate('Status');?></th>
+								<th><?=$this->translate('Action');?></th>
+						</tr>
+						</thead>
+						<tbody>
+						<?php
+						if(count($this->vehicledetail)>0){
+						 foreach($this->vehicledetail as $key=>$data){
+						 $class = ($key%2==0)?'even':'odd'; ?>
+						<tr class="<?php echo $class;?>">
+						<td data-label="S. No."><?php echo $key+1; ?></td> 
+                        <td data-label="Vehicle Name"><?php echo $data['vehicle_name']; ?></td> 
+						<td data-label="Vehicle Number"><?php echo $data['vehicle_number']; ?></td>
+						<td data-label="Distance"><?php echo $data['vehicle_distance']; ?></td>
+						<td ><span class="cell" data-label="Status" id="statusSpan_<?=$key?>" ><?php if($data['status'] == "1") {  ?><img src="<?=IMAGE_LINK?>/icon_active.gif" align="absmiddle" alt="Active" border="0" onclick="setStatus('<?=VEHICLE_SETTINGS?>','Status','0','vehicle_id','<?=$data['vehicle_id']?>','<?=$key?>');" title="Change Status into In-Active" class="changeStatus" />
+						<?php } else { ?>
+						<img src="<?=IMAGE_LINK?>/icon_inactive.gif" align="absmiddle" alt="Active" border="0" onclick="setStatus('<?=VEHICLE_SETTINGS?>','Status','0','vehicle_id','<?=$data['vehicle_id']?>','<?=$key?>');" title="Change Status into Active" class="changeStatus" />
+						<?php } ?>
+						</span></td>
+						<td data-label="Action">
+						<a href="javascript:void(0);" onclick="openbox('<?=$this->url(array('controller'=>'Settings','action'=>'addeditvehiclesetting'),'default',  true).'?mode=edit&id='.Zend_Encript_Encription:: encode($data['vehicle_id'])?>','60%','40%');"> <i class="fa fa-edit"></i></a>
+                        </td> 
+					</tr>
+						<?php }} else{ ?>
+						<tr>
+						  <td data-label="No Data"><div class="nodatatxt"><?=$this->translate('No Record Found!...')?></div></td>
+						  <td></td>
+						  <td></td>
+						  <td></td>
+						  <td></td>
+						  <td></td>
+						  </tr>
+						<?php }
+						?></tbody>
+
+                     </table>
+                    </div>
+					
+					 </form>
+					</div>
+                </div>
+					<div>
+			  </div>
+			 </div>
+            </div>
+          </div>
+<script>
+$(document).ready(function() {
+	 commonDataTableView()
+} );
+</script>
